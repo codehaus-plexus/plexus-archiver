@@ -20,6 +20,7 @@ package org.codehaus.plexus.archiver.tar;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+import org.apache.maven.shared.utils.StringUtils;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -29,8 +30,7 @@ import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoSymlink;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
+import org.apache.maven.shared.utils.io.IOUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.jar.Attributes;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.maven.shared.utils.io.IOUtil;
 
 /**
  * Not part of any public API

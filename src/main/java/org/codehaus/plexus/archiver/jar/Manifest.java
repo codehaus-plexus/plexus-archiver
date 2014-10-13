@@ -36,7 +36,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.jar.Attributes;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.maven.shared.utils.io.IOUtil;
 
 /**
  * Holds the data of a jar manifest.

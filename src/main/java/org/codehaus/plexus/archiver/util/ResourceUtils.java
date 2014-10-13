@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 import org.codehaus.plexus.components.io.resources.PlexusIoFileResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.IOUtil;
+import org.apache.maven.shared.utils.io.IOUtil;
 
 /**
  * Utility class for work with {@link PlexusIoResource} instances.

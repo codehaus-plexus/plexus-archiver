@@ -22,8 +22,8 @@ package org.codehaus.plexus.archiver.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.shared.utils.StringUtils;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.StringUtils;
 
 
 

@@ -1,7 +1,8 @@
 package org.codehaus.plexus.archiver;
 
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
+
+import org.apache.maven.shared.utils.StringUtils;
+import org.apache.maven.shared.utils.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class DotDirectiveArchiveFinalizer
 				String line;
 
 				while ((line = in.readLine()) != null) {
-					String[] s = StringUtils.split(line, ":");
+					String[] s = StringUtils.split( line, ":" );
 
 					if (s.length == 1) {
 						File directory = new File(dotFileDirectory, s[0]);

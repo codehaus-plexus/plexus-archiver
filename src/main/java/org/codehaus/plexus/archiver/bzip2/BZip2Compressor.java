@@ -18,9 +18,9 @@ package org.codehaus.plexus.archiver.bzip2;
  */
 
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;

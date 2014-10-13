@@ -17,15 +17,15 @@ package org.codehaus.plexus.archiver;
  *  limitations under the License.
  */
 
+import org.apache.maven.shared.utils.StringUtils;
+import org.apache.maven.shared.utils.io.FileUtils;
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.FilterSupport;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

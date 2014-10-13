@@ -17,9 +17,9 @@ package org.codehaus.plexus.archiver.gzip;
  *  limitations under the License.
  */
 
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

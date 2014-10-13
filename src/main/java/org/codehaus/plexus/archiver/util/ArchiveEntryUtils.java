@@ -1,13 +1,13 @@
 package org.codehaus.plexus.archiver.util;
 
+import org.apache.maven.shared.utils.Os;
+import org.apache.maven.shared.utils.cli.CommandLineException;
+import org.apache.maven.shared.utils.cli.CommandLineUtils;
+import org.apache.maven.shared.utils.cli.Commandline;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.components.io.attributes.Java7AttributeUtils;
 import org.codehaus.plexus.components.io.attributes.Java7Reflector;
 import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.cli.CommandLineException;
-import org.codehaus.plexus.util.cli.CommandLineUtils;
-import org.codehaus.plexus.util.cli.Commandline;
 
 import java.io.File;
 import java.io.IOException;

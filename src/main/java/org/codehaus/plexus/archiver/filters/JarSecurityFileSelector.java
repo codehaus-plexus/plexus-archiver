@@ -15,9 +15,9 @@ package org.codehaus.plexus.archiver.filters;
  */
 import java.io.IOException;
 
+import org.apache.maven.shared.utils.io.SelectorUtils;
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
-import org.codehaus.plexus.util.SelectorUtils;
 
 /**
  * @version $Id$
@@ -41,7 +41,7 @@ public class JarSecurityFileSelector
     {
         String name = fileInfo.getName();
 		for (String pattern : SECURITY_FILE_PATTERNS) {
-			if (SelectorUtils.match(pattern, name)) {
+			if ( SelectorUtils.match( pattern, name )) {
 				return false;
 			}
 		}

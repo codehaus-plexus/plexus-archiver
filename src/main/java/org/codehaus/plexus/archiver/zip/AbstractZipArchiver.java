@@ -25,6 +25,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipEncoding;
 import org.apache.commons.compress.archivers.zip.ZipEncodingHelper;
+import org.apache.maven.shared.utils.io.FileUtils;
+import org.apache.maven.shared.utils.io.IOUtil;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
@@ -34,8 +36,6 @@ import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoSymlink;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 
 /**
  * @version $Revision$ $Date$
@@ -541,7 +541,7 @@ public abstract class AbstractZipArchiver
             } else if (zOut.isSeekable() || compressThis) {
                 zOut.putArchiveEntry( ze );
                 if (read > 0) zOut.write(header, 0, read);
-                IOUtil.copy( in, zOut, 8 * 1024);
+                IOUtil.copy( in, zOut, 8 * 1024 );
             } else {
                 if (in.markSupported())
                 {
