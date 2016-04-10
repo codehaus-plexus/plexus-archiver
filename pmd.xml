@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.5" timestamp="2015-09-26T22:22:05.297">
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/UnixStat.java">
+<pmd version="4.2.5" timestamp="2016-04-10T16:12:10.011">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/UnixStat.java">
 <violation beginline="34" endline="34" begincolumn="21" endcolumn="25" rule="AvoidUsingOctalValues" ruleset="Basic Rules" package="org.codehaus.plexus.archiver" class="UnixStat" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#AvoidUsingOctalValues" priority="3">
 Do not start a literal by 0 unless it's an octal value
 </violation>
@@ -23,50 +23,47 @@ Do not start a literal by 0 unless it's an octal value
 Do not start a literal by 0 unless it's an octal value
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2UnArchiver.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2UnArchiver.java">
 <violation beginline="1" endline="86" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.codehaus.plexus.archiver.bzip2" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/dir/DirectoryArchiver.java">
-<violation beginline="137" endline="141" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.dir" class="DirectoryArchiver" method="copyFile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/dir/DirectoryArchiver.java">
+<violation beginline="148" endline="152" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.dir" class="DirectoryArchiver" method="copyFile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/snappy/SnappyUnArchiver.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/snappy/SnappyUnArchiver.java">
 <violation beginline="1" endline="84" begincolumn="1" endcolumn="2" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.codehaus.plexus.archiver.snappy" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarArchiver.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarArchiver.java">
 <violation beginline="225" endline="226" begincolumn="17" endcolumn="17" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.tar" class="TarArchiver" method="tarFile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarFile.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarFile.java">
 <violation beginline="189" endline="189" begincolumn="78" endcolumn="89" rule="UnusedNullCheckInEquals" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.tar" class="TarFile" method="findEntry" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UnusedNullCheckInEquals" priority="3">
 Invoke equals() on the object you've already ensured is not null
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarUnArchiver.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/tar/TarUnArchiver.java">
 <violation beginline="138" endline="154" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.codehaus.plexus.archiver.tar" class="TarUnArchiver" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'file'.
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/util/ArchiveEntryUtils.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/util/ArchiveEntryUtils.java">
 <violation beginline="43" endline="46" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.util" class="ArchiveEntryUtils" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/AbstractZipArchiver.java">
-<violation beginline="37" endline="37" begincolumn="1" endcolumn="34" rule="UnusedImports" ruleset="Import Statement Rules" package="org.codehaus.plexus.archiver.zip" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'javax.annotation.WillClose'
-</violation>
-<violation beginline="326" endline="329" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.zip" class="AbstractZipArchiver" method="createArchiveMain" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/AbstractZipArchiver.java">
+<violation beginline="334" endline="337" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.codehaus.plexus.archiver.zip" class="AbstractZipArchiver" method="createArchiveMain" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/OffloadingOutputStream.java">
+<file name="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/OffloadingOutputStream.java">
 <violation beginline="71" endline="71" begincolumn="21" endcolumn="26" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.codehaus.plexus.archiver.zip" class="OffloadingOutputStream" variable="closed" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'closed'.
 </violation>

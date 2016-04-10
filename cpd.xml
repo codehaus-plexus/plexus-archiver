@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="34" tokens="104">
-<file line="33" path="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.java"/>
-<file line="33" path="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/snappy/SnappyArchiver.java"/>
+<file line="33" path="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.java"/>
+<file line="33" path="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/snappy/SnappyArchiver.java"/>
 <codefragment>
 <![CDATA[
     private SnappyCompressor compressor = new SnappyCompressor();
@@ -43,8 +43,8 @@
 </codefragment>
 </duplication>
 <duplication lines="32" tokens="101">
-<file line="35" path="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.java"/>
-<file line="35" path="/home/herve/projets/maven/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/gzip/GZipArchiver.java"/>
+<file line="35" path="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.java"/>
+<file line="35" path="/Users/kama/ws-git-plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/gzip/GZipArchiver.java"/>
 <codefragment>
 <![CDATA[
     protected void execute()
