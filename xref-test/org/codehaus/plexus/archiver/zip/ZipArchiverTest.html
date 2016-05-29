@@ -341,461 +341,463 @@
 <a class="jxr_linenumber" name="331" href="#331">331</a> 
 <a class="jxr_linenumber" name="332" href="#332">332</a>             writer = <strong class="jxr_keyword">new</strong> FileWriter( file );
 <a class="jxr_linenumber" name="333" href="#333">333</a>             writer.write( <span class="jxr_string">"This is a test file."</span> );
-<a class="jxr_linenumber" name="334" href="#334">334</a>         }
-<a class="jxr_linenumber" name="335" href="#335">335</a>         <strong class="jxr_keyword">finally</strong>
-<a class="jxr_linenumber" name="336" href="#336">336</a>         {
-<a class="jxr_linenumber" name="337" href="#337">337</a>             IOUtil.close( writer );
-<a class="jxr_linenumber" name="338" href="#338">338</a>         }
-<a class="jxr_linenumber" name="339" href="#339">339</a> 
-<a class="jxr_linenumber" name="340" href="#340">340</a>         ArchiveEntryUtils.chmod( file, mode, logger, false );
-<a class="jxr_linenumber" name="341" href="#341">341</a>     }
-<a class="jxr_linenumber" name="342" href="#342">342</a> 
-<a class="jxr_linenumber" name="343" href="#343">343</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateArchive()
-<a class="jxr_linenumber" name="344" href="#344">344</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="345" href="#345">345</a>     {
-<a class="jxr_linenumber" name="346" href="#346">346</a>         ZipArchiver archiver = newArchiver( <span class="jxr_string">"archive1.zip"</span> );
-<a class="jxr_linenumber" name="347" href="#347">347</a> 
-<a class="jxr_linenumber" name="348" href="#348">348</a>         createArchive( archiver );
-<a class="jxr_linenumber" name="349" href="#349">349</a>     }
-<a class="jxr_linenumber" name="350" href="#350">350</a> 
-<a class="jxr_linenumber" name="351" href="#351">351</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddArchivedFileSet()
-<a class="jxr_linenumber" name="352" href="#352">352</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="353" href="#353">353</a>     {
-<a class="jxr_linenumber" name="354" href="#354">354</a>         File toBeAdded = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/test.zip"</span> );
-<a class="jxr_linenumber" name="355" href="#355">355</a>         DefaultArchivedFileSet sfd = DefaultArchivedFileSet.archivedFileSet( toBeAdded );
-<a class="jxr_linenumber" name="356" href="#356">356</a>         File zipFIle = getTestFile( <span class="jxr_string">"target/output/withZip.zip"</span> );
-<a class="jxr_linenumber" name="357" href="#357">357</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFIle );
-<a class="jxr_linenumber" name="358" href="#358">358</a>         InputStreamTransformer is = <strong class="jxr_keyword">new</strong> InputStreamTransformer()
-<a class="jxr_linenumber" name="359" href="#359">359</a>         {
-<a class="jxr_linenumber" name="360" href="#360">360</a>             @Nonnull
-<a class="jxr_linenumber" name="361" href="#361">361</a>             <strong class="jxr_keyword">public</strong> InputStream transform( @Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream )
-<a class="jxr_linenumber" name="362" href="#362">362</a>                 <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="363" href="#363">363</a>             {
-<a class="jxr_linenumber" name="364" href="#364">364</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BoundedInputStream( inputStream, 3 );
-<a class="jxr_linenumber" name="365" href="#365">365</a>             }
-<a class="jxr_linenumber" name="366" href="#366">366</a>         };
-<a class="jxr_linenumber" name="367" href="#367">367</a>         sfd.setStreamTransformer( is );
-<a class="jxr_linenumber" name="368" href="#368">368</a>         zipArchiver.addArchivedFileSet( sfd );
-<a class="jxr_linenumber" name="369" href="#369">369</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="370" href="#370">370</a> 
-<a class="jxr_linenumber" name="371" href="#371">371</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFIle );
-<a class="jxr_linenumber" name="372" href="#372">372</a>         File destFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/withZip"</span> );
-<a class="jxr_linenumber" name="373" href="#373">373</a>         destFile.mkdirs();
-<a class="jxr_linenumber" name="374" href="#374">374</a>         zipUnArchiver.setDestFile( destFile );
-<a class="jxr_linenumber" name="375" href="#375">375</a>         zipUnArchiver.extract();
-<a class="jxr_linenumber" name="376" href="#376">376</a>         File a3byteFile = <strong class="jxr_keyword">new</strong> File( destFile,
-<a class="jxr_linenumber" name="377" href="#377">377</a>                                     <span class="jxr_string">"Users/kristian/lsrc/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/ZipArchiver.java"</span> );
-<a class="jxr_linenumber" name="378" href="#378">378</a>         assertTrue( a3byteFile.exists() );
-<a class="jxr_linenumber" name="379" href="#379">379</a>         assertTrue( a3byteFile.length() == 3 );
-<a class="jxr_linenumber" name="380" href="#380">380</a>     }
-<a class="jxr_linenumber" name="381" href="#381">381</a> 
-<a class="jxr_linenumber" name="382" href="#382">382</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateArchiveWithStreamTransformer()
-<a class="jxr_linenumber" name="383" href="#383">383</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="384" href="#384">384</a>     {
-<a class="jxr_linenumber" name="385" href="#385">385</a>         InputStreamTransformer is = <strong class="jxr_keyword">new</strong> InputStreamTransformer()
-<a class="jxr_linenumber" name="386" href="#386">386</a>         {
-<a class="jxr_linenumber" name="387" href="#387">387</a>             @Nonnull
-<a class="jxr_linenumber" name="388" href="#388">388</a>             <strong class="jxr_keyword">public</strong> InputStream transform( @Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream )
-<a class="jxr_linenumber" name="389" href="#389">389</a>                 <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="390" href="#390">390</a>             {
-<a class="jxr_linenumber" name="391" href="#391">391</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BoundedInputStream( inputStream, 3 );
-<a class="jxr_linenumber" name="392" href="#392">392</a>             }
-<a class="jxr_linenumber" name="393" href="#393">393</a>         };
-<a class="jxr_linenumber" name="394" href="#394">394</a> 
-<a class="jxr_linenumber" name="395" href="#395">395</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( getTestFile( <span class="jxr_string">"target/output/all3bytes.zip"</span> ) );
-<a class="jxr_linenumber" name="396" href="#396">396</a>         File zipFIle = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/test.zip"</span> );
-<a class="jxr_linenumber" name="397" href="#397">397</a>         DefaultArchivedFileSet afs = <strong class="jxr_keyword">new</strong> DefaultArchivedFileSet( zipFIle );
-<a class="jxr_linenumber" name="398" href="#398">398</a>         afs.setStreamTransformer( is );
-<a class="jxr_linenumber" name="399" href="#399">399</a>         afs.setPrefix( <span class="jxr_string">"azip/"</span> );
-<a class="jxr_linenumber" name="400" href="#400">400</a>         zipArchiver.addArchivedFileSet( afs );
-<a class="jxr_linenumber" name="401" href="#401">401</a> 
-<a class="jxr_linenumber" name="402" href="#402">402</a>         DefaultFileSet dfs = <strong class="jxr_keyword">new</strong> DefaultFileSet( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/mjar179"</span> ) );
-<a class="jxr_linenumber" name="403" href="#403">403</a>         dfs.setStreamTransformer( is );
-<a class="jxr_linenumber" name="404" href="#404">404</a>         dfs.setPrefix( <span class="jxr_string">"mj179/"</span> );
-<a class="jxr_linenumber" name="405" href="#405">405</a>         zipArchiver.addFileSet( dfs );
-<a class="jxr_linenumber" name="406" href="#406">406</a> 
-<a class="jxr_linenumber" name="407" href="#407">407</a>         PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
-<a class="jxr_linenumber" name="408" href="#408">408</a>         files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources"</span> ) );
-<a class="jxr_linenumber" name="409" href="#409">409</a>         files.setStreamTransformer( is );
-<a class="jxr_linenumber" name="410" href="#410">410</a>         files.setPrefix( <span class="jxr_string">"plexus/"</span> );
-<a class="jxr_linenumber" name="411" href="#411">411</a>         zipArchiver.addResources( files );
-<a class="jxr_linenumber" name="412" href="#412">412</a> 
-<a class="jxr_linenumber" name="413" href="#413">413</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="334" href="#334">334</a>             writer.close();
+<a class="jxr_linenumber" name="335" href="#335">335</a>             writer = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="336" href="#336">336</a>         }
+<a class="jxr_linenumber" name="337" href="#337">337</a>         <strong class="jxr_keyword">finally</strong>
+<a class="jxr_linenumber" name="338" href="#338">338</a>         {
+<a class="jxr_linenumber" name="339" href="#339">339</a>             IOUtil.close( writer );
+<a class="jxr_linenumber" name="340" href="#340">340</a>         }
+<a class="jxr_linenumber" name="341" href="#341">341</a> 
+<a class="jxr_linenumber" name="342" href="#342">342</a>         ArchiveEntryUtils.chmod( file, mode, logger, false );
+<a class="jxr_linenumber" name="343" href="#343">343</a>     }
+<a class="jxr_linenumber" name="344" href="#344">344</a> 
+<a class="jxr_linenumber" name="345" href="#345">345</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateArchive()
+<a class="jxr_linenumber" name="346" href="#346">346</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="347" href="#347">347</a>     {
+<a class="jxr_linenumber" name="348" href="#348">348</a>         ZipArchiver archiver = newArchiver( <span class="jxr_string">"archive1.zip"</span> );
+<a class="jxr_linenumber" name="349" href="#349">349</a> 
+<a class="jxr_linenumber" name="350" href="#350">350</a>         createArchive( archiver );
+<a class="jxr_linenumber" name="351" href="#351">351</a>     }
+<a class="jxr_linenumber" name="352" href="#352">352</a> 
+<a class="jxr_linenumber" name="353" href="#353">353</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddArchivedFileSet()
+<a class="jxr_linenumber" name="354" href="#354">354</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="355" href="#355">355</a>     {
+<a class="jxr_linenumber" name="356" href="#356">356</a>         File toBeAdded = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/test.zip"</span> );
+<a class="jxr_linenumber" name="357" href="#357">357</a>         DefaultArchivedFileSet sfd = DefaultArchivedFileSet.archivedFileSet( toBeAdded );
+<a class="jxr_linenumber" name="358" href="#358">358</a>         File zipFIle = getTestFile( <span class="jxr_string">"target/output/withZip.zip"</span> );
+<a class="jxr_linenumber" name="359" href="#359">359</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFIle );
+<a class="jxr_linenumber" name="360" href="#360">360</a>         InputStreamTransformer is = <strong class="jxr_keyword">new</strong> InputStreamTransformer()
+<a class="jxr_linenumber" name="361" href="#361">361</a>         {
+<a class="jxr_linenumber" name="362" href="#362">362</a>             @Nonnull
+<a class="jxr_linenumber" name="363" href="#363">363</a>             <strong class="jxr_keyword">public</strong> InputStream transform( @Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream )
+<a class="jxr_linenumber" name="364" href="#364">364</a>                 <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="365" href="#365">365</a>             {
+<a class="jxr_linenumber" name="366" href="#366">366</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BoundedInputStream( inputStream, 3 );
+<a class="jxr_linenumber" name="367" href="#367">367</a>             }
+<a class="jxr_linenumber" name="368" href="#368">368</a>         };
+<a class="jxr_linenumber" name="369" href="#369">369</a>         sfd.setStreamTransformer( is );
+<a class="jxr_linenumber" name="370" href="#370">370</a>         zipArchiver.addArchivedFileSet( sfd );
+<a class="jxr_linenumber" name="371" href="#371">371</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="372" href="#372">372</a> 
+<a class="jxr_linenumber" name="373" href="#373">373</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFIle );
+<a class="jxr_linenumber" name="374" href="#374">374</a>         File destFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/withZip"</span> );
+<a class="jxr_linenumber" name="375" href="#375">375</a>         destFile.mkdirs();
+<a class="jxr_linenumber" name="376" href="#376">376</a>         zipUnArchiver.setDestFile( destFile );
+<a class="jxr_linenumber" name="377" href="#377">377</a>         zipUnArchiver.extract();
+<a class="jxr_linenumber" name="378" href="#378">378</a>         File a3byteFile = <strong class="jxr_keyword">new</strong> File( destFile,
+<a class="jxr_linenumber" name="379" href="#379">379</a>                                     <span class="jxr_string">"Users/kristian/lsrc/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/ZipArchiver.java"</span> );
+<a class="jxr_linenumber" name="380" href="#380">380</a>         assertTrue( a3byteFile.exists() );
+<a class="jxr_linenumber" name="381" href="#381">381</a>         assertTrue( a3byteFile.length() == 3 );
+<a class="jxr_linenumber" name="382" href="#382">382</a>     }
+<a class="jxr_linenumber" name="383" href="#383">383</a> 
+<a class="jxr_linenumber" name="384" href="#384">384</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateArchiveWithStreamTransformer()
+<a class="jxr_linenumber" name="385" href="#385">385</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="386" href="#386">386</a>     {
+<a class="jxr_linenumber" name="387" href="#387">387</a>         InputStreamTransformer is = <strong class="jxr_keyword">new</strong> InputStreamTransformer()
+<a class="jxr_linenumber" name="388" href="#388">388</a>         {
+<a class="jxr_linenumber" name="389" href="#389">389</a>             @Nonnull
+<a class="jxr_linenumber" name="390" href="#390">390</a>             <strong class="jxr_keyword">public</strong> InputStream transform( @Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream )
+<a class="jxr_linenumber" name="391" href="#391">391</a>                 <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="392" href="#392">392</a>             {
+<a class="jxr_linenumber" name="393" href="#393">393</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BoundedInputStream( inputStream, 3 );
+<a class="jxr_linenumber" name="394" href="#394">394</a>             }
+<a class="jxr_linenumber" name="395" href="#395">395</a>         };
+<a class="jxr_linenumber" name="396" href="#396">396</a> 
+<a class="jxr_linenumber" name="397" href="#397">397</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( getTestFile( <span class="jxr_string">"target/output/all3bytes.zip"</span> ) );
+<a class="jxr_linenumber" name="398" href="#398">398</a>         File zipFIle = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/test.zip"</span> );
+<a class="jxr_linenumber" name="399" href="#399">399</a>         DefaultArchivedFileSet afs = <strong class="jxr_keyword">new</strong> DefaultArchivedFileSet( zipFIle );
+<a class="jxr_linenumber" name="400" href="#400">400</a>         afs.setStreamTransformer( is );
+<a class="jxr_linenumber" name="401" href="#401">401</a>         afs.setPrefix( <span class="jxr_string">"azip/"</span> );
+<a class="jxr_linenumber" name="402" href="#402">402</a>         zipArchiver.addArchivedFileSet( afs );
+<a class="jxr_linenumber" name="403" href="#403">403</a> 
+<a class="jxr_linenumber" name="404" href="#404">404</a>         DefaultFileSet dfs = <strong class="jxr_keyword">new</strong> DefaultFileSet( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/mjar179"</span> ) );
+<a class="jxr_linenumber" name="405" href="#405">405</a>         dfs.setStreamTransformer( is );
+<a class="jxr_linenumber" name="406" href="#406">406</a>         dfs.setPrefix( <span class="jxr_string">"mj179/"</span> );
+<a class="jxr_linenumber" name="407" href="#407">407</a>         zipArchiver.addFileSet( dfs );
+<a class="jxr_linenumber" name="408" href="#408">408</a> 
+<a class="jxr_linenumber" name="409" href="#409">409</a>         PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
+<a class="jxr_linenumber" name="410" href="#410">410</a>         files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources"</span> ) );
+<a class="jxr_linenumber" name="411" href="#411">411</a>         files.setStreamTransformer( is );
+<a class="jxr_linenumber" name="412" href="#412">412</a>         files.setPrefix( <span class="jxr_string">"plexus/"</span> );
+<a class="jxr_linenumber" name="413" href="#413">413</a>         zipArchiver.addResources( files );
 <a class="jxr_linenumber" name="414" href="#414">414</a> 
-<a class="jxr_linenumber" name="415" href="#415">415</a> 
-<a class="jxr_linenumber" name="416" href="#416">416</a>     }
+<a class="jxr_linenumber" name="415" href="#415">415</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="416" href="#416">416</a> 
 <a class="jxr_linenumber" name="417" href="#417">417</a> 
-<a class="jxr_linenumber" name="418" href="#418">418</a>     <strong class="jxr_keyword">private</strong> ZipArchiver newArchiver( String name )
-<a class="jxr_linenumber" name="419" href="#419">419</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="420" href="#420">420</a>     {
-<a class="jxr_linenumber" name="421" href="#421">421</a>         ZipArchiver archiver = getZipArchiver( getTestFile( <span class="jxr_string">"target/output/"</span> + name ) );
-<a class="jxr_linenumber" name="422" href="#422">422</a> 
-<a class="jxr_linenumber" name="423" href="#423">423</a>         archiver.setFileMode( 0640 );
-<a class="jxr_linenumber" name="424" href="#424">424</a>         archiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span> ), <span class="jxr_string">"one.txt"</span> );
-<a class="jxr_linenumber" name="425" href="#425">425</a>         archiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest2.mf"</span> ), <span class="jxr_string">"two.txt"</span>, 0664 );
-<a class="jxr_linenumber" name="426" href="#426">426</a> 
-<a class="jxr_linenumber" name="427" href="#427">427</a>         <em class="jxr_comment">// reset default file mode for files included from now on</em>
-<a class="jxr_linenumber" name="428" href="#428">428</a>         archiver.setFileMode( 0400 );
-<a class="jxr_linenumber" name="429" href="#429">429</a>         archiver.setDirectoryMode( 0777 );
-<a class="jxr_linenumber" name="430" href="#430">430</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src/test/resources/world-writable/"</span> ), <span class="jxr_string">"worldwritable/"</span> );
-<a class="jxr_linenumber" name="431" href="#431">431</a> 
-<a class="jxr_linenumber" name="432" href="#432">432</a>         archiver.setDirectoryMode( 0070 );
-<a class="jxr_linenumber" name="433" href="#433">433</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src/test/resources/group-writable/"</span> ), <span class="jxr_string">"groupwritable/"</span> );
-<a class="jxr_linenumber" name="434" href="#434">434</a> 
-<a class="jxr_linenumber" name="435" href="#435">435</a>         archiver.setDirectoryMode( 0500 );
-<a class="jxr_linenumber" name="436" href="#436">436</a>         archiver.setFileMode( 0400 );
-<a class="jxr_linenumber" name="437" href="#437">437</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src"</span> ) );
-<a class="jxr_linenumber" name="438" href="#438">438</a> 
-<a class="jxr_linenumber" name="439" href="#439">439</a>         <strong class="jxr_keyword">return</strong> archiver;
-<a class="jxr_linenumber" name="440" href="#440">440</a>     }
-<a class="jxr_linenumber" name="441" href="#441">441</a> 
-<a class="jxr_linenumber" name="442" href="#442">442</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> fileModeAssert(<strong class="jxr_keyword">int</strong> expected, <strong class="jxr_keyword">int</strong> actual){
-<a class="jxr_linenumber" name="443" href="#443">443</a>         assertEquals( Integer.toString( expected, 8 ), Integer.toString( actual, 8 ));
-<a class="jxr_linenumber" name="444" href="#444">444</a>     }
-<a class="jxr_linenumber" name="445" href="#445">445</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createArchive( ZipArchiver archiver )
-<a class="jxr_linenumber" name="446" href="#446">446</a>         <strong class="jxr_keyword">throws</strong> ArchiverException, IOException
-<a class="jxr_linenumber" name="447" href="#447">447</a>     {
-<a class="jxr_linenumber" name="448" href="#448">448</a>         archiver.createArchive();
-<a class="jxr_linenumber" name="449" href="#449">449</a> 
-<a class="jxr_linenumber" name="450" href="#450">450</a>         ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( archiver.getDestFile() );
+<a class="jxr_linenumber" name="418" href="#418">418</a>     }
+<a class="jxr_linenumber" name="419" href="#419">419</a> 
+<a class="jxr_linenumber" name="420" href="#420">420</a>     <strong class="jxr_keyword">private</strong> ZipArchiver newArchiver( String name )
+<a class="jxr_linenumber" name="421" href="#421">421</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="422" href="#422">422</a>     {
+<a class="jxr_linenumber" name="423" href="#423">423</a>         ZipArchiver archiver = getZipArchiver( getTestFile( <span class="jxr_string">"target/output/"</span> + name ) );
+<a class="jxr_linenumber" name="424" href="#424">424</a> 
+<a class="jxr_linenumber" name="425" href="#425">425</a>         archiver.setFileMode( 0640 );
+<a class="jxr_linenumber" name="426" href="#426">426</a>         archiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span> ), <span class="jxr_string">"one.txt"</span> );
+<a class="jxr_linenumber" name="427" href="#427">427</a>         archiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest2.mf"</span> ), <span class="jxr_string">"two.txt"</span>, 0664 );
+<a class="jxr_linenumber" name="428" href="#428">428</a> 
+<a class="jxr_linenumber" name="429" href="#429">429</a>         <em class="jxr_comment">// reset default file mode for files included from now on</em>
+<a class="jxr_linenumber" name="430" href="#430">430</a>         archiver.setFileMode( 0400 );
+<a class="jxr_linenumber" name="431" href="#431">431</a>         archiver.setDirectoryMode( 0777 );
+<a class="jxr_linenumber" name="432" href="#432">432</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src/test/resources/world-writable/"</span> ), <span class="jxr_string">"worldwritable/"</span> );
+<a class="jxr_linenumber" name="433" href="#433">433</a> 
+<a class="jxr_linenumber" name="434" href="#434">434</a>         archiver.setDirectoryMode( 0070 );
+<a class="jxr_linenumber" name="435" href="#435">435</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src/test/resources/group-writable/"</span> ), <span class="jxr_string">"groupwritable/"</span> );
+<a class="jxr_linenumber" name="436" href="#436">436</a> 
+<a class="jxr_linenumber" name="437" href="#437">437</a>         archiver.setDirectoryMode( 0500 );
+<a class="jxr_linenumber" name="438" href="#438">438</a>         archiver.setFileMode( 0400 );
+<a class="jxr_linenumber" name="439" href="#439">439</a>         archiver.addDirectory( getTestFile( <span class="jxr_string">"src"</span> ) );
+<a class="jxr_linenumber" name="440" href="#440">440</a> 
+<a class="jxr_linenumber" name="441" href="#441">441</a>         <strong class="jxr_keyword">return</strong> archiver;
+<a class="jxr_linenumber" name="442" href="#442">442</a>     }
+<a class="jxr_linenumber" name="443" href="#443">443</a> 
+<a class="jxr_linenumber" name="444" href="#444">444</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> fileModeAssert(<strong class="jxr_keyword">int</strong> expected, <strong class="jxr_keyword">int</strong> actual){
+<a class="jxr_linenumber" name="445" href="#445">445</a>         assertEquals( Integer.toString( expected, 8 ), Integer.toString( actual, 8 ));
+<a class="jxr_linenumber" name="446" href="#446">446</a>     }
+<a class="jxr_linenumber" name="447" href="#447">447</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createArchive( ZipArchiver archiver )
+<a class="jxr_linenumber" name="448" href="#448">448</a>         <strong class="jxr_keyword">throws</strong> ArchiverException, IOException
+<a class="jxr_linenumber" name="449" href="#449">449</a>     {
+<a class="jxr_linenumber" name="450" href="#450">450</a>         archiver.createArchive();
 <a class="jxr_linenumber" name="451" href="#451">451</a> 
-<a class="jxr_linenumber" name="452" href="#452">452</a>         Enumeration e = zf.getEntries();
+<a class="jxr_linenumber" name="452" href="#452">452</a>         ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( archiver.getDestFile() );
 <a class="jxr_linenumber" name="453" href="#453">453</a> 
-<a class="jxr_linenumber" name="454" href="#454">454</a>         <strong class="jxr_keyword">while</strong> ( e.hasMoreElements() )
-<a class="jxr_linenumber" name="455" href="#455">455</a>         {
-<a class="jxr_linenumber" name="456" href="#456">456</a>             ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
-<a class="jxr_linenumber" name="457" href="#457">457</a>             <strong class="jxr_keyword">if</strong> ( ze.isDirectory() )
-<a class="jxr_linenumber" name="458" href="#458">458</a>             {
-<a class="jxr_linenumber" name="459" href="#459">459</a>                 <strong class="jxr_keyword">if</strong> ( ze.getName().startsWith( <span class="jxr_string">"worldwritable"</span> ) )
-<a class="jxr_linenumber" name="460" href="#460">460</a>                 {
-<a class="jxr_linenumber" name="461" href="#461">461</a>                     fileModeAssert( 0777, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="462" href="#462">462</a>                 }
-<a class="jxr_linenumber" name="463" href="#463">463</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.getName().startsWith( <span class="jxr_string">"groupwritable"</span> ) )
-<a class="jxr_linenumber" name="464" href="#464">464</a>                 {
-<a class="jxr_linenumber" name="465" href="#465">465</a>                     fileModeAssert( 0070, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="466" href="#466">466</a>                 }
-<a class="jxr_linenumber" name="467" href="#467">467</a>                 <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="468" href="#468">468</a>                 {
-<a class="jxr_linenumber" name="469" href="#469">469</a>                     fileModeAssert( 0500, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="470" href="#470">470</a>                 }
-<a class="jxr_linenumber" name="471" href="#471">471</a>             }
-<a class="jxr_linenumber" name="472" href="#472">472</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="473" href="#473">473</a>             {
-<a class="jxr_linenumber" name="474" href="#474">474</a>                 <strong class="jxr_keyword">if</strong> ( ze.getName().equals( <span class="jxr_string">"one.txt"</span> ) )
-<a class="jxr_linenumber" name="475" href="#475">475</a>                 {
-<a class="jxr_linenumber" name="476" href="#476">476</a>                     fileModeAssert( 0640, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="477" href="#477">477</a>                 }
-<a class="jxr_linenumber" name="478" href="#478">478</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.getName().equals( <span class="jxr_string">"two.txt"</span> ) )
-<a class="jxr_linenumber" name="479" href="#479">479</a>                 {
-<a class="jxr_linenumber" name="480" href="#480">480</a>                     fileModeAssert( 0664, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="481" href="#481">481</a>                 }
-<a class="jxr_linenumber" name="482" href="#482">482</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.isUnixSymlink() )
-<a class="jxr_linenumber" name="483" href="#483">483</a>                 {
-<a class="jxr_linenumber" name="484" href="#484">484</a>                     <em class="jxr_comment">//         assertEquals( ze.getName(), 0500, UnixStat.PERM_MASK &amp; ze.getUnixMode() );</em>
-<a class="jxr_linenumber" name="485" href="#485">485</a>                 }
-<a class="jxr_linenumber" name="486" href="#486">486</a>                 <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="487" href="#487">487</a>                 {
-<a class="jxr_linenumber" name="488" href="#488">488</a>                     fileModeAssert( 0400, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
-<a class="jxr_linenumber" name="489" href="#489">489</a>                 }
-<a class="jxr_linenumber" name="490" href="#490">490</a>             }
-<a class="jxr_linenumber" name="491" href="#491">491</a> 
-<a class="jxr_linenumber" name="492" href="#492">492</a>         }
-<a class="jxr_linenumber" name="493" href="#493">493</a>     }
-<a class="jxr_linenumber" name="494" href="#494">494</a> 
-<a class="jxr_linenumber" name="495" href="#495">495</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkZip()
-<a class="jxr_linenumber" name="496" href="#496">496</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="497" href="#497">497</a>     {
-<a class="jxr_linenumber" name="498" href="#498">498</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"target/output/pasymlinks.zip"</span> );
-<a class="jxr_linenumber" name="499" href="#499">499</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile );
-<a class="jxr_linenumber" name="500" href="#500">500</a>         PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
-<a class="jxr_linenumber" name="501" href="#501">501</a>         files.setFollowingSymLinks( false );
-<a class="jxr_linenumber" name="502" href="#502">502</a>         files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/symlinks"</span> ) );
-<a class="jxr_linenumber" name="503" href="#503">503</a>         files.setPrefix( <span class="jxr_string">"plexus/"</span> );
-<a class="jxr_linenumber" name="504" href="#504">504</a>         zipArchiver.addResources( files );
-<a class="jxr_linenumber" name="505" href="#505">505</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="506" href="#506">506</a>         <strong class="jxr_keyword">final</strong> File output = getTestFile( <span class="jxr_string">"target/output/unzipped"</span> );
-<a class="jxr_linenumber" name="507" href="#507">507</a>         output.mkdirs();
-<a class="jxr_linenumber" name="508" href="#508">508</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
-<a class="jxr_linenumber" name="509" href="#509">509</a>         zipUnArchiver.setDestFile( output );
-<a class="jxr_linenumber" name="510" href="#510">510</a>         zipUnArchiver.extract();
-<a class="jxr_linenumber" name="511" href="#511">511</a>         File symDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/unzipped/plexus/src/symDir"</span> );
-<a class="jxr_linenumber" name="512" href="#512">512</a>         PlexusIoResourceAttributes fa = Java7FileAttributes.uncached( symDir );
-<a class="jxr_linenumber" name="513" href="#513">513</a>         assertTrue( fa.isSymbolicLink() );
-<a class="jxr_linenumber" name="514" href="#514">514</a>     }
-<a class="jxr_linenumber" name="515" href="#515">515</a> 
-<a class="jxr_linenumber" name="516" href="#516">516</a> 
-<a class="jxr_linenumber" name="517" href="#517">517</a>     @SuppressWarnings( <span class="jxr_string">"ResultOfMethodCallIgnored"</span> )
-<a class="jxr_linenumber" name="518" href="#518">518</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkFileSet()
-<a class="jxr_linenumber" name="519" href="#519">519</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="520" href="#520">520</a>     {
-<a class="jxr_linenumber" name="521" href="#521">521</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"target/output/pasymlinks-fileset.zip"</span> );
-<a class="jxr_linenumber" name="522" href="#522">522</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile );
-<a class="jxr_linenumber" name="523" href="#523">523</a>         <strong class="jxr_keyword">final</strong> DefaultFileSet fs = <strong class="jxr_keyword">new</strong> DefaultFileSet();
-<a class="jxr_linenumber" name="524" href="#524">524</a>         fs.setPrefix( <span class="jxr_string">"bzz/"</span> );
-<a class="jxr_linenumber" name="525" href="#525">525</a>         fs.setDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/symlinks/src"</span> ) );
-<a class="jxr_linenumber" name="526" href="#526">526</a>         zipArchiver.addFileSet( fs );
-<a class="jxr_linenumber" name="527" href="#527">527</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="528" href="#528">528</a>         <strong class="jxr_keyword">final</strong> File output = getTestFile( <span class="jxr_string">"target/output/unzipped/symlFs"</span> );
-<a class="jxr_linenumber" name="529" href="#529">529</a>         output.mkdirs();
-<a class="jxr_linenumber" name="530" href="#530">530</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
-<a class="jxr_linenumber" name="531" href="#531">531</a>         zipUnArchiver.setDestFile( output );
-<a class="jxr_linenumber" name="532" href="#532">532</a>         zipUnArchiver.extract();
-<a class="jxr_linenumber" name="533" href="#533">533</a>         File symDir = <strong class="jxr_keyword">new</strong> File( output, <span class="jxr_string">"bzz/symDir"</span> );
-<a class="jxr_linenumber" name="534" href="#534">534</a>         PlexusIoResourceAttributes fa = Java7FileAttributes.uncached( symDir );
-<a class="jxr_linenumber" name="535" href="#535">535</a>         assertTrue( fa.isSymbolicLink() );
-<a class="jxr_linenumber" name="536" href="#536">536</a>     }
-<a class="jxr_linenumber" name="537" href="#537">537</a> 
-<a class="jxr_linenumber" name="538" href="#538">538</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkArchivedFileSet()
-<a class="jxr_linenumber" name="539" href="#539">539</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="540" href="#540">540</a>     {
-<a class="jxr_linenumber" name="541" href="#541">541</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"src/test/resources/symlinks/symlinks.zip"</span> );
-<a class="jxr_linenumber" name="542" href="#542">542</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = getTestFile( <span class="jxr_string">"target/output/pasymlinks-archivedFileset.zip"</span> );
-<a class="jxr_linenumber" name="543" href="#543">543</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile2 );
-<a class="jxr_linenumber" name="544" href="#544">544</a>         zipArchiver.addArchivedFileSet( zipFile );
-<a class="jxr_linenumber" name="545" href="#545">545</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="546" href="#546">546</a> 
-<a class="jxr_linenumber" name="547" href="#547">547</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp1 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
-<a class="jxr_linenumber" name="548" href="#548">548</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile2 );
-<a class="jxr_linenumber" name="549" href="#549">549</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">""</span> );
-<a class="jxr_linenumber" name="550" href="#550">550</a>     }
-<a class="jxr_linenumber" name="551" href="#551">551</a> 
-<a class="jxr_linenumber" name="552" href="#552">552</a>     <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="553" href="#553">553</a> <em class="jxr_comment">     */</em>
-<a class="jxr_linenumber" name="554" href="#554">554</a> 
-<a class="jxr_linenumber" name="555" href="#555">555</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testForced()
-<a class="jxr_linenumber" name="556" href="#556">556</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="557" href="#557">557</a>     {
-<a class="jxr_linenumber" name="558" href="#558">558</a>         ZipArchiver archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
-<a class="jxr_linenumber" name="559" href="#559">559</a> 
-<a class="jxr_linenumber" name="560" href="#560">560</a>         assertTrue( archiver.isForced() );
-<a class="jxr_linenumber" name="561" href="#561">561</a>         File f = archiver.getDestFile();
-<a class="jxr_linenumber" name="562" href="#562">562</a>         <strong class="jxr_keyword">if</strong> ( f.exists() )
-<a class="jxr_linenumber" name="563" href="#563">563</a>         {
-<a class="jxr_linenumber" name="564" href="#564">564</a>             FileUtils.fileDelete( f.getPath() );
-<a class="jxr_linenumber" name="565" href="#565">565</a>         }
-<a class="jxr_linenumber" name="566" href="#566">566</a>         assertFalse( f.exists() );
-<a class="jxr_linenumber" name="567" href="#567">567</a>         createArchive( archiver );
-<a class="jxr_linenumber" name="568" href="#568">568</a>         <strong class="jxr_keyword">long</strong> l1 = f.lastModified();
-<a class="jxr_linenumber" name="569" href="#569">569</a>         assertTrue( f.exists() );
-<a class="jxr_linenumber" name="570" href="#570">570</a> 
-<a class="jxr_linenumber" name="571" href="#571">571</a>         archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
-<a class="jxr_linenumber" name="572" href="#572">572</a>         waitUntilNewTimestamp( archiver.getDestFile(), l1 );
-<a class="jxr_linenumber" name="573" href="#573">573</a>         createArchive( archiver );
-<a class="jxr_linenumber" name="574" href="#574">574</a>         <strong class="jxr_keyword">long</strong> l2 = f.lastModified();
-<a class="jxr_linenumber" name="575" href="#575">575</a>         assertTrue( f.exists() );
-<a class="jxr_linenumber" name="576" href="#576">576</a>         assertTrue( l2 &gt; l1 );
-<a class="jxr_linenumber" name="577" href="#577">577</a> 
-<a class="jxr_linenumber" name="578" href="#578">578</a>         archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
-<a class="jxr_linenumber" name="579" href="#579">579</a>         assertTrue( archiver.isSupportingForced() );
-<a class="jxr_linenumber" name="580" href="#580">580</a>         archiver.setForced( false );
-<a class="jxr_linenumber" name="581" href="#581">581</a>         assertFalse( archiver.isForced() );
-<a class="jxr_linenumber" name="582" href="#582">582</a> 
-<a class="jxr_linenumber" name="583" href="#583">583</a>         createArchive( archiver );
-<a class="jxr_linenumber" name="584" href="#584">584</a>         <strong class="jxr_keyword">long</strong> l3 = f.lastModified();
-<a class="jxr_linenumber" name="585" href="#585">585</a>         assertTrue( f.exists() );
-<a class="jxr_linenumber" name="586" href="#586">586</a>         assertEquals( l2, l3 );
-<a class="jxr_linenumber" name="587" href="#587">587</a>     }
-<a class="jxr_linenumber" name="588" href="#588">588</a> 
-<a class="jxr_linenumber" name="589" href="#589">589</a>     <em class="jxr_comment">// Used to investigate extrafields</em>
-<a class="jxr_linenumber" name="590" href="#590">590</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testLookAtExtraZipFields_from_macos()
-<a class="jxr_linenumber" name="591" href="#591">591</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="592" href="#592">592</a>     {
-<a class="jxr_linenumber" name="593" href="#593">593</a>         InputStream fis = Streams.fileInputStream( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/macOsZipFile.zip"</span> ) );
-<a class="jxr_linenumber" name="594" href="#594">594</a>         ZipInputStream zis = <strong class="jxr_keyword">new</strong> ZipInputStream( fis );
-<a class="jxr_linenumber" name="595" href="#595">595</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry evenEntry = zis.getNextEntry();
-<a class="jxr_linenumber" name="596" href="#596">596</a>         <strong class="jxr_keyword">final</strong> ZipExtraField[] parse = ExtraFieldUtils.parse( evenEntry.getExtra() );
-<a class="jxr_linenumber" name="597" href="#597">597</a>         System.out.println( Arrays.asList( parse ) );
-<a class="jxr_linenumber" name="598" href="#598">598</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry oddEntry = zis.getNextEntry();
-<a class="jxr_linenumber" name="599" href="#599">599</a> 
-<a class="jxr_linenumber" name="600" href="#600">600</a>         System.out.println( Arrays.asList( ExtraFieldUtils.parse( oddEntry.getExtra() ) ) );
+<a class="jxr_linenumber" name="454" href="#454">454</a>         Enumeration e = zf.getEntries();
+<a class="jxr_linenumber" name="455" href="#455">455</a> 
+<a class="jxr_linenumber" name="456" href="#456">456</a>         <strong class="jxr_keyword">while</strong> ( e.hasMoreElements() )
+<a class="jxr_linenumber" name="457" href="#457">457</a>         {
+<a class="jxr_linenumber" name="458" href="#458">458</a>             ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+<a class="jxr_linenumber" name="459" href="#459">459</a>             <strong class="jxr_keyword">if</strong> ( ze.isDirectory() )
+<a class="jxr_linenumber" name="460" href="#460">460</a>             {
+<a class="jxr_linenumber" name="461" href="#461">461</a>                 <strong class="jxr_keyword">if</strong> ( ze.getName().startsWith( <span class="jxr_string">"worldwritable"</span> ) )
+<a class="jxr_linenumber" name="462" href="#462">462</a>                 {
+<a class="jxr_linenumber" name="463" href="#463">463</a>                     fileModeAssert( 0777, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="464" href="#464">464</a>                 }
+<a class="jxr_linenumber" name="465" href="#465">465</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.getName().startsWith( <span class="jxr_string">"groupwritable"</span> ) )
+<a class="jxr_linenumber" name="466" href="#466">466</a>                 {
+<a class="jxr_linenumber" name="467" href="#467">467</a>                     fileModeAssert( 0070, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="468" href="#468">468</a>                 }
+<a class="jxr_linenumber" name="469" href="#469">469</a>                 <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="470" href="#470">470</a>                 {
+<a class="jxr_linenumber" name="471" href="#471">471</a>                     fileModeAssert( 0500, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="472" href="#472">472</a>                 }
+<a class="jxr_linenumber" name="473" href="#473">473</a>             }
+<a class="jxr_linenumber" name="474" href="#474">474</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="475" href="#475">475</a>             {
+<a class="jxr_linenumber" name="476" href="#476">476</a>                 <strong class="jxr_keyword">if</strong> ( ze.getName().equals( <span class="jxr_string">"one.txt"</span> ) )
+<a class="jxr_linenumber" name="477" href="#477">477</a>                 {
+<a class="jxr_linenumber" name="478" href="#478">478</a>                     fileModeAssert( 0640, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="479" href="#479">479</a>                 }
+<a class="jxr_linenumber" name="480" href="#480">480</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.getName().equals( <span class="jxr_string">"two.txt"</span> ) )
+<a class="jxr_linenumber" name="481" href="#481">481</a>                 {
+<a class="jxr_linenumber" name="482" href="#482">482</a>                     fileModeAssert( 0664, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="483" href="#483">483</a>                 }
+<a class="jxr_linenumber" name="484" href="#484">484</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ze.isUnixSymlink() )
+<a class="jxr_linenumber" name="485" href="#485">485</a>                 {
+<a class="jxr_linenumber" name="486" href="#486">486</a>                     <em class="jxr_comment">//         assertEquals( ze.getName(), 0500, UnixStat.PERM_MASK &amp; ze.getUnixMode() );</em>
+<a class="jxr_linenumber" name="487" href="#487">487</a>                 }
+<a class="jxr_linenumber" name="488" href="#488">488</a>                 <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="489" href="#489">489</a>                 {
+<a class="jxr_linenumber" name="490" href="#490">490</a>                     fileModeAssert( 0400, UnixStat.PERM_MASK &amp; ze.getUnixMode() );
+<a class="jxr_linenumber" name="491" href="#491">491</a>                 }
+<a class="jxr_linenumber" name="492" href="#492">492</a>             }
+<a class="jxr_linenumber" name="493" href="#493">493</a> 
+<a class="jxr_linenumber" name="494" href="#494">494</a>         }
+<a class="jxr_linenumber" name="495" href="#495">495</a>     }
+<a class="jxr_linenumber" name="496" href="#496">496</a> 
+<a class="jxr_linenumber" name="497" href="#497">497</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkZip()
+<a class="jxr_linenumber" name="498" href="#498">498</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="499" href="#499">499</a>     {
+<a class="jxr_linenumber" name="500" href="#500">500</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"target/output/pasymlinks.zip"</span> );
+<a class="jxr_linenumber" name="501" href="#501">501</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile );
+<a class="jxr_linenumber" name="502" href="#502">502</a>         PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
+<a class="jxr_linenumber" name="503" href="#503">503</a>         files.setFollowingSymLinks( false );
+<a class="jxr_linenumber" name="504" href="#504">504</a>         files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/symlinks"</span> ) );
+<a class="jxr_linenumber" name="505" href="#505">505</a>         files.setPrefix( <span class="jxr_string">"plexus/"</span> );
+<a class="jxr_linenumber" name="506" href="#506">506</a>         zipArchiver.addResources( files );
+<a class="jxr_linenumber" name="507" href="#507">507</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="508" href="#508">508</a>         <strong class="jxr_keyword">final</strong> File output = getTestFile( <span class="jxr_string">"target/output/unzipped"</span> );
+<a class="jxr_linenumber" name="509" href="#509">509</a>         output.mkdirs();
+<a class="jxr_linenumber" name="510" href="#510">510</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
+<a class="jxr_linenumber" name="511" href="#511">511</a>         zipUnArchiver.setDestFile( output );
+<a class="jxr_linenumber" name="512" href="#512">512</a>         zipUnArchiver.extract();
+<a class="jxr_linenumber" name="513" href="#513">513</a>         File symDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/unzipped/plexus/src/symDir"</span> );
+<a class="jxr_linenumber" name="514" href="#514">514</a>         PlexusIoResourceAttributes fa = Java7FileAttributes.uncached( symDir );
+<a class="jxr_linenumber" name="515" href="#515">515</a>         assertTrue( fa.isSymbolicLink() );
+<a class="jxr_linenumber" name="516" href="#516">516</a>     }
+<a class="jxr_linenumber" name="517" href="#517">517</a> 
+<a class="jxr_linenumber" name="518" href="#518">518</a> 
+<a class="jxr_linenumber" name="519" href="#519">519</a>     @SuppressWarnings( <span class="jxr_string">"ResultOfMethodCallIgnored"</span> )
+<a class="jxr_linenumber" name="520" href="#520">520</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkFileSet()
+<a class="jxr_linenumber" name="521" href="#521">521</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="522" href="#522">522</a>     {
+<a class="jxr_linenumber" name="523" href="#523">523</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"target/output/pasymlinks-fileset.zip"</span> );
+<a class="jxr_linenumber" name="524" href="#524">524</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile );
+<a class="jxr_linenumber" name="525" href="#525">525</a>         <strong class="jxr_keyword">final</strong> DefaultFileSet fs = <strong class="jxr_keyword">new</strong> DefaultFileSet();
+<a class="jxr_linenumber" name="526" href="#526">526</a>         fs.setPrefix( <span class="jxr_string">"bzz/"</span> );
+<a class="jxr_linenumber" name="527" href="#527">527</a>         fs.setDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/symlinks/src"</span> ) );
+<a class="jxr_linenumber" name="528" href="#528">528</a>         zipArchiver.addFileSet( fs );
+<a class="jxr_linenumber" name="529" href="#529">529</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="530" href="#530">530</a>         <strong class="jxr_keyword">final</strong> File output = getTestFile( <span class="jxr_string">"target/output/unzipped/symlFs"</span> );
+<a class="jxr_linenumber" name="531" href="#531">531</a>         output.mkdirs();
+<a class="jxr_linenumber" name="532" href="#532">532</a>         <strong class="jxr_keyword">final</strong> ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
+<a class="jxr_linenumber" name="533" href="#533">533</a>         zipUnArchiver.setDestFile( output );
+<a class="jxr_linenumber" name="534" href="#534">534</a>         zipUnArchiver.extract();
+<a class="jxr_linenumber" name="535" href="#535">535</a>         File symDir = <strong class="jxr_keyword">new</strong> File( output, <span class="jxr_string">"bzz/symDir"</span> );
+<a class="jxr_linenumber" name="536" href="#536">536</a>         PlexusIoResourceAttributes fa = Java7FileAttributes.uncached( symDir );
+<a class="jxr_linenumber" name="537" href="#537">537</a>         assertTrue( fa.isSymbolicLink() );
+<a class="jxr_linenumber" name="538" href="#538">538</a>     }
+<a class="jxr_linenumber" name="539" href="#539">539</a> 
+<a class="jxr_linenumber" name="540" href="#540">540</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testSymlinkArchivedFileSet()
+<a class="jxr_linenumber" name="541" href="#541">541</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="542" href="#542">542</a>     {
+<a class="jxr_linenumber" name="543" href="#543">543</a>         <strong class="jxr_keyword">final</strong> File zipFile = getTestFile( <span class="jxr_string">"src/test/resources/symlinks/symlinks.zip"</span> );
+<a class="jxr_linenumber" name="544" href="#544">544</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = getTestFile( <span class="jxr_string">"target/output/pasymlinks-archivedFileset.zip"</span> );
+<a class="jxr_linenumber" name="545" href="#545">545</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( zipFile2 );
+<a class="jxr_linenumber" name="546" href="#546">546</a>         zipArchiver.addArchivedFileSet( zipFile );
+<a class="jxr_linenumber" name="547" href="#547">547</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="548" href="#548">548</a> 
+<a class="jxr_linenumber" name="549" href="#549">549</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp1 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
+<a class="jxr_linenumber" name="550" href="#550">550</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile2 );
+<a class="jxr_linenumber" name="551" href="#551">551</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">""</span> );
+<a class="jxr_linenumber" name="552" href="#552">552</a>     }
+<a class="jxr_linenumber" name="553" href="#553">553</a> 
+<a class="jxr_linenumber" name="554" href="#554">554</a>     <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="555" href="#555">555</a> <em class="jxr_comment">     */</em>
+<a class="jxr_linenumber" name="556" href="#556">556</a> 
+<a class="jxr_linenumber" name="557" href="#557">557</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testForced()
+<a class="jxr_linenumber" name="558" href="#558">558</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="559" href="#559">559</a>     {
+<a class="jxr_linenumber" name="560" href="#560">560</a>         ZipArchiver archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
+<a class="jxr_linenumber" name="561" href="#561">561</a> 
+<a class="jxr_linenumber" name="562" href="#562">562</a>         assertTrue( archiver.isForced() );
+<a class="jxr_linenumber" name="563" href="#563">563</a>         File f = archiver.getDestFile();
+<a class="jxr_linenumber" name="564" href="#564">564</a>         <strong class="jxr_keyword">if</strong> ( f.exists() )
+<a class="jxr_linenumber" name="565" href="#565">565</a>         {
+<a class="jxr_linenumber" name="566" href="#566">566</a>             FileUtils.fileDelete( f.getPath() );
+<a class="jxr_linenumber" name="567" href="#567">567</a>         }
+<a class="jxr_linenumber" name="568" href="#568">568</a>         assertFalse( f.exists() );
+<a class="jxr_linenumber" name="569" href="#569">569</a>         createArchive( archiver );
+<a class="jxr_linenumber" name="570" href="#570">570</a>         <strong class="jxr_keyword">long</strong> l1 = f.lastModified();
+<a class="jxr_linenumber" name="571" href="#571">571</a>         assertTrue( f.exists() );
+<a class="jxr_linenumber" name="572" href="#572">572</a> 
+<a class="jxr_linenumber" name="573" href="#573">573</a>         archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
+<a class="jxr_linenumber" name="574" href="#574">574</a>         waitUntilNewTimestamp( archiver.getDestFile(), l1 );
+<a class="jxr_linenumber" name="575" href="#575">575</a>         createArchive( archiver );
+<a class="jxr_linenumber" name="576" href="#576">576</a>         <strong class="jxr_keyword">long</strong> l2 = f.lastModified();
+<a class="jxr_linenumber" name="577" href="#577">577</a>         assertTrue( f.exists() );
+<a class="jxr_linenumber" name="578" href="#578">578</a>         assertTrue( l2 &gt; l1 );
+<a class="jxr_linenumber" name="579" href="#579">579</a> 
+<a class="jxr_linenumber" name="580" href="#580">580</a>         archiver = newArchiver( <span class="jxr_string">"archive2.zip"</span> );
+<a class="jxr_linenumber" name="581" href="#581">581</a>         assertTrue( archiver.isSupportingForced() );
+<a class="jxr_linenumber" name="582" href="#582">582</a>         archiver.setForced( false );
+<a class="jxr_linenumber" name="583" href="#583">583</a>         assertFalse( archiver.isForced() );
+<a class="jxr_linenumber" name="584" href="#584">584</a> 
+<a class="jxr_linenumber" name="585" href="#585">585</a>         createArchive( archiver );
+<a class="jxr_linenumber" name="586" href="#586">586</a>         <strong class="jxr_keyword">long</strong> l3 = f.lastModified();
+<a class="jxr_linenumber" name="587" href="#587">587</a>         assertTrue( f.exists() );
+<a class="jxr_linenumber" name="588" href="#588">588</a>         assertEquals( l2, l3 );
+<a class="jxr_linenumber" name="589" href="#589">589</a>     }
+<a class="jxr_linenumber" name="590" href="#590">590</a> 
+<a class="jxr_linenumber" name="591" href="#591">591</a>     <em class="jxr_comment">// Used to investigate extrafields</em>
+<a class="jxr_linenumber" name="592" href="#592">592</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testLookAtExtraZipFields_from_macos()
+<a class="jxr_linenumber" name="593" href="#593">593</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="594" href="#594">594</a>     {
+<a class="jxr_linenumber" name="595" href="#595">595</a>         InputStream fis = Streams.fileInputStream( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/macOsZipFile.zip"</span> ) );
+<a class="jxr_linenumber" name="596" href="#596">596</a>         ZipInputStream zis = <strong class="jxr_keyword">new</strong> ZipInputStream( fis );
+<a class="jxr_linenumber" name="597" href="#597">597</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry evenEntry = zis.getNextEntry();
+<a class="jxr_linenumber" name="598" href="#598">598</a>         <strong class="jxr_keyword">final</strong> ZipExtraField[] parse = ExtraFieldUtils.parse( evenEntry.getExtra() );
+<a class="jxr_linenumber" name="599" href="#599">599</a>         System.out.println( Arrays.asList( parse ) );
+<a class="jxr_linenumber" name="600" href="#600">600</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry oddEntry = zis.getNextEntry();
 <a class="jxr_linenumber" name="601" href="#601">601</a> 
-<a class="jxr_linenumber" name="602" href="#602">602</a>         System.out.println( <span class="jxr_string">"oddEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( oddEntry.getTime() ).toString() );
-<a class="jxr_linenumber" name="603" href="#603">603</a>         System.out.println( <span class="jxr_string">"oddEntry.getName() = "</span> + oddEntry.getName() );
-<a class="jxr_linenumber" name="604" href="#604">604</a>         System.out.println( <span class="jxr_string">"new String(oddEntry.getExtra()) = "</span> + <strong class="jxr_keyword">new</strong> String( oddEntry.getExtra() ) );
-<a class="jxr_linenumber" name="605" href="#605">605</a>         System.out.println( <span class="jxr_string">"evenEntry.getName() = "</span> + evenEntry.getName() );
-<a class="jxr_linenumber" name="606" href="#606">606</a>         System.out.println( <span class="jxr_string">"evenEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( evenEntry.getTime() ).toString() );
-<a class="jxr_linenumber" name="607" href="#607">607</a>         System.out.println( <span class="jxr_string">"new String(evenEntry.getExtra()) = "</span> + <strong class="jxr_keyword">new</strong> String( evenEntry.getExtra() ) );
-<a class="jxr_linenumber" name="608" href="#608">608</a> 
-<a class="jxr_linenumber" name="609" href="#609">609</a>     }
+<a class="jxr_linenumber" name="602" href="#602">602</a>         System.out.println( Arrays.asList( ExtraFieldUtils.parse( oddEntry.getExtra() ) ) );
+<a class="jxr_linenumber" name="603" href="#603">603</a> 
+<a class="jxr_linenumber" name="604" href="#604">604</a>         System.out.println( <span class="jxr_string">"oddEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( oddEntry.getTime() ).toString() );
+<a class="jxr_linenumber" name="605" href="#605">605</a>         System.out.println( <span class="jxr_string">"oddEntry.getName() = "</span> + oddEntry.getName() );
+<a class="jxr_linenumber" name="606" href="#606">606</a>         System.out.println( <span class="jxr_string">"new String(oddEntry.getExtra()) = "</span> + <strong class="jxr_keyword">new</strong> String( oddEntry.getExtra() ) );
+<a class="jxr_linenumber" name="607" href="#607">607</a>         System.out.println( <span class="jxr_string">"evenEntry.getName() = "</span> + evenEntry.getName() );
+<a class="jxr_linenumber" name="608" href="#608">608</a>         System.out.println( <span class="jxr_string">"evenEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( evenEntry.getTime() ).toString() );
+<a class="jxr_linenumber" name="609" href="#609">609</a>         System.out.println( <span class="jxr_string">"new String(evenEntry.getExtra()) = "</span> + <strong class="jxr_keyword">new</strong> String( evenEntry.getExtra() ) );
 <a class="jxr_linenumber" name="610" href="#610">610</a> 
-<a class="jxr_linenumber" name="611" href="#611">611</a>     <em class="jxr_comment">// Used to investigate date roundtrip behaviour across zip versions</em>
-<a class="jxr_linenumber" name="612" href="#612">612</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testZipStuff()
-<a class="jxr_linenumber" name="613" href="#613">613</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="614" href="#614">614</a>     {
-<a class="jxr_linenumber" name="615" href="#615">615</a>         ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
-<a class="jxr_linenumber" name="616" href="#616">616</a>         ZipOutputStream zos = <strong class="jxr_keyword">new</strong> ZipOutputStream( baos );
-<a class="jxr_linenumber" name="617" href="#617">617</a>         <em class="jxr_comment">// name the file inside the zip  file</em>
-<a class="jxr_linenumber" name="618" href="#618">618</a>         <strong class="jxr_keyword">final</strong> File oddFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/file-with-odd-time.txt"</span> );
-<a class="jxr_linenumber" name="619" href="#619">619</a>         <strong class="jxr_keyword">final</strong> File evenFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/file-with-even-time.txt"</span> );
-<a class="jxr_linenumber" name="620" href="#620">620</a>         <strong class="jxr_keyword">final</strong> ZipEntry oddZe = <strong class="jxr_keyword">new</strong> ZipEntry( oddFile.getName() );
-<a class="jxr_linenumber" name="621" href="#621">621</a>         oddZe.setTime( oddFile.lastModified() );
-<a class="jxr_linenumber" name="622" href="#622">622</a>         zos.putNextEntry( oddZe );
-<a class="jxr_linenumber" name="623" href="#623">623</a>         <strong class="jxr_keyword">final</strong> ZipEntry evenZe = <strong class="jxr_keyword">new</strong> ZipEntry( evenFile.getName() );
-<a class="jxr_linenumber" name="624" href="#624">624</a>         evenZe.setTime( evenFile.lastModified() );
-<a class="jxr_linenumber" name="625" href="#625">625</a>         zos.putNextEntry( evenZe );
-<a class="jxr_linenumber" name="626" href="#626">626</a>         zos.close();
-<a class="jxr_linenumber" name="627" href="#627">627</a> 
-<a class="jxr_linenumber" name="628" href="#628">628</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
-<a class="jxr_linenumber" name="629" href="#629">629</a>         ZipInputStream zipInputStream = <strong class="jxr_keyword">new</strong> ZipInputStream( bais );
-<a class="jxr_linenumber" name="630" href="#630">630</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry oddEntry = zipInputStream.getNextEntry();
-<a class="jxr_linenumber" name="631" href="#631">631</a>         System.out.println( <span class="jxr_string">"oddEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( oddEntry.getTime() ).toString() );
-<a class="jxr_linenumber" name="632" href="#632">632</a>         System.out.println( <span class="jxr_string">"oddEntry.getName() = "</span> + oddEntry.getName() );
-<a class="jxr_linenumber" name="633" href="#633">633</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry evenEntry = zipInputStream.getNextEntry();
-<a class="jxr_linenumber" name="634" href="#634">634</a>         System.out.println( <span class="jxr_string">"evenEntry.getName() = "</span> + evenEntry.getName() );
-<a class="jxr_linenumber" name="635" href="#635">635</a>         System.out.println( <span class="jxr_string">"evenEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( evenEntry.getTime() ).toString() );
-<a class="jxr_linenumber" name="636" href="#636">636</a>     }
-<a class="jxr_linenumber" name="637" href="#637">637</a> 
-<a class="jxr_linenumber" name="638" href="#638">638</a> 
-<a class="jxr_linenumber" name="639" href="#639">639</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> notestJustThatOne()
-<a class="jxr_linenumber" name="640" href="#640">640</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="641" href="#641">641</a>     {
-<a class="jxr_linenumber" name="642" href="#642">642</a>         <strong class="jxr_keyword">final</strong> File srcDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src"</span> );
-<a class="jxr_linenumber" name="643" href="#643">643</a>         String[] inc = { <span class="jxr_string">"test/java/org/codehaus/plexus/archiver/zip/ZipShortTest.java"</span> };
-<a class="jxr_linenumber" name="644" href="#644">644</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zz1.zip"</span> );
-<a class="jxr_linenumber" name="645" href="#645">645</a> 
-<a class="jxr_linenumber" name="646" href="#646">646</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zz2.zip"</span> );
-<a class="jxr_linenumber" name="647" href="#647">647</a>         ZipArchiver zipArchiver2 = getZipArchiver( zipFile2 );
-<a class="jxr_linenumber" name="648" href="#648">648</a> 
-<a class="jxr_linenumber" name="649" href="#649">649</a>         <em class="jxr_comment">// Bugbug: This does not work on 1.8....?</em>
-<a class="jxr_linenumber" name="650" href="#650">650</a>         zipArchiver2.addArchivedFileSet( zipFile );
-<a class="jxr_linenumber" name="651" href="#651">651</a>         FileUtils.removePath( zipFile2.getPath() );
-<a class="jxr_linenumber" name="652" href="#652">652</a>         zipArchiver2.createArchive();
-<a class="jxr_linenumber" name="653" href="#653">653</a>     }
-<a class="jxr_linenumber" name="654" href="#654">654</a> 
-<a class="jxr_linenumber" name="655" href="#655">655</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateResourceCollection()
-<a class="jxr_linenumber" name="656" href="#656">656</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="657" href="#657">657</a>     {
-<a class="jxr_linenumber" name="658" href="#658">658</a>         <strong class="jxr_keyword">final</strong> File srcDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src"</span> );
-<a class="jxr_linenumber" name="659" href="#659">659</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/src.zip"</span> );
-<a class="jxr_linenumber" name="660" href="#660">660</a>         ZipArchiver zipArchiver = getZipArchiver( zipFile );
-<a class="jxr_linenumber" name="661" href="#661">661</a>         zipArchiver.addDirectory( srcDir, <strong class="jxr_keyword">null</strong>, FileUtils.getDefaultExcludes() );
-<a class="jxr_linenumber" name="662" href="#662">662</a>         zipArchiver.setEncoding( <span class="jxr_string">"UTF-8"</span> );
-<a class="jxr_linenumber" name="663" href="#663">663</a>         FileUtils.removePath( zipFile.getPath() );
-<a class="jxr_linenumber" name="664" href="#664">664</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="665" href="#665">665</a> 
-<a class="jxr_linenumber" name="666" href="#666">666</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/src2.zip"</span> );
-<a class="jxr_linenumber" name="667" href="#667">667</a>         ZipArchiver zipArchiver2 = getZipArchiver( zipFile2 );
-<a class="jxr_linenumber" name="668" href="#668">668</a>         zipArchiver2.addArchivedFileSet( zipFile, <span class="jxr_string">"prfx/"</span> );
-<a class="jxr_linenumber" name="669" href="#669">669</a>         zipArchiver2.setEncoding( <span class="jxr_string">"UTF-8"</span> );
-<a class="jxr_linenumber" name="670" href="#670">670</a>         FileUtils.removePath( zipFile2.getPath() );
-<a class="jxr_linenumber" name="671" href="#671">671</a>         zipArchiver2.createArchive();
-<a class="jxr_linenumber" name="672" href="#672">672</a> 
-<a class="jxr_linenumber" name="673" href="#673">673</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp1 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
-<a class="jxr_linenumber" name="674" href="#674">674</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile2 );
-<a class="jxr_linenumber" name="675" href="#675">675</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">"prfx/"</span> );
-<a class="jxr_linenumber" name="676" href="#676">676</a>         cmp1.close();
-<a class="jxr_linenumber" name="677" href="#677">677</a>         cmp2.close();
-<a class="jxr_linenumber" name="678" href="#678">678</a>     }
-<a class="jxr_linenumber" name="679" href="#679">679</a> 
-<a class="jxr_linenumber" name="680" href="#680">680</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testZipNonConcurrentResourceCollection()
-<a class="jxr_linenumber" name="681" href="#681">681</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="682" href="#682">682</a>     {
-<a class="jxr_linenumber" name="683" href="#683">683</a>         <strong class="jxr_keyword">final</strong> File tarFile = getTestFile( <span class="jxr_string">"target/output/zip-non-concurrent.tar"</span> );
-<a class="jxr_linenumber" name="684" href="#684">684</a>         TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, <span class="jxr_string">"tar"</span> );
-<a class="jxr_linenumber" name="685" href="#685">685</a>         tarArchiver.setDestFile( tarFile );
-<a class="jxr_linenumber" name="686" href="#686">686</a>         <em class="jxr_comment">// We're testing concurrency issue so we need large amount of files</em>
-<a class="jxr_linenumber" name="687" href="#687">687</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 100; i++)
-<a class="jxr_linenumber" name="688" href="#688">688</a>         {
-<a class="jxr_linenumber" name="689" href="#689">689</a>             tarArchiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span> ),
-<a class="jxr_linenumber" name="690" href="#690">690</a>                 <span class="jxr_string">"manifest1.mf"</span> + i );
-<a class="jxr_linenumber" name="691" href="#691">691</a>             <em class="jxr_comment">// Directories are added separately so let's test them too</em>
-<a class="jxr_linenumber" name="692" href="#692">692</a>             tarArchiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest2.mf"</span> ),
-<a class="jxr_linenumber" name="693" href="#693">693</a>                 <span class="jxr_string">"subdir"</span> + i + <span class="jxr_string">"/manifest2.mf"</span> );
-<a class="jxr_linenumber" name="694" href="#694">694</a>         }
-<a class="jxr_linenumber" name="695" href="#695">695</a>         tarArchiver.createArchive();
-<a class="jxr_linenumber" name="696" href="#696">696</a> 
-<a class="jxr_linenumber" name="697" href="#697">697</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zip-non-concurrent.zip"</span> );
-<a class="jxr_linenumber" name="698" href="#698">698</a>         ZipArchiver zipArchive = getZipArchiver( zipFile );
-<a class="jxr_linenumber" name="699" href="#699">699</a>         zipArchive.addArchivedFileSet( tarFile, <span class="jxr_string">"prfx/"</span> );
-<a class="jxr_linenumber" name="700" href="#700">700</a>         zipArchive.setEncoding( <span class="jxr_string">"UTF-8"</span> );
-<a class="jxr_linenumber" name="701" href="#701">701</a>         zipArchive.createArchive();
-<a class="jxr_linenumber" name="702" href="#702">702</a> 
-<a class="jxr_linenumber" name="703" href="#703">703</a>         <strong class="jxr_keyword">final</strong> TarFile cmp1 = <strong class="jxr_keyword">new</strong> TarFile( tarFile );
-<a class="jxr_linenumber" name="704" href="#704">704</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
-<a class="jxr_linenumber" name="705" href="#705">705</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">"prfx/"</span> );
-<a class="jxr_linenumber" name="706" href="#706">706</a>         cmp1.close();
-<a class="jxr_linenumber" name="707" href="#707">707</a>         cmp2.close();
-<a class="jxr_linenumber" name="708" href="#708">708</a>     }
-<a class="jxr_linenumber" name="709" href="#709">709</a> 
-<a class="jxr_linenumber" name="710" href="#710">710</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDefaultUTF8()
-<a class="jxr_linenumber" name="711" href="#711">711</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="712" href="#712">712</a>     {
-<a class="jxr_linenumber" name="713" href="#713">713</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/utf8-default.zip"</span> ) );
-<a class="jxr_linenumber" name="714" href="#714">714</a>         zipArchiver.addDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/miscUtf8"</span> ) );
-<a class="jxr_linenumber" name="715" href="#715">715</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="716" href="#716">716</a>     }
-<a class="jxr_linenumber" name="717" href="#717">717</a> 
-<a class="jxr_linenumber" name="718" href="#718">718</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDefaultUTF8withUTF8()
-<a class="jxr_linenumber" name="719" href="#719">719</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="720" href="#720">720</a>     {
-<a class="jxr_linenumber" name="721" href="#721">721</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/utf8-with_utf.zip"</span> ) );
-<a class="jxr_linenumber" name="722" href="#722">722</a>         zipArchiver.setEncoding( <span class="jxr_string">"UTF-8"</span> );
-<a class="jxr_linenumber" name="723" href="#723">723</a>         zipArchiver.addDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/miscUtf8"</span> ) );
-<a class="jxr_linenumber" name="724" href="#724">724</a>         zipArchiver.createArchive();
-<a class="jxr_linenumber" name="725" href="#725">725</a>     }
-<a class="jxr_linenumber" name="726" href="#726">726</a> 
-<a class="jxr_linenumber" name="727" href="#727">727</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testForcedFileModes()
-<a class="jxr_linenumber" name="728" href="#728">728</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="729" href="#729">729</a>     {
-<a class="jxr_linenumber" name="730" href="#730">730</a>         File step1file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode.zip"</span> );
-<a class="jxr_linenumber" name="731" href="#731">731</a>         {
-<a class="jxr_linenumber" name="732" href="#732">732</a>             <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( step1file );
-<a class="jxr_linenumber" name="733" href="#733">733</a>             zipArchiver.setFileMode( 0077 );
-<a class="jxr_linenumber" name="734" href="#734">734</a>             zipArchiver.setDirectoryMode( 0007 );
-<a class="jxr_linenumber" name="735" href="#735">735</a>             PlexusIoResourceAttributes attrs = <strong class="jxr_keyword">new</strong> SimpleResourceAttributes( 123, <span class="jxr_string">"fred"</span>, 22, <span class="jxr_string">"filntstones"</span>, 0111 );
-<a class="jxr_linenumber" name="736" href="#736">736</a>             PlexusIoResource resource =
-<a class="jxr_linenumber" name="737" href="#737">737</a>                 ResourceFactory.createResource( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/folders/File.txt"</span> ), <span class="jxr_string">"Test.txt"</span>, <strong class="jxr_keyword">null</strong>,
-<a class="jxr_linenumber" name="738" href="#738">738</a>                                                 attrs );
-<a class="jxr_linenumber" name="739" href="#739">739</a>             zipArchiver.addResource( resource, <span class="jxr_string">"Test2.txt"</span>, 0707 );
-<a class="jxr_linenumber" name="740" href="#740">740</a>             PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
-<a class="jxr_linenumber" name="741" href="#741">741</a>             files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/folders"</span> ) );
-<a class="jxr_linenumber" name="742" href="#742">742</a>             files.setPrefix( <span class="jxr_string">"sixsixsix/"</span> );
-<a class="jxr_linenumber" name="743" href="#743">743</a>             zipArchiver.addResources( files );
-<a class="jxr_linenumber" name="744" href="#744">744</a> 
-<a class="jxr_linenumber" name="745" href="#745">745</a>             zipArchiver.createArchive();
+<a class="jxr_linenumber" name="611" href="#611">611</a>     }
+<a class="jxr_linenumber" name="612" href="#612">612</a> 
+<a class="jxr_linenumber" name="613" href="#613">613</a>     <em class="jxr_comment">// Used to investigate date roundtrip behaviour across zip versions</em>
+<a class="jxr_linenumber" name="614" href="#614">614</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testZipStuff()
+<a class="jxr_linenumber" name="615" href="#615">615</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="616" href="#616">616</a>     {
+<a class="jxr_linenumber" name="617" href="#617">617</a>         ByteArrayOutputStream baos = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
+<a class="jxr_linenumber" name="618" href="#618">618</a>         ZipOutputStream zos = <strong class="jxr_keyword">new</strong> ZipOutputStream( baos );
+<a class="jxr_linenumber" name="619" href="#619">619</a>         <em class="jxr_comment">// name the file inside the zip  file</em>
+<a class="jxr_linenumber" name="620" href="#620">620</a>         <strong class="jxr_keyword">final</strong> File oddFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/file-with-odd-time.txt"</span> );
+<a class="jxr_linenumber" name="621" href="#621">621</a>         <strong class="jxr_keyword">final</strong> File evenFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/zip-timestamp/file-with-even-time.txt"</span> );
+<a class="jxr_linenumber" name="622" href="#622">622</a>         <strong class="jxr_keyword">final</strong> ZipEntry oddZe = <strong class="jxr_keyword">new</strong> ZipEntry( oddFile.getName() );
+<a class="jxr_linenumber" name="623" href="#623">623</a>         oddZe.setTime( oddFile.lastModified() );
+<a class="jxr_linenumber" name="624" href="#624">624</a>         zos.putNextEntry( oddZe );
+<a class="jxr_linenumber" name="625" href="#625">625</a>         <strong class="jxr_keyword">final</strong> ZipEntry evenZe = <strong class="jxr_keyword">new</strong> ZipEntry( evenFile.getName() );
+<a class="jxr_linenumber" name="626" href="#626">626</a>         evenZe.setTime( evenFile.lastModified() );
+<a class="jxr_linenumber" name="627" href="#627">627</a>         zos.putNextEntry( evenZe );
+<a class="jxr_linenumber" name="628" href="#628">628</a>         zos.close();
+<a class="jxr_linenumber" name="629" href="#629">629</a> 
+<a class="jxr_linenumber" name="630" href="#630">630</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
+<a class="jxr_linenumber" name="631" href="#631">631</a>         ZipInputStream zipInputStream = <strong class="jxr_keyword">new</strong> ZipInputStream( bais );
+<a class="jxr_linenumber" name="632" href="#632">632</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry oddEntry = zipInputStream.getNextEntry();
+<a class="jxr_linenumber" name="633" href="#633">633</a>         System.out.println( <span class="jxr_string">"oddEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( oddEntry.getTime() ).toString() );
+<a class="jxr_linenumber" name="634" href="#634">634</a>         System.out.println( <span class="jxr_string">"oddEntry.getName() = "</span> + oddEntry.getName() );
+<a class="jxr_linenumber" name="635" href="#635">635</a>         <strong class="jxr_keyword">final</strong> java.util.zip.ZipEntry evenEntry = zipInputStream.getNextEntry();
+<a class="jxr_linenumber" name="636" href="#636">636</a>         System.out.println( <span class="jxr_string">"evenEntry.getName() = "</span> + evenEntry.getName() );
+<a class="jxr_linenumber" name="637" href="#637">637</a>         System.out.println( <span class="jxr_string">"evenEntry.getTime() = "</span> + <strong class="jxr_keyword">new</strong> Date( evenEntry.getTime() ).toString() );
+<a class="jxr_linenumber" name="638" href="#638">638</a>     }
+<a class="jxr_linenumber" name="639" href="#639">639</a> 
+<a class="jxr_linenumber" name="640" href="#640">640</a> 
+<a class="jxr_linenumber" name="641" href="#641">641</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> notestJustThatOne()
+<a class="jxr_linenumber" name="642" href="#642">642</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="643" href="#643">643</a>     {
+<a class="jxr_linenumber" name="644" href="#644">644</a>         <strong class="jxr_keyword">final</strong> File srcDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src"</span> );
+<a class="jxr_linenumber" name="645" href="#645">645</a>         String[] inc = { <span class="jxr_string">"test/java/org/codehaus/plexus/archiver/zip/ZipShortTest.java"</span> };
+<a class="jxr_linenumber" name="646" href="#646">646</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zz1.zip"</span> );
+<a class="jxr_linenumber" name="647" href="#647">647</a> 
+<a class="jxr_linenumber" name="648" href="#648">648</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zz2.zip"</span> );
+<a class="jxr_linenumber" name="649" href="#649">649</a>         ZipArchiver zipArchiver2 = getZipArchiver( zipFile2 );
+<a class="jxr_linenumber" name="650" href="#650">650</a> 
+<a class="jxr_linenumber" name="651" href="#651">651</a>         <em class="jxr_comment">// Bugbug: This does not work on 1.8....?</em>
+<a class="jxr_linenumber" name="652" href="#652">652</a>         zipArchiver2.addArchivedFileSet( zipFile );
+<a class="jxr_linenumber" name="653" href="#653">653</a>         FileUtils.removePath( zipFile2.getPath() );
+<a class="jxr_linenumber" name="654" href="#654">654</a>         zipArchiver2.createArchive();
+<a class="jxr_linenumber" name="655" href="#655">655</a>     }
+<a class="jxr_linenumber" name="656" href="#656">656</a> 
+<a class="jxr_linenumber" name="657" href="#657">657</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCreateResourceCollection()
+<a class="jxr_linenumber" name="658" href="#658">658</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="659" href="#659">659</a>     {
+<a class="jxr_linenumber" name="660" href="#660">660</a>         <strong class="jxr_keyword">final</strong> File srcDir = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src"</span> );
+<a class="jxr_linenumber" name="661" href="#661">661</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/src.zip"</span> );
+<a class="jxr_linenumber" name="662" href="#662">662</a>         ZipArchiver zipArchiver = getZipArchiver( zipFile );
+<a class="jxr_linenumber" name="663" href="#663">663</a>         zipArchiver.addDirectory( srcDir, <strong class="jxr_keyword">null</strong>, FileUtils.getDefaultExcludes() );
+<a class="jxr_linenumber" name="664" href="#664">664</a>         zipArchiver.setEncoding( <span class="jxr_string">"UTF-8"</span> );
+<a class="jxr_linenumber" name="665" href="#665">665</a>         FileUtils.removePath( zipFile.getPath() );
+<a class="jxr_linenumber" name="666" href="#666">666</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="667" href="#667">667</a> 
+<a class="jxr_linenumber" name="668" href="#668">668</a>         <strong class="jxr_keyword">final</strong> File zipFile2 = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/src2.zip"</span> );
+<a class="jxr_linenumber" name="669" href="#669">669</a>         ZipArchiver zipArchiver2 = getZipArchiver( zipFile2 );
+<a class="jxr_linenumber" name="670" href="#670">670</a>         zipArchiver2.addArchivedFileSet( zipFile, <span class="jxr_string">"prfx/"</span> );
+<a class="jxr_linenumber" name="671" href="#671">671</a>         zipArchiver2.setEncoding( <span class="jxr_string">"UTF-8"</span> );
+<a class="jxr_linenumber" name="672" href="#672">672</a>         FileUtils.removePath( zipFile2.getPath() );
+<a class="jxr_linenumber" name="673" href="#673">673</a>         zipArchiver2.createArchive();
+<a class="jxr_linenumber" name="674" href="#674">674</a> 
+<a class="jxr_linenumber" name="675" href="#675">675</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp1 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
+<a class="jxr_linenumber" name="676" href="#676">676</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile2 );
+<a class="jxr_linenumber" name="677" href="#677">677</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">"prfx/"</span> );
+<a class="jxr_linenumber" name="678" href="#678">678</a>         cmp1.close();
+<a class="jxr_linenumber" name="679" href="#679">679</a>         cmp2.close();
+<a class="jxr_linenumber" name="680" href="#680">680</a>     }
+<a class="jxr_linenumber" name="681" href="#681">681</a> 
+<a class="jxr_linenumber" name="682" href="#682">682</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testZipNonConcurrentResourceCollection()
+<a class="jxr_linenumber" name="683" href="#683">683</a>         <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="684" href="#684">684</a>     {
+<a class="jxr_linenumber" name="685" href="#685">685</a>         <strong class="jxr_keyword">final</strong> File tarFile = getTestFile( <span class="jxr_string">"target/output/zip-non-concurrent.tar"</span> );
+<a class="jxr_linenumber" name="686" href="#686">686</a>         TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, <span class="jxr_string">"tar"</span> );
+<a class="jxr_linenumber" name="687" href="#687">687</a>         tarArchiver.setDestFile( tarFile );
+<a class="jxr_linenumber" name="688" href="#688">688</a>         <em class="jxr_comment">// We're testing concurrency issue so we need large amount of files</em>
+<a class="jxr_linenumber" name="689" href="#689">689</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 100; i++)
+<a class="jxr_linenumber" name="690" href="#690">690</a>         {
+<a class="jxr_linenumber" name="691" href="#691">691</a>             tarArchiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span> ),
+<a class="jxr_linenumber" name="692" href="#692">692</a>                 <span class="jxr_string">"manifest1.mf"</span> + i );
+<a class="jxr_linenumber" name="693" href="#693">693</a>             <em class="jxr_comment">// Directories are added separately so let's test them too</em>
+<a class="jxr_linenumber" name="694" href="#694">694</a>             tarArchiver.addFile( getTestFile( <span class="jxr_string">"src/test/resources/manifests/manifest2.mf"</span> ),
+<a class="jxr_linenumber" name="695" href="#695">695</a>                 <span class="jxr_string">"subdir"</span> + i + <span class="jxr_string">"/manifest2.mf"</span> );
+<a class="jxr_linenumber" name="696" href="#696">696</a>         }
+<a class="jxr_linenumber" name="697" href="#697">697</a>         tarArchiver.createArchive();
+<a class="jxr_linenumber" name="698" href="#698">698</a> 
+<a class="jxr_linenumber" name="699" href="#699">699</a>         <strong class="jxr_keyword">final</strong> File zipFile = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/zip-non-concurrent.zip"</span> );
+<a class="jxr_linenumber" name="700" href="#700">700</a>         ZipArchiver zipArchive = getZipArchiver( zipFile );
+<a class="jxr_linenumber" name="701" href="#701">701</a>         zipArchive.addArchivedFileSet( tarFile, <span class="jxr_string">"prfx/"</span> );
+<a class="jxr_linenumber" name="702" href="#702">702</a>         zipArchive.setEncoding( <span class="jxr_string">"UTF-8"</span> );
+<a class="jxr_linenumber" name="703" href="#703">703</a>         zipArchive.createArchive();
+<a class="jxr_linenumber" name="704" href="#704">704</a> 
+<a class="jxr_linenumber" name="705" href="#705">705</a>         <strong class="jxr_keyword">final</strong> TarFile cmp1 = <strong class="jxr_keyword">new</strong> TarFile( tarFile );
+<a class="jxr_linenumber" name="706" href="#706">706</a>         <strong class="jxr_keyword">final</strong> ZipFile cmp2 = <strong class="jxr_keyword">new</strong> ZipFile( zipFile );
+<a class="jxr_linenumber" name="707" href="#707">707</a>         ArchiveFileComparator.assertEquals( cmp1, cmp2, <span class="jxr_string">"prfx/"</span> );
+<a class="jxr_linenumber" name="708" href="#708">708</a>         cmp1.close();
+<a class="jxr_linenumber" name="709" href="#709">709</a>         cmp2.close();
+<a class="jxr_linenumber" name="710" href="#710">710</a>     }
+<a class="jxr_linenumber" name="711" href="#711">711</a> 
+<a class="jxr_linenumber" name="712" href="#712">712</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDefaultUTF8()
+<a class="jxr_linenumber" name="713" href="#713">713</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="714" href="#714">714</a>     {
+<a class="jxr_linenumber" name="715" href="#715">715</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/utf8-default.zip"</span> ) );
+<a class="jxr_linenumber" name="716" href="#716">716</a>         zipArchiver.addDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/miscUtf8"</span> ) );
+<a class="jxr_linenumber" name="717" href="#717">717</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="718" href="#718">718</a>     }
+<a class="jxr_linenumber" name="719" href="#719">719</a> 
+<a class="jxr_linenumber" name="720" href="#720">720</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testDefaultUTF8withUTF8()
+<a class="jxr_linenumber" name="721" href="#721">721</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="722" href="#722">722</a>     {
+<a class="jxr_linenumber" name="723" href="#723">723</a>         <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/utf8-with_utf.zip"</span> ) );
+<a class="jxr_linenumber" name="724" href="#724">724</a>         zipArchiver.setEncoding( <span class="jxr_string">"UTF-8"</span> );
+<a class="jxr_linenumber" name="725" href="#725">725</a>         zipArchiver.addDirectory( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/miscUtf8"</span> ) );
+<a class="jxr_linenumber" name="726" href="#726">726</a>         zipArchiver.createArchive();
+<a class="jxr_linenumber" name="727" href="#727">727</a>     }
+<a class="jxr_linenumber" name="728" href="#728">728</a> 
+<a class="jxr_linenumber" name="729" href="#729">729</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testForcedFileModes()
+<a class="jxr_linenumber" name="730" href="#730">730</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="731" href="#731">731</a>     {
+<a class="jxr_linenumber" name="732" href="#732">732</a>         File step1file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode.zip"</span> );
+<a class="jxr_linenumber" name="733" href="#733">733</a>         {
+<a class="jxr_linenumber" name="734" href="#734">734</a>             <strong class="jxr_keyword">final</strong> ZipArchiver zipArchiver = getZipArchiver( step1file );
+<a class="jxr_linenumber" name="735" href="#735">735</a>             zipArchiver.setFileMode( 0077 );
+<a class="jxr_linenumber" name="736" href="#736">736</a>             zipArchiver.setDirectoryMode( 0007 );
+<a class="jxr_linenumber" name="737" href="#737">737</a>             PlexusIoResourceAttributes attrs = <strong class="jxr_keyword">new</strong> SimpleResourceAttributes( 123, <span class="jxr_string">"fred"</span>, 22, <span class="jxr_string">"filntstones"</span>, 0111 );
+<a class="jxr_linenumber" name="738" href="#738">738</a>             PlexusIoResource resource =
+<a class="jxr_linenumber" name="739" href="#739">739</a>                 ResourceFactory.createResource( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/folders/File.txt"</span> ), <span class="jxr_string">"Test.txt"</span>, <strong class="jxr_keyword">null</strong>,
+<a class="jxr_linenumber" name="740" href="#740">740</a>                                                 attrs );
+<a class="jxr_linenumber" name="741" href="#741">741</a>             zipArchiver.addResource( resource, <span class="jxr_string">"Test2.txt"</span>, 0707 );
+<a class="jxr_linenumber" name="742" href="#742">742</a>             PlexusIoFileResourceCollection files = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
+<a class="jxr_linenumber" name="743" href="#743">743</a>             files.setBaseDir( <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"src/test/resources/folders"</span> ) );
+<a class="jxr_linenumber" name="744" href="#744">744</a>             files.setPrefix( <span class="jxr_string">"sixsixsix/"</span> );
+<a class="jxr_linenumber" name="745" href="#745">745</a>             zipArchiver.addResources( files );
 <a class="jxr_linenumber" name="746" href="#746">746</a> 
-<a class="jxr_linenumber" name="747" href="#747">747</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( step1file );
-<a class="jxr_linenumber" name="748" href="#748">748</a>             fileModeAssert( 040007, zf.getEntry( <span class="jxr_string">"sixsixsix/a/"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="749" href="#749">749</a>             fileModeAssert( 0100077, zf.getEntry( <span class="jxr_string">"sixsixsix/b/FileInB.txt"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="750" href="#750">750</a>             fileModeAssert( 0100707, zf.getEntry( <span class="jxr_string">"Test2.txt"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="751" href="#751">751</a>             zf.close();
-<a class="jxr_linenumber" name="752" href="#752">752</a>         }
-<a class="jxr_linenumber" name="753" href="#753">753</a> 
-<a class="jxr_linenumber" name="754" href="#754">754</a>         File Step2file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode-from-zip.zip"</span> );
-<a class="jxr_linenumber" name="755" href="#755">755</a>         {
-<a class="jxr_linenumber" name="756" href="#756">756</a>             <strong class="jxr_keyword">final</strong> ZipArchiver za2 = getZipArchiver( Step2file );
-<a class="jxr_linenumber" name="757" href="#757">757</a>             za2.setFileMode( 0666 );
-<a class="jxr_linenumber" name="758" href="#758">758</a>             za2.setDirectoryMode( 0676 );
-<a class="jxr_linenumber" name="759" href="#759">759</a> 
-<a class="jxr_linenumber" name="760" href="#760">760</a>             PlexusIoZipFileResourceCollection zipSrc = <strong class="jxr_keyword">new</strong> PlexusIoZipFileResourceCollection();
-<a class="jxr_linenumber" name="761" href="#761">761</a>             zipSrc.setFile( step1file );
-<a class="jxr_linenumber" name="762" href="#762">762</a>             zipSrc.setPrefix( <span class="jxr_string">"zz/"</span> );
-<a class="jxr_linenumber" name="763" href="#763">763</a>             za2.addResources( zipSrc );
-<a class="jxr_linenumber" name="764" href="#764">764</a>             za2.createArchive();
-<a class="jxr_linenumber" name="765" href="#765">765</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( Step2file );
-<a class="jxr_linenumber" name="766" href="#766">766</a>             fileModeAssert( 040676, zf.getEntry( <span class="jxr_string">"zz/sixsixsix/a/"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="767" href="#767">767</a>             fileModeAssert( 0100666, zf.getEntry( <span class="jxr_string">"zz/Test2.txt"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="768" href="#768">768</a>             zf.close();
-<a class="jxr_linenumber" name="769" href="#769">769</a>         }
-<a class="jxr_linenumber" name="770" href="#770">770</a> 
-<a class="jxr_linenumber" name="771" href="#771">771</a>         File step3file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode-from-zip2.zip"</span> );
-<a class="jxr_linenumber" name="772" href="#772">772</a>         {
-<a class="jxr_linenumber" name="773" href="#773">773</a>             <strong class="jxr_keyword">final</strong> ZipArchiver za2 = getZipArchiver( step3file );
-<a class="jxr_linenumber" name="774" href="#774">774</a>             za2.setFileMode( 0666 );
-<a class="jxr_linenumber" name="775" href="#775">775</a>             za2.setDirectoryMode( 0676 );
-<a class="jxr_linenumber" name="776" href="#776">776</a> 
-<a class="jxr_linenumber" name="777" href="#777">777</a>             PlexusArchiverZipFileResourceCollection zipSrc = <strong class="jxr_keyword">new</strong> PlexusArchiverZipFileResourceCollection();
-<a class="jxr_linenumber" name="778" href="#778">778</a>             zipSrc.setFile( step1file );
-<a class="jxr_linenumber" name="779" href="#779">779</a>             zipSrc.setPrefix( <span class="jxr_string">"zz/"</span> );
-<a class="jxr_linenumber" name="780" href="#780">780</a>             za2.addResources( zipSrc );
-<a class="jxr_linenumber" name="781" href="#781">781</a>             za2.createArchive();
-<a class="jxr_linenumber" name="782" href="#782">782</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( Step2file );
-<a class="jxr_linenumber" name="783" href="#783">783</a>             fileModeAssert( 040676, zf.getEntry( <span class="jxr_string">"zz/sixsixsix/a/"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="784" href="#784">784</a>             fileModeAssert( 0100666, zf.getEntry( <span class="jxr_string">"zz/Test2.txt"</span> ).getUnixMode() );
-<a class="jxr_linenumber" name="785" href="#785">785</a>             zf.close();
-<a class="jxr_linenumber" name="786" href="#786">786</a>         }
-<a class="jxr_linenumber" name="787" href="#787">787</a>     }
-<a class="jxr_linenumber" name="788" href="#788">788</a> }
+<a class="jxr_linenumber" name="747" href="#747">747</a>             zipArchiver.createArchive();
+<a class="jxr_linenumber" name="748" href="#748">748</a> 
+<a class="jxr_linenumber" name="749" href="#749">749</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( step1file );
+<a class="jxr_linenumber" name="750" href="#750">750</a>             fileModeAssert( 040007, zf.getEntry( <span class="jxr_string">"sixsixsix/a/"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="751" href="#751">751</a>             fileModeAssert( 0100077, zf.getEntry( <span class="jxr_string">"sixsixsix/b/FileInB.txt"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="752" href="#752">752</a>             fileModeAssert( 0100707, zf.getEntry( <span class="jxr_string">"Test2.txt"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="753" href="#753">753</a>             zf.close();
+<a class="jxr_linenumber" name="754" href="#754">754</a>         }
+<a class="jxr_linenumber" name="755" href="#755">755</a> 
+<a class="jxr_linenumber" name="756" href="#756">756</a>         File Step2file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode-from-zip.zip"</span> );
+<a class="jxr_linenumber" name="757" href="#757">757</a>         {
+<a class="jxr_linenumber" name="758" href="#758">758</a>             <strong class="jxr_keyword">final</strong> ZipArchiver za2 = getZipArchiver( Step2file );
+<a class="jxr_linenumber" name="759" href="#759">759</a>             za2.setFileMode( 0666 );
+<a class="jxr_linenumber" name="760" href="#760">760</a>             za2.setDirectoryMode( 0676 );
+<a class="jxr_linenumber" name="761" href="#761">761</a> 
+<a class="jxr_linenumber" name="762" href="#762">762</a>             PlexusIoZipFileResourceCollection zipSrc = <strong class="jxr_keyword">new</strong> PlexusIoZipFileResourceCollection();
+<a class="jxr_linenumber" name="763" href="#763">763</a>             zipSrc.setFile( step1file );
+<a class="jxr_linenumber" name="764" href="#764">764</a>             zipSrc.setPrefix( <span class="jxr_string">"zz/"</span> );
+<a class="jxr_linenumber" name="765" href="#765">765</a>             za2.addResources( zipSrc );
+<a class="jxr_linenumber" name="766" href="#766">766</a>             za2.createArchive();
+<a class="jxr_linenumber" name="767" href="#767">767</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( Step2file );
+<a class="jxr_linenumber" name="768" href="#768">768</a>             fileModeAssert( 040676, zf.getEntry( <span class="jxr_string">"zz/sixsixsix/a/"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="769" href="#769">769</a>             fileModeAssert( 0100666, zf.getEntry( <span class="jxr_string">"zz/Test2.txt"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="770" href="#770">770</a>             zf.close();
+<a class="jxr_linenumber" name="771" href="#771">771</a>         }
+<a class="jxr_linenumber" name="772" href="#772">772</a> 
+<a class="jxr_linenumber" name="773" href="#773">773</a>         File step3file = <strong class="jxr_keyword">new</strong> File( <span class="jxr_string">"target/output/forced-file-mode-from-zip2.zip"</span> );
+<a class="jxr_linenumber" name="774" href="#774">774</a>         {
+<a class="jxr_linenumber" name="775" href="#775">775</a>             <strong class="jxr_keyword">final</strong> ZipArchiver za2 = getZipArchiver( step3file );
+<a class="jxr_linenumber" name="776" href="#776">776</a>             za2.setFileMode( 0666 );
+<a class="jxr_linenumber" name="777" href="#777">777</a>             za2.setDirectoryMode( 0676 );
+<a class="jxr_linenumber" name="778" href="#778">778</a> 
+<a class="jxr_linenumber" name="779" href="#779">779</a>             PlexusArchiverZipFileResourceCollection zipSrc = <strong class="jxr_keyword">new</strong> PlexusArchiverZipFileResourceCollection();
+<a class="jxr_linenumber" name="780" href="#780">780</a>             zipSrc.setFile( step1file );
+<a class="jxr_linenumber" name="781" href="#781">781</a>             zipSrc.setPrefix( <span class="jxr_string">"zz/"</span> );
+<a class="jxr_linenumber" name="782" href="#782">782</a>             za2.addResources( zipSrc );
+<a class="jxr_linenumber" name="783" href="#783">783</a>             za2.createArchive();
+<a class="jxr_linenumber" name="784" href="#784">784</a>             ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( Step2file );
+<a class="jxr_linenumber" name="785" href="#785">785</a>             fileModeAssert( 040676, zf.getEntry( <span class="jxr_string">"zz/sixsixsix/a/"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="786" href="#786">786</a>             fileModeAssert( 0100666, zf.getEntry( <span class="jxr_string">"zz/Test2.txt"</span> ).getUnixMode() );
+<a class="jxr_linenumber" name="787" href="#787">787</a>             zf.close();
+<a class="jxr_linenumber" name="788" href="#788">788</a>         }
+<a class="jxr_linenumber" name="789" href="#789">789</a>     }
+<a class="jxr_linenumber" name="790" href="#790">790</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

@@ -9,4 +9,5 @@ org.codehaus.plexus.archiver.snappy
 org.codehaus.plexus.archiver.tar
 org.codehaus.plexus.archiver.util
 org.codehaus.plexus.archiver.war
+org.codehaus.plexus.archiver.xz
 org.codehaus.plexus.archiver.zip
