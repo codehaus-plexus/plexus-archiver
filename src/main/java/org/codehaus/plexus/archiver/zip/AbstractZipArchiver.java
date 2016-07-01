@@ -56,6 +56,11 @@ public abstract class AbstractZipArchiver
     extends AbstractArchiver
 {
 
+    /**
+     * The minimum value for MS-DOS time format: 01 Jan 1980 00:00:00 UTC
+     **/
+    private static final Long MIN_MS_DOS_TIME = 315532800000L;
+
     private String comment;
 
     /**
@@ -131,6 +136,12 @@ public abstract class AbstractZipArchiver
     private ConcurrentJarCreator zOut;
 
     protected ZipArchiveOutputStream zipArchiveOutputStream;
+
+    /**
+     * Will always use the given modification time for zipEntries if set.
+     * The given modification time will be rounded up to {@link AbstractZipArchiver#MIN_MS_DOS_TIME}.
+     */
+    private Long fixedEntryModificationTime;
 
     private static int getJavaVersion()
     {
@@ -210,6 +221,14 @@ public abstract class AbstractZipArchiver
     public boolean isFilesonly()
     {
         return doFilesonly;
+    }
+
+    public Long getFixedEntryModificationTime() {
+        return fixedEntryModificationTime;
+    }
+
+    public void setFixedEntryModificationTime(Long fixedEntryModificationTime) {
+        this.fixedEntryModificationTime = fixedEntryModificationTime;
     }
 
     @Override
@@ -578,7 +597,12 @@ public abstract class AbstractZipArchiver
 
     private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
     {
-        zipEntry.setTime( lastModified + ( isJava7OrLower ? 1999 : 0 ) );
+
+        if (fixedEntryModificationTime != null) {
+            zipEntry.setTime(Math.max(MIN_MS_DOS_TIME, fixedEntryModificationTime));
+        } else {
+            zipEntry.setTime( lastModified + ( isJava7OrLower ? 1999 : 0 ) );
+        }
 
         /*   Consider adding extended file stamp support.....
 
