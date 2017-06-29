@@ -3,6 +3,7 @@ org.codehaus.plexus.archiver.bzip2
 org.codehaus.plexus.archiver.diags
 org.codehaus.plexus.archiver.dir
 org.codehaus.plexus.archiver.ear
+org.codehaus.plexus.archiver.exceptions
 org.codehaus.plexus.archiver.filters
 org.codehaus.plexus.archiver.gzip
 org.codehaus.plexus.archiver.jar
