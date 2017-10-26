@@ -30,6 +30,11 @@ public class ModuleConfiguration
     private String version;
 
     /**
+     * The module main class.
+     */
+    private String mainClass;
+
+    /**
      * Returns the module version.
      *
       * @return The module version
@@ -49,6 +54,43 @@ public class ModuleConfiguration
     public void setVersion( String version )
     {
         this.version = version;
+    }
+
+    /**
+     * Returns the module main class.
+     *
+     * @return The module main class
+     */
+    public String getMainClass()
+    {
+        return mainClass;
+    }
+
+    /**
+     * Sets the module main class.
+     *
+     * If set to {@code null}, the current main class of the module will be retained.
+     *
+     * @param mainClass The qualified name of the main class
+     *
+     * @throws IllegalArgumentException If {@code mainClass} is not a valid class name
+     */
+    public void setMainClass( String mainClass )
+    {
+        if ( mainClass != null )
+        {
+            if ( mainClass.isEmpty() )
+            {
+                throw new IllegalArgumentException( "Main class cannot be empty string." );
+            }
+            if ( mainClass.contains( ";" ) ||  mainClass.contains( "[" ) )
+            {
+                throw new IllegalArgumentException( "Main class value contains illegal characters: "
+                    + mainClass + ". ';' and '[' are not allowed." );
+            }
+        }
+
+        this.mainClass = mainClass;
     }
 
 }

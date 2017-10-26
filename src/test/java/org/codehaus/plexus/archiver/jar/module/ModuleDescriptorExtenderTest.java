@@ -34,19 +34,20 @@ public class ModuleDescriptorExtenderTest
     {
         File moduleDeclarationFile = new File( "src/test/resources/java-module/module-info.class" );
 
-        // verify that the module version is not set
-        verifyModule( moduleDeclarationFile, null,
+        // verify that the module version and the main class are not set
+        verifyModule( moduleDeclarationFile, null, null,
             Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
 
         ModuleDescriptorExtender extender = new ModuleDescriptorExtender();
         extender.setVersion( "1.2.3" );
+        extender.setMainClass( "com.example.app.Main" );
 
         try ( InputStream moduleInputStream = new FileInputStream( moduleDeclarationFile ) )
         {
             byte[] result = extender.extend( moduleInputStream );
-            // verify that the module version is set to the correct value
+            // verify that the module version and the main class are set to the correct values
             // and the rest of module attributes are retained
-            verifyModule( result, "1.2.3",
+            verifyModule( result, "1.2.3", "com/example/app/Main",
                 Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
         }
     }
@@ -56,18 +57,19 @@ public class ModuleDescriptorExtenderTest
     {
         File moduleDeclarationFile = new File( "src/test/resources/java-module-extended/module-info.class" );
 
-        // verify that the module version is set
-        verifyModule( moduleDeclarationFile, "1.0",
+        // verify that the module version and the main class are set
+        verifyModule( moduleDeclarationFile, "1.0", "com/example/app/Main",
             Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
 
         ModuleDescriptorExtender extender = new ModuleDescriptorExtender();
         extender.setVersion( "2.0-Beta" );
+        extender.setMainClass( "com.example.app.Main2" );
 
         try ( InputStream moduleInputStream = new FileInputStream( moduleDeclarationFile ) )
         {
             byte[] result = extender.extend( moduleInputStream );
-            // verify that the module version is overridden
-            verifyModule( result, "2.0-Beta",
+            // verify that the module version and the main class are overridden
+            verifyModule( result, "2.0-Beta", "com/example/app/Main2",
                 Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
         }
     }
@@ -77,7 +79,7 @@ public class ModuleDescriptorExtenderTest
     {
         File moduleDeclarationFile = new File( "src/test/resources/java-module-extended/module-info.class" );
 
-        verifyModule( moduleDeclarationFile, "1.0",
+        verifyModule( moduleDeclarationFile, "1.0", "com/example/app/Main",
             Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
 
         // we don't extend any attribute
@@ -87,37 +89,38 @@ public class ModuleDescriptorExtenderTest
         {
             byte[] result = extender.extend( moduleInputStream );
             // verify that the module attributes are not changed
-            verifyModule( result, "1.0",
+            verifyModule( result, "1.0", "com/example/app/Main",
                 Collections.singletonList( "java.base" ), Collections.singletonList( "com/example/app" ) );
         }
     }
 
     private void verifyModule( File moduleDescriptorFile,
-                               String expectedVersion,
+                               String expectedVersion, String expectedMainClass,
                                List<String> expectedRequiredModules, List<String> expectedExportedPackages )
         throws IOException
     {
         ModuleDescriptor moduleDescriptor = ModuleDescriptor.read( moduleDescriptorFile );
 
         verifyModule( moduleDescriptor,
-            expectedVersion, expectedRequiredModules, expectedExportedPackages );
+            expectedVersion, expectedMainClass, expectedRequiredModules, expectedExportedPackages );
     }
 
     private void verifyModule( byte[] moduleDescriptorBytes,
-                               String expectedVersion,
+                               String expectedVersion, String expectedMainClass,
                                List<String> expectedRequiredModules, List<String> expectedExportedPackages )
     {
         ModuleDescriptor moduleDescriptor = ModuleDescriptor.read( moduleDescriptorBytes );
 
         verifyModule( moduleDescriptor,
-            expectedVersion, expectedRequiredModules, expectedExportedPackages );
+            expectedVersion, expectedMainClass, expectedRequiredModules, expectedExportedPackages );
     }
 
     private void verifyModule( ModuleDescriptor moduleDescriptor,
-                               String expectedVersion,
+                               String expectedVersion, String expectedMainClass,
                                List<String> expectedRequiredModules, List<String> expectedExportedPackages )
     {
         assertEquals( expectedVersion, moduleDescriptor.getVersion() );
+        assertEquals( expectedMainClass, moduleDescriptor.getMainClass() );
         assertEquals( expectedRequiredModules, moduleDescriptor.getRequiredModules() );
         assertEquals( expectedExportedPackages, moduleDescriptor.getExportedPackages() );
     }

@@ -43,6 +43,11 @@ public class ModuleDescriptorExtender
     private String version;
 
     /**
+     * The module main class.
+     */
+    private String mainClass;
+
+    /**
      * Sets the module version.
      *
      * If set to {@code null}, the current version of the module will be retained.
@@ -52,6 +57,18 @@ public class ModuleDescriptorExtender
     public void setVersion( String version )
     {
         this.version = version;
+    }
+
+    /**
+     * Sets the module main class.
+     *
+     * If set to {@code null}, the current main class of the module will be retained.
+     *
+     * @param mainClass The qualified name of the main class
+     */
+    public void setMainClass( String mainClass )
+    {
+        this.mainClass = mainClass;
     }
 
     /**
@@ -77,8 +94,9 @@ public class ModuleDescriptorExtender
             public ModuleVisitor visitModule( String name, int access, String currentVersion )
             {
                 String newVersion = version != null ? version : currentVersion;
+                ModuleVisitor parentModuleVisitor = super.visitModule( name, access, newVersion );
 
-                return super.visitModule( name, access, newVersion );
+                return new AttributeExtendingModuleVisitor( Opcodes.ASM6, parentModuleVisitor );
             }
 
         };
@@ -86,6 +104,43 @@ public class ModuleDescriptorExtender
         classReader.accept( classVisitor, 0 );
 
         return classWriter.toByteArray();
+    }
+
+    /**
+     * {@link ModuleVisitor} that sets the module main class.
+     */
+    private class AttributeExtendingModuleVisitor
+        extends ModuleVisitor
+    {
+
+        AttributeExtendingModuleVisitor( int api, ModuleVisitor mv )
+        {
+            super( api, mv );
+        }
+
+        @Override
+        public void visitMainClass( String currentMainClass )
+        {
+            // if mainClass is not set retain the original value
+            // otherwise override in visitEnd()
+            if ( mainClass == null )
+            {
+                super.visitMainClass( currentMainClass );
+            }
+        }
+
+        @Override
+        public void visitEnd()
+        {
+            // override the main class attribute if the mainClass is set
+            if ( mainClass != null )
+            {
+                super.visitMainClass( mainClass.replace( '.', '/' ) );
+            }
+
+            super.visitEnd();
+        }
+
     }
 
 }

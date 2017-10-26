@@ -300,7 +300,7 @@ public class JarArchiver
     /**
      * Sets the configuration for the module inside modular JAR file.
      * The module descriptor will be extended with the
-     * configured metadata such as module version.
+     * configured metadata such as module version and main class.
      * <p/>
      * If set to {@code null} the module descriptor (if present)
      * will be archived as is.
@@ -315,6 +315,7 @@ public class JarArchiver
         {
             ModuleDescriptorExtender moduleDescriptorExtender = new ModuleDescriptorExtender();
             moduleDescriptorExtender.setVersion( moduleConfiguration.getVersion() );
+            moduleDescriptorExtender.setMainClass( moduleConfiguration.getMainClass() );
 
             this.moduleDescriptorExtender = moduleDescriptorExtender;
         }
@@ -534,7 +535,7 @@ public class JarArchiver
         {
             getLogger().debug( "Module descriptor found: " + vPath );
 
-            // extend the module descriptor with version
+            // extend the module descriptor with version and main class
             super.zipFile( extendModuleDescriptor( is ), zOut, vPath, lastModified, fromArchive,
                            mode, symlinkDestination, addInParallel );
         }

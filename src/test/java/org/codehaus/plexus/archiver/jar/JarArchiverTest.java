@@ -80,9 +80,10 @@ public class JarArchiverTest
         File jarFile = new File( "target/output/modular.jar" );
         jarFile.delete();
 
-        // verify that the original module declaration does not have version set
+        // verify that the original module declaration does not have main class and version set
         ModuleDescriptor originalModuleDescriptor = ModuleDescriptor.read(
             new File( "src/test/resources/java-module/module-info.class" ) );
+        assertNull( originalModuleDescriptor.getMainClass() );
         assertNull( originalModuleDescriptor.getVersion() );
 
         JarArchiver archiver = new JarArchiver();
@@ -91,14 +92,16 @@ public class JarArchiverTest
 
         ModuleConfiguration moduleConfiguration = new ModuleConfiguration();
         moduleConfiguration.setVersion( "1.0.0" );
+        moduleConfiguration.setMainClass( "com.example.app.Main" );
         archiver.setModuleConfiguration( moduleConfiguration );
 
         archiver.createArchive();
 
-        // verify that the resulting modular jar has the proper version set
+        // verify that the resulting modular jar has the proper version and main class set
         ModuleDescriptor resultingModuleDescriptor = ModuleDescriptor.read(
             new URL( "jar:file:target/output/modular.jar!/module-info.class" ) );
         assertEquals( "1.0.0", resultingModuleDescriptor.getVersion() );
+        assertEquals( "com/example/app/Main", resultingModuleDescriptor.getMainClass() );
     }
-    
+
 }

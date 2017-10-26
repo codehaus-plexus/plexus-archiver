@@ -37,6 +37,7 @@ import java.util.List;
 public class ModuleDescriptor
 {
     private String version;
+    private String mainClass;
     private List<String> requiredModules = new ArrayList<>();
     private List<String> exportedPackages = new ArrayList<>();
 
@@ -52,6 +53,16 @@ public class ModuleDescriptor
     private void setVersion( String version )
     {
         this.version = version;
+    }
+
+    public String getMainClass()
+    {
+        return mainClass;
+    }
+
+    private void setMainClass( String mainClass )
+    {
+        this.mainClass = mainClass;
     }
 
     public List<String> getRequiredModules()
@@ -109,6 +120,18 @@ public class ModuleDescriptor
 
                 return new ModuleVisitor( Opcodes.ASM6, parentModuleVisitor )
                 {
+
+                    @Override
+                    public void visitMainClass( String mainClass )
+                    {
+                        super.visitMainClass( mainClass );
+
+                        if ( moduleDescriptor.getMainClass() != null )
+                        {
+                            throw new RuntimeException( "Main class already set" );
+                        }
+                        moduleDescriptor.setMainClass( mainClass );
+                    }
 
                     @Override
                     public void visitRequire( String requireModule, int access, String version )
