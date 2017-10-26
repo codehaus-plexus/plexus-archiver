@@ -39,6 +39,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.jar.module.ModuleConfiguration;
+import org.codehaus.plexus.archiver.jar.module.ModuleDescriptorExtender;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.logging.Logger;
@@ -72,6 +74,8 @@ public class JarArchiver
      * The manifest file name.
      */
     private static final String MANIFEST_NAME = "META-INF/MANIFEST.MF";
+
+    private static final String MODULE_DESCRIPTOR_NAME = "module-info.class";
 
     /**
      * merged manifests added through addConfiguredManifest
@@ -118,6 +122,13 @@ public class JarArchiver
      * manifest is looked for in META-INF/MANIFEST.MF
      */
     private File manifestFile;
+
+    /**
+     * If not {@code null}, used to extend the module descriptor
+     * of a modular JAR file with the attributes configured
+     * with {@link #setModuleConfiguration(ModuleConfiguration)}
+     */
+    private ModuleDescriptorExtender moduleDescriptorExtender;
 
     /**
      * jar index is JDK 1.3+ only
@@ -283,6 +294,33 @@ public class JarArchiver
         {
 
             doubleFilePass = true;
+        }
+    }
+
+    /**
+     * Sets the configuration for the module inside modular JAR file.
+     * The module descriptor will be extended with the
+     * configured metadata such as module version.
+     * <p/>
+     * If set to {@code null} the module descriptor (if present)
+     * will be archived as is.
+     *
+     * @param moduleConfiguration The module configuration
+     *
+     * @since 3.6
+     */
+    public void setModuleConfiguration( ModuleConfiguration moduleConfiguration )
+    {
+        if ( moduleConfiguration != null )
+        {
+            ModuleDescriptorExtender moduleDescriptorExtender = new ModuleDescriptorExtender();
+            moduleDescriptorExtender.setVersion( moduleConfiguration.getVersion() );
+
+            this.moduleDescriptorExtender = moduleDescriptorExtender;
+        }
+        else
+        {
+            moduleDescriptorExtender = null;
         }
     }
 
@@ -492,6 +530,14 @@ public class JarArchiver
             getLogger().warn( "Warning: selected " + archiveType + " files include a META-INF/INDEX.LIST which will"
                                   + " be replaced by a newly generated one." );
         }
+        else if ( moduleDescriptorExtender != null && vPath.equals( MODULE_DESCRIPTOR_NAME ) )
+        {
+            getLogger().debug( "Module descriptor found: " + vPath );
+
+            // extend the module descriptor with version
+            super.zipFile( extendModuleDescriptor( is ), zOut, vPath, lastModified, fromArchive,
+                           mode, symlinkDestination, addInParallel );
+        }
         else
         {
             if ( index && ( !vPath.contains( "/" ) ) )
@@ -543,6 +589,38 @@ public class JarArchiver
                 JdkManifestFactory.merge( filesetManifest, newManifest, false );
             }
         }
+    }
+
+    /**
+     * Extends a module descriptor with the configured module metadata.
+     *
+     * @param inputStreamSupplier The original module descriptor
+     *
+     * @return The extended module descriptor
+     *
+     * @see #setModuleConfiguration(ModuleConfiguration)
+     */
+    private InputStreamSupplier extendModuleDescriptor( final InputStreamSupplier inputStreamSupplier )
+    {
+        return new InputStreamSupplier()
+        {
+
+            @Override
+            public InputStream get()
+            {
+                try ( InputStream moduleDescriptor = inputStreamSupplier.get() )
+                {
+                    return new ByteArrayInputStream( moduleDescriptorExtender.extend( moduleDescriptor ) );
+                }
+                catch ( IOException e)
+                {
+                    getLogger().error( "Exception thrown while modifying a module descriptor.", e );
+
+                    throw new RuntimeException( e );
+                }
+            }
+
+        };
     }
 
     @Override
@@ -619,6 +697,7 @@ public class JarArchiver
     public void reset()
     {
         super.reset();
+        setModuleConfiguration( null );
         configuredManifest = null;
         filesetManifestConfig = null;
         mergeManifestsMain = false;
