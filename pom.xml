@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>3.5.1-SNAPSHOT</version>
+  <version>3.6-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
 
   <scm>
@@ -73,6 +73,11 @@
       <groupId>org.iq80.snappy</groupId>
       <artifactId>snappy</artifactId>
       <version>0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.ow2.asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>6.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
