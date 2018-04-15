@@ -9,12 +9,52 @@ Plexus Archiver 3.6.0
 
 Plexus Archiver 3.6.0 requires Java 7. 
 
+### New Features
+
+ * [Pull Request #84][pr-84], [Issue #57][issue-68] - Added Archiver implementation
+ (`JarToolModularJarArchiver`) that creates modular JAR files using the JDK jar tool.
+ The implementation uses `java.util.spi.ToolProvider` introduced in Java 9,
+ so if it is run on Java 7 or 8 the resulting archive will be identical to a
+ one created by `JarArchiver` - the module descriptor is not going to be validated
+ and no additional information (such as version, main class and packages)
+ is going to be added.
+ * [Issue #67][issue-67] - Added ability to set the module version and main class
+ of a modular JAR file
+ * [Pull Request #83][pr-83] - Added new protected method (`postCreateArchive`)
+ to `AbstractArchiver` that is called after the archive is created successfully
+
 ### Improvements
 
  * [Pull Request #87][pr-87] - of Levan Giguashvili (odinn1984)
    Snyk eng team to fix a possible security issue.
    (See https://gist.github.com/grnd/eafd7dab7c4cc6197d817a07fa46b2df)
 
+### Bugs
+
+ * [Pull Request #73][pr-73] - Symbolic links not properly encoded
+ in ZIP archives
+ * [Issue #57][issue-57] - `ZipArchiver` creates archives with inconsistent
+ central directory entries
+ * [Issue #79][issue-79] - `JarArchiver` and `PlexusIoZipFileResourceCollection`
+ leak file descriptors
+
+### Tasks
+
+ * [Pull Request #77][pr-77] - Fixed the way unit tests modify
+ the timestamp of a file
+ * [Issue #71][issue-71], [Pull Request #72][pr-72], [Issue #76][issue-76],
+ [Issue #78][issue-78], [Issue #85][issue-85], [Issue #86][issue-86] -
+ Updated dependencies: `commons-compress` to 1.16.1, `plexus-utils` to 3.1.0,
+ `org.tukaani:xz` to 1.8 and `plexus-io` to 3.0.1
+
+
+Plexus IO 3.0.1
+---------------
+
+### Tasks
+
+ * [Issue #9][io-issue-9], [Issue #10][io-issue-10] - Updated dependencies:
+ `plexus-utils` to 3.1.0 and `commons-io` to 2.6
 
 Plexus Archiver 3.5
 -------------------
@@ -527,14 +567,30 @@ Plexus Archiver 2.4.4
 [issue-46]: https://github.com/codehaus-plexus/plexus-archiver/issues/46
 [issue-47]: https://github.com/codehaus-plexus/plexus-archiver/issues/47
 [issue-53]: https://github.com/codehaus-plexus/plexus-archiver/issues/53
+[issue-57]: https://github.com/codehaus-plexus/plexus-archiver/issues/57
 [issue-58]: https://github.com/codehaus-plexus/plexus-archiver/issues/58
 [issue-60]: https://github.com/codehaus-plexus/plexus-archiver/issues/60
+[issue-67]: https://github.com/codehaus-plexus/plexus-archiver/issues/67
+[issue-68]: https://github.com/codehaus-plexus/plexus-archiver/issues/68
+[issue-71]: https://github.com/codehaus-plexus/plexus-archiver/issues/71
+[issue-76]: https://github.com/codehaus-plexus/plexus-archiver/issues/76
+[issue-78]: https://github.com/codehaus-plexus/plexus-archiver/issues/78
+[issue-79]: https://github.com/codehaus-plexus/plexus-archiver/issues/79
+[issue-85]: https://github.com/codehaus-plexus/plexus-archiver/issues/85
+[issue-86]: https://github.com/codehaus-plexus/plexus-archiver/issues/86
 [pr-26]: https://github.com/codehaus-plexus/plexus-archiver/issues/26
 [pr-27]: https://github.com/codehaus-plexus/plexus-archiver/issues/27
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
 [pr-51]: https://github.com/codehaus-plexus/plexus-archiver/pull/51
 [pr-56]: https://github.com/codehaus-plexus/plexus-archiver/pull/56
+[pr-72]: https://github.com/codehaus-plexus/plexus-archiver/pull/72
+[pr-73]: https://github.com/codehaus-plexus/plexus-archiver/pull/73
+[pr-77]: https://github.com/codehaus-plexus/plexus-archiver/pull/77
+[pr-83]: https://github.com/codehaus-plexus/plexus-archiver/pull/83
+[pr-84]: https://github.com/codehaus-plexus/plexus-archiver/pull/84
 [pr-87]: https://github.com/codehaus-plexus/plexus-archiver/pull/87
 
 [io-issue-8]: https://github.com/codehaus-plexus/plexus-io/issues/8
+[io-issue-9]: https://github.com/codehaus-plexus/plexus-io/issues/9
+[io-issue-10]: https://github.com/codehaus-plexus/plexus-io/issues/10
 [io-pr-5]: https://github.com/codehaus-plexus/plexus-io/pull/5
