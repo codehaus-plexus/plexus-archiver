@@ -534,6 +534,7 @@ Plexus Archiver 2.4.4
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
 [pr-51]: https://github.com/codehaus-plexus/plexus-archiver/pull/51
 [pr-56]: https://github.com/codehaus-plexus/plexus-archiver/pull/56
+[pr-87]: https://github.com/codehaus-plexus/plexus-archiver/pull/87
 
 [io-issue-8]: https://github.com/codehaus-plexus/plexus-io/issues/8
 [io-pr-5]: https://github.com/codehaus-plexus/plexus-io/pull/5

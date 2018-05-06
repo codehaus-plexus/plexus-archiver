@@ -11,7 +11,7 @@ The current master is now at https://github.com/codehaus-plexus/plexus-archiver
 
 You can find details about the different releases in the [Release Notes](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md).
 
- * [Release 3.6](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-36).
+ * [Release 3.6.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-360).
  * [Release 3.5](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-35).
  * [Release 3.4](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-34).
  * [Release 3.3](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-33).
