@@ -4,6 +4,18 @@ Plexus Archiver and Plexus-IO combined release notes
 Since archiver depends on a given version of IO this list is cumulative,
 any version includes *all* changes below.
 
+Plexus Archiver 3.6.0
+---------------------
+
+Plexus Archiver 3.6.0 requires Java 7. 
+
+### Improvements
+
+ * [Pull Request #87][pr-87] - of Levan Giguashvili (odinn1984)
+   Snyk eng team to fix a possible security issue.
+   (See https://gist.github.com/grnd/eafd7dab7c4cc6197d817a07fa46b2df)
+
+
 Plexus Archiver 3.5
 -------------------
 
