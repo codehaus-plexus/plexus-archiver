@@ -9,7 +9,7 @@ The current master is now at https://github.com/codehaus-plexus/plexus-archiver
 
 ## Important Hint
 
-Based on a hint of Sync.io Security Team we have integrated a patch for solving 
+Based on a hint of snyk.io Security Team we have integrated a patch for solving 
 a possible security issue.
 
 ## Release Notes
