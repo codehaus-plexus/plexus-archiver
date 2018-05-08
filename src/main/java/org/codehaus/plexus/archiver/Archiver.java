@@ -366,7 +366,7 @@ public interface Archiver
     void setDuplicateBehavior( String duplicate );
 
     /**
-     * to use or not the jvm method for file permissions : user all <b>not active for group permissions</b>
+     * to use or not the jvm method for file permissions: user all <b>not active for group permissions</b>
      *
      * @since 1.1
      * @param useJvmChmod

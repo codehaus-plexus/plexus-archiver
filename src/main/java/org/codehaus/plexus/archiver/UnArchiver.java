@@ -33,7 +33,7 @@ public interface UnArchiver
         throws ArchiverException;
 
     /**
-     * Take a patch into the archive and extract it to the specified directory.
+     * Take a path into the archive and extract it to the specified directory.
      *
      * @param path Path inside the archive to be extracted.
      * @param outputDirectory Directory to extract to.
@@ -85,7 +85,7 @@ public interface UnArchiver
     FileSelector[] getFileSelectors();
 
     /**
-     * to use or not the jvm method for file permissions : user all <b>not active for group permissions</b>
+     * to use or not the jvm method for file permissions: user all <b>not active for group permissions</b>
      *
      * @since 1.1
      * @param useJvmChmod
