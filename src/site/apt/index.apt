@@ -1,0 +1,44 @@
+ -----
+ Plexus Archiver
+ -----
+ Hervé Boutemy
+ -----
+ 2018-05-08
+ -----
+
+Plexus Archiver
+
+  Collection of Plexus components to create archives or extract archives to a directory
+  with a unified {{{./apidocs/index.html?org/codehaus/plexus/archiver/Archiver.html}<<<Archiver>>>}}/{{{./apidocs/index.html?org/codehaus/plexus/archiver/UnArchiver.html}<<<UnArchiver>>>}}
+  API whatever the archive format is.
+
+*------------------+-----------------+
+|| Interface       || Components for supported formats (as Plexus role hint)
+*------------------+-----------------+
+| {{{./apidocs/index.html?org/codehaus/plexus/archiver/Archiver.html}<<<Archiver>>>}} |
+|                  | {{{./xref/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.html}<<<bzip2>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/xz/XZArchiver.html}<<<xz>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/dir/DirectoryArchiver.html}<<<dir>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/ear/EarArchiver.html}<<<ear>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/gzip/GZipArchiver.html}<<<gzip>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarArchiver.html}<<<jar>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarToolModularJarArchiver.html}<<<mjar>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/snappy/SnappyArchiver.html}<<<snappy>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar/TarArchiver.html}<<<tar>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/war/WarArchiver.html}<<<war>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}}.
+|                  | Notice that <<<rar>>> component produces a <<<jar>>>
+*------------------+-----------------+
+| {{{./apidocs/index.html?org/codehaus/plexus/archiver/UnArchiver.html}<<<UnArchiver>>>}} |
+|                  | {{{./xref/org/codehaus/plexus/archiver/bzip2.BZip2UnArchiver.html}<<<bzip2>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/xz.XZUnArchiver.html}<<<xz>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/gzip.GZipUnArchiver.html}<<<gzip>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/snappy.SnappyUnArchiver.html}<<<snappy>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarUnArchiver.html}<<<tar>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/zip.ZipUnArchiver.html}<<<zip>>>}}
+|                  | (also available as <<<jar>>>, <<<war>>>, <<<ear>>>, <<<swc>>>, <<<nar>>>, <<<esb>>>, <<<sar>>>, <<<car>>>, <<<par>>>, <<<rar>>>),
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarGZipUnArchiver.html}<<<tgz>>>}} or <<<tar.gz>>>,
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarBZip2UnArchiver.html}<<<tbz2>>>}} or <<<tar.bz2>>>,
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarXZUnArchiver.html}<<<txz>>>}} or <<<tar.xz>>>,
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarSnappyUnArchiver.html}<<<tar.snappy>>>}}.
+*------------------+-----------------+
