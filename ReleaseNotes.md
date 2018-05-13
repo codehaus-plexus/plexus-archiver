@@ -1,8 +1,5 @@
-Plexus Archiver and Plexus-IO combined release notes
+Plexus Archiver Release Notes
 ========================================================================
-
-Since archiver depends on a given version of IO this list is cumulative,
-any version includes *all* changes below.
 
 Plexus Archiver 3.6.0
 ---------------------
@@ -48,14 +45,6 @@ Plexus Archiver 3.6.0 requires Java 7.
  `org.tukaani:xz` to 1.8 and `plexus-io` to 3.0.1
 
 
-Plexus IO 3.0.1
----------------
-
-### Tasks
-
- * [Issue #9][io-issue-9], [Issue #10][io-issue-10] - Updated dependencies:
- `plexus-utils` to 3.1.0 and `commons-io` to 2.6
-
 Plexus Archiver 3.5
 -------------------
 
@@ -90,28 +79,6 @@ subject to removal in a future version.
    `plexus-container-default` to `1.0-alpha-30`,
    `commons-compress` to 1.14, `org.tukaani.xz` to 1.6 and
    `com.google.code.findbugs.jsr305` to 3.0.2
-
-Plexus IO 3.0.0
----------------
-
-Plexus IO 3.0.0 requires Java 7 and introduces backward incompatible changes:
-
- * `Java7FileAttributes` is renamed to `FileAttributes`, replacing
-   the old `FileAttributes` implementation
- * `Java7AttributeUtils` is renamed to `AttributeUtils`
- * `PlexusIoResourceAttributeUtils#getFileAttributesByPath( File, boolean, boolean )`
-   is deleted
-
-### Improvements
-
- * [Pull Request #5][io-pr-5] - The required Java version is upgraded to 7.
-   Classes that use native tools like `ls` are removed and the pure Java
-   implementations are used instead.
-
-### Tasks
-
- * [Issue #8][io-issue-8] - Update of `plexus-utils` to 3.0.24 and
-   `commons-io` to 2.5
 
 Plexus Archiver 3.4
 -------------------
@@ -189,14 +156,6 @@ Plexus Archiver 3.1.1
 
  * [Pull Request #26][pr-26] - Improvement from Plamen Totev
 
-Plexus IO 2.6.1
----------------
-
-### Improvement
-
- * Performance improvement affecting mac/linux users
-   with lots of small files in large archives.
-
 Plexus Archiver 3.0.2
 ---------------------
 
@@ -250,26 +209,10 @@ Plexus Archiver 2.10
  * Fixed NPE with missing folder in TAR
  * Moved all "zip" support to archiver (from io).
 
-Plexus IO 2.5
--------------
-
- * Proper support for closeable on zip archives.
- * Removed zip supporting PlexusIoZipFileResourceCollection; which now exists in plexus-archiver. (Drop in replacement,
-   just change/add jar file).
-
 Plexus Archiver 2.9.1
 ---------------------
 
  * Wrap-up release with plexus-io-2.4.1
-
-Plexus IO 2.4.1
----------------
-
-### Bugs
-
- * PLXCOMP-279 - PlexusIoProxyResourceCollection does not provide Closeable iterator
- * Fixed PLXCOMP-280 - SimpleResourceAttributes has incorrect value for
-   default file mode
 
 Plexus Archiver 2.9
 -------------------
@@ -281,15 +224,6 @@ Plexus Archiver 2.9
 ### Bugs
 
  * PLXCOMP-277 - Archiver unable to determine file equailty
-
-Plexus IO 2.4
--------------
-
-### Improvements
-
- * PLXCOMP-274 - Simplify use of proxies
- * PLXCOMP-275 - Avoid leaky abstractions
- * PLXCOMP-276 - Reduce number of ways to create a PlexusIoResource
 
 Plexus Archiver 2.8.4
 ---------------------
@@ -306,13 +240,6 @@ Plexus Archiver 2.8.3
  * PLXCOMP-271 - Implicit created directories do not obey proper dirMode
  * PLXCOMP-272 - Overriding dirmode/filemode breaks symlinks
 
-Plexus IO 2.3.5
----------------
-
-### Bugs
-
- * PLXCOMP-278 - Symlink attribute was not preserved through merged/overridden attributes
-
 Plexus Archiver 2.8.2
 ---------------------
 
@@ -321,41 +248,12 @@ Plexus Archiver 2.8.2
  * PLXCOMP-266 - In-place filtering of streams give incorrect content length
    for tar files
 
-Plexus IO 2.3.4
----------------
-
-### Bugs
-
- * PLXCOMP-270 - Escaping algoritghm leaks through to system classloader
- * PLXCOMP-272 - Overriding dirmode/filemode breaks symlinks
-
-Plexus IO 2.3.3
----------------
-
-### Bugs
-
- * PLXCOMP-267 - StreamTransformers are consistently applied to all collections
-
 Plexus Archiver 2.8.1
 ---------------------
 
 ### Improvements
 
  * PLXCOMP-268 - Add diagnostic archivers
-
-Plexus IO 2.3.2
----------------
-
-### Bugs
-
- * PLXCOMP-265 - Locale in shell influences "ls" parsing for screenscraper
-
-Plexus IO 2.3.1
----------------
-
-### Bugs
-
- * PLXCOMP-264 - Thread safety issue in streamconsumer
 
 Plexus Archiver 2.8
 -------------------
@@ -372,17 +270,6 @@ Plexus Archiver 2.8
 
  * PLXCOMP-262 - Directory symlinks in zip files are incorrect
 
-Plexus IO 2.3
--------------
-
-### New Features
-
- * PLXCOMP-261 - Make plexus io collections support on-the-fly filtering
-
-### Improvements
-
- * PLXCOMP-260 - Make plexus io collections iterable
-
 Plexus Archiver 2.7.1
 ---------------------
 
@@ -393,14 +280,6 @@ Plexus Archiver 2.7.1
 ### Bugs
 
  * PLXCOMP-256 - Several archivers leaks file handles
-
-Plexus IO 2.2
--------------
-
-### Bugs
-
- * PLXCOMP-251 - Date parsing in "ls" screenscraping has locale dependencies
- * PLXCOMP-254 - Fix File.separatorChar normalization when prefixes are used
 
 Plexus Archiver 2.7
 -------------------
@@ -424,18 +303,6 @@ Plexus Archiver 2.6.4
  * PLXCOMP-234 - Plexus archiver TarOptions setDirMode and setMode do not do
    anything unless TarArchiver.setOptions is called
 
-Plexus IO 2.1.4
----------------
-
-### Improvements
-
- * PLXCOMP-250 - Upgrade maven-enforcer-plugin to 1.3.1
-
-### Bugs
-
- * PLXCOMP-107 - Fail to unzip archive, which contains file with name
-   'How_can_I_annotate_a_part_in_the_AAM%3F.Help'
-
 Plexus Archiver 2.6.3
 ---------------------
 
@@ -443,13 +310,6 @@ Plexus Archiver 2.6.3
 
 * PLXCOMP-233 - Plexus archiver can create tarfiles with empty uid and gid bytes
 * PLXCOMP-247 - Bug with windows AND java5
-
-Plexus IO 2.1.3
----------------
-
-### Bugs
-
- * PLXCOMP-247 - Bug with windows AND java5
 
 Plexus Archiver 2.6.2
 ---------------------
@@ -460,24 +320,8 @@ Plexus Archiver 2.6.2
   * PLXCOMP-245 - Archives created on windows get zero permissions,
     creates malformed permissions on linux
 
-Plexus IO 2.1.2
----------------
-
-### Bugs
-
- * PLXCOMP-244 - Don't try to set attributes of symbolic links
- * PLXCOMP-245 - Archives created on windows get zero permissions,
-   creates malformed permissions on linux
-
 Plexus Archiver 2.6.1
 ---------------------
-
-### Bugs
-
- * PLXCOMP-243 - Restore JDK1.5 compatibility
-
-Plexus IO 2.1.1
----------------
 
 ### Bugs
 
@@ -495,20 +339,6 @@ Plexus Archiver 2.6
  * PLXCOMP-64 - add symlink support to tar unarchiver
  * PLXCOMP-117 - add symbolic links managment
 
-Plexus IO 2.1
--------------
-
-### Improvements
-
- * PLXCOMP-64 - add symlink support to tar unarchiver
- * PLXCOMP-117 - add symbolic links managment
-
-### Bugs
-
- * PLXCOMP-113 - zip unarchiver doesn't support symlinks (and trivial to fix)
- * PLXCOMP-241 - ResourcesTest.compare test failure
- * PLXCOMP-248 - Use java7 setAttributes and ignore useJvmChmod flag when applicable
-
 Plexus Archiver 2.5
 -------------------
 
@@ -524,13 +354,6 @@ Plexus Archiver 2.5
  * PLXCOMP-216 - Unarchiver extracts files into wrong directory
  * PLXCOMP-232 - Failures to unpack .tar.gz files
  * PLXCOMP-236 - ZipUnArchiver fails to extract large (>4GB) ZIP files
-
-Plexus IO 2.0.12
-----------------
-
-### Bugs
-
- * PLXCOMP-249 - Add support for java7 chmod
 
 Plexus Archiver 2.4.4
 ---------------------
@@ -589,8 +412,3 @@ Plexus Archiver 2.4.4
 [pr-83]: https://github.com/codehaus-plexus/plexus-archiver/pull/83
 [pr-84]: https://github.com/codehaus-plexus/plexus-archiver/pull/84
 [pr-87]: https://github.com/codehaus-plexus/plexus-archiver/pull/87
-
-[io-issue-8]: https://github.com/codehaus-plexus/plexus-io/issues/8
-[io-issue-9]: https://github.com/codehaus-plexus/plexus-io/issues/9
-[io-issue-10]: https://github.com/codehaus-plexus/plexus-io/issues/10
-[io-pr-5]: https://github.com/codehaus-plexus/plexus-io/pull/5
