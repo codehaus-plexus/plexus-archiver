@@ -80,6 +80,15 @@ subject to removal in a future version.
    `commons-compress` to 1.14, `org.tukaani.xz` to 1.6 and
    `com.google.code.findbugs.jsr305` to 3.0.2
 
+Plexus Archiver 3.4.1
+-------------------
+
+### Improvements
+
+ * [Pull Request #87][pr-87] - of Levan Giguashvili (odinn1984)
+   Snyk eng team to fix a possible security issue.
+   (See https://gist.github.com/grnd/eafd7dab7c4cc6197d817a07fa46b2df)
+
 Plexus Archiver 3.4
 -------------------
 
