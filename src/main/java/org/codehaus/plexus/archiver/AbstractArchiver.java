@@ -346,6 +346,7 @@ public abstract class AbstractArchiver
         collection.setCaseSensitive( fileSet.isCaseSensitive() );
         collection.setUsingDefaultExcludes( fileSet.isUsingDefaultExcludes() );
         collection.setStreamTransformer( fileSet.getStreamTransformer() );
+        collection.setFileSuffix( fileSet.getFileSuffix() );
 
         if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 )
         {

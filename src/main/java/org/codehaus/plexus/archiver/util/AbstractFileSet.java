@@ -44,6 +44,8 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
     private boolean includingEmptyDirectories = true;
 
     private InputStreamTransformer streamTransformer = null;
+    
+    private String fileSuffix;
 
     /**
      * Sets a string of patterns, which excluded files
@@ -188,6 +190,17 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
     public InputStreamTransformer getStreamTransformer()
     {
         return streamTransformer;
+    }
+    
+    public void setFileSuffix(String fileSuffix) 
+    {
+        this.fileSuffix = fileSuffix;
+    }
+        
+    @Override
+    public String getFileSuffix() 
+    {
+        return fileSuffix;
     }
 
 }
