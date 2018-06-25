@@ -64,5 +64,10 @@ public interface BaseFileSet
      * @return The transformers.
      */
     InputStreamTransformer getStreamTransformer();
-
+    
+    /**
+     * Returns the suffix
+     */
+    String getFileSuffix();
+    
 }
