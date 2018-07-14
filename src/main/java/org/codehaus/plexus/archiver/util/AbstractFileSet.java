@@ -17,6 +17,7 @@ package org.codehaus.plexus.archiver.util;
 
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.BaseFileSet;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 
@@ -44,6 +45,8 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
     private boolean includingEmptyDirectories = true;
 
     private InputStreamTransformer streamTransformer = null;
+
+    private FileMapper[] fileMappers;
 
     /**
      * Sets a string of patterns, which excluded files
@@ -188,6 +191,21 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
     public InputStreamTransformer getStreamTransformer()
     {
         return streamTransformer;
+    }
+
+    /**
+     * Sets a set of file mappers, which should be used
+     * to change the filename of the included files.
+     */
+    public void setFileMappers( FileMapper[] fileMappers )
+    {
+        this.fileMappers = fileMappers;
+    }
+
+    @Override
+    public FileMapper[] getFileMappers()
+    {
+        return fileMappers;
     }
 
 }
