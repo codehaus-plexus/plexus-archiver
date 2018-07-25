@@ -59,6 +59,8 @@ import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.attributes.SimpleResourceAttributes;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
+import org.codehaus.plexus.components.io.filemappers.PrefixFileMapper;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 import org.codehaus.plexus.components.io.resources.PlexusIoFileResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
@@ -429,6 +431,9 @@ public class ZipArchiverTest
 
         };
         sfd.setStreamTransformer( is );
+        PrefixFileMapper mapper = new PrefixFileMapper();
+        mapper.setPrefix( "prefix" );
+        sfd.setFileMappers( new FileMapper[] { mapper } );
         zipArchiver.addArchivedFileSet( sfd );
         zipArchiver.createArchive();
 
@@ -438,7 +443,7 @@ public class ZipArchiverTest
         zipUnArchiver.setDestFile( destFile );
         zipUnArchiver.extract();
         File a3byteFile = new File( destFile,
-                                    "Users/kristian/lsrc/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/ZipArchiver.java" );
+                                    "prefixUsers/kristian/lsrc/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/ZipArchiver.java" );
         assertTrue( a3byteFile.exists() );
         assertTrue( a3byteFile.length() == 3 );
     }
