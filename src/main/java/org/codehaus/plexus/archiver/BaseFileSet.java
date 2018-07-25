@@ -69,7 +69,7 @@ public interface BaseFileSet
     
     /**
      * Returns a set of file mappers, which should be used
-     * to change the included files.
+     * to change the filename of the included files.
      */
     @CheckForNull
     FileMapper[] getFileMappers();

@@ -738,6 +738,7 @@ public abstract class AbstractArchiver
         proxy.setUsingDefaultExcludes( fileSet.isUsingDefaultExcludes() );
         proxy.setFileSelectors( fileSet.getFileSelectors() );
         proxy.setStreamTransformer( fileSet.getStreamTransformer() );
+        proxy.setFileMappers( fileSet.getFileMappers() );
 
         if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 )
         {

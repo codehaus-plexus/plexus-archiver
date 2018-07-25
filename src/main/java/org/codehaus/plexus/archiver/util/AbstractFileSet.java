@@ -195,7 +195,7 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
     
     /**
      * Sets a set of file mappers, which should be used
-     * to change included files.
+     * to change the filename of the included files.
      */
     public void setFileMappers( FileMapper[] fileMappers )
     {
