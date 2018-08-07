@@ -3,6 +3,7 @@ jdk:
   - openjdk7
   - oraclejdk8
   - oraclejdk9
+  - oraclejdk10
 
 # No need for preliminary install step.
 install: true
