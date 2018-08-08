@@ -77,6 +77,16 @@ public class ZipArchiverTest
     extends BasePlexusArchiverTest
 {
 
+    public void testMajorJavaVersion()
+    {
+        assertEquals( 6, ZipArchiver.majorJavaVersion( "1.6" ) );
+        assertEquals( 7, ZipArchiver.majorJavaVersion( "1.7" ) );
+        assertEquals( 8, ZipArchiver.majorJavaVersion( "1.8" ) );
+        assertEquals( 9, ZipArchiver.majorJavaVersion( "9" ) );
+        assertEquals( 10, ZipArchiver.majorJavaVersion( "10" ) );
+        assertEquals( 10, ZipArchiver.majorJavaVersion( "10.0.2" ) );
+    }
+
     public void testImplicitPermissions()
         throws IOException
     {

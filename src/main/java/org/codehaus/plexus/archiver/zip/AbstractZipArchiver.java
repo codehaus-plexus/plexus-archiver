@@ -136,15 +136,18 @@ public abstract class AbstractZipArchiver
 
     private static int getJavaVersion()
     {
-        String javaSpecVersion = System.getProperty( "java.specification.version" );
-        if ( javaSpecVersion.contains( "." ) )
-        {//before jdk 9
-            return Integer.parseInt( javaSpecVersion.split( "\\." )[1] );
-        }
-        else
+        return majorJavaVersion( System.getProperty( "java.specification.version" ) );
+    }
+
+    static int majorJavaVersion( final String javaSpecVersion )
+    {
+        final String[] components = javaSpecVersion.split( "\\." );
+        final int version = Integer.parseInt( components[0] );
+        if ( version == 1 )
         {
-            return Integer.parseInt( javaSpecVersion );
+            return Integer.parseInt( components[1]  );
         }
+        return version;
     }
 
     public String getComment()
