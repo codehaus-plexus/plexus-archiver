@@ -100,29 +100,6 @@ public abstract class AbstractZipArchiver
      */
     protected boolean addingNewFiles = false;
 
-    /**
-     * Whether the file modification times will be rounded up to the
-     * next even number of seconds.
-     * <p/>
-     * <p>
-     * Zip archives store file modification times with a
-     * granularity of two seconds, so the times will either be rounded
-     * up or down. If you round down, the archive will always seem
-     * out-of-date when you rerun the task, so the default is to round
-     * up. Rounding up may lead to a different type of problems like
-     * JSPs inside a web archive that seem to be slightly more recent
-     * than precompiled pages, rendering precompilation useless.</p>
-     *
-     * <p/>
-     * plexus-archiver chooses to round up.
-     * <p/>
-     * Java versions up to java7 round timestamp down, which means we add a heuristic value (which is slightly
-     * questionable)
-     * Java versions from 8 and up round timestamp up.
-     * s
-     */
-    private static final boolean isJava7OrLower = getJavaVersion() <= 7;
-
     // Renamed version of original file, if it exists
     private File renamedFile = null;
 
@@ -133,19 +110,6 @@ public abstract class AbstractZipArchiver
     private ConcurrentJarCreator zOut;
 
     protected ZipArchiveOutputStream zipArchiveOutputStream;
-
-    private static int getJavaVersion()
-    {
-        String javaSpecVersion = System.getProperty( "java.specification.version" );
-        if ( javaSpecVersion.contains( "." ) )
-        {//before jdk 9
-            return Integer.parseInt( javaSpecVersion.split( "\\." )[1] );
-        }
-        else
-        {
-            return Integer.parseInt( javaSpecVersion );
-        }
-    }
 
     public String getComment()
     {
@@ -569,7 +533,15 @@ public abstract class AbstractZipArchiver
 
     private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
     {
-        zipEntry.setTime( lastModified + ( isJava7OrLower ? 1999 : 0 ) );
+        // Zip archives store file modification times with a
+        // granularity of two seconds, so the times will either be rounded
+        // up or down. If you round down, the archive will always seem
+        // out-of-date when you rerun the task, so the default is to round
+        // up. Rounding up may lead to a different type of problems like
+        // JSPs inside a web archive that seem to be slightly more recent
+        // than precompiled pages, rendering precompilation useless.
+        // plexus-archiver chooses to round up.
+        zipEntry.setTime( lastModified + 1999 );
 
         /*   Consider adding extended file stamp support.....
 

@@ -30,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
@@ -625,6 +627,33 @@ public class ZipArchiverTest
         final ZipFile cmp1 = new ZipFile( zipFile );
         final ZipFile cmp2 = new ZipFile( zipFile2 );
         ArchiveFileComparator.assertEquals( cmp1, cmp2, "" );
+    }
+
+    /*
+     * Zip archives store file modification times with a granularity of two seconds.
+     * Verify that ZipArchiver rounds up the last modified time.
+     */
+    public void testLastModifiedTimeRounding()
+        throws Exception
+    {
+        File oddSecondsTimestampFile = File.createTempFile( "odd-seconds-timestamp", null );
+        oddSecondsTimestampFile.deleteOnExit();
+        // The milliseconds part is set to zero as not all filesystem support timestamp more granular than second.
+        Files.setLastModifiedTime( oddSecondsTimestampFile.toPath(), FileTime.fromMillis( 1534189011_000L ) );
+        File evenSecondsTimestampFile = File.createTempFile( "even-seconds-timestamp", null );
+        evenSecondsTimestampFile.deleteOnExit();
+        Files.setLastModifiedTime( evenSecondsTimestampFile.toPath(), FileTime.fromMillis( 1534189012_000L ) );
+
+        File destFile = getTestFile( "target/output/last-modified-time.zip" );
+        ZipArchiver archiver = getZipArchiver( destFile );
+        archiver.addFile( oddSecondsTimestampFile, "odd-seconds" );
+        archiver.addFile( evenSecondsTimestampFile, "even-seconds" );
+        archiver.createArchive();
+
+        // verify that the last modified time of the entry is equal or newer than the original file
+        ZipFile resultingZipFile = new ZipFile( destFile );
+        assertEquals( 1534189012_000L, resultingZipFile.getEntry( "odd-seconds" ).getTime() );
+        assertEquals( 1534189012_000L, resultingZipFile.getEntry( "even-seconds" ).getTime() );
     }
 
     /*
