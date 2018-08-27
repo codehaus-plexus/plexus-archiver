@@ -45,7 +45,7 @@ public class JarToolModularJarArchiverTest
      * Configures the ModularJarArchiver for the test cases.
      */
     @Before
-    public void ModularJarArchiver()
+    public void setup()
         throws Exception
     {
         File jarFile = new File( "target/output/modular.jar" );
