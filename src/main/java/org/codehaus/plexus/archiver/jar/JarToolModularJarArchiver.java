@@ -18,17 +18,12 @@ package org.codehaus.plexus.archiver.jar;
 
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
-import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
-import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -63,8 +58,6 @@ public class JarToolModularJarArchiver
 
     private boolean moduleDescriptorFound;
 
-    private Path tempDir;
-
     public JarToolModularJarArchiver()
     {
         try
@@ -92,47 +85,15 @@ public class JarToolModularJarArchiver
                             boolean addInParallel )
         throws IOException, ArchiverException
     {
-        // We store the module descriptors in temporary location
-        // and then add it to the JAR file using the JDK jar tool.
-        // It may look strange at first, but to update a JAR file
-        // you need to add new files[1] and the only files
-        //  we're sure that exists in modular JAR file
-        // are the module descriptors.
-        //
-        // [1] There are some exceptions but we need at least one file to
-        // ensure it will work in all cases.
         if ( jarTool != null && isModuleDescriptor( vPath ) )
         {
             getLogger().debug( "Module descriptor found: " + vPath );
 
             moduleDescriptorFound = true;
-
-            // Copy the module descriptor to temporary directory
-            // so later then can be added to the JAR archive
-            // by the jar tool.
-
-            if ( tempDir == null )
-            {
-                tempDir = Files
-                    .createTempDirectory( "plexus-archiver-modular_jar-" );
-                tempDir.toFile().deleteOnExit();
-            }
-
-            File destFile = tempDir.resolve( vPath ).toFile();
-            destFile.getParentFile().mkdirs();
-            destFile.deleteOnExit();
-
-            ResourceUtils.copyFile( is.get(), destFile );
-            ArchiveEntryUtils.chmod( destFile,  mode );
-            destFile.setLastModified( lastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                                                      ? System.currentTimeMillis()
-                                                      : lastModified );
         }
-        else
-        {
-            super.zipFile( is, zOut, vPath, lastModified,
-                fromArchive, mode, symlinkDestination, addInParallel );
-        }
+
+        super.zipFile( is, zOut, vPath, lastModified,
+            fromArchive, mode, symlinkDestination, addInParallel );
     }
 
     @Override
@@ -163,14 +124,10 @@ public class JarToolModularJarArchiver
                     "The JDK jar tool exited with " + result );
             }
         }
-        catch ( ReflectiveOperationException | SecurityException e )
+        catch ( IOException | ReflectiveOperationException | SecurityException e )
         {
             throw new ArchiverException( "Exception occurred " +
                 "while creating modular JAR file", e );
-        }
-        finally
-        {
-            clearTempDirectory();
         }
     }
 
@@ -203,7 +160,20 @@ public class JarToolModularJarArchiver
      * main class, etc.
      */
     private String[] getJarToolArguments()
+        throws IOException
     {
+        // We add empty temporary directory to the JAR file.
+        // It may look strange at first, but to update a JAR file
+        // you need to add new files[1]. If we add empty directory
+        // it will be ignored (not added to the archive), but
+        // the module descriptor will be updated and validated.
+        //
+        // [1] There are some exceptions (such as when the main class
+        // is updated) but we need at least empty directory
+        // to ensure it will work in all cases.
+        File tempEmptyDir = Files.createTempDirectory( null ).toFile();
+        tempEmptyDir.deleteOnExit();
+
         List<String> args = new ArrayList<>();
 
         args.add( "--update" );
@@ -228,29 +198,10 @@ public class JarToolModularJarArchiver
         }
 
         args.add( "-C" );
-        args.add( tempDir.toFile().getAbsolutePath() );
+        args.add( tempEmptyDir.getAbsolutePath() );
         args.add( "." );
 
         return args.toArray( new String[]{} );
-    }
-
-    /**
-     * Makes best effort the clean up
-     * the temporary directory used.
-     */
-    private void clearTempDirectory()
-    {
-        try
-        {
-            if ( tempDir != null )
-            {
-                FileUtils.deleteDirectory( tempDir.toFile() );
-            }
-        }
-        catch ( IOException e )
-        {
-            // Ignore. It is just best effort.
-        }
     }
 
 }
