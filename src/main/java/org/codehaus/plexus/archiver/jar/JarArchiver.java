@@ -319,7 +319,16 @@ public class JarArchiver
                    || super.hasVirtualFiles();
     }
 
-    private Manifest createManifest()
+    /**
+     * Creates the manifest to be added to the JAR archive.
+     * Sub-classes may choose to override this method
+     * in order to inspect or modify the JAR manifest file.
+     *
+     * @return the manifest for the JAR archive.
+     *
+     * @throws ArchiverException
+     */
+    protected Manifest createManifest()
         throws ArchiverException
     {
         Manifest finalManifest = Manifest.getDefaultManifest();
