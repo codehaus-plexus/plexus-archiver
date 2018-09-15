@@ -144,7 +144,7 @@ public class JarToolModularJarArchiver
 
             // the path is a module descriptor if it located
             // into the root of the archive or into the
-            // version are of a multi-release JAR file
+            // version area of a multi-release JAR file
             return prefix.isEmpty() ||
                 MRJAR_VERSION_AREA.matcher( prefix ).matches();
         }
