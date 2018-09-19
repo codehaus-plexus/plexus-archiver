@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
@@ -50,6 +51,8 @@ public abstract class AbstractUnArchiver
     private File sourceFile;
 
     private boolean overwrite = true;
+
+    private FileMapper[] fileMappers;
 
     private List finalizers;
 
@@ -123,6 +126,18 @@ public abstract class AbstractUnArchiver
     public void setOverwrite( final boolean b )
     {
         overwrite = b;
+    }
+
+    @Override
+    public FileMapper[] getFileMappers()
+    {
+        return fileMappers;
+    }
+
+    @Override
+    public void setFileMappers( final FileMapper[] fileMappers )
+    {
+        this.fileMappers = fileMappers;
     }
 
     @Override
@@ -301,10 +316,18 @@ public abstract class AbstractUnArchiver
     }
 
     protected void extractFile( final File srcF, final File dir, final InputStream compressedInputStream,
-                                final String entryName, final Date entryDate, final boolean isDirectory,
-                                final Integer mode, String symlinkDestination )
+                                String entryName, final Date entryDate, final boolean isDirectory,
+                                final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
         throws IOException, ArchiverException
     {
+        if ( fileMappers != null )
+        {
+            for ( final FileMapper fileMapper : fileMappers )
+            {
+                entryName = fileMapper.getMappedFileName( entryName );
+            }
+        }
+
         // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
         final File f = FileUtils.resolveFile( dir, entryName );
 

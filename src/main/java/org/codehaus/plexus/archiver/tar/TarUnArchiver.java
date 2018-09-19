@@ -29,6 +29,7 @@ import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.util.IOUtil;
 import org.iq80.snappy.SnappyInputStream;
 
@@ -84,16 +85,16 @@ public class TarUnArchiver
     protected void execute()
         throws ArchiverException
     {
-        execute( getSourceFile(), getDestDirectory() );
+        execute( getSourceFile(), getDestDirectory(), getFileMappers() );
     }
 
     @Override
     protected void execute( String path, File outputDirectory )
     {
-        execute( new File( path ), getDestDirectory() );
+        execute( new File( path ), getDestDirectory(), getFileMappers() );
     }
 
-    protected void execute( File sourceFile, File destDirectory )
+    protected void execute( File sourceFile, File destDirectory, FileMapper[] fileMappers )
         throws ArchiverException
     {
         TarArchiveInputStream tis = null;
@@ -111,7 +112,7 @@ public class TarUnArchiver
                 {
                     final String symlinkDestination = te.isSymbolicLink() ? te.getLinkName() : null;
                     extractFile( sourceFile, destDirectory, tis, te.getName(), te.getModTime(), te.isDirectory(),
-                                 te.getMode() != 0 ? te.getMode() : null, symlinkDestination );
+                                 te.getMode() != 0 ? te.getMode() : null, symlinkDestination, fileMappers );
 
                 }
             }

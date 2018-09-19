@@ -17,6 +17,7 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
 public interface UnArchiver
@@ -71,6 +72,25 @@ public interface UnArchiver
      * Should we overwrite files in dest, even if they are newer than the corresponding entries in the archive?
      */
     void setOverwrite( boolean b );
+
+    /**
+     * Get chain of components which rewrite the target path of each unpacked file.
+     *
+     * @return {@link FileMapper}s to be used for rewriting each target path, or {@code null} if no rewriting shall happen.
+     *
+     * @since 3.7.0
+     */
+    FileMapper[] getFileMappers();
+
+    /***
+     * Sets chain of components to be used for rewriting target path of each unpacked file.
+     *
+     * @param fileMappers {@link FileMapper} to be used for rewriting each target path, or {@code null} if no
+     * rewriting shall happen.
+     *
+     * @since 3.7.0
+     */
+    void setFileMappers( FileMapper[] fileMappers );
 
     /**
      * Sets a set of {@link FileSelector} instances, which may be used to select the files to extract from the archive.
