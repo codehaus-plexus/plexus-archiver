@@ -30,6 +30,7 @@ import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.utils.IOUtils;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
 /**
@@ -178,7 +179,7 @@ public abstract class AbstractZipUnArchiver
                     extractFileIfIncluded( getSourceFile(), getDestDirectory(), in, fileInfo.getName(),
                                            new Date( ze.getTime() ), ze.isDirectory(),
                                            ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                           resolveSymlink( zf, ze ) );
+                                           resolveSymlink( zf, ze ), getFileMappers() );
 
                     in.close();
                     in = null;
@@ -216,10 +217,10 @@ public abstract class AbstractZipUnArchiver
 
     private void extractFileIfIncluded( final File sourceFile, final File destDirectory, final InputStream inputStream,
                                         final String name, final Date time, final boolean isDirectory,
-                                        final Integer mode, String symlinkDestination )
+                                        final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
         throws IOException, ArchiverException
     {
-        extractFile( sourceFile, destDirectory, inputStream, name, time, isDirectory, mode, symlinkDestination );
+        extractFile( sourceFile, destDirectory, inputStream, name, time, isDirectory, mode, symlinkDestination, fileMappers );
     }
 
     @Override
@@ -250,7 +251,7 @@ public abstract class AbstractZipUnArchiver
                     extractFileIfIncluded( getSourceFile(), outputDirectory, in,
                                            ze.getName(), new Date( ze.getTime() ), ze.isDirectory(),
                                            ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                           resolveSymlink( zipFile, ze ) );
+                                           resolveSymlink( zipFile, ze ), getFileMappers() );
 
                     in.close();
                     in = null;
