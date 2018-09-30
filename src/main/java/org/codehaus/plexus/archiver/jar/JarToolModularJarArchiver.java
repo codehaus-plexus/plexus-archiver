@@ -180,10 +180,14 @@ public class JarToolModularJarArchiver
         args.add( "--file" );
         args.add( getDestFile().getAbsolutePath() );
 
-        if ( getModuleMainClass() != null )
+        String mainClass = getModuleMainClass() != null
+                           ? getModuleMainClass()
+                           : getManifestMainClass();
+
+        if ( mainClass != null )
         {
             args.add( "--main-class" );
-            args.add( getModuleMainClass() );
+            args.add( mainClass );
         }
 
         if ( getModuleVersion() != null )

@@ -30,8 +30,7 @@ import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
 
@@ -74,6 +73,57 @@ public class JarToolModularJarArchiverTest
         // verify that the proper version and main class are set
         assertModularJarFile( archiver.getDestFile(),
             "1.0.0", "com.example.app.Main", "com.example.app", "com.example.resources" );
+    }
+
+    /*
+     * Verify that when both module main class is set and the
+     * manifest contains main class atribute, the manifest
+     * value is overridden
+     */
+    @Test
+    public void testModularJarWithManifestAndModuleMainClass()
+        throws Exception
+    {
+        assumeTrue( modulesAreSupported() );
+
+        archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
+        Manifest manifest = new Manifest();
+        manifest.addConfiguredAttribute(
+            new Manifest.Attribute( "Main-Class", "com.example.app.Main2" ) );
+        archiver.addConfiguredManifest( manifest );
+        archiver.setModuleMainClass( "com.example.app.Main" );
+
+        archiver.createArchive();
+
+        // Verify that the explicitly set module main class
+        // overrides the manifest main
+        assertModularJarFile( archiver.getDestFile(),
+            null, "com.example.app.Main", "com.example.app", "com.example.resources" );
+        assertManifestMainClass( archiver.getDestFile(), "com.example.app.Main" );
+    }
+
+    /**
+     * Verify that when the module main class is not explicitly set,
+     * the manifest main class attribute (if present) is used instead
+     */
+    @Test
+    public void testModularJarWithManifestMainClassAttribute()
+        throws Exception
+    {
+        assumeTrue( modulesAreSupported() );
+
+        archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
+        Manifest manifest = new Manifest();
+        manifest.addConfiguredAttribute(
+            new Manifest.Attribute( "Main-Class", "com.example.app.Main2" ) );
+        archiver.addConfiguredManifest( manifest );
+
+        archiver.createArchive();
+
+        // Verify that the the manifest main class attribute is used as module main class
+        assertModularJarFile( archiver.getDestFile(),
+            null, "com.example.app.Main2", "com.example.app", "com.example.resources" );
+        assertManifestMainClass( archiver.getDestFile(), "com.example.app.Main2" );
     }
 
     /*
@@ -286,6 +336,23 @@ public class JarToolModularJarArchiverTest
         assertEquals( expectedMainClass, actualMainClass );
         assertEquals( expectedVersion, actualVersion );
         assertEquals( expectedPackagesSet, actualPackagesSet );
+    }
+
+    private void assertManifestMainClass( File jarFile, String expectedMainClass )
+        throws Exception
+    {
+        try ( ZipFile resultingArchive = new ZipFile( jarFile ) )
+        {
+            ZipEntry manifestEntry = resultingArchive.getEntry( "META-INF/MANIFEST.MF" );
+            InputStream manifestInputStream = resultingArchive.getInputStream( manifestEntry );
+
+            // Get the manifest main class attribute
+            Manifest manifest = new Manifest( manifestInputStream );
+            String actualManifestMainClass = manifest.getMainAttributes().getValue( "Main-Class" );
+
+            assertEquals( expectedMainClass, actualManifestMainClass );
+        }
+
     }
 
     /*

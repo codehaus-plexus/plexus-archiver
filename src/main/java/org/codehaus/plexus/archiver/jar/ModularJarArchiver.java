@@ -27,12 +27,21 @@ package org.codehaus.plexus.archiver.jar;
  * they are going to add are part of module
  * (contain module descriptor class) or not.
  *
+ * <p>The class allows you to set the
+ * module main class ({@link #setModuleMainClass(String)}),
+ * but if it is not set or it is set to {@code null},
+ * then the {@code Main-Class} attribute of the
+ * JAR manifest is used (if present) to set
+ * the module main class.
+ *
  * @since 3.6
  */
 public abstract class ModularJarArchiver
     extends JarArchiver
 {
     private String moduleMainClass;
+
+    private String manifestMainClass;
 
     private String moduleVersion;
 
@@ -73,4 +82,41 @@ public abstract class ModularJarArchiver
         this.moduleVersion = moduleVersion;
     }
 
+    /**
+     * Returns the "Main-Class" attribute of the
+     * manifest added to the archive.
+     *
+     * {@code null} if there is no manifest
+     * or the attribute is not set.
+     *
+     * @return the "Main-Class" attribute of the manifest
+     */
+    protected String getManifestMainClass()
+    {
+        return manifestMainClass;
+    }
+
+    @Override
+    protected Manifest createManifest()
+    {
+        Manifest manifest = super.createManifest();
+
+        if ( manifest != null )
+        {
+            manifestMainClass = manifest.getMainAttributes()
+                .getValue( "Main-Class" );
+        }
+
+        return manifest;
+    }
+
+    @Override
+    public void reset()
+    {
+        // We want to be sure that on multiple run
+        // the latest manifest is used, so lets
+        // reset it to null
+        manifestMainClass = null;
+        super.reset();
+    }
 }
