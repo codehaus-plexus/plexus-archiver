@@ -36,16 +36,16 @@ import org.codehaus.plexus.archiver.ArchiverException;
 
 /**
  * Holds the data of a jar manifest.
- * <p/>
+ * <p>
  * Manifests are processed according to the
- * {@link <a href="http://java.sun.com/j2se/1.4/docs/guide/jar/jar.html">Jar
- * file specification.</a>}.
+ * <a href="http://java.sun.com/j2se/1.4/docs/guide/jar/jar.html">Jar
+ * file specification.</a>
  * Specifically, a manifest element consists of
  * a set of attributes and sections. These sections in turn may contain
  * attributes. Note in particular that this may result in manifest lines
  * greater than 72 bytes (including line break) being wrapped and continued
  * on the next line. If an application can not handle the continuation
- * mechanism, it is a defect in the application, not this task.
+ * mechanism, it is a defect in the application, not this task.</p>
  *
  * @since Ant 1.4
  */

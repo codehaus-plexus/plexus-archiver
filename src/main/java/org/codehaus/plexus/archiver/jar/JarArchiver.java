@@ -264,9 +264,9 @@ public class JarArchiver
      * other specified manifests.
      * "mergewithoutmain" merges everything but the Main section of the manifests.
      * Default value is "skip".
-     * <p/>
+     * <p>
      * Note: if this attribute's value is not "skip", the created jar will not
-     * be readable by using java.util.jar.JarInputStream
+     * be readable by using java.util.jar.JarInputStream</p>
      *
      * @param config setting for found manifest behavior.
      */
@@ -692,18 +692,15 @@ public class JarArchiver
 
     /**
      * try to guess the name of the given file.
-     * <p/>
      * <p>
      * If this jar has a classpath attribute in its manifest, we
      * can assume that it will only require an index of jars listed
      * there. try to find which classpath entry is most likely the
      * one the given file name points to.</p>
-     * <p/>
      * <p>
      * In the absence of a classpath attribute, assume the other
      * files will be placed inside the same directory as this jar and
      * use their basename.</p>
-     * <p/>
      * <p>
      * if there is a classpath and the given file doesn't match any
      * of its entries, return null.</p>

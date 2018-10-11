@@ -56,7 +56,7 @@ public class TarUnArchiver
 
     /**
      * Set decompression algorithm to use; default=none.
-     * <p/>
+     * <p>
      * Allowable values are
      * <ul>
      * <li>none - no compression</li>
@@ -65,6 +65,7 @@ public class TarUnArchiver
      * <li>snappy - Snappy compression</li>
      * <li>xz - Xz compression</li>
      * </ul>
+     * </p>
      *
      * @param method compression method
      */

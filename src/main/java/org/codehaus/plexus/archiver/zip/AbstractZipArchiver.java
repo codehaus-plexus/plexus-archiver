@@ -480,7 +480,6 @@ public abstract class AbstractZipArchiver
 
     /**
      * Method that gets called when adding from java.io.File instances.
-     * <p/>
      * <p>
      * This implementation delegates to the six-arg version.</p>
      *
@@ -694,11 +693,9 @@ public abstract class AbstractZipArchiver
 
     /**
      * Do any clean up necessary to allow this instance to be used again.
-     * <p/>
      * <p>
      * When we get here, the Zip file has been closed and all we
      * need to do is to reset some globals.</p>
-     * <p/>
      * <p>
      * This method will only reset globals that have been changed
      * during execute(), it will not alter the attributes or nested

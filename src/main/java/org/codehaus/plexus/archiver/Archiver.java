@@ -353,13 +353,13 @@ public interface Archiver
     String getDuplicateBehavior();
 
     /**
-     * Set the behavior of this archiver when duplicate files are detected. One of: <br/>
+     * Set the behavior of this archiver when duplicate files are detected. One of: <br>
      * <ul>
      * <li>add - Add the duplicates to the archive as duplicate entries</li>
      * <li>skip/preserve - Leave the first entry encountered in the archive, skip the new one</li>
      * <li>fail - throw an {@link ArchiverException}</li>
      * </ul>
-     * <br/>
+     * <br>
      * See {@link Archiver#DUPLICATES_ADD}, {@link Archiver#DUPLICATES_SKIP}, {@link Archiver#DUPLICATES_PRESERVE},
      * {@link Archiver#DUPLICATES_FAIL}.
      */

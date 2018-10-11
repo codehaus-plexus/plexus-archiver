@@ -55,7 +55,6 @@ public abstract class AbstractZipUnArchiver
 
     /**
      * Sets the encoding to assume for file names and comments.
-     * <p/>
      * <p>
      * Set to <code>native-encoding</code> if you want your platform's native encoding, defaults to UTF8.
      * </p>

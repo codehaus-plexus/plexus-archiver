@@ -86,11 +86,11 @@ public class ConcurrentJarCreator
 
     /**
      * Creates a new {@code ConcurrentJarCreator} instance.
-     * <p/>
-     * {@code ConcurrentJarCreator} creates zip files using several concurrent threads.
-     * <p/>
+     * <p>
+     * {@code ConcurrentJarCreator} creates zip files using several concurrent threads.</p>
+     * <p>
      * This constructor has the same effect as
-     * {@link #ConcurrentJarCreator(boolean, int) ConcurrentJarCreator(true, nThreads) }
+     * {@link #ConcurrentJarCreator(boolean, int) ConcurrentJarCreator(true, nThreads) }</p>
      *
      * @param nThreads The number of concurrent thread used to create the archive
      *
@@ -103,9 +103,9 @@ public class ConcurrentJarCreator
 
     /**
      * Creates a new {@code ConcurrentJarCreator} instance.
-     * <p/>
+     * <p>
      * {@code ConcurrentJarCreator} creates zip files using several concurrent threads.
-     * Entries that are already zip file could be just stored or compressed again.
+     * Entries that are already zip file could be just stored or compressed again.</p>
      *
      * @param compressAddedZips Indicates if entries that are zip files should be compressed.
      *                          If set to {@code false} entries that are zip files will be added using
@@ -134,8 +134,8 @@ public class ConcurrentJarCreator
 
     /**
      * Adds an archive entry to this archive.
-     * <p/>
-     * This method is expected to be called from a single client thread
+     * <p>
+     * This method is expected to be called from a single client thread</p>
      *
      * @param zipArchiveEntry The entry to add. Compression method
      * @param source The source input stream supplier

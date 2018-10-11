@@ -64,7 +64,7 @@ public class TarArchiver
     /**
      * Set how to handle long files, those with a path&gt;100 chars.
      * Optional, default=warn.
-     * <p/>
+     * <p>
      * Allowable values are
      * <ul>
      * <li> truncate - paths are truncated to the maximum length
@@ -75,6 +75,7 @@ public class TarArchiver
      * <li> posixwarn - posix extensions are used (with warning) for any paths greater than the maximum.
      * <li> omit - paths greater than the maximum are omitted from the archive
      * </ul>
+     * </p>
      *
      * @param mode the mode to handle long file names.
      */

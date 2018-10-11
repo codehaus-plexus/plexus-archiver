@@ -35,9 +35,10 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
+// TODO there should really be constructors which take the source file.
+
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
- * @todo there should really be constructors which take the source file.
  */
 public abstract class AbstractUnArchiver
     extends AbstractLogEnabled

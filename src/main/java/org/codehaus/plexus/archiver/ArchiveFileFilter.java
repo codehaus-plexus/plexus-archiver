@@ -1,5 +1,7 @@
 package org.codehaus.plexus.archiver;
 
+import org.codehaus.plexus.components.io.fileselectors.FileSelector;
+
 import java.io.InputStream;
 
 /**
