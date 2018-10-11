@@ -65,17 +65,16 @@ public class TarArchiver
      * Set how to handle long files, those with a path&gt;100 chars.
      * Optional, default=warn.
      * <p>
-     * Allowable values are
+     * Allowable values are </p>
      * <ul>
-     * <li> truncate - paths are truncated to the maximum length
-     * <li> fail - paths greater than the maximum cause a build exception
-     * <li> warn - paths greater than the maximum cause a warning and GNU is used
-     * <li> gnu - GNU extensions are used for any paths greater than the maximum.
-     * <li> posix - posix extensions are used for any paths greater than the maximum.
-     * <li> posixwarn - posix extensions are used (with warning) for any paths greater than the maximum.
-     * <li> omit - paths greater than the maximum are omitted from the archive
+     * <li> truncate - paths are truncated to the maximum length </li>
+     * <li> fail - paths greater than the maximum cause a build exception </li>
+     * <li> warn - paths greater than the maximum cause a warning and GNU is used </li>
+     * <li> gnu - GNU extensions are used for any paths greater than the maximum. </li>
+     * <li> posix - posix extensions are used for any paths greater than the maximum. </li>
+     * <li> posixwarn - posix extensions are used (with warning) for any paths greater than the maximum. </li>
+     * <li> omit - paths greater than the maximum are omitted from the archive </li>
      * </ul>
-     * </p>
      *
      * @param mode the mode to handle long file names.
      */
