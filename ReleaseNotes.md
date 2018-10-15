@@ -1,6 +1,41 @@
 Plexus Archiver Release Notes
 ========================================================================
 
+Plexus Archiver 3.7.0
+---------------------
+
+Plexus Archiver 3.7.0 requires Java 7.
+
+### New Features
+ * [Pull Request #92][pr-92] - `BaseFileSet` now accepts an array of
+ `FileMapper` instances, allowing the name and/or the path of
+ entries in the archive to be modified. Thanks to Thomas Collignon.
+ * [Pull Request #100][pr-100] - `UnArchiver` now accepts an array of
+ `FileMapper` instances, allowing the name and/or the path of the
+ extracted entries to be modified. Thanks to Markus Karg.
+
+
+### Improvements
+
+ * [Issue #98][issue-98] - Now `JarToolModularJarArchiver` does not copy
+ the module descriptors (`module-info.class`) to temporary location.
+ It adds them directly to the JAR archive.
+ * [Issue #101][issue-101], [Pull Request #102][pr-102] - Now `ModularJarArchiver`
+ implementations will use the JAR file manifest `Main-Class` attribute
+ as module main class if one is not excellently set.
+
+### Bugs
+
+ * [Issue #95][issue-95] - Fixed ZIP entries last modification time
+ rounded down on Java 8 or later
+ * [Issue #97][issue-97] - Fixed `module-info.class` not being added
+ to the modular JAR index file.
+
+### Tasks
+
+ * [Issue #103][issue-103], [Issue #104][issue-104] - Updated dependencies:
+ `commons-compress` to 1.19 and `plexus-io` to 3.1.0.
+
 Plexus Archiver 3.6.0
 ---------------------
 
@@ -410,6 +445,12 @@ Plexus Archiver 2.4.4
 [issue-79]: https://github.com/codehaus-plexus/plexus-archiver/issues/79
 [issue-85]: https://github.com/codehaus-plexus/plexus-archiver/issues/85
 [issue-86]: https://github.com/codehaus-plexus/plexus-archiver/issues/86
+[issue-95]: https://github.com/codehaus-plexus/plexus-archiver/issues/95
+[issue-97]: https://github.com/codehaus-plexus/plexus-archiver/issues/97
+[issue-98]: https://github.com/codehaus-plexus/plexus-archiver/issues/98
+[issue-101]: https://github.com/codehaus-plexus/plexus-archiver/issues/101
+[issue-103]: https://github.com/codehaus-plexus/plexus-archiver/issues/103
+[issue-104]: https://github.com/codehaus-plexus/plexus-archiver/issues/104
 [pr-26]: https://github.com/codehaus-plexus/plexus-archiver/issues/26
 [pr-27]: https://github.com/codehaus-plexus/plexus-archiver/issues/27
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
@@ -421,3 +462,6 @@ Plexus Archiver 2.4.4
 [pr-83]: https://github.com/codehaus-plexus/plexus-archiver/pull/83
 [pr-84]: https://github.com/codehaus-plexus/plexus-archiver/pull/84
 [pr-87]: https://github.com/codehaus-plexus/plexus-archiver/pull/87
+[pr-92]: https://github.com/codehaus-plexus/plexus-archiver/pull/92
+[pr-100]: https://github.com/codehaus-plexus/plexus-archiver/pull/100
+[pr-102]: https://github.com/codehaus-plexus/plexus-archiver/pull/102
