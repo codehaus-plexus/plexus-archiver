@@ -34,7 +34,7 @@ Plexus Archiver 3.7.0 requires Java 7.
 ### Tasks
 
  * [Issue #103][issue-103], [Issue #104][issue-104] - Updated dependencies:
- `commons-compress` to 1.19 and `plexus-io` to 3.1.0.
+ `commons-compress` to 1.18 and `plexus-io` to 3.1.0.
 
 Plexus Archiver 3.6.0
 ---------------------
