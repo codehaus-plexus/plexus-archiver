@@ -755,29 +755,45 @@ public class Manifest
     /**
      * Construct a manifest from Ant's default manifest file.
      *
+     * @param minimalDefaultManifest
+     *            indicates whether a minimal manifest will be created, thus having only
+     *            {@code Manifest-Version: 1.0} in it.
+     *
      * @return the default manifest.
      *
-     * @throws ArchiverException if there is a problem loading the
-     * default manifest
+     * @throws ArchiverException
+     *             if there is a problem loading the default manifest
      */
-    public static Manifest getDefaultManifest()
+    public static Manifest getDefaultManifest( boolean minimalDefaultManifest )
         throws ArchiverException
     {
         final Manifest defaultManifest = new Manifest();
         defaultManifest.getMainAttributes().putValue( "Manifest-Version", "1.0" );
 
-        String createdBy = "Plexus Archiver";
-
-        final String plexusArchiverVersion = JdkManifestFactory.getArchiverVersion();
-
-        if ( plexusArchiverVersion != null )
+        if ( !minimalDefaultManifest )
         {
-            createdBy += " " + plexusArchiverVersion;
+            String createdBy = "Plexus Archiver";
+
+            final String plexusArchiverVersion = JdkManifestFactory.getArchiverVersion();
+
+            if ( plexusArchiverVersion != null )
+            {
+                createdBy += " " + plexusArchiverVersion;
+            }
+
+            defaultManifest.getMainAttributes().putValue( "Created-By", createdBy );
         }
 
-        defaultManifest.getMainAttributes().putValue( "Created-By", createdBy );
-
         return defaultManifest;
+    }
+
+    /**
+     * @see #getDefaultManifest(boolean)
+     */
+    public static Manifest getDefaultManifest()
+        throws ArchiverException
+    {
+        return getDefaultManifest( false );
     }
 
     /**
