@@ -145,6 +145,11 @@ public class JarArchiver
     private ArrayList<String> indexJars;
 
     /**
+     * Creates a minimal default manifest with {@code Manifest-Version: 1.0} only.
+     */
+    private boolean minimalDefaultManifest = false;
+
+    /**
      * constructor
      */
     public JarArchiver()
@@ -164,6 +169,15 @@ public class JarArchiver
     public void setIndex( boolean flag )
     {
         index = flag;
+    }
+
+    /**
+     * Set whether the default manifest is minimal, thus having only {@code Manifest-Version: 1.0} in it.
+     *
+     * @param minimalDefaultManifest true to create minimal default manifest
+     */
+    public void setMinimalDefaultManifest( boolean minimalDefaultManifest ) {
+        this.minimalDefaultManifest = minimalDefaultManifest;
     }
 
     @SuppressWarnings(
@@ -331,7 +345,7 @@ public class JarArchiver
     protected Manifest createManifest()
         throws ArchiverException
     {
-        Manifest finalManifest = Manifest.getDefaultManifest();
+        Manifest finalManifest = Manifest.getDefaultManifest( minimalDefaultManifest );
 
         if ( ( manifest == null ) && ( manifestFile != null ) )
         {

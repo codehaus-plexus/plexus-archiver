@@ -220,6 +220,11 @@ public class ManifestTest
         assertEquals( 2, mainAttributes.size() );
         assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Manifest-Version" ) ) );
         assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Created-By" ) ) );
+
+        mf = Manifest.getDefaultManifest( true );
+        mainAttributes = mf.getMainAttributes();
+        assertEquals( 1, mainAttributes.size() );
+        assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Manifest-Version" ) ) );
     }
 
     public void checkMultiLineAttribute( String in, String expected )
