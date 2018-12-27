@@ -1,6 +1,27 @@
 Plexus Archiver Release Notes
 ========================================================================
 
+Plexus Archiver 4.0.0
+---------------------
+
+**NOTE:** Because 3.7.0 introduced backward incompatible changes
+in the API (new methods in interfaces) we bumped the Plexus Archiver
+version to 4.0.0.
+
+Plexus Archiver 4.0.0 requires Java 7.
+
+### Improvements
+ * [Issue #105][issue-105] - Fixed performance regression introduced
+ in Plexus Archiver 3.0.2. Affected are systems where the retrieval of
+ a file's user and group attributes is costly operation.
+ * [Pull Request #106][pr-106] - `PlexusIoZipFileResourceCollection`
+ performance is improved when working with signed Jar files.
+
+### Tasks
+
+ * [Issue #108][issue-108], [Issue #109][issue-109] - Updated dependencies:
+ `plexus-io` to 3.1.1 and `plexus-utils` to 3.1.1.
+
 Plexus Archiver 3.7.0
 ---------------------
 
@@ -451,6 +472,9 @@ Plexus Archiver 2.4.4
 [issue-101]: https://github.com/codehaus-plexus/plexus-archiver/issues/101
 [issue-103]: https://github.com/codehaus-plexus/plexus-archiver/issues/103
 [issue-104]: https://github.com/codehaus-plexus/plexus-archiver/issues/104
+[issue-105]: https://github.com/codehaus-plexus/plexus-archiver/issues/105
+[issue-108]: https://github.com/codehaus-plexus/plexus-archiver/issues/108
+[issue-109]: https://github.com/codehaus-plexus/plexus-archiver/issues/109
 [pr-26]: https://github.com/codehaus-plexus/plexus-archiver/issues/26
 [pr-27]: https://github.com/codehaus-plexus/plexus-archiver/issues/27
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
@@ -465,3 +489,4 @@ Plexus Archiver 2.4.4
 [pr-92]: https://github.com/codehaus-plexus/plexus-archiver/pull/92
 [pr-100]: https://github.com/codehaus-plexus/plexus-archiver/pull/100
 [pr-102]: https://github.com/codehaus-plexus/plexus-archiver/pull/102
+[pr-106]: https://github.com/codehaus-plexus/plexus-archiver/pull/106
