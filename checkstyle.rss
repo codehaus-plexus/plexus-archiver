@@ -23,11 +23,11 @@ under the License.
     <link>http://codehaus-plexus.github.io/plexus-archiver/</link>
     <description>Plexus Archiver Component - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2001 - 2018 Codehaus Plexus</copyright>
+    <copyright>&#169;2001 - 2019 Codehaus Plexus</copyright>
     <item>
       <title>File: 100,
-             Errors: 195,
-             Warnings: 404,
+             Errors: 196,
+             Warnings: 406,
              Infos: 48
       </title>
             <link>http://codehaus-plexus.github.io/plexus-archiver//checkstyle.html</link>
@@ -349,7 +349,7 @@ under the License.
                   5
                 </td>
                 <td>
-                  3
+                  4
                 </td>
               </tr>
                           <tr>
@@ -416,7 +416,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  10
+                  12
                 </td>
                 <td>
                   4
