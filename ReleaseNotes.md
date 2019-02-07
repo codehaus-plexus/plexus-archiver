@@ -1,6 +1,14 @@
 Plexus Archiver Release Notes
 ========================================================================
 
+
+Plexus Archiver 4.1.0
+---------------------
+
+### Improvements
+
+ * [Issue #110][issue-110] - Add option to omit "Created-By" manifest entry.
+
 Plexus Archiver 4.0.0
 ---------------------
 
@@ -475,6 +483,7 @@ Plexus Archiver 2.4.4
 [issue-105]: https://github.com/codehaus-plexus/plexus-archiver/issues/105
 [issue-108]: https://github.com/codehaus-plexus/plexus-archiver/issues/108
 [issue-109]: https://github.com/codehaus-plexus/plexus-archiver/issues/109
+[issue-110]: https://github.com/codehaus-plexus/plexus-archiver/issues/110
 [pr-26]: https://github.com/codehaus-plexus/plexus-archiver/issues/26
 [pr-27]: https://github.com/codehaus-plexus/plexus-archiver/issues/27
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
