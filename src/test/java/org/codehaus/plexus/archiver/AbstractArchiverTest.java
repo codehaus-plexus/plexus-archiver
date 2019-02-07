@@ -1,5 +1,6 @@
 package org.codehaus.plexus.archiver;
 
+import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
 
@@ -87,6 +88,10 @@ public class AbstractArchiverTest extends TestCase
         archiver.setDirectoryMode( 0600 );
         archiver.setDirectoryMode( -1 );
         assertEquals( -1, archiver.getOverrideDirectoryMode() );
+    }
+
+    public void testSetDestFileInTheWorkingDir() {
+        archiver.setDestFile( new File( "archive" ) );
     }
 
 }

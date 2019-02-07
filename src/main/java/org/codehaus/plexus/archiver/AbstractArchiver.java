@@ -669,7 +669,7 @@ public abstract class AbstractArchiver
     {
         this.destFile = destFile;
 
-        if ( destFile != null )
+        if ( destFile != null && destFile.getParentFile() != null )
         {
             destFile.getParentFile().mkdirs();
         }
