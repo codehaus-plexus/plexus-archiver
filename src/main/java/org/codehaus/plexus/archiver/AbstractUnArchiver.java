@@ -343,9 +343,17 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( !isOverwrite() && f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
+            if ( !isOverwrite() && f.exists() )
             {
-                return;
+                final File entryFile = FileUtils.getFile( entryName );
+                if ( !StringUtils.equals( canonicalDestPath, entryFile.getAbsolutePath() ) )
+                {
+                    throw new ArchiverException( "Duplicate files (" + canonicalDestPath + "," + entryFile.getAbsolutePath() + ")" );
+                }
+                else if ( f.lastModified() >= entryDate.getTime() )
+                {
+                    return;
+                }
             }
 
             // create intermediary directories - sometimes zip don't add them
