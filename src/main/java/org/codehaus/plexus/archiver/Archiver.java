@@ -394,4 +394,24 @@ public interface Archiver
      */
     void setIgnorePermissions( final boolean ignorePermissions );
 
+    /**
+     * @since 4.1
+     * @return date provider for filling date of entries
+     */
+    public ArchiveEntryDateProvider getEntryDateProvider();
+
+    /**
+     * @since 4.1
+     * @param archiveEntriesDateProvider date provider for filling date of entries
+     */
+    public void setEntryDateProvider( ArchiveEntryDateProvider entryDateProvider );
+
+    /**
+     * helper for <code>getEntryDateProvider().getEntryArchiveDate( resource )</code>
+     * @since 4.1
+     * @param resource resource to get date for
+     * @return date for resource
+     */
+    public long archiveDateForEntry( PlexusIoResource resource );
+
 }

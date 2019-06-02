@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.ArchiveEntry;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProvider;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -41,6 +42,12 @@ public class NoOpArchiver implements Archiver
 
     private boolean ignorePermissions;
 
+    private ArchiveEntryDateProvider entryDateProvider;
+
+    private ArchiveEntryDateProvider nonExistingEntryDateProvider;
+
+    private ArchiveEntryDateProvider generatedEntryDateProvider;
+    
     @Override
     public void createArchive()
         throws ArchiverException, IOException
@@ -344,6 +351,24 @@ public class NoOpArchiver implements Archiver
     public void setIgnorePermissions( boolean ignorePermissions )
     {
         this.ignorePermissions = ignorePermissions;
+    }
+
+    @Override
+    public ArchiveEntryDateProvider getEntryDateProvider()
+    {
+        return entryDateProvider;
+    }
+
+    @Override
+    public void setEntryDateProvider( ArchiveEntryDateProvider entryDateProvider )
+    {
+        this.entryDateProvider = entryDateProvider;
+    }
+
+    @Override
+    public long archiveDateForEntry( PlexusIoResource resource )
+    {
+        return entryDateProvider.getEntryArchiveDate( resource );
     }
 
 }

@@ -39,8 +39,10 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.util.InMemoryPlexusIoResource;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
+import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.util.IOUtil;
@@ -386,7 +388,10 @@ public class JarArchiver
         manifest.write( baos );
 
         ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
-        super.zipFile( createInputStreamSupplier( bais ), zOut, MANIFEST_NAME, System.currentTimeMillis(), null,
+        PlexusIoResource ioResource = new InMemoryPlexusIoResource( MANIFEST_NAME,
+                                                                    System.currentTimeMillis(), baos.size(), true, false, true );
+        long manifestEntryDate = getEntryDateProvider().getEntryArchiveDate( ioResource );
+        super.zipFile( createInputStreamSupplier( bais ), zOut, MANIFEST_NAME, manifestEntryDate, null,
                        DEFAULT_FILE_MODE, null, false );
         super.initZipOutputStream( zOut );
     }
@@ -490,7 +495,10 @@ public class JarArchiver
 
         ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
 
-        super.zipFile( createInputStreamSupplier( bais ), zOut, INDEX_NAME, System.currentTimeMillis(), null,
+        PlexusIoResource ioResource = new InMemoryPlexusIoResource( INDEX_NAME,
+                                                                    System.currentTimeMillis(), baos.size(), true, false, true );
+        long indexEntryDate = getEntryDateProvider().getEntryArchiveDate( ioResource );
+        super.zipFile( createInputStreamSupplier( bais ), zOut, INDEX_NAME, indexEntryDate, null,
                        DEFAULT_FILE_MODE, null, true );
     }
 
@@ -499,7 +507,7 @@ public class JarArchiver
      */
     @Override
     protected void zipFile( InputStreamSupplier is, ConcurrentJarCreator zOut, String vPath,
-                            long lastModified, File fromArchive,
+                            long archiveEntryDate, File fromArchive,
                             int mode, String symlinkDestination, boolean addInParallel )
         throws IOException, ArchiverException
     {
@@ -524,7 +532,7 @@ public class JarArchiver
             {
                 rootEntries.addElement( vPath );
             }
-            super.zipFile( is, zOut, vPath, lastModified, fromArchive, mode, symlinkDestination, addInParallel );
+            super.zipFile( is, zOut, vPath, archiveEntryDate, fromArchive, mode, symlinkDestination, addInParallel );
         }
     }
 

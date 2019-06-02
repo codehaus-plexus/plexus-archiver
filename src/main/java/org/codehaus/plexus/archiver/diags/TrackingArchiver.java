@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.ArchiveEntry;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProvider;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProviders;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -51,6 +53,12 @@ public class TrackingArchiver
     private boolean useJvmChmod;
 
     private boolean ignorePermissions;
+
+    /**
+     * hook for providing alternative date for entries.
+     * by default, use date from <code>resource.getLastModifiedDate()</code>
+     */
+    private ArchiveEntryDateProvider entryDateProvider = ArchiveEntryDateProviders.DEFAULT;
 
     @Override
     public void createArchive()
@@ -399,6 +407,28 @@ public class TrackingArchiver
     public void setIgnorePermissions( final boolean ignorePermissions )
     {
         this.ignorePermissions = ignorePermissions;
+    }
+
+    @Override
+    public ArchiveEntryDateProvider getEntryDateProvider()
+    {
+        return entryDateProvider;
+    }
+
+    @Override
+    public void setEntryDateProvider( ArchiveEntryDateProvider entryDateProvider )
+    {
+        if ( entryDateProvider == null )
+        {
+            throw new IllegalArgumentException( "null entryDateProvider not allowed, use DEFAULT" );
+        }
+        this.entryDateProvider = entryDateProvider;
+    }
+
+    @Override
+    public long archiveDateForEntry( PlexusIoResource resource )
+    {
+        return entryDateProvider.getEntryArchiveDate( resource );
     }
 
 }

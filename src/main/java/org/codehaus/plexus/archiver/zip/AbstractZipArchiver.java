@@ -16,19 +16,22 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 import java.util.zip.CRC32;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipEncoding;
@@ -37,18 +40,18 @@ import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.apache.commons.compress.utils.Charsets;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProviders;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
+import org.codehaus.plexus.archiver.util.InMemoryPlexusIoResource;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
-import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
 @SuppressWarnings(
 {
@@ -110,6 +113,17 @@ public abstract class AbstractZipArchiver
     private ConcurrentJarCreator zOut;
 
     protected ZipArchiveOutputStream zipArchiveOutputStream;
+
+    /**
+     * default constructor
+     * <p>
+     * overrided for using entryDateProvider = DEFAULT_ZIP_ROUND_UP_2SECONDS
+     */
+    public AbstractZipArchiver()
+    {
+        super();
+        setEntryDateProvider( ArchiveEntryDateProviders.DEFAULT_ZIP_ROUND_UP_2SECONDS );
+    }
 
     public String getComment()
     {
@@ -436,7 +450,7 @@ public abstract class AbstractZipArchiver
      * @param in the stream to read data for the entry from.
      * @param zOut the stream to write to.
      * @param vPath the name this entry shall have in the archive.
-     * @param lastModified last modification time for the entry.
+     * @param archiveEntryDate the date this entry shall have in the archive (by default: last modification date, but overridable for reproducible builds).
      * @param fromArchive the original archive we are copying this
      * @param symlinkDestination
      * @param addInParallel Indicates if the entry should be add in parallel.
@@ -448,7 +462,7 @@ public abstract class AbstractZipArchiver
         "JavaDoc"
     } )
     protected void zipFile( InputStreamSupplier in, ConcurrentJarCreator zOut, String vPath,
-                            long lastModified,
+                            long archiveEntryDate,
                             File fromArchive, int mode, String symlinkDestination, boolean addInParallel )
         throws IOException, ArchiverException
     {
@@ -459,7 +473,7 @@ public abstract class AbstractZipArchiver
         if ( !skipWriting )
         {
             ZipArchiveEntry ze = new ZipArchiveEntry( vPath );
-            setTime( ze, lastModified );
+            setTime( ze, archiveEntryDate );
 
             ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );
             ze.setUnixMode( UnixStat.FILE_FLAG | mode );
@@ -521,7 +535,8 @@ public abstract class AbstractZipArchiver
         };
         try
         {
-            zipFile( in, zOut, vPath, resource.getLastModified(), null, entry.getMode(), symlinkTarget,
+            long archiveEntryDate = archiveDateForEntry( resource );
+            zipFile( in, zOut, vPath, archiveEntryDate, null, entry.getMode(), symlinkTarget,
                      !entry.shouldAddSynchronously() );
         }
         catch ( IOException e )
@@ -530,17 +545,11 @@ public abstract class AbstractZipArchiver
         }
     }
 
-    private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
+    private void setTime( java.util.zip.ZipEntry zipEntry, long entryDate )
     {
-        // Zip archives store file modification times with a
-        // granularity of two seconds, so the times will either be rounded
-        // up or down. If you round down, the archive will always seem
-        // out-of-date when you rerun the task, so the default is to round
-        // up. Rounding up may lead to a different type of problems like
-        // JSPs inside a web archive that seem to be slightly more recent
-        // than precompiled pages, rendering precompilation useless.
-        // plexus-archiver chooses to round up.
-        zipEntry.setTime( lastModified + 1999 );
+        // Zip archives store file modification times with a granularity of two seconds
+        // rounding already set by entryDateProvider = ArchiveEntryDateProvider.DEFAULT_ZIP_ROUND_UP_2SECONDS
+        zipEntry.setTime( entryDate );
 
         /*   Consider adding extended file stamp support.....
 
@@ -592,12 +601,16 @@ public abstract class AbstractZipArchiver
 
             if ( dir != null && dir.isExisting() )
             {
-                setTime( ze, dir.getLastModified() );
+                long zeDate = archiveDateForEntry( dir );
+                setTime( ze, zeDate );
             }
             else
             {
-                // ZIPs store time with a granularity of 2 seconds, round up
-                setTime( ze, System.currentTimeMillis() );
+                InMemoryPlexusIoResource dirIoResource = new InMemoryPlexusIoResource ( dir.getName(), 0,
+                                                                                        System.currentTimeMillis(),
+                                                                                        false, true, false );
+                long zeDate = archiveDateForEntry( dirIoResource );
+                setTime( ze, zeDate );
             }
             if ( !isSymlink )
             {

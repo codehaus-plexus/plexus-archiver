@@ -50,7 +50,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.util.Os;
 import static org.codehaus.plexus.archiver.util.DefaultArchivedFileSet.archivedFileSet;
 import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
 
@@ -103,6 +102,12 @@ public abstract class AbstractArchiver
      * @since 1.1
      */
     private boolean useJvmChmod = true;
+
+    /**
+     * hook for providing alternative date for entries.
+     * by default, use date from <code>resource.getLastModifiedDate()</code>
+     */
+    private ArchiveEntryDateProvider entryDateProvider = ArchiveEntryDateProviders.DEFAULT;
 
     // contextualized.
     private ArchiverManager archiverManager;
@@ -1132,6 +1137,28 @@ public abstract class AbstractArchiver
     public void setIgnorePermissions( final boolean ignorePermissions )
     {
         this.ignorePermissions = ignorePermissions;
+    }
+
+    @Override
+    public ArchiveEntryDateProvider getEntryDateProvider()
+    {
+        return entryDateProvider;
+    }
+
+    @Override
+    public void setEntryDateProvider( ArchiveEntryDateProvider entryDateProvider )
+    {
+        if ( entryDateProvider == null )
+        {
+            throw new IllegalArgumentException( "null entryDateProvider not allowed, use DEFAULT" );
+        }
+        this.entryDateProvider = entryDateProvider;
+    }
+
+    @Override
+    public long archiveDateForEntry( PlexusIoResource resource )
+    {
+        return entryDateProvider.getEntryArchiveDate( resource );
     }
 
 }

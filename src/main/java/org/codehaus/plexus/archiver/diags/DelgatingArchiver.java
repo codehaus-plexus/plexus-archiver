@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.ArchiveEntry;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProvider;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -329,6 +330,24 @@ public class DelgatingArchiver implements Archiver
     public void setIgnorePermissions( boolean ignorePermissions )
     {
         target.setIgnorePermissions( ignorePermissions );
+    }
+
+    @Override
+    public ArchiveEntryDateProvider getEntryDateProvider()
+    {
+        return target.getEntryDateProvider();
+    }
+
+    @Override
+    public void setEntryDateProvider( ArchiveEntryDateProvider entryDateProvider )
+    {
+        target.setEntryDateProvider( entryDateProvider );
+    }
+
+    @Override
+    public long archiveDateForEntry( PlexusIoResource resource )
+    {
+        return target.archiveDateForEntry( resource );
     }
 
 }

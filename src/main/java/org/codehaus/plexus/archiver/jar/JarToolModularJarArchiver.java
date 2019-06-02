@@ -80,7 +80,7 @@ public class JarToolModularJarArchiver
 
     @Override
     protected void zipFile( InputStreamSupplier is, ConcurrentJarCreator zOut,
-                            String vPath, long lastModified, File fromArchive,
+                            String vPath, long archiveEntryDate, File fromArchive,
                             int mode, String symlinkDestination,
                             boolean addInParallel )
         throws IOException, ArchiverException
@@ -92,7 +92,7 @@ public class JarToolModularJarArchiver
             moduleDescriptorFound = true;
         }
 
-        super.zipFile( is, zOut, vPath, lastModified,
+        super.zipFile( is, zOut, vPath, archiveEntryDate,
             fromArchive, mode, symlinkDestination, addInParallel );
     }
 

@@ -28,6 +28,7 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream
 import org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
+import org.codehaus.plexus.archiver.ArchiveEntryDateProviders;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
@@ -60,6 +61,17 @@ public class TarArchiver
     private TarOptions options = new TarOptions();
 
     private TarArchiveOutputStream tOut;
+
+    /**
+     * default constructor
+     * <br/>
+     * overrided for backward compatibility to use entryDateProvider = DEFAULT_VALID_OR_CURRENT
+     */
+    public TarArchiver()
+    {
+        super();
+        setEntryDateProvider( ArchiveEntryDateProviders.DEFAULT_VALID_OR_CURRENT );
+    }
 
     /**
      * Set how to handle long files, those with a path&gt;100 chars.
@@ -281,10 +293,8 @@ public class TarArchiver
                 te = new TarArchiveEntry( vPath );
             }
 
-            long teLastModified = entry.getResource().getLastModified();
-            te.setModTime( teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                               ? System.currentTimeMillis()
-                               : teLastModified );
+            long archiveEntryDate = archiveDateForEntry( entry.getResource() );
+            te.setModTime( archiveEntryDate );
 
             if ( entry.getType() == ArchiveEntry.SYMLINK )
             {
