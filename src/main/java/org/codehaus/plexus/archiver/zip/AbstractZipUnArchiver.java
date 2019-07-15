@@ -16,15 +16,6 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
-import org.apache.commons.compress.archivers.zip.UnicodePathExtraField;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.codehaus.plexus.archiver.AbstractUnArchiver;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +23,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import org.apache.commons.compress.archivers.zip.UnicodePathExtraField;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.codehaus.plexus.archiver.AbstractUnArchiver;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
