@@ -16,15 +16,7 @@
  */
 package org.codehaus.plexus.archiver;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
@@ -34,6 +26,11 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 // TODO there should really be constructors which take the source file.
 
@@ -316,9 +313,17 @@ public abstract class AbstractUnArchiver
         this.ignorePermissions = ignorePermissions;
     }
 
-    protected void extractFile( final File srcF, final File dir, final InputStream compressedInputStream,
-                                String entryName, final Date entryDate, final boolean isDirectory,
-                                final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
+    protected File extractFile(final File srcF, final File dir, final InputStream compressedInputStream,
+                               String entryName, final Date entryDate, final boolean isDirectory,
+                               final Integer mode, String symlinkDestination, final FileMapper[] fileMappers)
+            throws IOException, ArchiverException {
+        return extractFile(srcF, dir, compressedInputStream, Long.MAX_VALUE, entryName, entryDate, isDirectory,
+                mode, symlinkDestination, fileMappers);
+    }
+
+    protected File extractFile(final File srcF, final File dir, final InputStream compressedInputStream,
+                               Long remainingSpace, String entryName, final Date entryDate, final boolean isDirectory,
+                               final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
         throws IOException, ArchiverException
     {
         if ( fileMappers != null )
@@ -345,7 +350,7 @@ public abstract class AbstractUnArchiver
         {
             if ( !isOverwrite() && f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
             {
-                return;
+                return f;
             }
 
             // create intermediary directories - sometimes zip don't add them
@@ -365,18 +370,8 @@ public abstract class AbstractUnArchiver
             }
             else
             {
-                OutputStream out = null;
-                try
-                {
-                    out = new FileOutputStream( f );
-
-                    IOUtil.copy( compressedInputStream, out );
-                    out.close();
-                    out = null;
-                }
-                finally
-                {
-                    IOUtil.close( out );
+                try (OutputStream out = new FileOutputStream(f)) {
+                    IOUtil.copy(new BoundedInputStream(compressedInputStream, remainingSpace), out);
                 }
             }
 
@@ -386,10 +381,13 @@ public abstract class AbstractUnArchiver
             {
                 ArchiveEntryUtils.chmod( f, mode );
             }
+
+            return f;
         }
         catch ( final FileNotFoundException ex )
         {
             getLogger().warn( "Unable to expand to file " + f.getPath() );
+            return null;
         }
     }
 
