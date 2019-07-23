@@ -375,7 +375,7 @@ public class JarArchiver
     private void writeManifest( ConcurrentJarCreator zOut, Manifest manifest )
         throws IOException, ArchiverException
     {
-        for ( Enumeration e = manifest.getWarnings(); e.hasMoreElements(); )
+        for ( Enumeration<String> e = manifest.getWarnings(); e.hasMoreElements(); )
         {
             getLogger().warn( "Manifest warning: " + e.nextElement() );
         }

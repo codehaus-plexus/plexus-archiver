@@ -95,7 +95,8 @@ public interface Archiver
         throws ArchiverException;
 
     /**
-     * Obsolete, use {@link #addFileSet(FileSet)}.You can use "inline" of this method in your
+     * Obsolete, use {@link #addFileSet(FileSet)}.
+     * You can use "inline" of this method in your
      * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
@@ -141,7 +142,8 @@ public interface Archiver
         throws ArchiverException;
 
     /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}. You can use "inline" of this method in your
+     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
+     * You can use "inline" of this method in your
      * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
@@ -150,7 +152,8 @@ public interface Archiver
         throws ArchiverException;
 
     /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}. You can use "inline" of this method in your
+     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
+     * You can use "inline" of this method in your
      * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
@@ -160,7 +163,8 @@ public interface Archiver
         throws ArchiverException;
 
     /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}. You can use "inline" of this method in your
+     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
+     * You can use "inline" of this method in your
      * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
@@ -170,7 +174,8 @@ public interface Archiver
         throws ArchiverException;
 
     /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}. You can use "inline" of this method in your
+     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
+     * You can use "inline" of this method in your
      * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
@@ -224,7 +229,7 @@ public interface Archiver
     /**
      * Adds the given resource collection to the archive.
      *
-     * Stream transformers are supported om this method
+     * Stream transformers are supported on this method
      *
      * @since 1.0-alpha-10
      */
@@ -298,7 +303,7 @@ public interface Archiver
      * archiver should compare the timestamps of included files with the timestamp of the target archive and rebuild the
      * archive only, if the latter timestamp precedes the former timestamps. Checking for timestamps will typically
      * offer a performance gain (in particular, if the following steps in a build can be suppressed, if an archive isn't
-     * recrated) on the cost that you get inaccurate results from time to time. In particular, removal of source files
+     * recreated) on the cost that you get inaccurate results from time to time. In particular, removal of source files
      * won't be detected.
      * </p>
      * <p>
@@ -320,7 +325,7 @@ public interface Archiver
      * should compare the timestamps of included files with the timestamp of the target archive and rebuild the archive
      * only, if the latter timestamp precedes the former timestamps. Checking for timestamps will typically offer a
      * performance gain (in particular, if the following steps in a build can be suppressed, if an archive isn't
-     * recrated) on the cost that you get inaccurate results from time to time. In particular, removal of source files
+     * recreated) on the cost that you get inaccurate results from time to time. In particular, removal of source files
      * won't be detected.
      * </p>
      * <p>

@@ -45,14 +45,16 @@ public class DuplicateFilesTest
         org.apache.commons.compress.archivers.zip.ZipFile zf =
             new org.apache.commons.compress.archivers.zip.ZipFile( archive );
 
-        Enumeration e = zf.getEntries();
+        Enumeration<ZipArchiveEntry> e = zf.getEntries();
         int entryCount = 0;
         while ( e.hasMoreElements() )
         {
-            ZipArchiveEntry entry = (ZipArchiveEntry) e.nextElement();
+            ZipArchiveEntry entry = e.nextElement();
             System.out.println( entry.getName() );
             entryCount++;
         }
+        zf.close();
+
         // Zip file should have 2 entries, 1 for the directory and one for foo.txt
         assertEquals( 2, entryCount );
         testArchive( archive, "zip" );

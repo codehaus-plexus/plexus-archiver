@@ -166,10 +166,10 @@ public abstract class AbstractZipUnArchiver
         try
         {
             zf = new org.apache.commons.compress.archivers.zip.ZipFile( getSourceFile(), encoding, true );
-            final Enumeration e = zf.getEntriesInPhysicalOrder();
+            final Enumeration<ZipArchiveEntry> e = zf.getEntriesInPhysicalOrder();
             while ( e.hasMoreElements() )
             {
-                final ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+                final ZipArchiveEntry ze = e.nextElement();
                 final ZipEntryFileInfo fileInfo = new ZipEntryFileInfo( zf, ze );
                 if ( isSelected( fileInfo.getName(), fileInfo ) )
                 {
@@ -232,11 +232,11 @@ public abstract class AbstractZipUnArchiver
         {
             zipFile = new org.apache.commons.compress.archivers.zip.ZipFile( getSourceFile(), encoding, true );
 
-            final Enumeration e = zipFile.getEntriesInPhysicalOrder();
+            final Enumeration<ZipArchiveEntry> e = zipFile.getEntriesInPhysicalOrder();
 
             while ( e.hasMoreElements() )
             {
-                final ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+                final ZipArchiveEntry ze = e.nextElement();
                 final ZipEntryFileInfo fileInfo = new ZipEntryFileInfo( zipFile, ze );
                 if ( !isSelected( ze.getName(), fileInfo ) )
                 {

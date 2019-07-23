@@ -46,12 +46,10 @@ public class DotDirectiveArchiveFinalizer
         BufferedReader in = null;
         try
         {
-            List dotFiles = FileUtils.getFiles( dotFileDirectory, dotFilePrefix + "*", null );
+            List<File> dotFiles = FileUtils.getFiles( dotFileDirectory, dotFilePrefix + "*", null );
 
-            for ( Object dotFile1 : dotFiles )
+            for ( File dotFile : dotFiles )
             {
-                File dotFile = (File) dotFile1;
-
                 in = new BufferedReader( new FileReader( dotFile ) );
 
                 for ( String line = in.readLine(); line != null; line = in.readLine() )

@@ -33,7 +33,7 @@ import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Base abstract class that all the test-cases for different archivers
- * extend so that they can use its helpful methids.
+ * extend so that they can use its helpful methods.
  */
 public abstract class BasePlexusArchiverTest extends PlexusTestCase
 {

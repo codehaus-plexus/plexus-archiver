@@ -47,7 +47,7 @@ public class PlexusArchiverZipFileResourceCollection
         implements Iterator<PlexusIoResource>, Closeable
     {
 
-        final Enumeration en;
+        final Enumeration<ZipArchiveEntry> en;
 
         private final ZipFile zipFile;
 
@@ -66,7 +66,7 @@ public class PlexusArchiverZipFileResourceCollection
         @Override
         public PlexusIoResource next()
         {
-            final ZipArchiveEntry entry = (ZipArchiveEntry) en.nextElement();
+            final ZipArchiveEntry entry = en.nextElement();
             return entry.isUnixSymlink()
                        ? new ZipSymlinkResource( zipFile, entry, getStreamTransformer() )
                        : new ZipResource( zipFile, entry, getStreamTransformer() );

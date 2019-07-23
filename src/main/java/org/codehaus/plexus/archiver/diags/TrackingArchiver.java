@@ -278,7 +278,6 @@ public class TrackingArchiver
         throw new RuntimeException( "Not implemented" );
     }
 
-    @SuppressWarnings( "rawtypes" )
     @Override
     public Map<String, ArchiveEntry> getFiles()
     {

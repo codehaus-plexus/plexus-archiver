@@ -50,7 +50,6 @@ import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
-import org.codehaus.plexus.util.Os;
 import static org.codehaus.plexus.archiver.util.DefaultArchivedFileSet.archivedFileSet;
 import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
 
