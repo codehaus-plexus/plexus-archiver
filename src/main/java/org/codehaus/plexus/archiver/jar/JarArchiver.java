@@ -37,13 +37,13 @@ import java.util.TreeMap;
 import java.util.Vector;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
-import org.codehaus.plexus.util.IOUtil;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
@@ -238,23 +238,14 @@ public class JarArchiver
     private Manifest getManifest( File manifestFile )
         throws ArchiverException
     {
-        InputStream in = null;
-        try
+        try ( InputStream in = new FileInputStream( manifestFile ) )
         {
-            in = new FileInputStream( manifestFile );
-            final Manifest mf = getManifest( in );
-            in.close();
-            in = null;
-            return mf;
+            return getManifest( in );
         }
         catch ( IOException e )
         {
             throw new ArchiverException( "Unable to read manifest file: " + manifestFile + " (" + e.getMessage() + ")",
                                          e );
-        }
-        finally
-        {
-            IOUtil.close( in );
         }
     }
 
@@ -799,10 +790,8 @@ public class JarArchiver
         }
         else
         {
-            org.apache.commons.compress.archivers.zip.ZipFile zf = null;
-            try
+            try ( ZipFile zf = new ZipFile( file, "utf-8" ) )
             {
-                zf = new org.apache.commons.compress.archivers.zip.ZipFile( file, "utf-8" );
                 Enumeration<ZipArchiveEntry> entries = zf.getEntries();
                 HashSet<String> dirSet = new HashSet<String>();
                 while ( entries.hasMoreElements() )
@@ -832,13 +821,6 @@ public class JarArchiver
                     }
                 }
                 dirs.addAll( dirSet );
-            }
-            finally
-            {
-                if ( zf != null )
-                {
-                    zf.close();
-                }
             }
         }
     }

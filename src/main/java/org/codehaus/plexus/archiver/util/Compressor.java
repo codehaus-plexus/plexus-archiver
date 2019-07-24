@@ -23,7 +23,6 @@ import java.io.OutputStream;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.util.IOUtil;
 
 public abstract class Compressor
     extends AbstractLogEnabled
@@ -91,17 +90,9 @@ public abstract class Compressor
     protected void compress( PlexusIoResource resource, OutputStream zOut )
         throws IOException
     {
-        InputStream in = null;
-        try
+        try ( InputStream in = Streams.bufferedInputStream( resource.getContents() ) )
         {
-            in = Streams.bufferedInputStream( resource.getContents() );
             compressFile( in, zOut );
-            in.close();
-            in = null;
-        }
-        finally
-        {
-            IOUtil.close( in );
         }
     }
 

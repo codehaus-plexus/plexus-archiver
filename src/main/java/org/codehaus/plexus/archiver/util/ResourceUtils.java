@@ -77,22 +77,9 @@ public class ResourceUtils
     public static void copyFile( PlexusIoResource in, File outFile )
         throws IOException
     {
-        InputStream input = null;
-        OutputStream output = null;
-        try
+        try ( InputStream input = in.getContents(); OutputStream output = new FileOutputStream( outFile ) )
         {
-            input = in.getContents();
-            output = new FileOutputStream( outFile );
             IOUtil.copy( input, output );
-            output.close();
-            output = null;
-            input.close();
-            input = null;
-        }
-        finally
-        {
-            IOUtil.close( input );
-            IOUtil.close( output );
         }
     }
 

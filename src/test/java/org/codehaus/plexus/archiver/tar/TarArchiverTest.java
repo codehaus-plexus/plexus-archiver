@@ -260,23 +260,15 @@ public class TarArchiverTest
         throws IOException, ArchiverException
     {
         File file = new File( dir, fname );
-        FileWriter writer = null;
 
-        try
+        if ( file.getParentFile() != null )
         {
-            if ( file.getParentFile() != null )
-            {
-                file.getParentFile().mkdirs();
-            }
-
-            writer = new FileWriter( file );
-            writer.write( "This is a test file." );
-            writer.close();
-            writer = null;
+            file.getParentFile().mkdirs();
         }
-        finally
+
+        try ( FileWriter writer = new FileWriter( file ) )
         {
-            IOUtil.close( writer );
+            writer.write( "This is a test file." );
         }
 
         ArchiveEntryUtils.chmod( file, mode );

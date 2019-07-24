@@ -12,7 +12,6 @@ import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
 
 @SuppressWarnings( "ResultOfMethodCallIgnored" )
@@ -83,17 +82,9 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        FileWriter writer = null;
-        try
+        try ( FileWriter writer = new FileWriter( tempFile ) )
         {
-            writer = new FileWriter( tempFile );
             writer.write( "This is a test file." );
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
 
         int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
@@ -157,17 +148,9 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        FileWriter writer = null;
-        try
+        try ( FileWriter writer = new FileWriter( tempFile ) )
         {
-            writer = new FileWriter( tempFile );
             writer.write( "This is a test file." );
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
 
         int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
@@ -226,17 +209,9 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        FileWriter writer = null;
-        try
+        try ( FileWriter writer = new FileWriter( tempFile ) )
         {
-            writer = new FileWriter( tempFile );
             writer.write( "This is a test file." );
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
 
         int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
@@ -292,17 +267,9 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        FileWriter writer = null;
-        try
+        try ( FileWriter writer = new FileWriter( tempFile ) )
         {
-            writer = new FileWriter( tempFile );
             writer.write( "This is a test file." );
-            writer.close();
-            writer = null;
-        }
-        finally
-        {
-            IOUtil.close( writer );
         }
 
         int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();

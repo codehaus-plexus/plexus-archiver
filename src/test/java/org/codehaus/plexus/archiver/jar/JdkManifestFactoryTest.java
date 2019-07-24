@@ -97,15 +97,9 @@ public class JdkManifestFactoryTest
     private java.util.jar.Manifest getManifest( String filename )
         throws IOException, ManifestException
     {
-        InputStream r = Streams.fileInputStream( getTestFile( filename ) );
-
-        try
+        try ( InputStream r = Streams.fileInputStream( getTestFile( filename ) ) )
         {
             return new Manifest( r );
-        }
-        finally
-        {
-            r.close();
         }
     }
 

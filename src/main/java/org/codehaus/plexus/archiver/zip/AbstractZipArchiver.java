@@ -45,7 +45,6 @@ import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
@@ -664,10 +663,9 @@ public abstract class AbstractZipArchiver
         // because it does not permit a zero-entry archive.
         // Must create it manually.
         getLogger().info( "Note: creating empty " + archiveType + " archive " + zipFile );
-        OutputStream os = null;
-        try
+
+        try ( OutputStream os = new FileOutputStream( zipFile ) )
         {
-            os = new FileOutputStream( zipFile );
             // Cf. PKZIP specification.
             byte[] empty = new byte[ 22 ];
             empty[0] = 80; // P
@@ -676,16 +674,10 @@ public abstract class AbstractZipArchiver
             empty[3] = 6;
             // remainder zeros
             os.write( empty );
-            os.close();
-            os = null;
         }
         catch ( IOException ioe )
         {
             throw new ArchiverException( "Could not create empty ZIP archive " + "(" + ioe.getMessage() + ")", ioe );
-        }
-        finally
-        {
-            IOUtil.close( os );
         }
         return true;
     }
