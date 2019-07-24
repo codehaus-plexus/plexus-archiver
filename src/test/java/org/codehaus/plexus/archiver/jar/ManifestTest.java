@@ -348,15 +348,9 @@ public class ManifestTest
     private Manifest getManifest( String filename )
         throws IOException, ManifestException
     {
-        InputStream is = new FileInputStream( getTestFile( filename ) );
-
-        try
+        try ( InputStream is = new FileInputStream( getTestFile( filename ) ) )
         {
             return new Manifest( is );
-        }
-        finally
-        {
-            is.close();
         }
     }
 

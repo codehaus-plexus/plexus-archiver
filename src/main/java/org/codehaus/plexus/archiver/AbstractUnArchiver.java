@@ -365,18 +365,9 @@ public abstract class AbstractUnArchiver
             }
             else
             {
-                OutputStream out = null;
-                try
+                try ( OutputStream out = new FileOutputStream( f ) )
                 {
-                    out = new FileOutputStream( f );
-
                     IOUtil.copy( compressedInputStream, out );
-                    out.close();
-                    out = null;
-                }
-                finally
-                {
-                    IOUtil.close( out );
                 }
             }
 

@@ -97,36 +97,31 @@ public class TarUnArchiver
     protected void execute( File sourceFile, File destDirectory, FileMapper[] fileMappers )
         throws ArchiverException
     {
-        TarArchiveInputStream tis = null;
         try
         {
             getLogger().info( "Expanding: " + sourceFile + " into " + destDirectory );
             TarFile tarFile = new TarFile( sourceFile );
-            tis = new TarArchiveInputStream(
-                decompress( compression, sourceFile, new BufferedInputStream( new FileInputStream( sourceFile ) ) ) );
-            TarArchiveEntry te;
-            while ( ( te = tis.getNextTarEntry() ) != null )
+            try ( TarArchiveInputStream tis = new TarArchiveInputStream(
+                decompress( compression, sourceFile, new BufferedInputStream( new FileInputStream( sourceFile ) ) ) ) )
             {
-                TarResource fileInfo = new TarResource( tarFile, te );
-                if ( isSelected( te.getName(), fileInfo ) )
+                TarArchiveEntry te;
+                while ( ( te = tis.getNextTarEntry() ) != null )
                 {
-                    final String symlinkDestination = te.isSymbolicLink() ? te.getLinkName() : null;
-                    extractFile( sourceFile, destDirectory, tis, te.getName(), te.getModTime(), te.isDirectory(),
-                                 te.getMode() != 0 ? te.getMode() : null, symlinkDestination, fileMappers );
+                    TarResource fileInfo = new TarResource( tarFile, te );
+                    if ( isSelected( te.getName(), fileInfo ) )
+                    {
+                        final String symlinkDestination = te.isSymbolicLink() ? te.getLinkName() : null;
+                        extractFile( sourceFile, destDirectory, tis, te.getName(), te.getModTime(), te.isDirectory(),
+                            te.getMode() != 0 ? te.getMode() : null, symlinkDestination, fileMappers );
 
+                    }
                 }
+                getLogger().debug( "expand complete" );
             }
-            getLogger().debug( "expand complete" );
-            tis.close();
-            tis = null;
         }
         catch ( IOException ioe )
         {
             throw new ArchiverException( "Error while expanding " + sourceFile.getAbsolutePath(), ioe );
-        }
-        finally
-        {
-            IOUtil.close( tis );
         }
     }
 
