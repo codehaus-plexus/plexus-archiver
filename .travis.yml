@@ -6,6 +6,8 @@ jdk:
   - openjdk10
   - openjdk11
 
+dist: trusty
+
 # No need for preliminary install step.
 install: true
 #
