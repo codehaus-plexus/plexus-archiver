@@ -886,4 +886,21 @@ public class ZipArchiverTest
         }
     }
 
+    public void testFixedEntryModificationTime()
+            throws IOException
+    {
+        final long almostMinDosTime = 315532802000L;
+        final File zipFile = getTestFile( "target/output/zip-with-fixed-entry-modification-times.zip" );
+        final ZipArchiver archiver = getZipArchiver( zipFile );
+        archiver.setLastModifiedDate( new Date( almostMinDosTime ) );
+        archiver.addDirectory( new File( "src/test/resources/zip-timestamp" ) );
+        archiver.createArchive();
+
+        assertTrue( zipFile.exists() );
+        final ZipFile zf = new ZipFile( zipFile );
+        assertEquals( almostMinDosTime, zf.getEntry( "file-with-even-time.txt" ).getTime() );
+        assertEquals( almostMinDosTime, zf.getEntry( "file-with-odd-time.txt" ).getTime() );
+        assertEquals( almostMinDosTime, zf.getEntry( "foo/" ).getTime() );
+    }
+
 }

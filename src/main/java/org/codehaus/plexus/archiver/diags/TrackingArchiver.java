@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class TrackingArchiver
     private boolean useJvmChmod;
 
     private boolean ignorePermissions;
+
+    private Date lastModified;
 
     @Override
     public void createArchive()
@@ -398,6 +401,18 @@ public class TrackingArchiver
     public void setIgnorePermissions( final boolean ignorePermissions )
     {
         this.ignorePermissions = ignorePermissions;
+    }
+
+    @Override
+    public void setLastModifiedDate( final Date lastModifiedDate )
+    {
+        this.lastModified = lastModifiedDate;
+    }
+
+    @Override
+    public Date getLastModifiedDate()
+    {
+        return lastModified;
     }
 
 }

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -102,6 +103,11 @@ public abstract class AbstractArchiver
      * @since 1.1
      */
     private boolean useJvmChmod = true;
+
+    /**
+     * @since 4.2.0
+     */
+    private Date lastModifiedDate;
 
     // contextualized.
     private ArchiverManager archiverManager;
@@ -1131,6 +1137,18 @@ public abstract class AbstractArchiver
     public void setIgnorePermissions( final boolean ignorePermissions )
     {
         this.ignorePermissions = ignorePermissions;
+    }
+
+    @Override
+    public void setLastModifiedDate( Date lastModifiedDate )
+    {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public Date getLastModifiedDate()
+    {
+        return lastModifiedDate;
     }
 
 }

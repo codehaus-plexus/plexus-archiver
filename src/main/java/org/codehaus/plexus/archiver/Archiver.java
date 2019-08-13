@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -398,5 +399,18 @@ public interface Archiver
      * @since 1.1
      */
     void setIgnorePermissions( final boolean ignorePermissions );
+
+    /**
+     * Define forced last modification date for entries (if non null).
+     *
+     * @param lastModifiedDate
+     * @since 4.2.0
+     */
+    void setLastModifiedDate( final Date lastModifiedDate );
+
+    /**
+     * @since 4.2.0
+     */
+    Date getLastModifiedDate();
 
 }

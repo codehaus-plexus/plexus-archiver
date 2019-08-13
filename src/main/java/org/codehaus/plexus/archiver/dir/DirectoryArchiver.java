@@ -194,9 +194,16 @@ public class DirectoryArchiver
             ArchiveEntryUtils.chmod( outFile, entry.getMode() );
         }
 
-        outFile.setLastModified( inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                                     ? System.currentTimeMillis()
-                                     : inLastModified );
+        if ( getLastModifiedDate() == null )
+        {
+            outFile.setLastModified( inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+                                         ? System.currentTimeMillis()
+                                         : inLastModified );
+        }
+        else
+        {
+            outFile.setLastModified( getLastModifiedDate().getTime() );
+        }
     }
 
     @Override

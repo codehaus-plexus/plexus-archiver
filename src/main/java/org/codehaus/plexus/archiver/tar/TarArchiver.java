@@ -281,10 +281,17 @@ public class TarArchiver
                 te = new TarArchiveEntry( vPath );
             }
 
-            long teLastModified = entry.getResource().getLastModified();
-            te.setModTime( teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                               ? System.currentTimeMillis()
-                               : teLastModified );
+            if ( getLastModifiedDate() == null )
+            {
+                long teLastModified = entry.getResource().getLastModified();
+                te.setModTime( teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+                                   ? System.currentTimeMillis()
+                                   : teLastModified );
+            }
+            else
+            {
+                te.setModTime( getLastModifiedDate() );
+            }
 
             if ( entry.getType() == ArchiveEntry.SYMLINK )
             {
