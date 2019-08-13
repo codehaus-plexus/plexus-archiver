@@ -530,6 +530,11 @@ public abstract class AbstractZipArchiver
 
     private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
     {
+        if ( getLastModifiedDate() != null )
+        {
+            lastModified = getLastModifiedDate().getTime();
+        }
+
         // Zip archives store file modification times with a
         // granularity of two seconds, so the times will either be rounded
         // up or down. If you round down, the archive will always seem

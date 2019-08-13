@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.diags;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -329,6 +330,18 @@ public class DelgatingArchiver implements Archiver
     public void setIgnorePermissions( boolean ignorePermissions )
     {
         target.setIgnorePermissions( ignorePermissions );
+    }
+
+    @Override
+    public void setLastModifiedDate( final Date lastModifiedDate )
+    {
+        target.setLastModifiedDate( lastModifiedDate );
+    }
+
+    @Override
+    public Date getLastModifiedDate()
+    {
+        return target.getLastModifiedDate();
     }
 
 }
