@@ -158,31 +158,7 @@ public abstract class AbstractZipUnArchiver
     protected void execute()
         throws ArchiverException
     {
-        getLogger().debug( "Expanding: " + getSourceFile() + " into " + getDestDirectory() );
-        try ( ZipFile zf = new ZipFile( getSourceFile(), encoding, true ) )
-        {
-            final Enumeration<ZipArchiveEntry> e = zf.getEntriesInPhysicalOrder();
-            while ( e.hasMoreElements() )
-            {
-                final ZipArchiveEntry ze = e.nextElement();
-                final ZipEntryFileInfo fileInfo = new ZipEntryFileInfo( zf, ze );
-                if ( isSelected( fileInfo.getName(), fileInfo ) )
-                {
-                    try ( InputStream in = zf.getInputStream( ze ) )
-                    {
-                        extractFile( getSourceFile(), getDestDirectory(), in, fileInfo.getName(),
-                                     new Date( ze.getTime() ), ze.isDirectory(),
-                                     ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                     resolveSymlink( zf, ze ), getFileMappers() );
-                    }
-                }
-            }
-            getLogger().debug( "expand complete" );
-        }
-        catch ( final IOException ioe )
-        {
-            throw new ArchiverException( "Error while expanding " + getSourceFile().getAbsolutePath(), ioe );
-        }
+        execute( "", getDestDirectory() );
     }
 
     private String resolveSymlink( ZipFile zf, ZipArchiveEntry ze )
@@ -202,6 +178,7 @@ public abstract class AbstractZipUnArchiver
     protected void execute( final String path, final File outputDirectory )
         throws ArchiverException
     {
+        getLogger().debug( "Expanding: " + getSourceFile() + " into " + outputDirectory );
         try ( ZipFile zipFile = new ZipFile( getSourceFile(), encoding, true ) )
         {
             final Enumeration<ZipArchiveEntry> e = zipFile.getEntriesInPhysicalOrder();
@@ -226,6 +203,7 @@ public abstract class AbstractZipUnArchiver
                     }
                 }
             }
+            getLogger().debug( "expand complete" );
         }
         catch ( final IOException ioe )
         {
