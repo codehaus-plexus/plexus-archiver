@@ -27,6 +27,8 @@ import javax.annotation.Nonnull;
 import org.apache.commons.compress.archivers.zip.UnicodePathExtraField;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.apache.commons.io.input.BoundedInputStream;
+import org.apache.commons.io.input.CountingInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
@@ -41,6 +43,8 @@ public abstract class AbstractZipUnArchiver
     private static final String NATIVE_ENCODING = "native-encoding";
 
     private String encoding = "UTF8";
+
+    private long maxOutputSize = Long.MAX_VALUE;
 
     public AbstractZipUnArchiver()
     {
@@ -64,6 +68,21 @@ public abstract class AbstractZipUnArchiver
             encoding = null;
         }
         this.encoding = encoding;
+    }
+
+    /**
+     * Set maximum allowed size of the produced output.
+     *
+     * It may be used as a protection against <a href="https://en.wikipedia.org/wiki/Zip_bomb">zip bombs</a>.
+     *
+     * @param maxOutputSize max size of the produced output, in bytes. Must be greater than 0
+     * @throws IllegalArgumentException if specified output size is less or equal to 0
+     */
+    public void setMaxOutputSize( long maxOutputSize ) {
+        if ( maxOutputSize <= 0 ) {
+            throw new IllegalArgumentException( "Invalid max output size specified: " + maxOutputSize );
+        }
+        this.maxOutputSize = maxOutputSize;
     }
 
     private static class ZipEntryFileInfo
@@ -181,6 +200,7 @@ public abstract class AbstractZipUnArchiver
         getLogger().debug( "Expanding: " + getSourceFile() + " into " + outputDirectory );
         try ( ZipFile zipFile = new ZipFile( getSourceFile(), encoding, true ) )
         {
+            long remainingSpace = maxOutputSize;
             final Enumeration<ZipArchiveEntry> e = zipFile.getEntriesInPhysicalOrder();
 
             while ( e.hasMoreElements() )
@@ -196,10 +216,18 @@ public abstract class AbstractZipUnArchiver
                 {
                     try ( InputStream in = zipFile.getInputStream( ze ) )
                     {
-                        extractFile( getSourceFile(), outputDirectory, in,
+                        BoundedInputStream bis = new BoundedInputStream( in, remainingSpace + 1 );
+                        CountingInputStream cis = new CountingInputStream( bis );
+                        extractFile( getSourceFile(), outputDirectory, cis,
                                      ze.getName(), new Date( ze.getTime() ), ze.isDirectory(),
                                      ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
                                      resolveSymlink( zipFile, ze ), getFileMappers() );
+
+                        remainingSpace -= cis.getByteCount();
+                        if ( remainingSpace < 0 )
+                        {
+                            throw new ArchiverException( "Maximum output size limit reached" );
+                        }
                     }
                 }
             }

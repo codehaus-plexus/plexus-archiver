@@ -214,6 +214,31 @@ public class ZipUnArchiverTest
         assertTrue( ex.getMessage().startsWith( "Entry is outside of the target directory" ) );
     }
 
+    public void testZipOutputSizeException()
+        throws Exception
+    {
+        Exception ex = null;
+        String s = "target/zip-size-tests";
+        File testZip = new File( getBasedir(), "src/test/jars/test.zip" );
+        File outputDirectory = new File( getBasedir(), s );
+
+        FileUtils.deleteDirectory( outputDirectory );
+
+        try
+        {
+            ZipUnArchiver zu = getZipUnArchiver( testZip );
+            zu.setMaxOutputSize( 10L );
+            zu.extract( "", outputDirectory );
+        }
+        catch ( Exception e )
+        {
+            ex = e;
+        }
+
+        assertNotNull( ex );
+        assertTrue( ex.getMessage().startsWith( "Maximum output size limit reached" ) );
+    }
+
     private ZipArchiver getZipArchiver()
     {
         try
