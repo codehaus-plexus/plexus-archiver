@@ -29,7 +29,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
 /**
@@ -171,10 +170,10 @@ public abstract class AbstractZipUnArchiver
                 {
                     try ( InputStream in = zf.getInputStream( ze ) )
                     {
-                        extractFileIfIncluded( getSourceFile(), getDestDirectory(), in, fileInfo.getName(),
-                                               new Date( ze.getTime() ), ze.isDirectory(),
-                                               ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                               resolveSymlink( zf, ze ), getFileMappers() );
+                        extractFile( getSourceFile(), getDestDirectory(), in, fileInfo.getName(),
+                                     new Date( ze.getTime() ), ze.isDirectory(),
+                                     ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
+                                     resolveSymlink( zf, ze ), getFileMappers() );
                     }
                 }
             }
@@ -199,14 +198,6 @@ public abstract class AbstractZipUnArchiver
         }
     }
 
-    private void extractFileIfIncluded( final File sourceFile, final File destDirectory, final InputStream inputStream,
-                                        final String name, final Date time, final boolean isDirectory,
-                                        final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
-        throws IOException, ArchiverException
-    {
-        extractFile( sourceFile, destDirectory, inputStream, name, time, isDirectory, mode, symlinkDestination, fileMappers );
-    }
-
     @Override
     protected void execute( final String path, final File outputDirectory )
         throws ArchiverException
@@ -228,10 +219,10 @@ public abstract class AbstractZipUnArchiver
                 {
                     try ( InputStream in = zipFile.getInputStream( ze ) )
                     {
-                        extractFileIfIncluded( getSourceFile(), outputDirectory, in,
-                                               ze.getName(), new Date( ze.getTime() ), ze.isDirectory(),
-                                               ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                               resolveSymlink( zipFile, ze ), getFileMappers() );
+                        extractFile( getSourceFile(), outputDirectory, in,
+                                     ze.getName(), new Date( ze.getTime() ), ze.isDirectory(),
+                                     ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
+                                     resolveSymlink( zipFile, ze ), getFileMappers() );
                     }
                 }
             }
