@@ -239,6 +239,24 @@ public class ZipUnArchiverTest
         assertTrue( ex.getMessage().startsWith( "Maximum output size limit reached" ) );
     }
 
+    public void testZipMaxOutputSizeEqualToExtractedFileSize()
+        throws Exception
+    {
+        long extractedFileSize = 11L;
+        String s = "target/zip-size-tests";
+        File testZip = new File( getBasedir(), "src/test/jars/test.zip" );
+        File outputDirectory = new File( getBasedir(), s );
+
+        FileUtils.deleteDirectory( outputDirectory );
+
+        ZipUnArchiver zu = getZipUnArchiver( testZip );
+        zu.setMaxOutputSize( extractedFileSize );
+        zu.extract( "", outputDirectory );
+
+        File extractedFile = new File( outputDirectory, "test.sh" );
+        assertEquals( extractedFileSize, extractedFile.length() );
+    }
+
     private ZipArchiver getZipArchiver()
     {
         try
