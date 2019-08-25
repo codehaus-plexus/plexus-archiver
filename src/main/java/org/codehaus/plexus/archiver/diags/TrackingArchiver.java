@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ public class TrackingArchiver
     private boolean ignorePermissions;
 
     private Date lastModified;
+
+    private Comparator<String> filenameComparator;
 
     @Override
     public void createArchive()
@@ -415,4 +418,10 @@ public class TrackingArchiver
         return lastModified;
     }
 
+
+    @Override
+    public void setFilenameComparator( final Comparator<String> filenameComparator )
+    {
+        this.filenameComparator = filenameComparator;
+    }
 }

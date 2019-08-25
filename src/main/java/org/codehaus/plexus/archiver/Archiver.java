@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -413,4 +414,8 @@ public interface Archiver
      */
     Date getLastModifiedDate();
 
+    /**
+     * @since 4.2.0
+     */
+    void setFilenameComparator( Comparator<String> filenameComparator );
 }

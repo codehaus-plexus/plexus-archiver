@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -108,6 +109,11 @@ public abstract class AbstractArchiver
      * @since 4.2.0
      */
     private Date lastModifiedDate;
+
+    /**
+     * @sine 4.2.0
+     */
+    private Comparator<String> filenameComparator;
 
     // contextualized.
     private ArchiverManager archiverManager;
@@ -352,6 +358,7 @@ public abstract class AbstractArchiver
         collection.setUsingDefaultExcludes( fileSet.isUsingDefaultExcludes() );
         collection.setStreamTransformer( fileSet.getStreamTransformer() );
         collection.setFileMappers( fileSet.getFileMappers() );
+        collection.setFilenameComparator( getFilenameComparator() );
 
         if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 )
         {
@@ -1151,4 +1158,14 @@ public abstract class AbstractArchiver
         return lastModifiedDate;
     }
 
+    @Override
+    public void setFilenameComparator( Comparator<String> filenameComparator )
+    {
+        this.filenameComparator = filenameComparator;
+    }
+
+    public Comparator<String> getFilenameComparator()
+    {
+        return filenameComparator;
+    }
 }

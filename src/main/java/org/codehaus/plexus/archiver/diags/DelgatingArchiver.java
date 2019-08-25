@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.diags;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -344,4 +345,9 @@ public class DelgatingArchiver implements Archiver
         return target.getLastModifiedDate();
     }
 
+    @Override
+    public void setFilenameComparator( final Comparator<String> filenameComparator )
+    {
+        target.setFilenameComparator( filenameComparator );
+    }
 }

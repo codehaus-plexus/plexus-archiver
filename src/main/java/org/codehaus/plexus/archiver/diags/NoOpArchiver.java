@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -357,6 +358,12 @@ public class NoOpArchiver implements Archiver
     public Date getLastModifiedDate()
     {
         return null;
+    }
+
+    @Override
+    public void setFilenameComparator( final Comparator<String> filenameComparator )
+    {
+
     }
 
 }
