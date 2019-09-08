@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -1256,5 +1257,32 @@ public abstract class AbstractArchiver
     public String getOverrideGroupName()
     {
         return overrideGroupName;
+    }
+
+    @Override
+    public void configureReproducible( int sourceDateEpoch )
+    {
+        // 1. force last modified date
+        setLastModifiedDate( convertSourceDateEpochToDate( sourceDateEpoch ) );
+
+        // 2. sort filenames in each directory when scanning filesystem
+        setFilenameComparator( new Comparator<String>()
+        {
+            @Override
+            public int compare( String s1, String s2 )
+            {
+                return s1.compareTo( s2 );
+            }
+        } );
+
+        // 3. ignore file/directory mode from filesystem, since they may vary based on local user umask
+        // notice: this overrides execute bit on Unix (that is already ignored on Windows)
+        setFileMode( Archiver.DEFAULT_FILE_MODE );
+        setDirectoryMode( Archiver.DEFAULT_DIR_MODE );
+    }
+
+    protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
+    {
+        return new Date( sourceDateEpoch * 1000L );
     }
 }

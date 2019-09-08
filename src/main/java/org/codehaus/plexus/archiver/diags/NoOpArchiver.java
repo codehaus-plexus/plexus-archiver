@@ -414,4 +414,10 @@ public class NoOpArchiver implements Archiver
         return null;
     }
 
+    @Override
+    public void configureReproducible( int sourceDateEpoch )
+    {
+
+    }
+
 }

@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
@@ -831,6 +833,15 @@ public abstract class AbstractZipArchiver
     protected String getArchiveType()
     {
         return archiveType;
+    }
+
+    @Override
+    protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
+    {
+        // timestamp of zip entries at zip storage level ignores timezone: see https://github.com/Stuk/jszip/issues/369
+        Calendar cal = Calendar.getInstance();
+        long zipTime = 1000L * sourceDateEpoch - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+        return new Date( zipTime );
     }
 
 }

@@ -415,11 +415,15 @@ public interface Archiver
     Date getLastModifiedDate();
 
     /**
+     * Set filename comparator, used to sort file entries when scanning directories since File.list() does not
+     * guarantee any order.
+     *
      * @since 4.2.0
      */
     void setFilenameComparator( Comparator<String> filenameComparator );
 
     /**
+<<<<<<< reproducible
      * @since 4.2.0
      */
     void setOverrideUid( int uid );
@@ -458,4 +462,17 @@ public interface Archiver
      * @since 4.2.0
      */
     String getOverrideGroupName();
+
+    /**
+     * Configure the archiver to get reproducible archives (see <a href="https://reproducible-builds.org/>Reproducible
+     * Builds</a>). This will require reproducible archive entries order, defined entries timestamp and reproducible
+     * entries Unix mode.
+     * 
+     * @param sourceDateEpoch Value like SOURCE_DATE_EPOCH as
+     *            <a href="https://reproducible-builds.org/specs/source-date-epoch/">defined in Reproducible Builds</a>:
+     *            a UNIX timestamp, defined as the number of seconds, excluding leap seconds, since 01 Jan 1970 00:00:00
+     *            UTC.
+     * @since 4.2.0
+     */
+    void configureReproducible( int sourceDateEpoch );
 }
