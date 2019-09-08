@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Stack;
 import java.util.concurrent.ExecutionException;
@@ -833,4 +835,24 @@ public abstract class AbstractZipArchiver
         return archiveType;
     }
 
+    @Override
+    protected Date normalizeLastModifiedDate( Date lastModifiedDate )
+    {
+        // timestamp of zip entries at zip storage level ignores timezone: managed in ZipEntry.setTime,
+        // that turns javaToDosTime: need to revert the operation here to get reproducible
+        // zip entry time
+        return new Date( dosToJavaTime( lastModifiedDate.getTime() ) );
+    }
+
+    /**
+     * Converts DOS time to Java time (number of milliseconds since epoch).
+     *
+     * @see java.util.zip.ZipEntry#setTime
+     * @see java.util.zip.ZipUtils#dosToJavaTime
+     */
+    private static long dosToJavaTime( long dosTime )
+    {
+        Calendar cal = Calendar.getInstance();
+        return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+    }
 }

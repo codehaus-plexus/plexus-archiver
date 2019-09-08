@@ -1257,4 +1257,45 @@ public abstract class AbstractArchiver
     {
         return overrideGroupName;
     }
+
+    @Override
+    public void configureReproducible( Date lastModifiedDate )
+    {
+        // 1. force last modified date
+        setLastModifiedDate( normalizeLastModifiedDate( lastModifiedDate ) );
+
+        // 2. sort filenames in each directory when scanning filesystem
+        setFilenameComparator( new Comparator<String>()
+        {
+            @Override
+            public int compare( String s1, String s2 )
+            {
+                return s1.compareTo( s2 );
+            }
+        } );
+
+        // 3. ignore file/directory mode from filesystem, since they may vary based on local user umask
+        // notice: this overrides execute bit on Unix (that is already ignored on Windows)
+        setFileMode( Archiver.DEFAULT_FILE_MODE );
+        setDirectoryMode( Archiver.DEFAULT_DIR_MODE );
+
+        // 4. ignore uid/gid from filesystem (for tar)
+        setOverrideUid( 0 );
+        setOverrideUserName( "root" ); // is it possible to avoid this, like "tar --numeric-owner"?
+        setOverrideGid( 0 );
+        setOverrideGroupName( "root" );
+    }
+
+    /**
+     * Normalize last modified time value to get reproducible archive entries, based on
+     * archive binary format (tar uses UTC timestamp but zip uses local time then requires
+     * tweaks to make the value reproducible whatever the current timezone is).
+     *
+     * @param lastModifiedDate 
+     * @return
+     */
+    protected Date normalizeLastModifiedDate( Date lastModifiedDate )
+    {
+        return lastModifiedDate;
+    }
 }

@@ -398,4 +398,11 @@ public class DelgatingArchiver implements Archiver
     {
         return target.getOverrideGroupName();
     }
+
+    @Override
+    public void configureReproducible( Date lastModifiedDate )
+    {
+        target.configureReproducible( lastModifiedDate );
+    }
+
 }

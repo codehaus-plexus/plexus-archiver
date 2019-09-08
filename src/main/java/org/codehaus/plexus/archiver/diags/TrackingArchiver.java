@@ -468,4 +468,9 @@ public class TrackingArchiver
     {
         return null;
     }
+
+    @Override
+    public void configureReproducible( Date lastModifiedDate )
+    {
+    }
 }

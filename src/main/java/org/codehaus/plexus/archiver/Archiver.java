@@ -415,6 +415,9 @@ public interface Archiver
     Date getLastModifiedDate();
 
     /**
+     * Set filename comparator, used to sort file entries when scanning directories since File.list() does not
+     * guarantee any order.
+     *
      * @since 4.2.0
      */
     void setFilenameComparator( Comparator<String> filenameComparator );
@@ -458,4 +461,18 @@ public interface Archiver
      * @since 4.2.0
      */
     String getOverrideGroupName();
+
+    /**
+     * Configure the archiver to create archives in a reproducible way (see <a
+     * href="https://reproducible-builds.org/>Reproducible Builds</a>). This will configure:
+     * <ul>
+     * <li>reproducible archive entries order,</li>
+     * <li>defined entries timestamp</li>
+     * <li>and reproducible entries Unix mode.</li>
+     * <ul>
+     * 
+     * @param lastModifiedDate the date to use for archive entries last modified time
+     * @since 4.2.0
+     */
+    void configureReproducible( Date lastModifiedDate );
 }
