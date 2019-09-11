@@ -32,14 +32,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
 import javax.annotation.Nonnull;
+
 import org.apache.commons.compress.archivers.zip.ExtraFieldUtils;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipExtraField;
@@ -889,7 +895,8 @@ public class ZipArchiverTest
     public void testFixedEntryModificationTime()
             throws IOException
     {
-        final long almostMinDosTime = 315532802000L;
+        final long almostMinDosTime = toLocalTimeZone( 315532802000L );
+
         final File zipFile = getTestFile( "target/output/zip-with-fixed-entry-modification-times.zip" );
         final ZipArchiver archiver = getZipArchiver( zipFile );
         archiver.setLastModifiedDate( new Date( almostMinDosTime ) );
@@ -897,10 +904,39 @@ public class ZipArchiverTest
         archiver.createArchive();
 
         assertTrue( zipFile.exists() );
-        final ZipFile zf = new ZipFile( zipFile );
-        assertEquals( almostMinDosTime, zf.getEntry( "file-with-even-time.txt" ).getTime() );
-        assertEquals( almostMinDosTime, zf.getEntry( "file-with-odd-time.txt" ).getTime() );
-        assertEquals( almostMinDosTime, zf.getEntry( "foo/" ).getTime() );
+        try ( final ZipFile zf = new ZipFile( zipFile ) )
+        {
+            assertEquals( almostMinDosTime, zf.getEntry( "file-with-even-time.txt" ).getTime() );
+            assertEquals( almostMinDosTime, zf.getEntry( "file-with-odd-time.txt" ).getTime() );
+            assertEquals( almostMinDosTime, zf.getEntry( "foo/" ).getTime() );
+        }
+    }
+
+    /**
+     * Takes a timestamp located in GMT TZ and convert it to the default system TZ. This makes the test independent of
+     * the current TZ.
+     *
+     * @param timestamp the epoch time to convert.
+     * @return the timestamp matching the same input date but in the local TZ.
+     */
+    private long toLocalTimeZone( long timestamp )
+    {
+        String dateFormat = "dd-MM-yyyy hh:mm:ss a";
+        DateFormat formatterWithTimeZone = new SimpleDateFormat( dateFormat );
+        formatterWithTimeZone.setTimeZone( TimeZone.getTimeZone( "GMT" ) );
+        String sDate = formatterWithTimeZone.format( new Date( timestamp ) );
+
+        DateFormat formatter = new SimpleDateFormat( dateFormat );
+        try
+        {
+            Date dateWithTimeZone = formatter.parse( sDate );
+            return dateWithTimeZone.getTime();
+        }
+        catch ( ParseException e )
+        {
+            fail( "Date '" + sDate + "' can not be parsed!" );
+            return 0L;
+        }
     }
 
 }
