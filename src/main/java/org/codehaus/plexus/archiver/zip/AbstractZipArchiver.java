@@ -838,10 +838,21 @@ public abstract class AbstractZipArchiver
     @Override
     protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
     {
-        // timestamp of zip entries at zip storage level ignores timezone: see https://github.com/Stuk/jszip/issues/369
-        Calendar cal = Calendar.getInstance();
-        long zipTime = 1000L * sourceDateEpoch - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
-        return new Date( zipTime );
+        // timestamp of zip entries at zip storage level ignores timezone: managed in ZipEntry.setTime,
+        // that turns javaToDosTime: need to revert the operation here to get reproducible
+        // zip entry time
+        return new Date( dosToJavaTime( 1000L * sourceDateEpoch ) );
     }
 
+    /**
+     * Converts DOS time to Java time (number of milliseconds since epoch).
+     *
+     * @see java.util.zip.ZipEntry#setTime
+     * @see java.util.zip.ZipUtils#dosToJavaTime
+     */
+    private static long dosToJavaTime( long dtime )
+    {
+        Calendar cal = Calendar.getInstance();
+        return dtime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+    }
 }
