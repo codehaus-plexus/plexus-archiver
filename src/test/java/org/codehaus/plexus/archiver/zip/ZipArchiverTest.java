@@ -913,8 +913,14 @@ public class ZipArchiverTest
     }
 
     /**
-     * Takes a timestamp located in GMT TZ and convert it to the default system TZ. This makes the test independent of
-     * the current TZ.
+     * Takes a timestamp, turns it into a textual representation based on GMT, then translated it into a timestamp in
+     * local timezone. This makes the test independent of the current TimeZone. The reason this is necessary is:
+     * <ul>
+     * <li>ZIP file format does not take timezone into account.</li>
+     * <li>In the process of converting the ZipEntry time from the DOS date format specified by the ZIP file format, the
+     * timestamp is converted to a Java Date object, which DOES depends of the current system TimeZone, therefore
+     * changing the value of the Date object representing that timestamp relative to the local TimeZone.</li>
+     * </ul>
      *
      * @param timestamp the epoch time to convert.
      * @return the timestamp matching the same input date but in the local TZ.
