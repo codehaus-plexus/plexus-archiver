@@ -366,4 +366,52 @@ public class NoOpArchiver implements Archiver
 
     }
 
+    @Override
+    public void setOverrideUid( int uid )
+    {
+
+    }
+
+    @Override
+    public void setOverrideUserName( String userName )
+    {
+
+    }
+
+    @Override
+    public int getOverrideUid()
+    {
+        return 0;
+    }
+
+    @Override
+    public String getOverrideUserName()
+    {
+        return null;
+    }
+
+    @Override
+    public void setOverrideGid( int gid )
+    {
+
+    }
+
+    @Override
+    public void setOverrideGroupName( String groupName )
+    {
+
+    }
+
+    @Override
+    public int getOverrideGid()
+    {
+        return 0;
+    }
+
+    @Override
+    public String getOverrideGroupName()
+    {
+        return null;
+    }
+
 }

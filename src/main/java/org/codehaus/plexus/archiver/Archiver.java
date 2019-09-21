@@ -418,4 +418,44 @@ public interface Archiver
      * @since 4.2.0
      */
     void setFilenameComparator( Comparator<String> filenameComparator );
+
+    /**
+     * @since 4.2.0
+     */
+    void setOverrideUid( int uid );
+
+    /**
+     * @since 4.2.0
+     */
+    void setOverrideUserName( String userName );
+
+    /**
+     * @since 4.2.0
+     */
+    int getOverrideUid();
+
+    /**
+     * @since 4.2.0
+     */
+    String getOverrideUserName();
+
+    /**
+     * @since 4.2.0
+     */
+    void setOverrideGid( int gid );
+
+    /**
+     * @since 4.2.0
+     */
+    void setOverrideGroupName( String groupName );
+
+    /**
+     * @since 4.2.0
+     */
+    int getOverrideGid();
+
+    /**
+     * @since 4.2.0
+     */
+    String getOverrideGroupName();
 }
