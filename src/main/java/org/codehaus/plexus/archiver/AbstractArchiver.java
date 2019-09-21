@@ -1278,6 +1278,12 @@ public abstract class AbstractArchiver
         // notice: this overrides execute bit on Unix (that is already ignored on Windows)
         setFileMode( Archiver.DEFAULT_FILE_MODE );
         setDirectoryMode( Archiver.DEFAULT_DIR_MODE );
+
+        // 4. ignore uid/gid from filesystem (for tar)
+        setOverrideUid( 0 );
+        setOverrideUserName( "root" ); // is it possible to avoid this, like "tar --numeric-owner"?
+        setOverrideGid( 0 );
+        setOverrideGroupName( "root" );
     }
 
     protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
