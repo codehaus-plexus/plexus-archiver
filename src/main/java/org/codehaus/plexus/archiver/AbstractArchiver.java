@@ -38,6 +38,7 @@ import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
+import org.codehaus.plexus.components.io.attributes.SimpleResourceAttributes;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoResourceCollection;
 import org.codehaus.plexus.components.io.resources.EncodingSupported;
@@ -114,6 +115,26 @@ public abstract class AbstractArchiver
      * @sine 4.2.0
      */
     private Comparator<String> filenameComparator;
+
+    /**
+     * @sine 4.2.0
+     */
+    private int overrideUid = -1;
+
+    /**
+     * @sine 4.2.0
+     */
+    private String overrideUserName;
+
+    /**
+     * @sine 4.2.0
+     */
+    private int overrideGid = -1;
+
+    /**
+     * @sine 4.2.0
+     */
+    private String overrideGroupName;
 
     // contextualized.
     private ArchiverManager archiverManager;
@@ -360,9 +381,12 @@ public abstract class AbstractArchiver
         collection.setFileMappers( fileSet.getFileMappers() );
         collection.setFilenameComparator( getFilenameComparator() );
 
-        if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 )
+        if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 || getOverrideUid() > -1
+            || getOverrideGid() > -1 || getOverrideUserName() != null || getOverrideGroupName() != null )
         {
-            collection.setOverrideAttributes( -1, null, -1, null, getOverrideFileMode(), getOverrideDirectoryMode() );
+            collection.setOverrideAttributes( getOverrideUid(), getOverrideUserName(), getOverrideGid(),
+                                              getOverrideGroupName(), getOverrideFileMode(),
+                                              getOverrideDirectoryMode() );
         }
 
         if ( getDefaultDirectoryMode() > -1 || getDefaultFileMode() > -1 )
@@ -399,6 +423,18 @@ public abstract class AbstractArchiver
             ArchiveEntry.createSymlinkEntry( symlinkName, permissions, symlinkDestination, getDirectoryMode() ) );
     }
 
+    private ArchiveEntry updateArchiveEntryAttributes( ArchiveEntry entry )
+    {
+        if ( getOverrideUid() > -1 || getOverrideGid() > -1 || getOverrideUserName() != null
+            || getOverrideGroupName() != null )
+        {
+            entry.setResourceAttributes( new SimpleResourceAttributes( getOverrideUid(), getOverrideUserName(),
+                                                                       getOverrideGid(), getOverrideGroupName(),
+                                                                       entry.getMode() ) );
+        }
+        return entry;
+    }
+
     protected ArchiveEntry asArchiveEntry( @Nonnull final PlexusIoResource resource, final String destFileName,
                                            final int permissions, PlexusIoResourceCollection collection )
         throws ArchiverException
@@ -408,14 +444,17 @@ public abstract class AbstractArchiver
             throw new ArchiverException( resource.getName() + " not found." );
         }
 
+        ArchiveEntry entry;
         if ( resource.isFile() )
         {
-            return ArchiveEntry.createFileEntry( destFileName, resource, permissions, collection, getDirectoryMode() );
+            entry = ArchiveEntry.createFileEntry( destFileName, resource, permissions, collection, getDirectoryMode() );
         }
         else
         {
-            return ArchiveEntry.createDirectoryEntry( destFileName, resource, permissions, getDirectoryMode() );
+            entry = ArchiveEntry.createDirectoryEntry( destFileName, resource, permissions, getDirectoryMode() );
         }
+
+        return updateArchiveEntryAttributes( entry );
     }
 
     private ArchiveEntry asArchiveEntry( final AddedResourceCollection collection, final PlexusIoResource resource )
@@ -468,7 +507,9 @@ public abstract class AbstractArchiver
         try
         {
             // do a null check here, to avoid creating a file stream if there are no filters...
-            doAddResource( ArchiveEntry.createFileEntry( destFileName, inputFile, permissions, getDirectoryMode() ) );
+            ArchiveEntry entry =
+                ArchiveEntry.createFileEntry( destFileName, inputFile, permissions, getDirectoryMode() );
+            doAddResource( updateArchiveEntryAttributes( entry ) );
         }
         catch ( final IOException e )
         {
@@ -1167,5 +1208,53 @@ public abstract class AbstractArchiver
     public Comparator<String> getFilenameComparator()
     {
         return filenameComparator;
+    }
+
+    @Override
+    public void setOverrideUid( int uid )
+    {
+        overrideUid = uid;
+    }
+
+    @Override
+    public void setOverrideUserName( String userName )
+    {
+        overrideUserName = userName;
+    }
+
+    @Override
+    public int getOverrideUid()
+    {
+        return overrideUid;
+    }
+
+    @Override
+    public String getOverrideUserName()
+    {
+        return overrideUserName;
+    }
+
+    @Override
+    public void setOverrideGid( int gid )
+    {
+        overrideGid = gid;
+    }
+
+    @Override
+    public void setOverrideGroupName( String groupName )
+    {
+        overrideGroupName = groupName;
+    }
+
+    @Override
+    public int getOverrideGid()
+    {
+        return overrideGid;
+    }
+
+    @Override
+    public String getOverrideGroupName()
+    {
+        return overrideGroupName;
     }
 }

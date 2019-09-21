@@ -350,4 +350,52 @@ public class DelgatingArchiver implements Archiver
     {
         target.setFilenameComparator( filenameComparator );
     }
+
+    @Override
+    public void setOverrideUid( int uid )
+    {
+        target.setOverrideUid( uid );
+    }
+
+    @Override
+    public void setOverrideUserName( String userName )
+    {
+        target.setOverrideUserName( userName );
+    }
+
+    @Override
+    public int getOverrideUid()
+    {
+        return target.getOverrideUid();
+    }
+
+    @Override
+    public String getOverrideUserName()
+    {
+        return target.getOverrideUserName();
+    }
+
+    @Override
+    public void setOverrideGid( int gid )
+    {
+        target.setOverrideGid( gid );
+    }
+
+    @Override
+    public void setOverrideGroupName( String groupName )
+    {
+        target.setOverrideGroupName( groupName );
+    }
+
+    @Override
+    public int getOverrideGid()
+    {
+        return target.getOverrideGid();
+    }
+
+    @Override
+    public String getOverrideGroupName()
+    {
+        return target.getOverrideGroupName();
+    }
 }
