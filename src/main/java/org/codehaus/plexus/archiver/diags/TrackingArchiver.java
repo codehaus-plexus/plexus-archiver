@@ -470,7 +470,7 @@ public class TrackingArchiver
     }
 
     @Override
-    public void configureReproducible( int sourceDateEpoch )
+    public void configureReproducible( Date outputTimestamp )
     {
     }
 }

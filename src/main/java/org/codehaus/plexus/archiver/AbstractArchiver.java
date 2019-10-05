@@ -1259,10 +1259,10 @@ public abstract class AbstractArchiver
     }
 
     @Override
-    public void configureReproducible( int sourceDateEpoch )
+    public void configureReproducible( Date outputTimestamp )
     {
         // 1. force last modified date
-        setLastModifiedDate( convertSourceDateEpochToDate( sourceDateEpoch ) );
+        setLastModifiedDate( convertOutputTimestamp( outputTimestamp ) );
 
         // 2. sort filenames in each directory when scanning filesystem
         setFilenameComparator( new Comparator<String>()
@@ -1286,8 +1286,8 @@ public abstract class AbstractArchiver
         setOverrideGroupName( "root" );
     }
 
-    protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
+    protected Date convertOutputTimestamp( Date outputTimestamp )
     {
-        return new Date( sourceDateEpoch * 1000L );
+        return outputTimestamp;
     }
 }

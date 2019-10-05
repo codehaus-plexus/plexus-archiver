@@ -400,9 +400,9 @@ public class DelgatingArchiver implements Archiver
     }
 
     @Override
-    public void configureReproducible( int sourceDateEpoch )
+    public void configureReproducible( Date outputTimestamp )
     {
-        target.configureReproducible( sourceDateEpoch );
+        target.configureReproducible( outputTimestamp );
     }
 
 }

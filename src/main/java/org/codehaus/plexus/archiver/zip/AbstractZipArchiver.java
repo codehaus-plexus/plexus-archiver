@@ -836,12 +836,12 @@ public abstract class AbstractZipArchiver
     }
 
     @Override
-    protected Date convertSourceDateEpochToDate( int sourceDateEpoch )
+    protected Date convertOutputTimestamp( Date outputTimestamp )
     {
         // timestamp of zip entries at zip storage level ignores timezone: managed in ZipEntry.setTime,
         // that turns javaToDosTime: need to revert the operation here to get reproducible
         // zip entry time
-        return new Date( dosToJavaTime( 1000L * sourceDateEpoch ) );
+        return new Date( dosToJavaTime( outputTimestamp.getTime() ) );
     }
 
     /**

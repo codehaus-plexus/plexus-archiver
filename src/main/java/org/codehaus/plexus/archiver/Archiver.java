@@ -468,11 +468,8 @@ public interface Archiver
      * Builds</a>). This will require reproducible archive entries order, defined entries timestamp and reproducible
      * entries Unix mode.
      * 
-     * @param sourceDateEpoch Value like SOURCE_DATE_EPOCH as
-     *            <a href="https://reproducible-builds.org/specs/source-date-epoch/">defined in Reproducible Builds</a>:
-     *            a UNIX timestamp, defined as the number of seconds, excluding leap seconds, since 01 Jan 1970 00:00:00
-     *            UTC.
+     * @param outputTimestamp the date to use for archive entries last modified time
      * @since 4.2.0
      */
-    void configureReproducible( int sourceDateEpoch );
+    void configureReproducible( Date outputTimestamp );
 }
