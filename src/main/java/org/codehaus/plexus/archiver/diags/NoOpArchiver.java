@@ -415,7 +415,7 @@ public class NoOpArchiver implements Archiver
     }
 
     @Override
-    public void configureReproducible( Date outputTimestamp )
+    public void configureReproducible( Date lastModifiedDate )
     {
 
     }

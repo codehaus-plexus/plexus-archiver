@@ -1259,10 +1259,10 @@ public abstract class AbstractArchiver
     }
 
     @Override
-    public void configureReproducible( Date outputTimestamp )
+    public void configureReproducible( Date lastModifiedDate )
     {
         // 1. force last modified date
-        setLastModifiedDate( convertOutputTimestamp( outputTimestamp ) );
+        setLastModifiedDate( normalizeLastModifiedDate( lastModifiedDate ) );
 
         // 2. sort filenames in each directory when scanning filesystem
         setFilenameComparator( new Comparator<String>()
@@ -1286,8 +1286,16 @@ public abstract class AbstractArchiver
         setOverrideGroupName( "root" );
     }
 
-    protected Date convertOutputTimestamp( Date outputTimestamp )
+    /**
+     * Normalize last modified time value to get reproducible archive entries, based on
+     * archive binary format (tar uses UTC timestamp but zip uses local time then requires
+     * tweaks to make the value reproducible whatever the current timezone is).
+     *
+     * @param lastModifiedDate 
+     * @return
+     */
+    protected Date normalizeLastModifiedDate( Date lastModifiedDate )
     {
-        return outputTimestamp;
+        return lastModifiedDate;
     }
 }

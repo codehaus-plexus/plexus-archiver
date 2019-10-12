@@ -423,7 +423,6 @@ public interface Archiver
     void setFilenameComparator( Comparator<String> filenameComparator );
 
     /**
-<<<<<<< reproducible
      * @since 4.2.0
      */
     void setOverrideUid( int uid );
@@ -464,12 +463,16 @@ public interface Archiver
     String getOverrideGroupName();
 
     /**
-     * Configure the archiver to get reproducible archives (see <a href="https://reproducible-builds.org/>Reproducible
-     * Builds</a>). This will require reproducible archive entries order, defined entries timestamp and reproducible
-     * entries Unix mode.
+     * Configure the archiver to create archives in a reproducible way (see <a
+     * href="https://reproducible-builds.org/>Reproducible Builds</a>). This will configure:
+     * <ul>
+     * <li>reproducible archive entries order,</li>
+     * <li>defined entries timestamp</li>
+     * <li>and reproducible entries Unix mode.</li>
+     * <ul>
      * 
-     * @param outputTimestamp the date to use for archive entries last modified time
+     * @param lastModifiedDate the date to use for archive entries last modified time
      * @since 4.2.0
      */
-    void configureReproducible( Date outputTimestamp );
+    void configureReproducible( Date lastModifiedDate );
 }

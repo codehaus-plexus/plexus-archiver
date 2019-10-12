@@ -470,7 +470,7 @@ public class TrackingArchiver
     }
 
     @Override
-    public void configureReproducible( Date outputTimestamp )
+    public void configureReproducible( Date lastModifiedDate )
     {
     }
 }
