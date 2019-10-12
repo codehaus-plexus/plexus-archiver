@@ -850,9 +850,9 @@ public abstract class AbstractZipArchiver
      * @see java.util.zip.ZipEntry#setTime
      * @see java.util.zip.ZipUtils#dosToJavaTime
      */
-    private static long dosToJavaTime( long dtime )
+    private static long dosToJavaTime( long dosTime )
     {
         Calendar cal = Calendar.getInstance();
-        return dtime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+        return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
     }
 }
