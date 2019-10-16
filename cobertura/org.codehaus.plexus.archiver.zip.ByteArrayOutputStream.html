@@ -131,7 +131,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * A singleton empty byte array.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;57</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;58</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] EMPTY_BYTE_ARRAY = <span class="keyword">new</span> <span class="keyword">byte</span>[ 0 ];</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;58</td>  <td class="nbHitsCovered">&nbsp;2</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span>[] EMPTY_BYTE_ARRAY = <span class="keyword">new</span> <span class="keyword">byte</span>[ 0 ];</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;60</td>  <td class="nbHits">&nbsp;</td>
@@ -140,7 +140,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * The list of buffers, which grows and never reduces.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;<span class="keyword">byte</span>[]&gt; buffers = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">byte</span>[]&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;<span class="keyword">byte</span>[]&gt; buffers = <span class="keyword">new</span> ArrayList&lt;<span class="keyword">byte</span>[]&gt;();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;64</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;65</td>  <td class="nbHits">&nbsp;</td>
@@ -189,7 +189,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Flag to indicate if the buffers can be reused after reset</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;87</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;88</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> reuseBuffers = <span class="keyword">true</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;88</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> reuseBuffers = <span class="keyword">true</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;90</td>  <td class="nbHits">&nbsp;</td>
@@ -226,19 +226,19 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;107</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ByteArrayOutputStream( <span class="keyword">final</span> <span class="keyword">int</span> size )</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;109</td>  <td class="nbHitsUncovered"><a title="Line 109: Conditional coverage 50 % (1/2).">&nbsp;419</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 109: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> ( size &lt; 0 )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;109</td>  <td class="nbHitsUncovered"><a title="Line 109: Conditional coverage 50 % (1/2).">&nbsp;837</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 109: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> ( size &lt; 0 )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;110</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;111</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException( <span class="string">"Negative initial size: "</span> + size );</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;113</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> ( <span class="keyword">this</span> )</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;113</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> ( <span class="keyword">this</span> )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;114</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;115</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;            needNewBuffer( size );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;116</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;117</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;115</td>  <td class="nbHitsCovered">&nbsp;838</td>  <td class="src"><pre class="src">&nbsp;            needNewBuffer( size );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;116</td>  <td class="nbHitsCovered">&nbsp;838</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;117</td>  <td class="nbHitsCovered">&nbsp;838</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;118</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;119</td>  <td class="nbHits">&nbsp;</td>
@@ -257,7 +257,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> needNewBuffer( <span class="keyword">final</span> <span class="keyword">int</span> newcount )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;126</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;127</td>  <td class="nbHitsUncovered"><a title="Line 127: Conditional coverage 50 % (1/2).">&nbsp;427</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 127: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> ( currentBufferIndex &lt; buffers.size() - 1 )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;127</td>  <td class="nbHitsUncovered"><a title="Line 127: Conditional coverage 50 % (1/2).">&nbsp;853</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 127: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> ( currentBufferIndex &lt; buffers.size() - 1 )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
@@ -277,33 +277,33 @@
   <td class="src"><pre class="src">&nbsp;            <span class="comment">//Creating new buffer</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;138</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">int</span> newBufferSize;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;139</td>  <td class="nbHitsCovered"><a title="Line 139: Conditional coverage 100 % (2/2).">&nbsp;427</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 139: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> ( currentBuffer == <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;139</td>  <td class="nbHitsCovered"><a title="Line 139: Conditional coverage 100 % (2/2).">&nbsp;853</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 139: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> ( currentBuffer == <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;140</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;                newBufferSize = newcount;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;                filledBufferSum = 0;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;141</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;                newBufferSize = newcount;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;142</td>  <td class="nbHitsCovered">&nbsp;837</td>  <td class="src"><pre class="src">&nbsp;                filledBufferSum = 0;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;143</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;144</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;                newBufferSize = Math.max(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;146</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                newBufferSize = Math.max(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;147</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    currentBuffer.length &lt;&lt; 1,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;148</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    newcount - filledBufferSum );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;                filledBufferSum += currentBuffer.length;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;149</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                filledBufferSum += currentBuffer.length;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;150</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;151</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;427</td>  <td class="src"><pre class="src">&nbsp;            currentBufferIndex++;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;427</td>  <td class="src"><pre class="src">&nbsp;            currentBuffer = <span class="keyword">new</span> <span class="keyword">byte</span>[ newBufferSize ];</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;427</td>  <td class="src"><pre class="src">&nbsp;            buffers.add( currentBuffer );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;152</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;            currentBufferIndex++;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;153</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;            currentBuffer = <span class="keyword">new</span> <span class="keyword">byte</span>[ newBufferSize ];</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;154</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;            buffers.add( currentBuffer );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;155</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;427</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;156</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;157</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;158</td>  <td class="nbHits">&nbsp;</td>
@@ -326,7 +326,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> write( <span class="keyword">final</span> <span class="keyword">byte</span>[] b, <span class="keyword">final</span> <span class="keyword">int</span> off, <span class="keyword">final</span> <span class="keyword">int</span> len )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;167</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsUncovered"><a title="Line 168: Conditional coverage 50 % (5/10) [each condition: 50 %, 50 %, 50 %, 50 %, 50 %].">&nbsp;47748</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 168: Conditional coverage 50 % (5/10) [each condition: 50 %, 50 %, 50 %, 50 %, 50 %].">        <span class="keyword">if</span> ( ( off &lt; 0 )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsUncovered"><a title="Line 168: Conditional coverage 50 % (5/10) [each condition: 50 %, 50 %, 50 %, 50 %, 50 %].">&nbsp;95366</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 168: Conditional coverage 50 % (5/10) [each condition: 50 %, 50 %, 50 %, 50 %, 50 %].">        <span class="keyword">if</span> ( ( off &lt; 0 )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                 || ( off &gt; b.length )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
@@ -340,35 +340,35 @@
 <tr>  <td class="numLineCover">&nbsp;174</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException();</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;175</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsUncovered"><a title="Line 176: Conditional coverage 50 % (1/2).">&nbsp;47784</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 176: Conditional coverage 50 % (1/2).">        <span class="keyword">else</span> <span class="keyword">if</span> ( len == 0 )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;176</td>  <td class="nbHitsUncovered"><a title="Line 176: Conditional coverage 50 % (1/2).">&nbsp;95462</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 176: Conditional coverage 50 % (1/2).">        <span class="keyword">else</span> <span class="keyword">if</span> ( len == 0 )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;177</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;178</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;47780</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> ( <span class="keyword">this</span> )</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;180</td>  <td class="nbHitsCovered">&nbsp;95455</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> ( <span class="keyword">this</span> )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;182</td>  <td class="nbHitsCovered">&nbsp;47783</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">int</span> newcount = count + len;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;183</td>  <td class="nbHitsCovered">&nbsp;47788</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">int</span> remaining = len;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;47789</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">int</span> inBufferPos = count - filledBufferSum;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered"><a title="Line 185: Conditional coverage 100 % (2/2).">&nbsp;95517</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 185: Conditional coverage 100 % (2/2).">            <span class="keyword">while</span> ( remaining &gt; 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;182</td>  <td class="nbHitsCovered">&nbsp;95489</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">int</span> newcount = count + len;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;183</td>  <td class="nbHitsCovered">&nbsp;95499</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">int</span> remaining = len;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;95499</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">int</span> inBufferPos = count - filledBufferSum;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered"><a title="Line 185: Conditional coverage 100 % (2/2).">&nbsp;190865</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 185: Conditional coverage 100 % (2/2).">            <span class="keyword">while</span> ( remaining &gt; 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;186</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;187</td>  <td class="nbHitsCovered">&nbsp;47829</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> <span class="keyword">int</span> part = Math.min( remaining, currentBuffer.length - inBufferPos );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;188</td>  <td class="nbHitsCovered">&nbsp;47798</td>  <td class="src"><pre class="src">&nbsp;                System.arraycopy( b, off + len - remaining, currentBuffer, inBufferPos, part );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;189</td>  <td class="nbHitsCovered">&nbsp;47791</td>  <td class="src"><pre class="src">&nbsp;                remaining -= part;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;190</td>  <td class="nbHitsCovered"><a title="Line 190: Conditional coverage 100 % (2/2).">&nbsp;47799</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 190: Conditional coverage 100 % (2/2).">                <span class="keyword">if</span> ( remaining &gt; 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;187</td>  <td class="nbHitsCovered">&nbsp;95576</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> <span class="keyword">int</span> part = Math.min( remaining, currentBuffer.length - inBufferPos );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;188</td>  <td class="nbHitsCovered">&nbsp;95496</td>  <td class="src"><pre class="src">&nbsp;                System.arraycopy( b, off + len - remaining, currentBuffer, inBufferPos, part );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;189</td>  <td class="nbHitsCovered">&nbsp;95508</td>  <td class="src"><pre class="src">&nbsp;                remaining -= part;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;190</td>  <td class="nbHitsCovered"><a title="Line 190: Conditional coverage 100 % (2/2).">&nbsp;95529</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 190: Conditional coverage 100 % (2/2).">                <span class="keyword">if</span> ( remaining &gt; 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;                    needNewBuffer( newcount );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;                    inBufferPos = 0;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                    needNewBuffer( newcount );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                    inBufferPos = 0;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;194</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;47800</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;47811</td>  <td class="src"><pre class="src">&nbsp;            count = newcount;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;47802</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;47805</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;95530</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;95567</td>  <td class="src"><pre class="src">&nbsp;            count = newcount;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;95538</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;95552</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
@@ -497,7 +497,7 @@
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;272</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">//nop</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsCovered">&nbsp;838</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsCovered">&nbsp;1676</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;274</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
@@ -722,29 +722,29 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">synchronized</span> InputStream toInputStream()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;397</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;398</td>  <td class="nbHitsCovered">&nbsp;419</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">int</span> remaining = count;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;399</td>  <td class="nbHitsCovered"><a title="Line 399: Conditional coverage 100 % (2/2).">&nbsp;419</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 399: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> ( remaining == 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;398</td>  <td class="nbHitsCovered">&nbsp;838</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">int</span> remaining = count;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;399</td>  <td class="nbHitsCovered"><a title="Line 399: Conditional coverage 100 % (2/2).">&nbsp;838</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 399: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> ( remaining == 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;400</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;188</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> ClosedInputStream();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;401</td>  <td class="nbHitsCovered">&nbsp;376</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">new</span> ClosedInputStream();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;402</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;403</td>  <td class="nbHitsCovered">&nbsp;231</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> List&lt;ByteArrayInputStream&gt; list = <span class="keyword">new</span> ArrayList&lt;ByteArrayInputStream&gt;( buffers.size() );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;404</td>  <td class="nbHitsUncovered"><a title="Line 404: Conditional coverage 50 % (1/2).">&nbsp;231</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 404: Conditional coverage 50 % (1/2).">        <span class="keyword">for</span> ( <span class="keyword">final</span> <span class="keyword">byte</span>[] buf : buffers )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;403</td>  <td class="nbHitsCovered">&nbsp;462</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> List&lt;ByteArrayInputStream&gt; list = <span class="keyword">new</span> ArrayList&lt;ByteArrayInputStream&gt;( buffers.size() );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;404</td>  <td class="nbHitsUncovered"><a title="Line 404: Conditional coverage 50 % (1/2).">&nbsp;462</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 404: Conditional coverage 50 % (1/2).">        <span class="keyword">for</span> ( <span class="keyword">final</span> <span class="keyword">byte</span>[] buf : buffers )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;405</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;239</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">int</span> c = Math.min( buf.length, remaining );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered">&nbsp;239</td>  <td class="src"><pre class="src">&nbsp;            list.add( <span class="keyword">new</span> ByteArrayInputStream( buf, 0, c ) );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;239</td>  <td class="src"><pre class="src">&nbsp;            remaining -= c;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsCovered"><a title="Line 409: Conditional coverage 100 % (2/2).">&nbsp;239</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 409: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> ( remaining == 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;406</td>  <td class="nbHitsCovered">&nbsp;478</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">int</span> c = Math.min( buf.length, remaining );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered">&nbsp;478</td>  <td class="src"><pre class="src">&nbsp;            list.add( <span class="keyword">new</span> ByteArrayInputStream( buf, 0, c ) );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsCovered">&nbsp;478</td>  <td class="src"><pre class="src">&nbsp;            remaining -= c;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsCovered"><a title="Line 409: Conditional coverage 100 % (2/2).">&nbsp;478</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 409: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> ( remaining == 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsCovered">&nbsp;231</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">break</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsCovered">&nbsp;462</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">break</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;412</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;413</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;414</td>  <td class="nbHitsCovered">&nbsp;231</td>  <td class="src"><pre class="src">&nbsp;        reuseBuffers = <span class="keyword">false</span>;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;415</td>  <td class="nbHitsCovered">&nbsp;231</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> SequenceInputStream( Collections.enumeration( list ) );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;413</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;414</td>  <td class="nbHitsCovered">&nbsp;462</td>  <td class="src"><pre class="src">&nbsp;        reuseBuffers = <span class="keyword">false</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;415</td>  <td class="nbHitsCovered">&nbsp;462</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> SequenceInputStream( Collections.enumeration( list ) );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;416</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;417</td>  <td class="nbHits">&nbsp;</td>
@@ -896,6 +896,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 16/10/19 08:05.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 16/10/19 08:17.</div>
 </body>
 </html>

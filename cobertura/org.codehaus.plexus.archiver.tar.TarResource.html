@@ -69,24 +69,24 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> TarResource( TarFile tarFile, TarArchiveEntry entry )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;26</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;27</td>  <td class="nbHitsCovered"><a title="Line 27: Conditional coverage 100 % (4/4) [each condition: 100 %, 100 %].">&nbsp;1482</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 27: Conditional coverage 100 % (4/4) [each condition: 100 %, 100 %].">        <span class="keyword">super</span>( entry.getName(), getLastModifiedTime( entry ),</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;27</td>  <td class="nbHitsCovered"><a title="Line 27: Conditional coverage 100 % (4/4) [each condition: 100 %, 100 %].">&nbsp;2964</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 27: Conditional coverage 100 % (4/4) [each condition: 100 %, 100 %].">        <span class="keyword">super</span>( entry.getName(), getLastModifiedTime( entry ),</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;               entry.isDirectory() ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : entry.getSize(), !entry.isDirectory(),</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;               entry.isDirectory(), <span class="keyword">true</span> );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;31</td>  <td class="nbHitsCovered">&nbsp;1482</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.tarFile = tarFile;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;32</td>  <td class="nbHitsCovered">&nbsp;1482</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.entry = entry;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;33</td>  <td class="nbHitsCovered">&nbsp;1482</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;31</td>  <td class="nbHitsCovered">&nbsp;2964</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.tarFile = tarFile;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;32</td>  <td class="nbHitsCovered">&nbsp;2964</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">this</span>.entry = entry;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;33</td>  <td class="nbHitsCovered">&nbsp;2964</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;34</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;35</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">long</span> getLastModifiedTime( TarArchiveEntry entry )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;36</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;37</td>  <td class="nbHitsCovered">&nbsp;1482</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">long</span> l = entry.getModTime().getTime();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;38</td>  <td class="nbHitsUncovered"><a title="Line 38: Conditional coverage 50 % (1/2).">&nbsp;1482</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 38: Conditional coverage 50 % (1/2).">        <span class="keyword">return</span> l == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;37</td>  <td class="nbHitsCovered">&nbsp;2964</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">long</span> l = entry.getModTime().getTime();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;38</td>  <td class="nbHitsUncovered"><a title="Line 38: Conditional coverage 50 % (1/2).">&nbsp;2964</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 38: Conditional coverage 50 % (1/2).">        <span class="keyword">return</span> l == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;39</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;40</td>  <td class="nbHits">&nbsp;</td>
@@ -97,10 +97,10 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">synchronized</span> PlexusIoResourceAttributes getAttributes()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;43</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;44</td>  <td class="nbHitsCovered"><a title="Line 44: Conditional coverage 100 % (2/2).">&nbsp;1470</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 44: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> ( attributes == <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;44</td>  <td class="nbHitsCovered"><a title="Line 44: Conditional coverage 100 % (2/2).">&nbsp;2940</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 44: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> ( attributes == <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;45</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;46</td>  <td class="nbHitsCovered">&nbsp;1418</td>  <td class="src"><pre class="src">&nbsp;            attributes = <span class="keyword">new</span> SimpleResourceAttributes( entry.getUserId(), entry.getUserName(), entry.getGroupId(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;46</td>  <td class="nbHitsCovered">&nbsp;2836</td>  <td class="src"><pre class="src">&nbsp;            attributes = <span class="keyword">new</span> SimpleResourceAttributes( entry.getUserId(), entry.getUserName(), entry.getGroupId(),</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;47</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                                                       entry.getGroupName(), entry.getMode() );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;48</td>  <td class="nbHits">&nbsp;</td>
@@ -109,7 +109,7 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;50</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;51</td>  <td class="nbHitsCovered">&nbsp;1470</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> attributes;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;51</td>  <td class="nbHitsCovered">&nbsp;2940</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> attributes;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;53</td>  <td class="nbHits">&nbsp;</td>
@@ -145,7 +145,7 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;71</td>  <td class="nbHitsCovered">&nbsp;1047</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> tarFile.getInputStream( entry );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;71</td>  <td class="nbHitsCovered">&nbsp;2094</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> tarFile.getInputStream( entry );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;72</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;73</td>  <td class="nbHits">&nbsp;</td>
@@ -154,6 +154,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 16/10/19 08:05.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 16/10/19 08:17.</div>
 </body>
 </html>
