@@ -463,13 +463,14 @@ public interface Archiver
     String getOverrideGroupName();
 
     /**
-     * Configure the archiver to create archives in a reproducible way (see <a
-     * href="https://reproducible-builds.org/>Reproducible Builds</a>). This will configure:
+     * Configure the archiver to create archives in a reproducible way (see
+     * <a href="https://reproducible-builds.org/">Reproducible Builds</a>).
+     * <p>This will configure:
      * <ul>
      * <li>reproducible archive entries order,</li>
      * <li>defined entries timestamp</li>
      * <li>and reproducible entries Unix mode.</li>
-     * <ul>
+     * </ul>
      * 
      * @param lastModifiedDate the date to use for archive entries last modified time
      * @since 4.2.0
