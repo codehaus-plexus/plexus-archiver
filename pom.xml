@@ -10,14 +10,14 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.2.0</version>
+  <version>4.2.1-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
 
   <scm>
     <connection>scm:git:git@github.com:codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:git@github.com:codehaus-plexus/plexus-archiver.git</developerConnection>
     <url>http://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
-    <tag>plexus-archiver-4.2.0</tag>
+    <tag>master</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
