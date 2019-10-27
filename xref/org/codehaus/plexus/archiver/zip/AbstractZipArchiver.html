@@ -861,9 +861,10 @@
 <a class="jxr_linenumber" name="L853" href="#L853">853</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> dosToJavaTime( <strong class="jxr_keyword">long</strong> dosTime )
 <a class="jxr_linenumber" name="L854" href="#L854">854</a>     {
 <a class="jxr_linenumber" name="L855" href="#L855">855</a>         Calendar cal = Calendar.getInstance();
-<a class="jxr_linenumber" name="L856" href="#L856">856</a>         <strong class="jxr_keyword">return</strong> dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
-<a class="jxr_linenumber" name="L857" href="#L857">857</a>     }
-<a class="jxr_linenumber" name="L858" href="#L858">858</a> }
+<a class="jxr_linenumber" name="L856" href="#L856">856</a>         cal.setTimeInMillis( dosTime );
+<a class="jxr_linenumber" name="L857" href="#L857">857</a>         <strong class="jxr_keyword">return</strong> dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+<a class="jxr_linenumber" name="L858" href="#L858">858</a>     }
+<a class="jxr_linenumber" name="L859" href="#L859">859</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
