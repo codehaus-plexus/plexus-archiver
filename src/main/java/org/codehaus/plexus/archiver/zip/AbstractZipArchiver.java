@@ -853,6 +853,7 @@ public abstract class AbstractZipArchiver
     private static long dosToJavaTime( long dosTime )
     {
         Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis( dosTime );
         return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
     }
 }
