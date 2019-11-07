@@ -343,9 +343,13 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( !isOverwrite() && f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
+            if ( f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
             {
-                return;
+                String message = String.format( "Archive entry %s already exists on disk and is newer", entryName );
+                getLogger().warn( message );
+                if ( !isOverwrite() ) {
+                    return;
+                }
             }
 
             // create intermediary directories - sometimes zip don't add them
