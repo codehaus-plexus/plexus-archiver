@@ -91,7 +91,9 @@ public class DirectoryArchiver
                 {
                     String dest = ( (SymlinkDestinationSupplier) resource ).getSymlinkDestination();
                     File target = new File( dest );
-                    SymlinkUtils.createSymbolicLink( new File( fileName ), target );
+                    File symlink = new File( fileName );
+                    makeParentDirectories( symlink );
+                    SymlinkUtils.createSymbolicLink( symlink, target );
                 }
                 else
                 {
@@ -142,15 +144,7 @@ public class DirectoryArchiver
 
         if ( !in.isDirectory() )
         {
-            if ( !outFile.getParentFile().exists() )
-            {
-                // create the parent directory...
-                if ( !outFile.getParentFile().mkdirs() )
-                {
-                    // Failure, unable to create specified directory for some unknown reason.
-                    throw new ArchiverException( "Unable to create directory or parent directory of " + outFile );
-                }
-            }
+            makeParentDirectories( outFile );
             ResourceUtils.copyFile( entry.getInputStream(), outFile );
 
             setFileModes( entry, outFile, inLastModified );
@@ -185,6 +179,18 @@ public class DirectoryArchiver
             } );
         }
 
+    }
+
+    private static void makeParentDirectories( File file ) {
+        if ( !file.getParentFile().exists() )
+        {
+            // create the parent directory...
+            if ( !file.getParentFile().mkdirs() )
+            {
+                // Failure, unable to create specified directory for some unknown reason.
+                throw new ArchiverException( "Unable to create directory or parent directory of " + file );
+            }
+        }
     }
 
     private void setFileModes( ArchiveEntry entry, File outFile, long inLastModified )
