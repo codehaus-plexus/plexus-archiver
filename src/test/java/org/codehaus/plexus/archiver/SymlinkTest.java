@@ -102,6 +102,8 @@ public class SymlinkTest
             final File archiveFile = new File( "target/output/dirarchiver-symlink" );
             archiveFile.mkdirs();
             archiver.setDestFile( archiveFile );
+            archiver.addSymlink("target/output/dirarchiver-symlink/aNewDir/symlink", ".");
+
             archiver.createArchive();
 
             File symbolicLink = new File( "target/output/dirarchiver-symlink/symR" );
