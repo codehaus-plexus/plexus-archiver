@@ -17,6 +17,8 @@ This patch has been integrated into the Release 3.6.0
 
 You can find details about the different releases in the [Release Notes](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md).
 
+ * [Release 4.2.1](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-421).
+ * [Release 4.2.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-420).
  * [Release 4.1.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-410).
  * [Release 4.0.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-400).
  * [Release 3.7.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-370).

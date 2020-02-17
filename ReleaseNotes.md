@@ -1,6 +1,43 @@
 Plexus Archiver Release Notes
 ========================================================================
 
+Plexus Archiver 4.2.1
+---------------------
+
+### Bugs
+
+ * [Issue #126][issue-126] - Fixed broken javadoc for
+ `Archiver#configureReproducible`.
+ * [Issue #127][issue-127] - Fixed reproducible zip entry time depends 
+ on local daylight saving time.
+
+Plexus Archiver 4.2.0
+---------------------
+
+### Improvements
+
+ * [Pull Request #121][pr-121] - Add API to configure reproducible archives -
+ `Archiver#configureReproducible`.
+ * Add option to force the user and group for all archive entries.
+ * Add option to force the last modified date for all archive entries.
+ * [Issue #114][issue-114] - Add option to provide `Comparator` for `Archiver`.
+ The archive entries will be added in the order specified by the
+ provided comparator.
+ * [Pull Request #117][pr-117] - Add option to limit the output size for
+ `AbstractZipUnArchiver` as a way of protection against ZIP bombs.
+ Thanks to Sergey Patrikeev and Semyon Atamas.
+ * Various code improvements. Thanks to Semyon Atamas and
+ Sergey Patrikeev.
+
+### Bugs
+
+ * [Issue #94][issue-94] - Fixed setting archiver destination to
+ the working directory causes `NullPointerException`.
+
+### Tasks
+
+ * [Issue #119][issue-119] - Updated dependencies: `commons-compress` to 1.18,
+ `plexus-io` to 3.2.0 and `plexus-utils` to 3.3.0.
 
 Plexus Archiver 4.1.0
 ---------------------
@@ -474,6 +511,7 @@ Plexus Archiver 2.4.4
 [issue-79]: https://github.com/codehaus-plexus/plexus-archiver/issues/79
 [issue-85]: https://github.com/codehaus-plexus/plexus-archiver/issues/85
 [issue-86]: https://github.com/codehaus-plexus/plexus-archiver/issues/86
+[issue-94]: https://github.com/codehaus-plexus/plexus-archiver/issues/94
 [issue-95]: https://github.com/codehaus-plexus/plexus-archiver/issues/95
 [issue-97]: https://github.com/codehaus-plexus/plexus-archiver/issues/97
 [issue-98]: https://github.com/codehaus-plexus/plexus-archiver/issues/98
@@ -484,6 +522,10 @@ Plexus Archiver 2.4.4
 [issue-108]: https://github.com/codehaus-plexus/plexus-archiver/issues/108
 [issue-109]: https://github.com/codehaus-plexus/plexus-archiver/issues/109
 [issue-110]: https://github.com/codehaus-plexus/plexus-archiver/issues/110
+[issue-114]: https://github.com/codehaus-plexus/plexus-archiver/issues/114
+[issue-119]: https://github.com/codehaus-plexus/plexus-archiver/issues/119
+[issue-126]: https://github.com/codehaus-plexus/plexus-archiver/issues/126
+[issue-127]: https://github.com/codehaus-plexus/plexus-archiver/issues/127
 [pr-26]: https://github.com/codehaus-plexus/plexus-archiver/issues/26
 [pr-27]: https://github.com/codehaus-plexus/plexus-archiver/issues/27
 [pr-41]: https://github.com/codehaus-plexus/plexus-archiver/pull/41
@@ -499,3 +541,5 @@ Plexus Archiver 2.4.4
 [pr-100]: https://github.com/codehaus-plexus/plexus-archiver/pull/100
 [pr-102]: https://github.com/codehaus-plexus/plexus-archiver/pull/102
 [pr-106]: https://github.com/codehaus-plexus/plexus-archiver/pull/106
+[pr-117]: https://github.com/codehaus-plexus/plexus-archiver/pull/117
+[pr-121]: https://github.com/codehaus-plexus/plexus-archiver/pull/121
