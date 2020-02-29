@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/components/io/resources/PlexusIoZipFileResourceCollection.html">PlexusIoZipFileResourceCollection</a>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="PlexusIoZipFileResourceCollection" href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html#PlexusIoZipFileResourceCollection">PlexusIoZipFileResourceCollection</a>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">extends</strong> AbstractPlexusIoArchiveResourceCollection
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">implements</strong> EncodingSupported
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  {
@@ -58,7 +58,7 @@
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">private</strong> Charset charset = Charset.forName( <span class="jxr_string">"UTF-8"</span> );
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/components/io/resources/PlexusIoZipFileResourceCollection.html">PlexusIoZipFileResourceCollection</a>()
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">public</strong> <a name="PlexusIoZipFileResourceCollection" href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html#PlexusIoZipFileResourceCollection">PlexusIoZipFileResourceCollection</a>()
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
@@ -97,19 +97,19 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">final</strong> JarFile jarFile = <strong class="jxr_keyword">new</strong> JarFile( f );
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">final</strong> ZipFile zipFile = <strong class="jxr_keyword">new</strong> ZipFile( f, charset != <strong class="jxr_keyword">null</strong> ? charset.name() : <span class="jxr_string">"UTF8"</span> );
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">final</strong> Enumeration&lt;ZipArchiveEntry&gt; en = zipFile.getEntriesInPhysicalOrder();
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResourceIterator</a>( en, url, jarFile, zipFile, urlClassLoader );
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ZipFileResourceIterator( en, url, jarFile, zipFile, urlClassLoader );
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>      }
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResourceIterator</a>
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> ZipFileResourceIterator
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">implements</strong> Iterator&lt;PlexusIoResource&gt;, Closeable
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      {
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResource</a>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> ZipFileResource
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>             <strong class="jxr_keyword">extends</strong> PlexusIoURLResource
 <a class="jxr_linenumber" name="L101" href="#L101">101</a>         {
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>             <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> JarFile jarFile;
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> 
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>             <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResource</a>( JarFile jarFile, ZipArchiveEntry entry )
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>             <strong class="jxr_keyword">private</strong> ZipFileResource( JarFile jarFile, ZipArchiveEntry entry )
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>             {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>                 <strong class="jxr_keyword">super</strong>( entry.getName(),
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>                        entry.getTime() == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : entry.getTime(),
@@ -156,14 +156,14 @@
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> 
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         }
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> 
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileSymlinkResource</a>
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResource</a>
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> ZipFileSymlinkResource
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">extends</strong> ZipFileResource
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>             <strong class="jxr_keyword">implements</strong> SymlinkDestinationSupplier
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a> 
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>             <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> ZipArchiveEntry entry;
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileSymlinkResource</a>( JarFile jarFile, ZipArchiveEntry entry )
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">private</strong> ZipFileSymlinkResource( JarFile jarFile, ZipArchiveEntry entry )
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>             {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>                 <strong class="jxr_keyword">super</strong>( jarFile, entry );
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> 
@@ -195,7 +195,7 @@
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> URLClassLoader urlClassLoader;
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> 
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResourceIterator</a>( Enumeration&lt;ZipArchiveEntry&gt; en, URL url, JarFile jarFile, ZipFile zipFile,
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">public</strong> ZipFileResourceIterator( Enumeration&lt;ZipArchiveEntry&gt; en, URL url, JarFile jarFile, ZipFile zipFile,
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>                                         URLClassLoader urlClassLoader )
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         {
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>             <strong class="jxr_keyword">this</strong>.en = en;
@@ -216,8 +216,8 @@
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         {
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             <strong class="jxr_keyword">final</strong> ZipArchiveEntry entry = en.nextElement();
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">return</strong> entry.isUnixSymlink()
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>                        ? <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileSymlinkResource</a>( jarFile, entry )
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>                        : <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.html">ZipFileResource</a>( jarFile, entry );
+<a class="jxr_linenumber" name="L211" href="#L211">211</a>                        ? <strong class="jxr_keyword">new</strong> ZipFileSymlinkResource( jarFile, entry )
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>                        : <strong class="jxr_keyword">new</strong> ZipFileResource( jarFile, entry );
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         }
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
@@ -259,6 +259,6 @@
 <a class="jxr_linenumber" name="L251" href="#L251">251</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

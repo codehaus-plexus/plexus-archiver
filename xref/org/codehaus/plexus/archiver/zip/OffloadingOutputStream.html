@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *  (the "License"); you may not use this file except in compliance with</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> *  the License.  You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> *  Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_comment"> *  distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * Offloads to disk when a given memory consumption has been reacehd</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html">OffloadingOutputStream</a> <strong class="jxr_keyword">extends</strong> ThresholdingOutputStream
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">class</strong> <a name="OffloadingOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html#OffloadingOutputStream">OffloadingOutputStream</a> <strong class="jxr_keyword">extends</strong> ThresholdingOutputStream
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  {
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      <em class="jxr_comment">// ----------------------------------------------------------- Data members</em>
@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment">     * The output stream to which data will be written prior to the theshold</em>
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">     * being reached.</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a> memoryOutputStream;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <strong class="jxr_keyword">private</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> memoryOutputStream;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">     * The output stream to which data will be written at any given time. This</em>
@@ -93,7 +93,7 @@
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">     * @since 1.4</em>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html">OffloadingOutputStream</a>( <strong class="jxr_keyword">int</strong> threshold, String prefix, String suffix, File directory )
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      <strong class="jxr_keyword">public</strong> <a name="OffloadingOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html#OffloadingOutputStream">OffloadingOutputStream</a>( <strong class="jxr_keyword">int</strong> threshold, String prefix, String suffix, File directory )
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      {
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">this</strong>( threshold, <strong class="jxr_keyword">null</strong>, prefix, suffix, directory );
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">if</strong> ( prefix == <strong class="jxr_keyword">null</strong> )
@@ -112,12 +112,12 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     * @param suffix Suffix to use for the temporary file.</em>
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment">     * @param directory Temporary file directory.</em>
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html">OffloadingOutputStream</a>( <strong class="jxr_keyword">int</strong> threshold, File outputFile, String prefix, String suffix, File directory )
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>     <strong class="jxr_keyword">private</strong> <a name="OffloadingOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/OffloadingOutputStream.html#OffloadingOutputStream">OffloadingOutputStream</a>( <strong class="jxr_keyword">int</strong> threshold, File outputFile, String prefix, String suffix, File directory )
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     {
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         <strong class="jxr_keyword">super</strong>( threshold );
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>         <strong class="jxr_keyword">this</strong>.outputFile = outputFile;
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> 
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>         memoryOutputStream = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a>( threshold / 10 );
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         memoryOutputStream = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>( threshold / 10 );
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         currentOutputStream = memoryOutputStream;
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">this</strong>.prefix = prefix;
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         <strong class="jxr_keyword">this</strong>.suffix = suffix;
@@ -223,6 +223,6 @@
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

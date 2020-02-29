@@ -23,7 +23,7 @@
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.ClosingInputStream;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ZipResource.html">ZipResource</a> <strong class="jxr_keyword">extends</strong> AbstractPlexusIoResource
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="ZipResource" href="../../../../../org/codehaus/plexus/archiver/zip/ZipResource.html#ZipResource">ZipResource</a> <strong class="jxr_keyword">extends</strong> AbstractPlexusIoResource
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>      <strong class="jxr_keyword">implements</strong> ResourceAttributeSupplier
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
@@ -35,7 +35,7 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> PlexusIoResourceAttributes attributes;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ZipResource.html">ZipResource</a>( ZipFile zipFile, ZipArchiveEntry entry, InputStreamTransformer streamTransformer )
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">public</strong> <a name="ZipResource" href="../../../../../org/codehaus/plexus/archiver/zip/ZipResource.html#ZipResource">ZipResource</a>( ZipFile zipFile, ZipArchiveEntry entry, InputStreamTransformer streamTransformer )
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          <strong class="jxr_keyword">super</strong>( entry.getName(), getLastModofied( entry ),
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>                 entry.isDirectory() ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : entry.getSize(), !entry.isDirectory(),
@@ -101,6 +101,6 @@
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

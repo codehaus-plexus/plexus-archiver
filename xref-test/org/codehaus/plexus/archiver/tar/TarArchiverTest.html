@@ -64,7 +64,7 @@
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * @author Emmanuel Venisse</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">TarArchiverTest</a>
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TarArchiverTest" href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html#TarArchiverTest">TarArchiverTest</a>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">extends</strong> PlexusTestCase
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  {
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  
@@ -413,7 +413,7 @@
 <a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">return</strong> archiver;
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     }
 <a class="jxr_linenumber" name="L407" href="#L407">407</a> 
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">TarHandler</a>
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> TarHandler
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>     {
 <a class="jxr_linenumber" name="L410" href="#L410">410</a> 
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>         File createTarFile()
@@ -448,8 +448,8 @@
 <a class="jxr_linenumber" name="L440" href="#L440">440</a> 
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>     }
 <a class="jxr_linenumber" name="L442" href="#L442">442</a> 
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">GZipTarHandler</a>
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">TarHandler</a>
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> GZipTarHandler
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">extends</strong> TarHandler
 <a class="jxr_linenumber" name="L445" href="#L445">445</a>     {
 <a class="jxr_linenumber" name="L446" href="#L446">446</a> 
 <a class="jxr_linenumber" name="L447" href="#L447">447</a>         @Override
@@ -474,8 +474,8 @@
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> 
 <a class="jxr_linenumber" name="L467" href="#L467">467</a>     }
 <a class="jxr_linenumber" name="L468" href="#L468">468</a> 
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">BZip2TarHandler</a>
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">TarHandler</a>
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> BZip2TarHandler
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         <strong class="jxr_keyword">extends</strong> TarHandler
 <a class="jxr_linenumber" name="L471" href="#L471">471</a>     {
 <a class="jxr_linenumber" name="L472" href="#L472">472</a> 
 <a class="jxr_linenumber" name="L473" href="#L473">473</a>         @Override
@@ -515,7 +515,7 @@
 <a class="jxr_linenumber" name="L507" href="#L507">507</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGzipFIleHandleLeak()
 <a class="jxr_linenumber" name="L508" href="#L508">508</a>         <strong class="jxr_keyword">throws</strong> Exception
 <a class="jxr_linenumber" name="L509" href="#L509">509</a>     {
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">GZipTarHandler</a> tarHandler = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">GZipTarHandler</a>();
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>         GZipTarHandler tarHandler = <strong class="jxr_keyword">new</strong> GZipTarHandler();
 <a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">final</strong> File tarFile = tarHandler.createTarFile();
 <a class="jxr_linenumber" name="L512" href="#L512">512</a>         <strong class="jxr_keyword">final</strong> File tarFile2 = tarHandler.createTarfile2( tarFile );
 <a class="jxr_linenumber" name="L513" href="#L513">513</a>         <strong class="jxr_keyword">final</strong> TarFile cmp1 = tarHandler.newTarFile( tarFile );
@@ -548,7 +548,7 @@
 <a class="jxr_linenumber" name="L540" href="#L540">540</a>         <strong class="jxr_keyword">throws</strong> Exception
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>     {
 <a class="jxr_linenumber" name="L542" href="#L542">542</a>         <em class="jxr_comment">// Supposedly not closing the stream according to yjp.</em>
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>         <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">TarHandler</a> tarHandler = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiverTest.html">BZip2TarHandler</a>();
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>         TarHandler tarHandler = <strong class="jxr_keyword">new</strong> BZip2TarHandler();
 <a class="jxr_linenumber" name="L544" href="#L544">544</a>         <strong class="jxr_keyword">final</strong> File fileName = tarHandler.createTarFile();
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>         <strong class="jxr_keyword">final</strong> TarFile tarFile = tarHandler.newTarFile( fileName );
 <a class="jxr_linenumber" name="L546" href="#L546">546</a>         tarFile.getEntries();
@@ -587,6 +587,6 @@
 <a class="jxr_linenumber" name="L579" href="#L579">579</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

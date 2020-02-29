@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -48,9 +48,9 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:evenisse@codehaus.org" target="alexandria_uri">mailto:evenisse@codehaus.org</a>"&gt;Emmanuel Venisse&lt;/a&gt;</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html">AbstractUnArchiver</a>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a name="AbstractUnArchiver" href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html#AbstractUnArchiver">AbstractUnArchiver</a>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">extends</strong> AbstractLogEnabled
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">implements</strong> UnArchiver, <a href="../../../../org/codehaus/plexus/archiver/FinalizerEnabled.html">FinalizerEnabled</a>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">implements</strong> UnArchiver, <a name="FinalizerEnabled" href="../../../../org/codehaus/plexus/archiver/FinalizerEnabled.html#FinalizerEnabled">FinalizerEnabled</a>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  {
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> File destDirectory;
@@ -79,12 +79,12 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> ignorePermissions = false;
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html">AbstractUnArchiver</a>()
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">public</strong> <a name="AbstractUnArchiver" href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html#AbstractUnArchiver">AbstractUnArchiver</a>()
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          <em class="jxr_comment">// no op</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      }
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html">AbstractUnArchiver</a>( <strong class="jxr_keyword">final</strong> File sourceFile )
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">public</strong> <a name="AbstractUnArchiver" href="../../../../org/codehaus/plexus/archiver/AbstractUnArchiver.html#AbstractUnArchiver">AbstractUnArchiver</a>( <strong class="jxr_keyword">final</strong> File sourceFile )
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">this</strong>.sourceFile = sourceFile;
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      }
@@ -151,7 +151,7 @@
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> 
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     @Override
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> extract()
-<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     {
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>         validate();
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         execute();
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> 
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     @Override
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> extract( <strong class="jxr_keyword">final</strong> String path, <strong class="jxr_keyword">final</strong> File outputDirectory )
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         validate( path, outputDirectory );
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         execute( path, outputDirectory );
@@ -168,7 +168,7 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>     }
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> 
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     @Override
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addArchiveFinalizer( <strong class="jxr_keyword">final</strong> ArchiveFinalizer finalizer )
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addArchiveFinalizer( <strong class="jxr_keyword">final</strong> <a name="ArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/ArchiveFinalizer.html#ArchiveFinalizer">ArchiveFinalizer</a> finalizer )
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>     {
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>         <strong class="jxr_keyword">if</strong> ( finalizers == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>         {
@@ -185,13 +185,13 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>     }
 <a class="jxr_linenumber" name="L178" href="#L178">178</a> 
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> runArchiveFinalizers()
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>     {
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>         <strong class="jxr_keyword">if</strong> ( finalizers != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         {
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">for</strong> ( Object finalizer1 : finalizers )
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>             {
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 <strong class="jxr_keyword">final</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiveFinalizer.html">ArchiveFinalizer</a> finalizer = (ArchiveFinalizer) finalizer1;
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 <strong class="jxr_keyword">final</strong> <a name="ArchiveFinalizer" hre<a name="ArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/ArchiveFinalizer.html#ArchiveFinalizer">ArchiveFinalizer</a>rg/codehaus/plexus/archiver/ArchiveFinalizer.html#ArchiveFinalizer">ArchiveFinalizer</a> finalizer = (<a name="ArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/ArchiveFinalizer.html#ArchiveFinalizer">ArchiveFinalizer</a>) finalizer1;
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>                 finalizer.finalizeArchiveExtraction( <strong class="jxr_keyword">this</strong> );
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>             }
@@ -203,31 +203,31 @@
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     }
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> validate()
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>     {
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">if</strong> ( sourceFile == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         {
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"The source file isn't defined."</span> );
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"The source file isn't defined."</span> );
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>         }
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">if</strong> ( sourceFile.isDirectory() )
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         {
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"The source must not be a directory."</span> );
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"The source must not be a directory."</span> );
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         }
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> 
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>         <strong class="jxr_keyword">if</strong> ( !sourceFile.exists() )
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>         {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"The source file "</span> + sourceFile + <span class="jxr_string">" doesn't exist."</span> );
+<a class="jxr_linenumber" name="L212" href="#L212">212</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"The source file "</span> + sourceFile + <span class="jxr_string">" doesn't exist."</span> );
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>         }
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>         <strong class="jxr_keyword">if</strong> ( destDirectory == <strong class="jxr_keyword">null</strong> &amp;&amp; destFile == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         {
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"The destination isn't defined."</span> );
+<a class="jxr_linenumber" name="L217" href="#L217">217</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"The destination isn't defined."</span> );
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         }
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> 
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>         <strong class="jxr_keyword">if</strong> ( destDirectory != <strong class="jxr_keyword">null</strong> &amp;&amp; destFile != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         {
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"You must choose between a destination directory and a destination file."</span> );
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"You must choose between a destination directory and a destination file."</span> );
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         }
 <a class="jxr_linenumber" name="L224" href="#L224">224</a> 
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">if</strong> ( destDirectory != <strong class="jxr_keyword">null</strong> &amp;&amp; !destDirectory.isDirectory() )
@@ -256,7 +256,7 @@
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>     }
 <a class="jxr_linenumber" name="L249" href="#L249">249</a> 
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> isSelected( <strong class="jxr_keyword">final</strong> String fileName, <strong class="jxr_keyword">final</strong> PlexusIoResource fileInfo )
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>     {
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">if</strong> ( fileSelectors != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>         {
@@ -272,7 +272,7 @@
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 }
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>                 <strong class="jxr_keyword">catch</strong> ( <strong class="jxr_keyword">final</strong> IOException e )
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>                 {
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>(
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>(
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>                         <span class="jxr_string">"Failed to check, whether "</span> + fileInfo.getName() + <span class="jxr_string">" is selected: "</span> + e.getMessage(), e );
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>                 }
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>             }
@@ -327,7 +327,7 @@
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> extractFile( <strong class="jxr_keyword">final</strong> File srcF, <strong class="jxr_keyword">final</strong> File dir, <strong class="jxr_keyword">final</strong> InputStream compressedInputStream,
 <a class="jxr_linenumber" name="L320" href="#L320">320</a>                                 String entryName, <strong class="jxr_keyword">final</strong> Date entryDate, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> isDirectory,
 <a class="jxr_linenumber" name="L321" href="#L321">321</a>                                 <strong class="jxr_keyword">final</strong> Integer mode, String symlinkDestination, <strong class="jxr_keyword">final</strong> FileMapper[] fileMappers )
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <strong class="jxr_keyword">throws</strong> IOException, <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     {
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>         <strong class="jxr_keyword">if</strong> ( fileMappers != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>         {
@@ -346,7 +346,7 @@
 <a class="jxr_linenumber" name="L338" href="#L338">338</a> 
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>         <strong class="jxr_keyword">if</strong> ( !canonicalDestPath.startsWith( canonicalDirPath ) )
 <a class="jxr_linenumber" name="L340" href="#L340">340</a>         {
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Entry is outside of the target directory ("</span> + entryName + <span class="jxr_string">")"</span> );
+<a class="jxr_linenumber" name="L341" href="#L341">341</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Entry is outside of the target directory ("</span> + entryName + <span class="jxr_string">")"</span> );
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>         }
 <a class="jxr_linenumber" name="L343" href="#L343">343</a> 
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>         <strong class="jxr_keyword">try</strong>
@@ -395,6 +395,6 @@
 <a class="jxr_linenumber" name="L387" href="#L387">387</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

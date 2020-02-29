@@ -13,7 +13,7 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/PlexusIoTarFileResourceCollection.html">PlexusIoTarFileResourceCollection</a>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="PlexusIoTarFileResourceCollection" href="../../../../../org/codehaus/plexus/archiver/tar/PlexusIoTarFileResourceCollection.html#PlexusIoTarFileResourceCollection">PlexusIoTarFileResourceCollection</a>
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">extends</strong> AbstractPlexusIoArchiveResourceCollection <strong class="jxr_keyword">implements</strong> Closeable
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  
@@ -43,12 +43,12 @@
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String ROLE_HINT = <span class="jxr_string">"tar"</span>;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html">TarFile</a> newTarFile( File file )
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">protected</strong> <a name="TarFile" href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html#TarFile">TarFile</a> newTarFile( File file )
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      {
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html">TarFile</a>( file );
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="TarFile" href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html#TarFile">TarFile</a>( file );
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      }
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <a href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html">TarFile</a> tarFile = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <a name="TarFile" href="../../../../../org/codehaus/plexus/archiver/tar/TarFile.html#TarFile">TarFile</a> tarFile = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      @Override
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> close()
@@ -94,8 +94,8 @@
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>              {
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>                  <strong class="jxr_keyword">final</strong> TarArchiveEntry entry = (TarArchiveEntry) en.nextElement();
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>                  <strong class="jxr_keyword">return</strong> entry.isSymbolicLink()
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>                             ? <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarSymlinkResource.html">TarSymlinkResource</a>( tarFile, entry )
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>                             : <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarResource.html">TarResource</a>( tarFile, entry );
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>                             ? <strong class="jxr_keyword">new</strong> <a name="TarSymlinkResource" href="../../../../../org/codehaus/plexus/archiver/tar/TarSymlinkResource.html#TarSymlinkResource">TarSymlinkResource</a>( tarFile, entry )
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>                             : <strong class="jxr_keyword">new</strong> <a name="TarResource" href="../../../../../org/codehaus/plexus/archiver/tar/TarResource.html#TarResource">TarResource</a>( tarFile, entry );
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>              }
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>              @Override
@@ -110,6 +110,6 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

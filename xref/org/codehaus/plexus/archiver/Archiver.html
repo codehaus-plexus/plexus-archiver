@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a href="../../../../org/codehaus/plexus/archiver/Archiver.html">Archiver</a>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="Archiver" href="../../../../org/codehaus/plexus/archiver/Archiver.html#Archiver">Archiver</a>
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>      <em class="jxr_javadoccomment">/**</em>
@@ -136,7 +136,7 @@
 <a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * Adding the file set failed.</em>
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     * @since 1.0-alpha-9</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">void</strong> addFileSet( @Nonnull FileSet fileSet )
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <strong class="jxr_keyword">void</strong> addFileSet( @Nonnull <a name="FileSet" href="../../../../org/codehaus/plexus/archiver/FileSet.html#FileSet">FileSet</a> fileSet )
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <strong class="jxr_keyword">throws</strong> ArchiverException;
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> 
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">void</strong> addSymlink( String symlinkName, String symlinkDestination )
@@ -204,7 +204,7 @@
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     * @since 1.0-alpha-9</em>
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">void</strong> addArchivedFileSet( ArchivedFileSet fileSet )
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">void</strong> addArchivedFileSet( <a name="ArchivedFileSet" href="../../../../org/codehaus/plexus/archiver/ArchivedFileSet.html#ArchivedFileSet">ArchivedFileSet</a> fileSet )
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         <strong class="jxr_keyword">throws</strong> ArchiverException;
 <a class="jxr_linenumber" name="L201" href="#L201">201</a> 
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     <em class="jxr_javadoccomment">/**</em>
@@ -223,7 +223,7 @@
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">     * @since 1.0-alpha-9</em>
 <a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <strong class="jxr_keyword">void</strong> addArchivedFileSet( ArchivedFileSet fileSet, Charset charset )
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <strong class="jxr_keyword">void</strong> addArchivedFileSet( <a name="ArchivedFileSet" href="../../../../org/codehaus/plexus/archiver/ArchivedFileSet.html#ArchivedFileSet">ArchivedFileSet</a> fileSet, Charset charset )
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         <strong class="jxr_keyword">throws</strong> ArchiverException;
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> 
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>     <em class="jxr_javadoccomment">/**</em>
@@ -299,7 +299,7 @@
 <a class="jxr_linenumber" name="L291" href="#L291">291</a> <em class="jxr_javadoccomment">     * @since 1.0-alpha-10</em>
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>     @Nonnull
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <a href="../../../../org/codehaus/plexus/archiver/ResourceIterator.html">ResourceIterator</a> getResources()
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <a name="ResourceIterator" href="../../../../org/codehaus/plexus/archiver/ResourceIterator.html#ResourceIterator">ResourceIterator</a> getResources()
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">throws</strong> ArchiverException;
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> 
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>     <em class="jxr_javadoccomment">/**</em>
@@ -472,7 +472,7 @@
 <a class="jxr_linenumber" name="L464" href="#L464">464</a> 
 <a class="jxr_linenumber" name="L465" href="#L465">465</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> <em class="jxr_javadoccomment">     * Configure the archiver to create archives in a reproducible way (see</em>
-<a class="jxr_linenumber" name="L467" href="#L467">467</a> <em class="jxr_javadoccomment">     * &lt;a href="https://reproducible-builds.org/"&gt;Reproducible Builds&lt;/a&gt;).</em>
+<a class="jxr_linenumber" name="L467" href="#L467">467</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="https://reproducible-builds.org/" target="alexandria_uri">https://reproducible-builds.org/</a>"&gt;Reproducible Builds&lt;/a&gt;).</em>
 <a class="jxr_linenumber" name="L468" href="#L468">468</a> <em class="jxr_javadoccomment">     * &lt;p&gt;This will configure:</em>
 <a class="jxr_linenumber" name="L469" href="#L469">469</a> <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
 <a class="jxr_linenumber" name="L470" href="#L470">470</a> <em class="jxr_javadoccomment">     * &lt;li&gt;reproducible archive entries order,&lt;/li&gt;</em>
@@ -487,6 +487,6 @@
 <a class="jxr_linenumber" name="L479" href="#L479">479</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

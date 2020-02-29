@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -52,8 +52,8 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:evenisse@codehaus.org" target="alexandria_uri">mailto:evenisse@codehaus.org</a>"&gt;Emmanuel Venisse&lt;/a&gt;</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarArchiver</a>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/AbstractArchiver.html">AbstractArchiver</a>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TarArchiver" href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html#TarArchiver">TarArchiver</a>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">extends</strong> <a name="AbstractArchiver" href="../../../../../org/codehaus/plexus/archiver/AbstractArchiver.html#AbstractArchiver">AbstractArchiver</a>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  {
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      <em class="jxr_javadoccomment">/**</em>
@@ -61,11 +61,11 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> longWarningGiven = false;
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarLongFileMode.html">TarLongFileMode</a> longFileMode = TarLongFileMode.warn;
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">private</strong> <a name="TarLongFileMode" href="../../../../../org/codehaus/plexus/archiver/tar/TarLongFileMode.html#TarLongFileMode">TarLongFileMode</a> longFileMode = TarLongFileMode.warn;
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarCompressionMethod</a> compression = TarCompressionMethod.none;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">private</strong> TarCompressionMethod compression = TarCompressionMethod.none;
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarOptions</a> options = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarOptions</a>();
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">private</strong> TarOptions options = <strong class="jxr_keyword">new</strong> TarOptions();
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      <strong class="jxr_keyword">private</strong> TarArchiveOutputStream tOut;
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
@@ -86,7 +86,7 @@
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">     * @param mode the mode to handle long file names.</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setLongfile( TarLongFileMode mode )
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setLongfile( <a name="TarLongFileMode" href="../../../../../org/codehaus/plexus/archiver/tar/TarLongFileMode.html#TarLongFileMode">TarLongFileMode</a> mode )
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">this</strong>.longFileMode = mode;
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      }
@@ -116,25 +116,25 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>             <strong class="jxr_keyword">return</strong>;
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         }
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <a href="../../../../../org/codehaus/plexus/archiver/ResourceIterator.html">ResourceIterator</a> iter = getResources();
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         <a name="ResourceIterator" href="../../../../../org/codehaus/plexus/archiver/ResourceIterator.html#ResourceIterator">ResourceIterator</a> iter = getResources();
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         <strong class="jxr_keyword">if</strong> ( !iter.hasNext() )
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         {
-<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/exceptions/EmptyArchiveException.html">EmptyArchiveException</a>( <span class="jxr_string">"archive cannot be empty"</span> );
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="EmptyArchiveException" href="../../../../../org/codehaus/plexus/archiver/exceptions/EmptyArchiveException.html#EmptyArchiveException">EmptyArchiveException</a>( <span class="jxr_string">"archive cannot be empty"</span> );
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         }
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>         File tarFile = getDestFile();
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         <strong class="jxr_keyword">if</strong> ( tarFile == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         {
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"You must set the destination tar file."</span> );
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"You must set the destination tar file."</span> );
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         }
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">if</strong> ( tarFile.exists() &amp;&amp; !tarFile.isFile() )
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         {
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( tarFile + <span class="jxr_string">" isn't a file."</span> );
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( tarFile + <span class="jxr_string">" isn't a file."</span> );
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         }
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">if</strong> ( tarFile.exists() &amp;&amp; !tarFile.canWrite() )
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         {
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( tarFile + <span class="jxr_string">" is read-only."</span> );
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( tarFile + <span class="jxr_string">" is read-only."</span> );
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         }
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         getLogger().info( <span class="jxr_string">"Building tar: "</span> + tarFile.getAbsolutePath() );
@@ -165,11 +165,11 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>             longWarningGiven = false;
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">while</strong> ( iter.hasNext() )
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>             {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>                 <a href="../../../../../org/codehaus/plexus/archiver/ArchiveEntry.html">ArchiveEntry</a> entry = iter.next();
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>                 <a name="ArchiveEntry" href="../../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> entry = iter.next();
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>                 <em class="jxr_comment">// Check if we don't add tar file in itself</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>                 <strong class="jxr_keyword">if</strong> ( ResourceUtils.isSame( entry.getResource(), tarFile ) )
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>                 {
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"A tar file cannot include itself."</span> );
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"A tar file cannot include itself."</span> );
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>                 }
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>                 String fileName = entry.getName();
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>                 String name = StringUtils.replace( fileName, File.separatorChar, '/' );
@@ -194,7 +194,7 @@
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">     * @throws IOException on error</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> tarFile( ArchiveEntry entry, TarArchiveOutputStream tOut, String vPath )
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> tarFile( <a name="ArchiveEntry" href="../../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> entry, TarArchiveOutputStream tOut, String vPath )
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         <strong class="jxr_keyword">throws</strong> ArchiverException, IOException
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>     {
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> 
@@ -266,7 +266,7 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>                 }
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( longFileMode.isFailMode() )
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>                 {
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Entry: "</span> + vPath + <span class="jxr_string">" longer than "</span>
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Entry: "</span> + vPath + <span class="jxr_string">" longer than "</span>
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>                                                      + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>                                                      + <span class="jxr_string">" characters."</span> );
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 }
@@ -366,7 +366,7 @@
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> <em class="jxr_javadoccomment">     * Valid Modes for Compression attribute to Tar Task</em>
 <a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarOptions</a>
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> TarOptions
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>     {
 <a class="jxr_linenumber" name="L363" href="#L363">363</a> 
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>         <strong class="jxr_keyword">private</strong> String userName = <span class="jxr_string">""</span>;
@@ -480,7 +480,7 @@
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L473" href="#L473">473</a> <em class="jxr_javadoccomment">     * Valid Modes for Compression attribute to Tar Task</em>
 <a class="jxr_linenumber" name="L474" href="#L474">474</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> enum <a href="../../../../../org/codehaus/plexus/archiver/tar/TarArchiver.html">TarCompressionMethod</a>
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> enum TarCompressionMethod
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>     {
 <a class="jxr_linenumber" name="L477" href="#L477">477</a> 
 <a class="jxr_linenumber" name="L478" href="#L478">478</a>         none,
@@ -550,6 +550,6 @@
 <a class="jxr_linenumber" name="L542" href="#L542">542</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

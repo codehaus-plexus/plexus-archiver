@@ -24,8 +24,8 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * @author Jason van Zyl</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html">DotDirectiveArchiveFinalizer</a>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">extends</strong> <a href="../../../../org/codehaus/plexus/archiver/AbstractArchiveFinalizer.html">AbstractArchiveFinalizer</a>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="DotDirectiveArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html#DotDirectiveArchiveFinalizer">DotDirectiveArchiveFinalizer</a>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>      <strong class="jxr_keyword">extends</strong> <a name="AbstractArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/AbstractArchiveFinalizer.html#AbstractArchiveFinalizer">AbstractArchiveFinalizer</a>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  {
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String DEFAULT_DOT_FILE_PREFIX = <span class="jxr_string">".plxarc"</span>;
@@ -34,12 +34,12 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String dotFilePrefix;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html">DotDirectiveArchiveFinalizer</a>( File dotFileDirectory )
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <a name="DotDirectiveArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html#DotDirectiveArchiveFinalizer">DotDirectiveArchiveFinalizer</a>( File dotFileDirectory )
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          <strong class="jxr_keyword">this</strong>( dotFileDirectory, DEFAULT_DOT_FILE_PREFIX );
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      }
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html">DotDirectiveArchiveFinalizer</a>( File dotFileDirectory, String dotFilePrefix )
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">public</strong> <a name="DotDirectiveArchiveFinalizer" href="../../../../org/codehaus/plexus/archiver/DotDirectiveArchiveFinalizer.html#DotDirectiveArchiveFinalizer">DotDirectiveArchiveFinalizer</a>( File dotFileDirectory, String dotFilePrefix )
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      {
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">this</strong>.dotFileDirectory = dotFileDirectory;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  
@@ -47,8 +47,8 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      }
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>      @Override
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> finalizeArchiveCreation( Archiver archiver )
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">throws</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> finalizeArchiveCreation( <a name="Archiver" href="../../../../org/codehaus/plexus/archiver/Archiver.html#Archiver">Archiver</a> archiver )
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">try</strong>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          {
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          }
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">catch</strong> ( IOException e )
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          {
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Error processing dot files."</span>, e );
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Error processing dot files."</span>, e );
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>          }
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      }
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
@@ -105,6 +105,6 @@
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

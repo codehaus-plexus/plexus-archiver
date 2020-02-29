@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>JarArchiver xref</title>
+<title>/home/plamen/git/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/jar/JarArchiver.java xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../../../../apidocs/org/codehaus/plexus/archiver/jar/JarArchiver.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../../../../apidocs/org/codehaus/plexus/archiver/jar">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * Copyright 2004 The Apache Software Foundation</em>
@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -62,8 +62,8 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <span class="jxr_string">"NullableProblems"</span>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  } )
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/JarArchiver.html">JarArchiver</a>
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ZipArchiver.html">ZipArchiver</a>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> JarArchiver
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">extends</strong> <a name="ZipArchiver" href="../../../../../org/codehaus/plexus/archiver/zip/ZipArchiver.html#ZipArchiver">ZipArchiver</a>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  {
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      <em class="jxr_javadoccomment">/**</em>
@@ -84,29 +84,29 @@
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">     * merged manifests added through addConfiguredManifest</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> configuredManifest;
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> configuredManifest;
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     * shadow of the above if upToDate check alters the value</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> savedConfiguredManifest;
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> savedConfiguredManifest;
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     * merged manifests added through filesets</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> filesetManifest;
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> filesetManifest;
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     * Manifest of original archive, will be set to null if not in</em>
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     * update mode.</em>
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> originalManifest;
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> originalManifest;
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">     * whether to merge fileset manifests;</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">     * value is true if filesetmanifest is 'merge' or 'mergewithoutmain'</em>
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/JarArchiver.html">FilesetManifestConfig</a> filesetManifestConfig;
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">private</strong> FilesetManifestConfig filesetManifestConfig;
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     * whether to merge the main section of fileset manifests;</em>
@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> <em class="jxr_javadoccomment">     * the manifest specified by the 'manifest' attribute *</em>
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> manifest;
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> manifest;
 <a class="jxr_linenumber" name="L113" href="#L113">113</a> 
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     * The file found from the 'manifest' attribute. This can be</em>
@@ -160,7 +160,7 @@
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     * constructor</em>
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/JarArchiver.html">JarArchiver</a>()
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>     <strong class="jxr_keyword">public</strong> JarArchiver()
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">super</strong>();
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>         archiveType = <span class="jxr_string">"jar"</span>;
@@ -205,8 +205,8 @@
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     * @throws ManifestException .</em>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredManifest( Manifest newManifest )
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredManifest( <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> newManifest )
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>     {
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>         <strong class="jxr_keyword">if</strong> ( configuredManifest == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         {
@@ -233,18 +233,18 @@
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         <span class="jxr_string">"UnusedDeclaration"</span>
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>     } )
 <a class="jxr_linenumber" name="L227" href="#L227">227</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setManifest( File manifestFile )
-<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>     {
 <a class="jxr_linenumber" name="L230" href="#L230">230</a>         <strong class="jxr_keyword">if</strong> ( !manifestFile.exists() )
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>         {
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Manifest file: "</span> + manifestFile + <span class="jxr_string">" does not exist."</span> );
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Manifest file: "</span> + manifestFile + <span class="jxr_string">" does not exist."</span> );
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>         }
 <a class="jxr_linenumber" name="L234" href="#L234">234</a> 
 <a class="jxr_linenumber" name="L235" href="#L235">235</a>         <strong class="jxr_keyword">this</strong>.manifestFile = manifestFile;
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     }
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> 
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> getManifest( File manifestFile )
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>     <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> getManifest( File manifestFile )
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>     {
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">try</strong> ( InputStream in = <strong class="jxr_keyword">new</strong> FileInputStream( manifestFile ) )
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         {
@@ -252,21 +252,21 @@
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         }
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         <strong class="jxr_keyword">catch</strong> ( IOException e )
 <a class="jxr_linenumber" name="L246" href="#L246">246</a>         {
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Unable to read manifest file: "</span> + manifestFile + <span class="jxr_string">" ("</span> + e.getMessage() + <span class="jxr_string">")"</span>,
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Unable to read manifest file: "</span> + manifestFile + <span class="jxr_string">" ("</span> + e.getMessage() + <span class="jxr_string">")"</span>,
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>                                          e );
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>         }
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>     }
 <a class="jxr_linenumber" name="L251" href="#L251">251</a> 
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> getManifest( InputStream is )
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L252" href="#L252">252</a>     <strong class="jxr_keyword">private</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> getManifest( InputStream is )
+<a class="jxr_linenumber" name="L253" href="#L253">253</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L254" href="#L254">254</a>     {
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         <strong class="jxr_keyword">try</strong>
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>         {
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>( is );
+<a class="jxr_linenumber" name="L257" href="#L257">257</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>( is );
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>         }
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>         <strong class="jxr_keyword">catch</strong> ( IOException e )
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>         {
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Unable to read manifest file"</span> + <span class="jxr_string">" ("</span> + e.getMessage() + <span class="jxr_string">")"</span>, e );
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Unable to read manifest file"</span> + <span class="jxr_string">" ("</span> + e.getMessage() + <span class="jxr_string">")"</span>, e );
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>         }
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>     }
 <a class="jxr_linenumber" name="L264" href="#L264">264</a> 
@@ -312,12 +312,12 @@
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>     }
 <a class="jxr_linenumber" name="L305" href="#L305">305</a> 
 <a class="jxr_linenumber" name="L306" href="#L306">306</a>     @Override
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initZipOutputStream( ConcurrentJarCreator zOut )
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> initZipOutputStream( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
 <a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">throws</strong> ArchiverException, IOException
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>     {
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>         <strong class="jxr_keyword">if</strong> ( !skipWriting )
 <a class="jxr_linenumber" name="L311" href="#L311">311</a>         {
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> jarManifest = createManifest();
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>             <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> jarManifest = createManifest();
 <a class="jxr_linenumber" name="L313" href="#L313">313</a>             writeManifest( zOut, jarManifest );
 <a class="jxr_linenumber" name="L314" href="#L314">314</a>         }
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>     }
@@ -341,10 +341,10 @@
 <a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">     * @throws ArchiverException</em>
 <a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> createManifest()
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">protected</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> createManifest()
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L338" href="#L338">338</a>     {
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>         <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> finalManifest = Manifest.getDefaultManifest( minimalDefaultManifest );
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>         <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> finalManifest = Manifest.getDefaultManifest( minimalDefaultManifest );
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
 <a class="jxr_linenumber" name="L341" href="#L341">341</a>         <strong class="jxr_keyword">if</strong> ( ( manifest == <strong class="jxr_keyword">null</strong> ) &amp;&amp; ( manifestFile != <strong class="jxr_keyword">null</strong> ) )
 <a class="jxr_linenumber" name="L342" href="#L342">342</a>         {
@@ -371,8 +371,8 @@
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>         <strong class="jxr_keyword">return</strong> finalManifest;
 <a class="jxr_linenumber" name="L364" href="#L364">364</a>     }
 <a class="jxr_linenumber" name="L365" href="#L365">365</a> 
-<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> writeManifest( ConcurrentJarCreator zOut, Manifest manifest )
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>         <strong class="jxr_keyword">throws</strong> IOException, <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> writeManifest( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut, <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> manifest )
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>     {
 <a class="jxr_linenumber" name="L369" href="#L369">369</a>         <strong class="jxr_keyword">for</strong> ( Enumeration&lt;String&gt; e = manifest.getWarnings(); e.hasMoreElements(); )
 <a class="jxr_linenumber" name="L370" href="#L370">370</a>         {
@@ -381,7 +381,7 @@
 <a class="jxr_linenumber" name="L373" href="#L373">373</a> 
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>         zipDir( <strong class="jxr_keyword">null</strong>, zOut, <span class="jxr_string">"META-INF/"</span>, DEFAULT_DIR_MODE, getEncoding() );
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>         <em class="jxr_comment">// time to write the manifest</em>
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a>();
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plex<a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>rrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>();
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>         manifest.write( baos );
 <a class="jxr_linenumber" name="L378" href="#L378">378</a> 
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
@@ -391,8 +391,8 @@
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>     }
 <a class="jxr_linenumber" name="L384" href="#L384">384</a> 
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>     @Override
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> finalizeZipOutputStream( ConcurrentJarCreator zOut )
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         <strong class="jxr_keyword">throws</strong> IOException, <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> finalizeZipOutputStream( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>     {
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>         <strong class="jxr_keyword">if</strong> ( index )
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>         {
@@ -413,10 +413,10 @@
 <a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     * @throws org.codehaus.plexus.archiver.ArchiverException</em>
 <a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * .</em>
 <a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createIndexList( ConcurrentJarCreator zOut )
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <strong class="jxr_keyword">throws</strong> IOException, <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createIndexList( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>     {
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html">ByteArrayOutputStream</a>();
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plex<a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>rrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>();
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>         <em class="jxr_comment">// encoding must be UTF8 as specified in the specs.</em>
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>         PrintWriter writer = <strong class="jxr_keyword">new</strong> PrintWriter( <strong class="jxr_keyword">new</strong> OutputStreamWriter( baos, <span class="jxr_string">"UTF8"</span> ) );
 <a class="jxr_linenumber" name="L414" href="#L414">414</a> 
@@ -497,10 +497,10 @@
 <a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * Overridden from Zip class to deal with manifests and index lists.</em>
 <a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>     @Override
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> zipFile( InputStreamSupplier is, ConcurrentJarCreator zOut, String vPath,
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> zipFile( InputStreamSupplier is, <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut, String vPath,
 <a class="jxr_linenumber" name="L493" href="#L493">493</a>                             <strong class="jxr_keyword">long</strong> lastModified, File fromArchive,
 <a class="jxr_linenumber" name="L494" href="#L494">494</a>                             <strong class="jxr_keyword">int</strong> mode, String symlinkDestination, <strong class="jxr_keyword">boolean</strong> addInParallel )
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">throws</strong> IOException, <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L496" href="#L496">496</a>     {
 <a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">if</strong> ( MANIFEST_NAME.equalsIgnoreCase( vPath ) )
 <a class="jxr_linenumber" name="L498" href="#L498">498</a>         {
@@ -528,7 +528,7 @@
 <a class="jxr_linenumber" name="L520" href="#L520">520</a>     }
 <a class="jxr_linenumber" name="L521" href="#L521">521</a> 
 <a class="jxr_linenumber" name="L522" href="#L522">522</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> filesetManifest( File file, InputStream is )
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L524" href="#L524">524</a>     {
 <a class="jxr_linenumber" name="L525" href="#L525">525</a>         <strong class="jxr_keyword">if</strong> ( ( manifestFile != <strong class="jxr_keyword">null</strong> ) &amp;&amp; manifestFile.equals( file ) )
 <a class="jxr_linenumber" name="L526" href="#L526">526</a>         {
@@ -549,7 +549,7 @@
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>             <em class="jxr_comment">// we add this to our group of fileset manifests</em>
 <a class="jxr_linenumber" name="L542" href="#L542">542</a>             getLogger().debug( <span class="jxr_string">"Found manifest to merge in file "</span> + file );
 <a class="jxr_linenumber" name="L543" href="#L543">543</a> 
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> newManifest;
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>             <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> newManifest;
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>             <strong class="jxr_keyword">if</strong> ( is != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L546" href="#L546">546</a>             {
 <a class="jxr_linenumber" name="L547" href="#L547">547</a>                 newManifest = getManifest( is );
@@ -572,7 +572,7 @@
 <a class="jxr_linenumber" name="L564" href="#L564">564</a> 
 <a class="jxr_linenumber" name="L565" href="#L565">565</a>     @Override
 <a class="jxr_linenumber" name="L566" href="#L566">566</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> createEmptyZip( File zipFile )
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L568" href="#L568">568</a>     {
 <a class="jxr_linenumber" name="L569" href="#L569">569</a>         <strong class="jxr_keyword">if</strong> ( !createEmpty )
 <a class="jxr_linenumber" name="L570" href="#L570">570</a>         {
@@ -594,14 +594,14 @@
 <a class="jxr_linenumber" name="L586" href="#L586">586</a>             {
 <a class="jxr_linenumber" name="L587" href="#L587">587</a>                 zipArchiveOutputStream.setMethod( ZipArchiveOutputStream.STORED );
 <a class="jxr_linenumber" name="L588" href="#L588">588</a>             }
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>             <a href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html">ConcurrentJarCreator</a> ps =
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>                 <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html">ConcurrentJarCreator</a>( isRecompressAddedZips(), Runtime.getRuntime().availableProcessors() );
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>             <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> ps =
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>                 <strong class="jxr_keyword">new</strong> <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a>( isRecompressAddedZips(), Runtime.getRuntime().availableProcessors() );
 <a class="jxr_linenumber" name="L591" href="#L591">591</a>             initZipOutputStream( ps );
 <a class="jxr_linenumber" name="L592" href="#L592">592</a>             finalizeZipOutputStream( ps );
 <a class="jxr_linenumber" name="L593" href="#L593">593</a>         }
 <a class="jxr_linenumber" name="L594" href="#L594">594</a>         <strong class="jxr_keyword">catch</strong> ( IOException ioe )
 <a class="jxr_linenumber" name="L595" href="#L595">595</a>         {
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>( <span class="jxr_string">"Could not create almost empty JAR archive ("</span> + ioe.getMessage() + <span class="jxr_string">")"</span>, ioe );
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Could not create almost empty JAR archive ("</span> + ioe.getMessage() + <span class="jxr_string">")"</span>, ioe );
 <a class="jxr_linenumber" name="L597" href="#L597">597</a>         }
 <a class="jxr_linenumber" name="L598" href="#L598">598</a>         <strong class="jxr_keyword">finally</strong>
 <a class="jxr_linenumber" name="L599" href="#L599">599</a>         {
@@ -651,7 +651,7 @@
 <a class="jxr_linenumber" name="L643" href="#L643">643</a>         index = false;
 <a class="jxr_linenumber" name="L644" href="#L644">644</a>     }
 <a class="jxr_linenumber" name="L645" href="#L645">645</a> 
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>     <strong class="jxr_keyword">public</strong> enum <a href="../../../../../org/codehaus/plexus/archiver/jar/JarArchiver.html">FilesetManifestConfig</a>
+<a class="jxr_linenumber" name="L646" href="#L646">646</a>     <strong class="jxr_keyword">public</strong> enum FilesetManifestConfig
 <a class="jxr_linenumber" name="L647" href="#L647">647</a>     {
 <a class="jxr_linenumber" name="L648" href="#L648">648</a> 
 <a class="jxr_linenumber" name="L649" href="#L649">649</a>         skip,
@@ -836,6 +836,6 @@
 <a class="jxr_linenumber" name="L828" href="#L828">828</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>

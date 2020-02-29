@@ -14,7 +14,7 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment"> * you may not use this file except in compliance with the License.</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * You may obtain a copy of the License at</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2." target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.</a>0</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * Unless required by applicable law or agreed to in writing, software</em>
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * @since Ant 1.4</em>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">extends</strong> java.util.jar.Manifest <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
@@ -92,7 +92,7 @@
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>      <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String EOL = <span class="jxr_string">"\r\n"</span>;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">BaseAttribute</a>
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> BaseAttribute
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>      {
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>          <em class="jxr_javadoccomment">/**</em>
@@ -122,7 +122,7 @@
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>                 <strong class="jxr_keyword">return</strong> false;
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             }
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> 
-<a class="jxr_linenumber" name="L117" href="#L117">117</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">BaseAttribute</a> that = (BaseAttribute) o;
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>             BaseAttribute that = (BaseAttribute) o;
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             <strong class="jxr_keyword">return</strong> !( name != <strong class="jxr_keyword">null</strong> ? !name.equals( that.name ) : that.name != <strong class="jxr_keyword">null</strong> );
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> 
@@ -140,8 +140,8 @@
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * An attribute for the manifest.</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * Those attributes that are not nested into a section will be added to the "Main" section.</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L135" href="#L135">135</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a>
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">BaseAttribute</a> <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Attribute
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         <strong class="jxr_keyword">extends</strong> BaseAttribute <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>     {
 <a class="jxr_linenumber" name="L138" href="#L138">138</a> 
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         <em class="jxr_javadoccomment">/**</em>
@@ -158,7 +158,7 @@
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">         * Construct an empty attribute</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a>()
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         <strong class="jxr_keyword">public</strong> Attribute()
 <a class="jxr_linenumber" name="L154" href="#L154">154</a>         {
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         }
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> 
@@ -168,7 +168,7 @@
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">         * @param name the attribute's name</em>
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">         * @param value the Attribute's value</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a>( String name, String value )
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">public</strong> Attribute( String name, String value )
 <a class="jxr_linenumber" name="L164" href="#L164">164</a>         {
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>             <strong class="jxr_keyword">this</strong>.name = name;
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>             setValue( value );
@@ -211,7 +211,7 @@
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>             }
 <a class="jxr_linenumber" name="L205" href="#L205">205</a> 
-<a class="jxr_linenumber" name="L206" href="#L206">206</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a> rhsAttribute = (Attribute) rhs;
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>             Attribute rhsAttribute = (Attribute) rhs;
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>             String lhsKey = getKey();
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>             String rhsKey = rhsAttribute.getKey();
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             <em class="jxr_comment">//noinspection SimplifiableIfStatement,ConstantConditions</em>
@@ -383,13 +383,13 @@
 <a class="jxr_linenumber" name="L375" href="#L375">375</a> 
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>     }
 <a class="jxr_linenumber" name="L377" href="#L377">377</a> 
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingAttribute</a>
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">extends</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a> <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> ExistingAttribute
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         <strong class="jxr_keyword">extends</strong> Attribute <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
 <a class="jxr_linenumber" name="L380" href="#L380">380</a>     {
 <a class="jxr_linenumber" name="L381" href="#L381">381</a> 
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Attributes attributes;
 <a class="jxr_linenumber" name="L383" href="#L383">383</a> 
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingAttribute</a>( Attributes attributes, String name )
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">public</strong> ExistingAttribute( Attributes attributes, String name )
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>         {
 <a class="jxr_linenumber" name="L386" href="#L386">386</a>             <strong class="jxr_keyword">this</strong>.attributes = attributes;
 <a class="jxr_linenumber" name="L387" href="#L387">387</a>             <strong class="jxr_keyword">this</strong>.name = name;
@@ -457,7 +457,7 @@
 <a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_javadoccomment">     * A section consists of a set of attribute values,</em>
 <a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_javadoccomment">     * separated from other sections by a blank line.</em>
 <a class="jxr_linenumber" name="L451" href="#L451">451</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Section</a> <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> Section <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
 <a class="jxr_linenumber" name="L453" href="#L453">453</a>     {
 <a class="jxr_linenumber" name="L454" href="#L454">454</a> 
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>         <em class="jxr_javadoccomment">/**</em>
@@ -516,7 +516,7 @@
 <a class="jxr_linenumber" name="L508" href="#L508">508</a> <em class="jxr_javadoccomment">         * single-valued, otherwise a Vector of Manifest.Attribute</em>
 <a class="jxr_linenumber" name="L509" href="#L509">509</a> <em class="jxr_javadoccomment">         * instances.</em>
 <a class="jxr_linenumber" name="L510" href="#L510">510</a> <em class="jxr_javadoccomment">         */</em>
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a> getAttribute( String attributeName )
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">public</strong> Attribute getAttribute( String attributeName )
 <a class="jxr_linenumber" name="L512" href="#L512">512</a>         {
 <a class="jxr_linenumber" name="L513" href="#L513">513</a>             <strong class="jxr_keyword">return</strong> attributes.get( attributeName.toLowerCase() );
 <a class="jxr_linenumber" name="L514" href="#L514">514</a>         }
@@ -529,12 +529,12 @@
 <a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">         * @throws ManifestException if the attribute is not valid.</em>
 <a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">         */</em>
 <a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredAttribute( Attribute attribute )
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>             <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>             <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L525" href="#L525">525</a>         {
 <a class="jxr_linenumber" name="L526" href="#L526">526</a>             String check = addAttributeAndCheck( attribute );
 <a class="jxr_linenumber" name="L527" href="#L527">527</a>             <strong class="jxr_keyword">if</strong> ( check != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L528" href="#L528">528</a>             {
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>(
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>(
 <a class="jxr_linenumber" name="L530" href="#L530">530</a>                     <span class="jxr_string">"Specify the section name using "</span> + <span class="jxr_string">"the \&quot;name\&quot; attribute of the &lt;section&gt; element rather "</span>
 <a class="jxr_linenumber" name="L531" href="#L531">531</a>                         + <span class="jxr_string">"than using a \&quot;Name\&quot; manifest attribute"</span> );
 <a class="jxr_linenumber" name="L532" href="#L532">532</a>             }
@@ -552,11 +552,11 @@
 <a class="jxr_linenumber" name="L544" href="#L544">544</a> <em class="jxr_javadoccomment">         * exists in this section.</em>
 <a class="jxr_linenumber" name="L545" href="#L545">545</a> <em class="jxr_javadoccomment">         */</em>
 <a class="jxr_linenumber" name="L546" href="#L546">546</a>         <strong class="jxr_keyword">public</strong> String addAttributeAndCheck( Attribute attribute )
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>             <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>             <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L548" href="#L548">548</a>         {
 <a class="jxr_linenumber" name="L549" href="#L549">549</a>             <strong class="jxr_keyword">if</strong> ( attribute.getName() == <strong class="jxr_keyword">null</strong> || attribute.getValue() == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L550" href="#L550">550</a>             {
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>( <span class="jxr_string">"Attributes must have name and value"</span> );
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>( <span class="jxr_string">"Attributes must have name and value"</span> );
 <a class="jxr_linenumber" name="L552" href="#L552">552</a>             }
 <a class="jxr_linenumber" name="L553" href="#L553">553</a>             <strong class="jxr_keyword">if</strong> ( attribute.getKey().equalsIgnoreCase( ATTRIBUTE_NAME ) )
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>             {
@@ -578,7 +578,7 @@
 <a class="jxr_linenumber" name="L570" href="#L570">570</a>                 String attributeKey = attribute.getKey();
 <a class="jxr_linenumber" name="L571" href="#L571">571</a>                 <strong class="jxr_keyword">if</strong> ( attributeKey.equalsIgnoreCase( ManifestConstants.ATTRIBUTE_CLASSPATH ) )
 <a class="jxr_linenumber" name="L572" href="#L572">572</a>                 {
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>                     <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a> classpathAttribute = attributes.get( attributeKey );
+<a class="jxr_linenumber" name="L573" href="#L573">573</a>                     Attribute classpathAttribute = attributes.get( attributeKey );
 <a class="jxr_linenumber" name="L574" href="#L574">574</a> 
 <a class="jxr_linenumber" name="L575" href="#L575">575</a>                     <strong class="jxr_keyword">if</strong> ( classpathAttribute == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L576" href="#L576">576</a>                     {
@@ -598,7 +598,7 @@
 <a class="jxr_linenumber" name="L590" href="#L590">590</a>                 }
 <a class="jxr_linenumber" name="L591" href="#L591">591</a>                 <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( attributes.containsKey( attributeKey ) )
 <a class="jxr_linenumber" name="L592" href="#L592">592</a>                 {
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>( <span class="jxr_string">"The attribute \&quot;"</span> + attribute.getName() + <span class="jxr_string">"\&quot; may not occur more "</span>
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>                     <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>( <span class="jxr_string">"The attribute \&quot;"</span> + attribute.getName() + <span class="jxr_string">"\&quot; may not occur more "</span>
 <a class="jxr_linenumber" name="L594" href="#L594">594</a>                                                      + <span class="jxr_string">"than once in the same section"</span> );
 <a class="jxr_linenumber" name="L595" href="#L595">595</a>                 }
 <a class="jxr_linenumber" name="L596" href="#L596">596</a>                 <strong class="jxr_keyword">else</strong>
@@ -672,21 +672,21 @@
 <a class="jxr_linenumber" name="L664" href="#L664">664</a>                 <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L665" href="#L665">665</a>             }
 <a class="jxr_linenumber" name="L666" href="#L666">666</a> 
-<a class="jxr_linenumber" name="L667" href="#L667">667</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Section</a> rhsSection = (Section) rhs;
+<a class="jxr_linenumber" name="L667" href="#L667">667</a>             Section rhsSection = (Section) rhs;
 <a class="jxr_linenumber" name="L668" href="#L668">668</a> 
 <a class="jxr_linenumber" name="L669" href="#L669">669</a>             <strong class="jxr_keyword">return</strong> rhsSection.attributes != <strong class="jxr_keyword">null</strong> &amp;&amp; attributes.equals( rhsSection.attributes );
 <a class="jxr_linenumber" name="L670" href="#L670">670</a>         }
 <a class="jxr_linenumber" name="L671" href="#L671">671</a> 
 <a class="jxr_linenumber" name="L672" href="#L672">672</a>     }
 <a class="jxr_linenumber" name="L673" href="#L673">673</a> 
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a> <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> ExistingSection <strong class="jxr_keyword">implements</strong> Iterable&lt;String&gt;
 <a class="jxr_linenumber" name="L675" href="#L675">675</a>     {
 <a class="jxr_linenumber" name="L676" href="#L676">676</a> 
 <a class="jxr_linenumber" name="L677" href="#L677">677</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Attributes backingAttributes;
 <a class="jxr_linenumber" name="L678" href="#L678">678</a> 
 <a class="jxr_linenumber" name="L679" href="#L679">679</a>         <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String sectionName;
 <a class="jxr_linenumber" name="L680" href="#L680">680</a> 
-<a class="jxr_linenumber" name="L681" href="#L681">681</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a>( Attributes backingAttributes, String sectionName )
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>         <strong class="jxr_keyword">public</strong> ExistingSection( Attributes backingAttributes, String sectionName )
 <a class="jxr_linenumber" name="L682" href="#L682">682</a>         {
 <a class="jxr_linenumber" name="L683" href="#L683">683</a>             <strong class="jxr_keyword">this</strong>.backingAttributes = backingAttributes;
 <a class="jxr_linenumber" name="L684" href="#L684">684</a>             <strong class="jxr_keyword">this</strong>.sectionName = sectionName;
@@ -698,11 +698,11 @@
 <a class="jxr_linenumber" name="L690" href="#L690">690</a>             <strong class="jxr_keyword">return</strong> getKeys( backingAttributes ).iterator();
 <a class="jxr_linenumber" name="L691" href="#L691">691</a>         }
 <a class="jxr_linenumber" name="L692" href="#L692">692</a> 
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>         <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingAttribute</a> getAttribute( String attributeName )
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>         <strong class="jxr_keyword">public</strong> ExistingAttribute getAttribute( String attributeName )
 <a class="jxr_linenumber" name="L694" href="#L694">694</a>         {
 <a class="jxr_linenumber" name="L695" href="#L695">695</a>             Attributes.Name name = <strong class="jxr_keyword">new</strong> Attributes.Name( attributeName );
 <a class="jxr_linenumber" name="L696" href="#L696">696</a>             <strong class="jxr_keyword">return</strong> backingAttributes.containsKey( name )
-<a class="jxr_linenumber" name="L697" href="#L697">697</a>                        ? <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingAttribute</a>( backingAttributes, attributeName )
+<a class="jxr_linenumber" name="L697" href="#L697">697</a>                        ? <strong class="jxr_keyword">new</strong> ExistingAttribute( backingAttributes, attributeName )
 <a class="jxr_linenumber" name="L698" href="#L698">698</a>                        : <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L699" href="#L699">699</a> 
 <a class="jxr_linenumber" name="L700" href="#L700">700</a>         }
@@ -723,13 +723,13 @@
 <a class="jxr_linenumber" name="L715" href="#L715">715</a>         }
 <a class="jxr_linenumber" name="L716" href="#L716">716</a> 
 <a class="jxr_linenumber" name="L717" href="#L717">717</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredAttribute( Attribute attribute )
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>             <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L718" href="#L718">718</a>             <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L719" href="#L719">719</a>         {
 <a class="jxr_linenumber" name="L720" href="#L720">720</a>             backingAttributes.putValue( attribute.getName(), attribute.getValue() );
 <a class="jxr_linenumber" name="L721" href="#L721">721</a>         }
 <a class="jxr_linenumber" name="L722" href="#L722">722</a> 
 <a class="jxr_linenumber" name="L723" href="#L723">723</a>         <strong class="jxr_keyword">public</strong> String addAttributeAndCheck( Attribute attribute )
-<a class="jxr_linenumber" name="L724" href="#L724">724</a>             <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L724" href="#L724">724</a>             <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L725" href="#L725">725</a>         {
 <a class="jxr_linenumber" name="L726" href="#L726">726</a>             <strong class="jxr_keyword">return</strong> remap( backingAttributes, attribute );
 <a class="jxr_linenumber" name="L727" href="#L727">727</a>         }
@@ -743,8 +743,8 @@
 <a class="jxr_linenumber" name="L735" href="#L735">735</a>         @Override
 <a class="jxr_linenumber" name="L736" href="#L736">736</a>         <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> equals( Object rhs )
 <a class="jxr_linenumber" name="L737" href="#L737">737</a>         {
-<a class="jxr_linenumber" name="L738" href="#L738">738</a>             <strong class="jxr_keyword">return</strong> rhs instanceof <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a> &amp;&amp; backingAttributes.equals(
-<a class="jxr_linenumber" name="L739" href="#L739">739</a>                 ( (<a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a>) rhs ).backingAttributes );
+<a class="jxr_linenumber" name="L738" href="#L738">738</a>             <strong class="jxr_keyword">return</strong> rhs instanceof ExistingSection &amp;&amp; backingAttributes.equals(
+<a class="jxr_linenumber" name="L739" href="#L739">739</a>                 ( (ExistingSection) rhs ).backingAttributes );
 <a class="jxr_linenumber" name="L740" href="#L740">740</a>         }
 <a class="jxr_linenumber" name="L741" href="#L741">741</a> 
 <a class="jxr_linenumber" name="L742" href="#L742">742</a>     }
@@ -758,7 +758,7 @@
 <a class="jxr_linenumber" name="L750" href="#L750">750</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L751" href="#L751">751</a> <em class="jxr_javadoccomment">     * The main section of this manifest</em>
 <a class="jxr_linenumber" name="L752" href="#L752">752</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Section</a> mainSection = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Section</a>();
+<a class="jxr_linenumber" name="L753" href="#L753">753</a>     <strong class="jxr_keyword">private</strong> Section mainSection = <strong class="jxr_keyword">new</strong> Section();
 <a class="jxr_linenumber" name="L754" href="#L754">754</a> 
 <a class="jxr_linenumber" name="L755" href="#L755">755</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L756" href="#L756">756</a> <em class="jxr_javadoccomment">     * Construct a manifest from Ant's default manifest file.</em>
@@ -772,10 +772,10 @@
 <a class="jxr_linenumber" name="L764" href="#L764">764</a> <em class="jxr_javadoccomment">     * @throws ArchiverException</em>
 <a class="jxr_linenumber" name="L765" href="#L765">765</a> <em class="jxr_javadoccomment">     *             if there is a problem loading the default manifest</em>
 <a class="jxr_linenumber" name="L766" href="#L766">766</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L767" href="#L767">767</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> getDefaultManifest( <strong class="jxr_keyword">boolean</strong> minimalDefaultManifest )
-<a class="jxr_linenumber" name="L768" href="#L768">768</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L767" href="#L767">767</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> getDefaultManifest( <strong class="jxr_keyword">boolean</strong> minimalDefaultManifest )
+<a class="jxr_linenumber" name="L768" href="#L768">768</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L769" href="#L769">769</a>     {
-<a class="jxr_linenumber" name="L770" href="#L770">770</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> defaultManifest = <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>();
+<a class="jxr_linenumber" name="L770" href="#L770">770</a>         <strong class="jxr_keyword">final</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver<a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>ifest.html#Manifest">Manifest</a> defaultManifest = <strong class="jxr_keyword">new</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>();
 <a class="jxr_linenumber" name="L771" href="#L771">771</a>         defaultManifest.getMainAttributes().putValue( <span class="jxr_string">"Manifest-Version"</span>, <span class="jxr_string">"1.0"</span> );
 <a class="jxr_linenumber" name="L772" href="#L772">772</a> 
 <a class="jxr_linenumber" name="L773" href="#L773">773</a>         <strong class="jxr_keyword">if</strong> ( !minimalDefaultManifest )
@@ -798,8 +798,8 @@
 <a class="jxr_linenumber" name="L790" href="#L790">790</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L791" href="#L791">791</a> <em class="jxr_javadoccomment">     * @see #getDefaultManifest(boolean)</em>
 <a class="jxr_linenumber" name="L792" href="#L792">792</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L793" href="#L793">793</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a> getDefaultManifest()
-<a class="jxr_linenumber" name="L794" href="#L794">794</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html">ArchiverException</a>
+<a class="jxr_linenumber" name="L793" href="#L793">793</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> getDefaultManifest()
+<a class="jxr_linenumber" name="L794" href="#L794">794</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
 <a class="jxr_linenumber" name="L795" href="#L795">795</a>     {
 <a class="jxr_linenumber" name="L796" href="#L796">796</a>         <strong class="jxr_keyword">return</strong> getDefaultManifest( false );
 <a class="jxr_linenumber" name="L797" href="#L797">797</a>     }
@@ -807,7 +807,7 @@
 <a class="jxr_linenumber" name="L799" href="#L799">799</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L800" href="#L800">800</a> <em class="jxr_javadoccomment">     * Construct an empty manifest</em>
 <a class="jxr_linenumber" name="L801" href="#L801">801</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L802" href="#L802">802</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>()
+<a class="jxr_linenumber" name="L802" href="#L802">802</a>     <strong class="jxr_keyword">public</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>()
 <a class="jxr_linenumber" name="L803" href="#L803">803</a>     {
 <a class="jxr_linenumber" name="L804" href="#L804">804</a>         setManifestVersion();
 <a class="jxr_linenumber" name="L805" href="#L805">805</a>     }
@@ -829,14 +829,14 @@
 <a class="jxr_linenumber" name="L821" href="#L821">821</a> <em class="jxr_javadoccomment">     * {@link #Manifest(InputStream)}. Will be removed in 4.0.</em>
 <a class="jxr_linenumber" name="L822" href="#L822">822</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L823" href="#L823">823</a>     @Deprecated
-<a class="jxr_linenumber" name="L824" href="#L824">824</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>( Reader r )
+<a class="jxr_linenumber" name="L824" href="#L824">824</a>     <strong class="jxr_keyword">public</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>( Reader r )
 <a class="jxr_linenumber" name="L825" href="#L825">825</a>         <strong class="jxr_keyword">throws</strong> ManifestException, IOException
 <a class="jxr_linenumber" name="L826" href="#L826">826</a>     {
 <a class="jxr_linenumber" name="L827" href="#L827">827</a>         <strong class="jxr_keyword">super</strong>( getInputStream( r ) );
 <a class="jxr_linenumber" name="L828" href="#L828">828</a>         setManifestVersion();
 <a class="jxr_linenumber" name="L829" href="#L829">829</a>     }
 <a class="jxr_linenumber" name="L830" href="#L830">830</a> 
-<a class="jxr_linenumber" name="L831" href="#L831">831</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Manifest</a>( InputStream is )
+<a class="jxr_linenumber" name="L831" href="#L831">831</a>     <strong class="jxr_keyword">public</strong> <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a>( InputStream is )
 <a class="jxr_linenumber" name="L832" href="#L832">832</a>         <strong class="jxr_keyword">throws</strong> IOException
 <a class="jxr_linenumber" name="L833" href="#L833">833</a>     {
 <a class="jxr_linenumber" name="L834" href="#L834">834</a>         <strong class="jxr_keyword">super</strong>( is );
@@ -851,18 +851,18 @@
 <a class="jxr_linenumber" name="L843" href="#L843">843</a> <em class="jxr_javadoccomment">     * @throws ManifestException if the secti0on is not valid.</em>
 <a class="jxr_linenumber" name="L844" href="#L844">844</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L845" href="#L845">845</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredSection( Section section )
-<a class="jxr_linenumber" name="L846" href="#L846">846</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L846" href="#L846">846</a>         <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L847" href="#L847">847</a>     {
 <a class="jxr_linenumber" name="L848" href="#L848">848</a>         String sectionName = section.getName();
 <a class="jxr_linenumber" name="L849" href="#L849">849</a>         <strong class="jxr_keyword">if</strong> ( sectionName == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L850" href="#L850">850</a>         {
-<a class="jxr_linenumber" name="L851" href="#L851">851</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>( <span class="jxr_string">"Sections must have a name"</span> );
+<a class="jxr_linenumber" name="L851" href="#L851">851</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>( <span class="jxr_string">"Sections must have a name"</span> );
 <a class="jxr_linenumber" name="L852" href="#L852">852</a>         }
 <a class="jxr_linenumber" name="L853" href="#L853">853</a>         Attributes attributes = getOrCreateAttributes( sectionName );
 <a class="jxr_linenumber" name="L854" href="#L854">854</a>         <strong class="jxr_keyword">for</strong> ( String s : section.attributes.keySet() )
 <a class="jxr_linenumber" name="L855" href="#L855">855</a>         {
 <a class="jxr_linenumber" name="L856" href="#L856">856</a> 
-<a class="jxr_linenumber" name="L857" href="#L857">857</a>             <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">Attribute</a> attribute = section.getAttribute( s );
+<a class="jxr_linenumber" name="L857" href="#L857">857</a>             Attribute attribute = section.getAttribute( s );
 <a class="jxr_linenumber" name="L858" href="#L858">858</a>             attributes.putValue( attribute.getName(), attribute.getValue() );
 <a class="jxr_linenumber" name="L859" href="#L859">859</a>         }
 <a class="jxr_linenumber" name="L860" href="#L860">860</a>     }
@@ -886,7 +886,7 @@
 <a class="jxr_linenumber" name="L878" href="#L878">878</a> <em class="jxr_javadoccomment">     * @throws ManifestException if the attribute is not valid.</em>
 <a class="jxr_linenumber" name="L879" href="#L879">879</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L880" href="#L880">880</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addConfiguredAttribute( Attribute attribute )
-<a class="jxr_linenumber" name="L881" href="#L881">881</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L881" href="#L881">881</a>         <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L882" href="#L882">882</a>     {
 <a class="jxr_linenumber" name="L883" href="#L883">883</a>         remap( getMainAttributes(), attribute );
 <a class="jxr_linenumber" name="L884" href="#L884">884</a>     }
@@ -964,9 +964,9 @@
 <a class="jxr_linenumber" name="L956" href="#L956">956</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L957" href="#L957">957</a> <em class="jxr_javadoccomment">     * @return the main section of the manifest</em>
 <a class="jxr_linenumber" name="L958" href="#L958">958</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L959" href="#L959">959</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a> getMainSection()
+<a class="jxr_linenumber" name="L959" href="#L959">959</a>     <strong class="jxr_keyword">public</strong> ExistingSection getMainSection()
 <a class="jxr_linenumber" name="L960" href="#L960">960</a>     {
-<a class="jxr_linenumber" name="L961" href="#L961">961</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a>( getMainAttributes(), <strong class="jxr_keyword">null</strong> );
+<a class="jxr_linenumber" name="L961" href="#L961">961</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ExistingSection( getMainAttributes(), <strong class="jxr_keyword">null</strong> );
 <a class="jxr_linenumber" name="L962" href="#L962">962</a>     }
 <a class="jxr_linenumber" name="L963" href="#L963">963</a> 
 <a class="jxr_linenumber" name="L964" href="#L964">964</a>     <em class="jxr_javadoccomment">/**</em>
@@ -977,12 +977,12 @@
 <a class="jxr_linenumber" name="L969" href="#L969">969</a> <em class="jxr_javadoccomment">     * @return the specified section or null if that section</em>
 <a class="jxr_linenumber" name="L970" href="#L970">970</a> <em class="jxr_javadoccomment">     * does not exist in the manifest</em>
 <a class="jxr_linenumber" name="L971" href="#L971">971</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L972" href="#L972">972</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a> getSection( String name )
+<a class="jxr_linenumber" name="L972" href="#L972">972</a>     <strong class="jxr_keyword">public</strong> ExistingSection getSection( String name )
 <a class="jxr_linenumber" name="L973" href="#L973">973</a>     {
 <a class="jxr_linenumber" name="L974" href="#L974">974</a>         Attributes attributes = getAttributes( name );
 <a class="jxr_linenumber" name="L975" href="#L975">975</a>         <strong class="jxr_keyword">if</strong> ( attributes != <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L976" href="#L976">976</a>         {
-<a class="jxr_linenumber" name="L977" href="#L977">977</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html">ExistingSection</a>( attributes, name );
+<a class="jxr_linenumber" name="L977" href="#L977">977</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> ExistingSection( attributes, name );
 <a class="jxr_linenumber" name="L978" href="#L978">978</a>         }
 <a class="jxr_linenumber" name="L979" href="#L979">979</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L980" href="#L980">980</a>     }
@@ -1001,11 +1001,11 @@
 <a class="jxr_linenumber" name="L993" href="#L993">993</a>     }
 <a class="jxr_linenumber" name="L994" href="#L994">994</a> 
 <a class="jxr_linenumber" name="L995" href="#L995">995</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String remap( Attributes backingAttributes, Attribute attribute )
-<a class="jxr_linenumber" name="L996" href="#L996">996</a>         <strong class="jxr_keyword">throws</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>
+<a class="jxr_linenumber" name="L996" href="#L996">996</a>         <strong class="jxr_keyword">throws</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>
 <a class="jxr_linenumber" name="L997" href="#L997">997</a>     {
 <a class="jxr_linenumber" name="L998" href="#L998">998</a>         <strong class="jxr_keyword">if</strong> ( attribute.getKey() == <strong class="jxr_keyword">null</strong> || attribute.getValue() == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L999" href="#L999">999</a>         {
-<a class="jxr_linenumber" name="L1000" href="#L1000">1000</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html">ManifestException</a>( <span class="jxr_string">"Attributes must have name and value"</span> );
+<a class="jxr_linenumber" name="L1000" href="#L1000">1000</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ManifestException" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestException.html#ManifestException">ManifestException</a>( <span class="jxr_string">"Attributes must have name and value"</span> );
 <a class="jxr_linenumber" name="L1001" href="#L1001">1001</a>         }
 <a class="jxr_linenumber" name="L1002" href="#L1002">1002</a> 
 <a class="jxr_linenumber" name="L1003" href="#L1003">1003</a>         String attributeKey = attribute.getKey();
@@ -1038,6 +1038,6 @@
 <a class="jxr_linenumber" name="L1030" href="#L1030">1030</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2019 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2001&#x2013;2020 <a href="http://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
 </body>
 </html>
