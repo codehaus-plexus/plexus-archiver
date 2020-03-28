@@ -76,8 +76,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -87,8 +85,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -98,8 +94,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -109,8 +103,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -122,7 +114,7 @@ public interface Archiver
      * Adds the given file set to the archive. This method is basically obsoleting {@link #addDirectory(File)},
      * {@link #addDirectory(File, String)}, {@link #addDirectory(File, String[], String[])}, and
      * {@link #addDirectory(File, String, String[], String[])}. However, as these methods are in widespread use, they
-     * cannot easily be made deprecated.
+     * cannot easily be deprecated.
      *
      * @throws ArchiverException
      * Adding the file set failed.
@@ -145,8 +137,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -155,8 +145,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -166,8 +154,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -177,8 +163,6 @@ public interface Archiver
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     * You can use "inline" of this method in your
-     * IDE to get the proper implementation for this release.
      *
      * @deprecated Will go away in next major version
      */
@@ -190,7 +174,7 @@ public interface Archiver
      * Adds the given archive file set to the archive. This method is basically obsoleting
      * {@link #addArchivedFileSet(File)}, {@link #addArchivedFileSet(File, String[], String[])}, and
      * {@link #addArchivedFileSet(File, String, String[], String[])}. However, as these methods are in widespread use,
-     * they cannot easily be made deprecated.
+     * they cannot easily be deprecated.
      *
      * Stream transformers are supported on this method
      *
@@ -203,7 +187,7 @@ public interface Archiver
      * Adds the given archive file set to the archive. This method is basically obsoleting
      * {@link #addArchivedFileSet(File)}, {@link #addArchivedFileSet(File, String[], String[])}, and
      * {@link #addArchivedFileSet(File, String, String[], String[])}. However, as these methods are in widespread use,
-     * they cannot easily be made deprecated.
+     * they cannot easily be deprecated.
      *
      * @param charset the encoding to use, particularly useful to specific non-standard filename encodings
      * for some kinds of archives (for instance zip files)
@@ -314,7 +298,7 @@ public interface Archiver
      * uptodate checks.
      * </p>
      *
-     * @return True, if the target archive should always be created; false otherwise
+     * @return true if the target archive should always be created; false otherwise
      *
      * @see #setForced(boolean)
      * @see #isSupportingForced()
@@ -337,7 +321,7 @@ public interface Archiver
      * </p>
      *
      * @param forced
-     * True, if the target archive should always be created; false otherwise
+     * true, if the target archive should always be created; false otherwise
      *
      * @see #isForced()
      * @see #isSupportingForced()
@@ -347,7 +331,7 @@ public interface Archiver
     /**
      * Returns, whether the archive supports uptodate checks. If so, you may set {@link #setForced(boolean)} to true.
      *
-     * @return True, if the archiver does support uptodate checks, false otherwise
+     * @return true, if the archiver does support uptodate checks, false otherwise
      *
      * @see #setForced(boolean)
      * @see #isForced()
