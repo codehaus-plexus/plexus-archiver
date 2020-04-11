@@ -27,7 +27,7 @@ jobs:
 #      with:
 #        java-version: ${{ matrix.jdk }}
     name: Build
-    runs-on: linux
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
