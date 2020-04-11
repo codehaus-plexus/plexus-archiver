@@ -11,22 +11,30 @@ on:
 
 jobs:
   build:
-    name: JDK ${{ matrix.jdk }} on ${{ matrix.os }}
+#    name: JDK ${{ matrix.jdk }} on ${{ matrix.os }}
+#
+#    runs-on: ${{ matrix.os }}
+#    
+#    strategy:
+#      matrix:
+#        os: [ubuntu-latest, macos-latest, windows-latest]
+#        jdk: [7, 8, 11]
 
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        jdk: [7, 8, 11]
-
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Set up JDK
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: ${{ matrix.jdk }}
+    name: Build
+    runs-on: linux
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: ${{ matrix.jdk }}
-    - name: Cache
+        java-version: 11
+    - name: Dependencies Cache
       uses: actions/cache@v1
       with:
         path: ~/.m2/repository
