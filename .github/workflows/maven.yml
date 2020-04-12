@@ -11,29 +11,21 @@ on:
 
 jobs:
   build:
-#    name: JDK ${{ matrix.jdk }} on ${{ matrix.os }}
-#
-#    runs-on: ${{ matrix.os }}
-#    
-#    strategy:
-#      matrix:
-#        os: [ubuntu-latest, macos-latest, windows-latest]
-#        jdk: [7, 8, 11]
+    name: JDK:${{ matrix.jdk }} on ${{ matrix.os }}
 
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Set up JDK
-#      uses: actions/setup-java@v1
-#      with:
-#        java-version: ${{ matrix.jdk }}
-    name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        jdk: [7, 8, 11]
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
-      uses: plamentotev/setup-java@master
+      uses: plamentotev/setup-java@add-latest-version
       with:
-        java-version: latest
+        java-version: ${{ matrix.jdk }}
     - name: Dependencies Cache
       uses: actions/cache@v1
       with:
