@@ -31,7 +31,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK
-      uses: actions/setup-java@v1
+      uses: plamentotev/setup-java@master
       with:
         java-version: latest
     - name: Dependencies Cache
