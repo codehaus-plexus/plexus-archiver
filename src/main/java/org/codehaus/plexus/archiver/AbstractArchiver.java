@@ -1027,7 +1027,6 @@ public abstract class AbstractArchiver
     public final void createArchive()
         throws ArchiverException, IOException
     {
-        if (true) throw new RuntimeException("Does not work!!!!!!");
         validate();
         try
         {
