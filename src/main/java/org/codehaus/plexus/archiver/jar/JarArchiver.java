@@ -445,7 +445,7 @@ public class JarArchiver
 
         if ( indexJars != null )
         {
-            java.util.jar.Manifest mf = createManifest();
+            org.codehaus.plexus.archiver.jar.harmony.Manifest mf = createManifest();
             String classpath = mf.getMainAttributes().getValue( ManifestConstants.ATTRIBUTE_CLASSPATH );
             String[] cpEntries = null;
             if ( classpath != null )

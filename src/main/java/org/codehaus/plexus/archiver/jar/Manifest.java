@@ -31,8 +31,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import java.util.jar.Attributes;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.jar.harmony.Attributes;
 
 /**
  * Holds the data of a jar manifest.
@@ -50,7 +50,7 @@ import org.codehaus.plexus.archiver.ArchiverException;
  * @since Ant 1.4
  */
 public class Manifest
-    extends java.util.jar.Manifest implements Iterable<String>
+    extends org.codehaus.plexus.archiver.jar.harmony.Manifest implements Iterable<String>
 {
 
     /**

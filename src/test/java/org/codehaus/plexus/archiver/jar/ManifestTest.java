@@ -20,8 +20,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.jar.Attributes;
 import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.jar.harmony.Attributes;
 
 /**
  * @author Emmanuel Venisse
@@ -215,16 +215,16 @@ public class ManifestTest
     public void testGetDefaultManifest()
         throws Exception
     {
-        java.util.jar.Manifest mf = Manifest.getDefaultManifest();
-        java.util.jar.Attributes mainAttributes = mf.getMainAttributes();
+        org.codehaus.plexus.archiver.jar.harmony.Manifest mf = Manifest.getDefaultManifest();
+        org.codehaus.plexus.archiver.jar.harmony.Attributes mainAttributes = mf.getMainAttributes();
         assertEquals( 2, mainAttributes.size() );
-        assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Manifest-Version" ) ) );
-        assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Created-By" ) ) );
+        assertTrue( mainAttributes.containsKey( new org.codehaus.plexus.archiver.jar.harmony.Attributes.Name( "Manifest-Version" ) ) );
+        assertTrue( mainAttributes.containsKey( new org.codehaus.plexus.archiver.jar.harmony.Attributes.Name( "Created-By" ) ) );
 
         mf = Manifest.getDefaultManifest( true );
         mainAttributes = mf.getMainAttributes();
         assertEquals( 1, mainAttributes.size() );
-        assertTrue( mainAttributes.containsKey( new java.util.jar.Attributes.Name( "Manifest-Version" ) ) );
+        assertTrue( mainAttributes.containsKey( new org.codehaus.plexus.archiver.jar.harmony.Attributes.Name( "Manifest-Version" ) ) );
     }
 
     public void checkMultiLineAttribute( String in, String expected )

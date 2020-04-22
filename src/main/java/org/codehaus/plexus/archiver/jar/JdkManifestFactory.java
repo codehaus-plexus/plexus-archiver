@@ -19,7 +19,7 @@ package org.codehaus.plexus.archiver.jar;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
-import java.util.jar.Attributes;
+import org.codehaus.plexus.archiver.jar.harmony.Attributes;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.PropertyUtils;
 
@@ -31,10 +31,10 @@ import org.codehaus.plexus.util.PropertyUtils;
 class JdkManifestFactory
 {
 
-    public static java.util.jar.Manifest getDefaultManifest()
+    public static org.codehaus.plexus.archiver.jar.harmony.Manifest getDefaultManifest()
         throws ArchiverException
     {
-        final java.util.jar.Manifest defaultManifest = new java.util.jar.Manifest();
+        final org.codehaus.plexus.archiver.jar.harmony.Manifest defaultManifest = new org.codehaus.plexus.archiver.jar.harmony.Manifest();
         defaultManifest.getMainAttributes().putValue( "Manifest-Version", "1.0" );
 
         String createdBy = "Plexus Archiver";
@@ -68,7 +68,7 @@ class JdkManifestFactory
         }
     }
 
-    public static void merge( java.util.jar.Manifest target, java.util.jar.Manifest other, boolean overwriteMain )
+    public static void merge( org.codehaus.plexus.archiver.jar.harmony.Manifest target, org.codehaus.plexus.archiver.jar.harmony.Manifest other, boolean overwriteMain )
     {
         if ( other != null )
         {
@@ -108,11 +108,11 @@ class JdkManifestFactory
      * @param target The target manifest of the merge
      * @param section the section to be merged with this one.
      */
-    public static void mergeAttributes( java.util.jar.Attributes target, java.util.jar.Attributes section )
+    public static void mergeAttributes( org.codehaus.plexus.archiver.jar.harmony.Attributes target, org.codehaus.plexus.archiver.jar.harmony.Attributes section )
     {
         for ( Object o : section.keySet() )
         {
-            java.util.jar.Attributes.Name key = (Attributes.Name) o;
+            org.codehaus.plexus.archiver.jar.harmony.Attributes.Name key = (Attributes.Name) o;
             final Object value = section.get( o );
             // the merge file always wins
             target.put( key, value );
