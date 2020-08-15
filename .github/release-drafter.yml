@@ -1,0 +1,2 @@
+_extends: .github
+tag-template: plexus-archiver-$NEXT_MINOR_VERSION
