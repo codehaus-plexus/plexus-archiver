@@ -87,7 +87,7 @@ public class WarArchiver
 
     /**
      * set the deployment descriptor to use (WEB-INF/web.xml);
-     * required unless <tt>update=true</tt>
+     * required unless <code>update=true</code>
      */
     public void setWebxml( File descr )
         throws ArchiverException

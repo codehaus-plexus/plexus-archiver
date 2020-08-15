@@ -23,7 +23,7 @@ import org.codehaus.plexus.archiver.Archiver;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 
 /**
- * @author Richard van der Hoff <richardv@mxtelecom.com>
+ * @author <a href="mailto:richardv@mxtelecom.com">Richard van der Hoff</a>
  */
 public class IndexTest extends PlexusTestCase
 {
