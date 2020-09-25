@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -940,12 +941,12 @@ public abstract class AbstractArchiver
         throws ArchiverException
     {
         final File zipFile = getDestFile();
-        final long destTimestamp = zipFile.lastModified();
-        if ( destTimestamp == 0 )
+        if ( !zipFile.exists() )
         {
             getLogger().debug( "isUp2date: false (Destination " + zipFile.getPath() + " not found.)" );
             return false; // File doesn't yet exist
         }
+        final long destTimestamp = getFileLastModifiedTime(zipFile);
 
         final Iterator it = resources.iterator();
         if ( !it.hasNext() )
@@ -992,6 +993,26 @@ public abstract class AbstractArchiver
 
         getLogger().debug( "isUp2date: true" );
         return true;
+    }
+
+    /**
+     * Returns the last modified time in milliseconds of a file.
+     * It avoids the bug where milliseconds precision is lost on File#lastModified (JDK-8177809) on JDK8 and Linux.
+     * @param file The file where the last modified time will be returned for.
+     * @return The last modified time in milliseconds of the file.
+     * @throws ArchiverException In the case of an IOException, for example when the file does not exists.
+     */
+    private long getFileLastModifiedTime( File file )
+            throws ArchiverException
+    {
+        try
+        {
+            return Files.getLastModifiedTime( file.toPath() ).toMillis();
+        }
+        catch ( IOException e )
+        {
+            throw new ArchiverException( e.getMessage(), e );
+        }
     }
 
     protected boolean checkForced()
