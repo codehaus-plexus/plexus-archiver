@@ -343,9 +343,10 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
+            if ( f.exists() && !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath ) )
             {
-                String message = String.format( "Archive entry %s already exists on disk and is newer", entryName );
+                String message = String.format( "Archive entry %s and existing file %s names differ only by case."
+                        + " This may cause issues on case insensitive file systems.", entryName, canonicalDestPath );
                 getLogger().warn( message );
                 if ( !isOverwrite() ) {
                     return;
