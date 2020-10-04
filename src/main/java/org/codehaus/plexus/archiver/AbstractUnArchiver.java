@@ -343,14 +343,9 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( f.exists() && !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath ) )
+            if ( !shouldExtractEntry( f, entryName, entryDate ) )
             {
-                String message = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
-                        + " This may cause issues on case-insensitive filesystems.", entryName, canonicalDestPath );
-                getLogger().warn( message );
-                if ( !isOverwrite() ) {
-                    return;
-                }
+                return;
             }
 
             // create intermediary directories - sometimes zip don't add them
@@ -387,6 +382,41 @@ public abstract class AbstractUnArchiver
         {
             getLogger().warn( "Unable to expand to file " + f.getPath() );
         }
+    }
+
+    // Visible for testing
+    protected boolean shouldExtractEntry( File file, String entryName, Date entryDate ) throws IOException
+    {
+        String canonicalDestPath = file.getCanonicalPath();
+        boolean fileOnDiskIsNewerThanEntry = ( file.lastModified() >= entryDate.getTime() );
+        boolean differentCasing = !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath );
+
+        String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
+                + " This may cause issues on case-insensitive filesystems.", entryName, canonicalDestPath );
+
+        // Optimise for situation where we need no checks
+        if ( !file.exists() )
+        {
+            return true;
+        }
+
+        // (1)
+        if ( fileOnDiskIsNewerThanEntry )
+        {
+            // (3)
+            if ( differentCasing )
+            {
+                getLogger().warn( casingMessage );
+            }
+            return false;
+        }
+
+        // (4)
+        if ( differentCasing )
+        {
+            getLogger().warn( casingMessage );
+        }
+        return isOverwrite();
     }
 
 }

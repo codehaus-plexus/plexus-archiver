@@ -19,13 +19,23 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Date;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Description;
+import org.hamcrest.core.StringContains;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
+
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Unit test for {@link AbstractUnArchiver}
@@ -37,7 +47,11 @@ public class AbstractUnArchiverTest
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+
     private AbstractUnArchiver abstractUnArchiver;
+    private CapturingLog log = new CapturingLog( 0 /*debug*/, "AbstractUnArchiver" );
 
     @Before
     public void setUp()
@@ -58,6 +72,7 @@ public class AbstractUnArchiverTest
                 // unused
             }
         };
+        this.abstractUnArchiver.enableLogging( log );
     }
 
     @After
@@ -72,7 +87,7 @@ public class AbstractUnArchiverTest
     {
         // given
         this.thrown.expectMessage( "Entry is outside of the target directory (../PREFIX/ENTRYNAME.SUFFIX)" );
-        final File targetFolder = Files.createTempDirectory( null ).toFile();
+        final File targetFolder = temporaryFolder.newFolder();
         final FileMapper[] fileMappers = new FileMapper[] { new FileMapper()
         {
             @Override
@@ -97,4 +112,93 @@ public class AbstractUnArchiverTest
         // ArchiverException is thrown providing the rewritten path
     }
 
+    @Test
+    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive() throws IOException
+    {
+        // given
+        File file = temporaryFolder.newFile( "readme.txt" );
+        file.setLastModified( System.currentTimeMillis() );
+        String entryname = "readme.txt";
+        Date entryDate = new Date( 0 );
+
+        // when & then
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is ( false ) );
+    }
+
+    @Test
+    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing() throws IOException
+    {
+        // given
+        File file = temporaryFolder.newFile( "readme.txt" );
+        file.setLastModified( System.currentTimeMillis() );
+        String entryname = "README.txt";
+        Date entryDate = new Date( 0 );
+
+        // when & then
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is ( false ) );
+        assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
+    }
+
+    @Test
+    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk() throws IOException
+    {
+        // given
+        File file = temporaryFolder.newFile( "readme.txt" );
+        file.setLastModified( 0 );
+        String entryname = "readme.txt";
+        Date entryDate = new Date( System.currentTimeMillis() );
+
+        // when & then
+        this.abstractUnArchiver.setOverwrite( true );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( true ) );
+
+        // when & then
+        this.abstractUnArchiver.setOverwrite( false );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( false ) );
+    }
+
+    @Test
+    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing() throws IOException
+    {
+        // given
+        File file = temporaryFolder.newFile( "readme.txt" );
+        file.setLastModified( 0 );
+        String entryname = "README.txt";
+        Date entryDate = new Date( System.currentTimeMillis() );
+
+        // when & then
+        this.abstractUnArchiver.setOverwrite( true );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( true ) );
+        this.abstractUnArchiver.setOverwrite( false );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( false ) );
+        assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
+    }
+
+    static class LogMessageMatcher extends BaseMatcher<CapturingLog.Message> {
+        private final StringContains delegateMatcher;
+
+        LogMessageMatcher( String needle )
+        {
+            this.delegateMatcher = new StringContains( needle );
+        }
+
+        @Override
+        public void describeTo( Description description )
+        {
+            description.appendText( "a log message with " );
+            delegateMatcher.describeTo( description );
+        }
+
+        @Override
+        public boolean matches( Object item )
+        {
+            if ( item instanceof CapturingLog.Message )
+            {
+                CapturingLog.Message message = (CapturingLog.Message) item;
+                String haystack = message.message;
+                return delegateMatcher.matches( haystack );
+            }
+            return false;
+        }
+    }
 }
