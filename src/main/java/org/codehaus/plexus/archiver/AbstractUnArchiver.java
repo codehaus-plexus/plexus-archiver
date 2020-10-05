@@ -387,6 +387,12 @@ public abstract class AbstractUnArchiver
     // Visible for testing
     protected boolean shouldExtractEntry( File file, String entryName, Date entryDate ) throws IOException
     {
+        //     entryname  | entrydate | filename   | filedate | behavior
+        // (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite
+        // (2) readme.txt | 2020      | readme.txt | 1970     | only overwrite when isOverWrite()
+        // (3) README.txt | 1970      | readme.txt | 2020     | warn + never overwrite
+        // (4) README.txt | 2020      | readme.txt | 1970     | warn + only overwrite when isOverWrite()
+
         String canonicalDestPath = file.getCanonicalPath();
         boolean fileOnDiskIsNewerThanEntry = ( file.lastModified() >= entryDate.getTime() );
         boolean differentCasing = !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath );
@@ -416,6 +422,8 @@ public abstract class AbstractUnArchiver
         {
             getLogger().warn( casingMessage );
         }
+
+        // (2)
         return isOverwrite();
     }
 
