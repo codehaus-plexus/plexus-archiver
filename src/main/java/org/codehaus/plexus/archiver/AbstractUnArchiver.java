@@ -330,11 +330,11 @@ public abstract class AbstractUnArchiver
         }
 
         // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File f = FileUtils.resolveFile( dir, entryName );
+        final File targetFileName = FileUtils.resolveFile( dir, entryName );
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
         String canonicalDirPath = dir.getCanonicalPath();
-        String canonicalDestPath = f.getCanonicalPath();
+        String canonicalDestPath = targetFileName.getCanonicalPath();
 
         if ( !canonicalDestPath.startsWith( canonicalDirPath ) )
         {
@@ -343,13 +343,13 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( !shouldExtractEntry( f, entryName, entryDate ) )
+            if ( !shouldExtractEntry( targetFileName, entryName, entryDate ) )
             {
                 return;
             }
 
             // create intermediary directories - sometimes zip don't add them
-            final File dirF = f.getParentFile();
+            final File dirF = targetFileName.getParentFile();
             if ( dirF != null )
             {
                 dirF.mkdirs();
@@ -357,11 +357,11 @@ public abstract class AbstractUnArchiver
 
             if ( !StringUtils.isEmpty( symlinkDestination ) )
             {
-                SymlinkUtils.createSymbolicLink( f, new File( symlinkDestination ) );
+                SymlinkUtils.createSymbolicLink( targetFileName, new File( symlinkDestination ) );
             }
             else if ( isDirectory )
             {
-                f.mkdirs();
+                targetFileName.mkdirs();
             }
             else
             {
@@ -371,21 +371,21 @@ public abstract class AbstractUnArchiver
                 }
             }
 
-            f.setLastModified( entryDate.getTime() );
+            targetFileName.setLastModified( entryDate.getTime() );
 
             if ( !isIgnorePermissions() && mode != null && !isDirectory )
             {
-                ArchiveEntryUtils.chmod( f, mode );
+                ArchiveEntryUtils.chmod( targetFileName, mode );
             }
         }
         catch ( final FileNotFoundException ex )
         {
-            getLogger().warn( "Unable to expand to file " + f.getPath() );
+            getLogger().warn( "Unable to expand to file " + targetFileName.getPath() );
         }
     }
 
     // Visible for testing
-    protected boolean shouldExtractEntry( File file, String entryName, Date entryDate ) throws IOException
+    protected boolean shouldExtractEntry( File targetFileName, String entryName, Date entryDate ) throws IOException
     {
         //     entryname  | entrydate | filename   | filedate | behavior
         // (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite
@@ -393,15 +393,15 @@ public abstract class AbstractUnArchiver
         // (3) README.txt | 1970      | readme.txt | 2020     | warn + never overwrite
         // (4) README.txt | 2020      | readme.txt | 1970     | warn + only overwrite when isOverWrite()
 
-        String canonicalDestPath = file.getCanonicalPath();
-        boolean fileOnDiskIsNewerThanEntry = ( file.lastModified() >= entryDate.getTime() );
+        String canonicalDestPath = targetFileName.getCanonicalPath();
+        boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
         boolean differentCasing = !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath );
 
         String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
                 + " This may cause issues on case-insensitive filesystems.", entryName, canonicalDestPath );
 
         // Optimise for situation where we need no checks
-        if ( !file.exists() )
+        if ( !targetFileName.exists() )
         {
             return true;
         }
