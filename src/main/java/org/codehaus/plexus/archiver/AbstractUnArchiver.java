@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -343,7 +345,7 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( !shouldExtractEntry( targetFileName, entryName, entryDate ) )
+            if ( !shouldExtractEntry( dir, targetFileName, entryName, entryDate ) )
             {
                 return;
             }
@@ -365,7 +367,7 @@ public abstract class AbstractUnArchiver
             }
             else
             {
-                try ( OutputStream out = new FileOutputStream( f ) )
+                try ( OutputStream out = new FileOutputStream( targetFileName ) )
                 {
                     IOUtil.copy( compressedInputStream, out );
                 }
@@ -385,26 +387,31 @@ public abstract class AbstractUnArchiver
     }
 
     // Visible for testing
-    protected boolean shouldExtractEntry( File targetFileName, String entryName, Date entryDate ) throws IOException
+    protected boolean shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) throws IOException
     {
         //     entryname  | entrydate | filename   | filedate | behavior
         // (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite
         // (2) readme.txt | 2020      | readme.txt | 1970     | only overwrite when isOverWrite()
-        // (3) README.txt | 1970      | readme.txt | 2020     | warn + never overwrite
-        // (4) README.txt | 2020      | readme.txt | 1970     | warn + only overwrite when isOverWrite()
+        // (3) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + never overwrite
+        //                                                      case-sensitive filesystem: extract without warning
+        // (4) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + only overwrite when isOverWrite()
+        //                                                      case-sensitive filesystem: extract without warning
 
-        String canonicalDestPath = targetFileName.getCanonicalPath();
-        boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
-        boolean differentCasing = !StringUtils.equalsIgnoreCase( entryName, canonicalDestPath );
-
-        String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
-                + " This may cause issues on case-insensitive filesystems.", entryName, canonicalDestPath );
-
-        // Optimise for situation where we need no checks
+        // The canonical file name follows the name of the archive entry, but takes into account the case-
+        // sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for
+        // scenario (3) and (4).
         if ( !targetFileName.exists() )
         {
             return true;
         }
+
+        String canonicalDestPath = targetFileName.getCanonicalPath();
+        String relativeCanonicalDestPath = canonicalDestPath.replace( targetDirectory.getCanonicalPath() + File.separatorChar, "" );
+        boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
+        boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
+
+        String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
+                + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
 
         // (1)
         if ( fileOnDiskIsNewerThanEntry )

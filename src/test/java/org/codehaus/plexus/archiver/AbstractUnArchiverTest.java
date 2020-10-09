@@ -18,12 +18,10 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Date;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.hamcrest.BaseMatcher;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.core.StringContains;
 import org.junit.After;
@@ -113,29 +111,41 @@ public class AbstractUnArchiverTest
     }
 
     @Test
+    public void shouldExtractWhenFileOnDiskDoesNotExist() throws IOException
+    {
+        // given
+        File file = new File( temporaryFolder.getRoot(), "whatever.txt" ); // does not create the file!
+        String entryname = file.getName();
+        Date entryDate = new Date();
+
+        // when & then
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( true ) );
+    }
+
+    @Test
     public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive() throws IOException
     {
         // given
-        File file = temporaryFolder.newFile( "readme.txt" );
+        File file = temporaryFolder.newFile();
         file.setLastModified( System.currentTimeMillis() );
-        String entryname = "readme.txt";
+        String entryname = file.getName();
         Date entryDate = new Date( 0 );
 
         // when & then
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is ( false ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( false ) );
     }
 
     @Test
     public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing() throws IOException
     {
         // given
-        File file = temporaryFolder.newFile( "readme.txt" );
+        File file = temporaryFolder.newFile();
         file.setLastModified( System.currentTimeMillis() );
-        String entryname = "README.txt";
+        String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( 0 );
 
         // when & then
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is ( false ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( false ) );
         assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
     }
 
@@ -143,34 +153,34 @@ public class AbstractUnArchiverTest
     public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk() throws IOException
     {
         // given
-        File file = temporaryFolder.newFile( "readme.txt" );
+        File file = temporaryFolder.newFile();
         file.setLastModified( 0 );
-        String entryname = "readme.txt";
+        String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( System.currentTimeMillis() );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( true ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( false );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( false ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
     }
 
     @Test
     public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing() throws IOException
     {
         // given
-        File file = temporaryFolder.newFile( "readme.txt" );
+        File file = temporaryFolder.newFile();
         file.setLastModified( 0 );
-        String entryname = "README.txt";
+        String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( System.currentTimeMillis() );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( true ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
         this.abstractUnArchiver.setOverwrite( false );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( file, entryname, entryDate ), is( false ) );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
         assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
     }
 
