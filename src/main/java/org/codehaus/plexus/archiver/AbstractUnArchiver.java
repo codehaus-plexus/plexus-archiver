@@ -22,6 +22,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -330,11 +332,11 @@ public abstract class AbstractUnArchiver
         }
 
         // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File f = FileUtils.resolveFile( dir, entryName );
+        final File targetFileName = FileUtils.resolveFile( dir, entryName );
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
         String canonicalDirPath = dir.getCanonicalPath();
-        String canonicalDestPath = f.getCanonicalPath();
+        String canonicalDestPath = targetFileName.getCanonicalPath();
 
         if ( !canonicalDestPath.startsWith( canonicalDirPath ) )
         {
@@ -343,13 +345,13 @@ public abstract class AbstractUnArchiver
 
         try
         {
-            if ( !isOverwrite() && f.exists() && ( f.lastModified() >= entryDate.getTime() ) )
+            if ( !shouldExtractEntry( dir, targetFileName, entryName, entryDate ) )
             {
                 return;
             }
 
             // create intermediary directories - sometimes zip don't add them
-            final File dirF = f.getParentFile();
+            final File dirF = targetFileName.getParentFile();
             if ( dirF != null )
             {
                 dirF.mkdirs();
@@ -357,31 +359,79 @@ public abstract class AbstractUnArchiver
 
             if ( !StringUtils.isEmpty( symlinkDestination ) )
             {
-                SymlinkUtils.createSymbolicLink( f, new File( symlinkDestination ) );
+                SymlinkUtils.createSymbolicLink( targetFileName, new File( symlinkDestination ) );
             }
             else if ( isDirectory )
             {
-                f.mkdirs();
+                targetFileName.mkdirs();
             }
             else
             {
-                try ( OutputStream out = new FileOutputStream( f ) )
+                try ( OutputStream out = new FileOutputStream( targetFileName ) )
                 {
                     IOUtil.copy( compressedInputStream, out );
                 }
             }
 
-            f.setLastModified( entryDate.getTime() );
+            targetFileName.setLastModified( entryDate.getTime() );
 
             if ( !isIgnorePermissions() && mode != null && !isDirectory )
             {
-                ArchiveEntryUtils.chmod( f, mode );
+                ArchiveEntryUtils.chmod( targetFileName, mode );
             }
         }
         catch ( final FileNotFoundException ex )
         {
-            getLogger().warn( "Unable to expand to file " + f.getPath() );
+            getLogger().warn( "Unable to expand to file " + targetFileName.getPath() );
         }
+    }
+
+    // Visible for testing
+    protected boolean shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) throws IOException
+    {
+        //     entryname  | entrydate | filename   | filedate | behavior
+        // (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite
+        // (2) readme.txt | 2020      | readme.txt | 1970     | only overwrite when isOverWrite()
+        // (3) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + never overwrite
+        //                                                      case-sensitive filesystem: extract without warning
+        // (4) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + only overwrite when isOverWrite()
+        //                                                      case-sensitive filesystem: extract without warning
+
+        // The canonical file name follows the name of the archive entry, but takes into account the case-
+        // sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for
+        // scenario (3) and (4).
+        if ( !targetFileName.exists() )
+        {
+            return true;
+        }
+
+        String canonicalDestPath = targetFileName.getCanonicalPath();
+        String relativeCanonicalDestPath = canonicalDestPath.replace( targetDirectory.getCanonicalPath() + File.separatorChar, "" );
+        boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
+        boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
+
+        String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
+                + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
+
+        // (1)
+        if ( fileOnDiskIsNewerThanEntry )
+        {
+            // (3)
+            if ( differentCasing )
+            {
+                getLogger().warn( casingMessage );
+            }
+            return false;
+        }
+
+        // (4)
+        if ( differentCasing )
+        {
+            getLogger().warn( casingMessage );
+        }
+
+        // (2)
+        return isOverwrite();
     }
 
 }
