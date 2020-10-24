@@ -33,7 +33,8 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Unit test for {@link AbstractUnArchiver}
@@ -182,6 +183,21 @@ public class AbstractUnArchiverTest
         this.abstractUnArchiver.setOverwrite( false );
         assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
         assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
+    }
+
+    @Test
+    public void shouldNotWarnAboutDifferentCasingForDirectoryEntries() throws IOException
+    {
+        // given
+        File file = temporaryFolder.newFolder();
+        file.setLastModified( 0 );
+        String entryname = file.getName() + '/'; // archive entries for directories end with a '/'
+        Date entryDate = new Date();
+
+        // when & then
+        this.abstractUnArchiver.setOverwrite( true );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
+        assertThat( this.log.getWarns(), not( hasItem( new LogMessageMatcher( "names differ only by case" ) ) ) );
     }
 
     static class LogMessageMatcher extends BaseMatcher<CapturingLog.Message> {
