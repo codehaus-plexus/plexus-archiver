@@ -405,8 +405,13 @@ public abstract class AbstractUnArchiver
             return true;
         }
 
+        boolean entryIsDirectory = entryName.endsWith( "/" ); // directory entries always end with '/', regardless of the OS.
         String canonicalDestPath = targetFileName.getCanonicalPath();
-        String relativeCanonicalDestPath = canonicalDestPath.replace( targetDirectory.getCanonicalPath() + File.separatorChar, "" );
+        String suffix = (entryIsDirectory ? "/" : "");
+        String relativeCanonicalDestPath = canonicalDestPath.replace(
+                targetDirectory.getCanonicalPath() + File.separatorChar,
+                "" )
+                + suffix;
         boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
         boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
 
