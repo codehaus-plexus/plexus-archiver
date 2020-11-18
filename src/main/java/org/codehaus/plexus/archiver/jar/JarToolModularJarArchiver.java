@@ -205,7 +205,7 @@ public class JarToolModularJarArchiver
         args.add( tempEmptyDir.getAbsolutePath() );
         args.add( "." );
 
-        return args.toArray( new String[]{} );
+        return args.toArray( new String[0] );
     }
 
 }
