@@ -16,8 +16,9 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
 import java.util.Stack;
 
@@ -27,11 +28,37 @@ import java.util.Stack;
 public class AddedDirs
 {
 
-    private final Hashtable<String, String> addedDirs = new Hashtable<String, String>();
+    private final Set<String> addedDirs = new HashSet<String>();
 
+    /**
+     * @deprecated use {@link #asStringDeque(String)} instead.
+     */
+    @Deprecated
     public Stack<String> asStringStack( String entry )
     {
-        Stack<String> directories = new Stack<String>();
+        Stack<String> directories = new Stack<>();
+
+        // Don't include the last entry itself if it's
+        // a dir; it will be added on its own.
+        int slashPos = entry.length() - ( entry.endsWith( "/" ) ? 1 : 0 );
+
+        while ( ( slashPos = entry.lastIndexOf( '/', slashPos - 1 ) ) != -1 )
+        {
+            String dir = entry.substring( 0, slashPos + 1 );
+
+            if ( addedDirs.contains( dir ) )
+            {
+                break;
+            }
+
+            directories.push( dir );
+        }
+        return directories;
+    }
+
+    public Deque<String> asStringDeque( String entry )
+    {
+        Deque<String> directories = new ArrayDeque<>();
 
         // Don't include the last entry itself if it's
         // a dir; it will be added on its own.
@@ -65,19 +92,12 @@ public class AddedDirs
      */
     public boolean update( String vPath )
     {
-        if ( addedDirs.get( vPath ) != null )
-        {
-            // don't add directories we've already added.
-            // no warning if we try, it is harmless in and of itself
-            return true;
-        }
-        addedDirs.put( vPath, vPath );
-        return false;
+        return !addedDirs.add( vPath );
     }
 
     public Set<String> allAddedDirs()
     {
-        return new HashSet<String>( addedDirs.keySet() );
+        return new HashSet<String>( addedDirs );
     }
 
 }

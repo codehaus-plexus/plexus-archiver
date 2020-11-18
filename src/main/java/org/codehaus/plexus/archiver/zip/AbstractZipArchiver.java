@@ -26,8 +26,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Deque;
 import java.util.Hashtable;
-import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 import java.util.zip.CRC32;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -408,7 +408,7 @@ public abstract class AbstractZipArchiver
     {
         if ( !doFilesonly && getIncludeEmptyDirs() )
         {
-            Stack<String> directories = addedDirs.asStringStack( entry );
+            Deque<String> directories = addedDirs.asStringDeque( entry );
 
             while ( !directories.isEmpty() )
             {
