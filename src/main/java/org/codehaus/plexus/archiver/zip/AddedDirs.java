@@ -16,10 +16,10 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  * A list of directories that have been added to an archive.
@@ -27,11 +27,11 @@ import java.util.Stack;
 public class AddedDirs
 {
 
-    private final Hashtable<String, String> addedDirs = new Hashtable<String, String>();
+    private final Set<String> addedDirs = new HashSet<String>();
 
-    public Stack<String> asStringStack( String entry )
+    public Deque<String> asStringStack(String entry )
     {
-        Stack<String> directories = new Stack<String>();
+        Deque<String> directories = new ArrayDeque<>();
 
         // Don't include the last entry itself if it's
         // a dir; it will be added on its own.
@@ -65,19 +65,12 @@ public class AddedDirs
      */
     public boolean update( String vPath )
     {
-        if ( addedDirs.get( vPath ) != null )
-        {
-            // don't add directories we've already added.
-            // no warning if we try, it is harmless in and of itself
-            return true;
-        }
-        addedDirs.put( vPath, vPath );
-        return false;
+        return !addedDirs.add( vPath );
     }
 
     public Set<String> allAddedDirs()
     {
-        return new HashSet<String>( addedDirs.keySet() );
+        return new HashSet<String>( addedDirs );
     }
 
 }
