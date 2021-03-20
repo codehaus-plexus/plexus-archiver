@@ -88,7 +88,7 @@ public class AddedDirs
      *
      * @param vPath The path to add.
      *
-     * @return true if the path was not present, false if it already existed.
+     * @return true if the path was already present, false if it has been added.
      */
     public boolean update( String vPath )
     {
