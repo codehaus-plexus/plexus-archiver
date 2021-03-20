@@ -408,7 +408,7 @@ public abstract class AbstractZipArchiver
     {
         if ( !doFilesonly && getIncludeEmptyDirs() )
         {
-            Deque<String> directories = addedDirs.asStringStack( entry );
+            Deque<String> directories = addedDirs.asStringDeque( entry );
 
             while ( !directories.isEmpty() )
             {

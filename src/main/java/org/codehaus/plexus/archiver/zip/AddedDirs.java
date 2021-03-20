@@ -20,6 +20,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * A list of directories that have been added to an archive.
@@ -29,7 +30,33 @@ public class AddedDirs
 
     private final Set<String> addedDirs = new HashSet<String>();
 
-    public Deque<String> asStringStack(String entry )
+    /**
+     * @deprecated use {@link #asStringDeque(String)} instead.
+     */
+    @Deprecated
+    public Stack<String> asStringStack( String entry )
+    {
+        Stack<String> directories = new Stack<>();
+
+        // Don't include the last entry itself if it's
+        // a dir; it will be added on its own.
+        int slashPos = entry.length() - ( entry.endsWith( "/" ) ? 1 : 0 );
+
+        while ( ( slashPos = entry.lastIndexOf( '/', slashPos - 1 ) ) != -1 )
+        {
+            String dir = entry.substring( 0, slashPos + 1 );
+
+            if ( addedDirs.contains( dir ) )
+            {
+                break;
+            }
+
+            directories.push( dir );
+        }
+        return directories;
+    }
+
+    public Deque<String> asStringDeque( String entry )
     {
         Deque<String> directories = new ArrayDeque<>();
 
