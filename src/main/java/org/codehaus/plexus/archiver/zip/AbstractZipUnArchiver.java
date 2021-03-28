@@ -102,20 +102,7 @@ public abstract class AbstractZipUnArchiver
 
         public String getName()
         {
-            try
-            {
-                final UnicodePathExtraField unicodePath =
-                    (UnicodePathExtraField) zipEntry.getExtraField( UnicodePathExtraField.UPATH_ID );
-
-                return unicodePath != null
-                           ? new String( unicodePath.getUnicodeName(), "UTF-8" )
-                           : zipEntry.getName();
-
-            }
-            catch ( final UnsupportedEncodingException e )
-            {
-                throw new AssertionError( e );
-            }
+            return zipEntry.getName();
         }
 
         @Override
