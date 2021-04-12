@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -120,6 +121,24 @@ public class PlexusIoZipFileResourceCollectionTest
         }
 
         assertTrue( symLinks.isEmpty() );
+    }
+
+    public void testUnarchiveUnicodePathExtra()
+        throws Exception
+    {
+        PlexusIoZipFileResourceCollection prc = new PlexusIoZipFileResourceCollection();
+        prc.setFile( getTestFile( "src/test/resources/unicodePathExtra/efsclear.zip" ) );
+        Set<String> names = new HashSet<>();
+        final Iterator<PlexusIoResource> entries = prc.getEntries();
+        while ( entries.hasNext() )
+        {
+            final PlexusIoResource next = entries.next();
+            names.add(next.getName());
+        }
+        // a Unicode Path extra field should only be used when its CRC matches the header file name
+        assertEquals( "should use good extra fields but not bad ones",
+                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
+                names );
     }
 
 }

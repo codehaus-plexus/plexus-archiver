@@ -1,10 +1,16 @@
 package org.codehaus.plexus.archiver.zip;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
@@ -86,6 +92,61 @@ public class ZipUnArchiverTest
         assertTrue( new File( dest, "aPi\u00F1ata.txt" ).exists() );
         assertTrue( new File( dest, "an\u00FCmlaut.txt" ).exists() );
         assertTrue( new File( dest, "\u20acuro.txt" ).exists() );
+    }
+
+    public void testUnarchiveUnicodePathExtra()
+        throws Exception
+    {
+        File dest = new File( "target/output/unzip/unicodePathExtra" );
+        dest.mkdirs();
+        for ( String name : dest.list() )
+        {
+            new File( dest, name ).delete();
+        }
+        assertEquals( 0, dest.list().length );
+
+        final ZipUnArchiver unarchiver = getZipUnArchiver( new File( "src/test/resources/unicodePathExtra/efsclear.zip" ) );
+        unarchiver.setDestFile( dest );
+        unarchiver.extract();
+        // a Unicode Path extra field should only be used when its CRC matches the header file name
+        assertEquals( "should use good extra fields but not bad ones",
+                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
+                new HashSet<>( Arrays.asList( dest.list() ) ) );
+    }
+
+    public void testUnarchiveUnicodePathExtraSelector()
+        throws Exception
+    {
+        File dest = new File( "target/output/unzip/unicodePathExtraSelector" );
+        dest.mkdirs();
+        for ( String name : dest.list() )
+        {
+            new File( dest, name ).delete();
+        }
+        assertEquals( 0, dest.list().length );
+
+        class CollectingSelector implements FileSelector
+        {
+            public Set<String> collection = new HashSet<>();
+            @Override
+            public boolean isSelected( FileInfo fileInfo ) throws IOException
+            {
+                collection.add( fileInfo.getName() );
+                return false;
+            }
+        }
+        CollectingSelector selector = new CollectingSelector();
+
+        final ZipUnArchiver unarchiver = getZipUnArchiver( new File( "src/test/resources/unicodePathExtra/efsclear.zip" ) );
+        unarchiver.setDestFile( dest );
+        unarchiver.setFileSelectors( new FileSelector[] { selector } );
+        unarchiver.extract();
+
+        assertEquals( "should not extract anything", 0, dest.list().length );
+        // a Unicode Path extra field should only be used when its CRC matches the header file name
+        assertEquals( "should use good extra fields but not bad ones",
+                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
+                selector.collection );
     }
 
     private void runUnarchiver( String path, FileSelector[] selectors, boolean[] results )
