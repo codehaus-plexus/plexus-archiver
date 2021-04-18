@@ -138,7 +138,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> <span class="keyword">static</span> org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;59</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsCovered">&nbsp;52572</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> AbstractArchiver</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;60</td>  <td class="nbHitsCovered">&nbsp;52682</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> AbstractArchiver</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">extends</span> AbstractLogEnabled</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;62</td>  <td class="nbHits">&nbsp;</td>
@@ -290,7 +290,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> ArchiverManager archiverManager;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;142</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;156684</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> AddedResourceCollection</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;143</td>  <td class="nbHitsCovered">&nbsp;157014</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> AddedResourceCollection</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;144</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;145</td>  <td class="nbHits">&nbsp;</td>
@@ -320,17 +320,17 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">private</span> <span class="keyword">int</span> maybeOverridden( <span class="keyword">int</span> suggestedMode, <span class="keyword">boolean</span> isDir )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;160</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;161</td>  <td class="nbHitsCovered"><a title="Line 161: Conditional coverage 100% (2/2).">&nbsp;52200</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 161: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( isDir )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;161</td>  <td class="nbHitsCovered"><a title="Line 161: Conditional coverage 100% (2/2).">&nbsp;52310</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 161: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( isDir )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered"><a title="Line 163: Conditional coverage 100% (2/2).">&nbsp;2016</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 163: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> forcedDirectoryMode &gt;= 0 ? forcedDirectoryMode : suggestedMode;</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered"><a title="Line 163: Conditional coverage 100% (2/2).">&nbsp;2038</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 163: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> forcedDirectoryMode &gt;= 0 ? forcedDirectoryMode : suggestedMode;</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;164</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;165</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;166</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered"><a title="Line 167: Conditional coverage 100% (2/2).">&nbsp;50184</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 167: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> forcedFileMode &gt;= 0 ? forcedFileMode : suggestedMode;</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered"><a title="Line 167: Conditional coverage 100% (2/2).">&nbsp;50272</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 167: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> forcedFileMode &gt;= 0 ? forcedFileMode : suggestedMode;</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;168</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
@@ -532,13 +532,13 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> getDirectoryMode()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsCovered"><a title="Line 282: Conditional coverage 100% (2/2).">&nbsp;52484</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 282: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( forcedDirectoryMode &lt; 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsCovered"><a title="Line 282: Conditional coverage 100% (2/2).">&nbsp;52594</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 282: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( forcedDirectoryMode &lt; 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;284</td>  <td class="nbHitsCovered"><a title="Line 284: Conditional coverage 100% (2/2).">&nbsp;51250</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 284: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( defaultDirectoryMode &lt; 0 )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;284</td>  <td class="nbHitsCovered"><a title="Line 284: Conditional coverage 100% (2/2).">&nbsp;51345</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 284: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( defaultDirectoryMode &lt; 0 )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;286</td>  <td class="nbHitsCovered">&nbsp;51248</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> DEFAULT_DIR_MODE;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;286</td>  <td class="nbHitsCovered">&nbsp;51343</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> DEFAULT_DIR_MODE;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;287</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;288</td>  <td class="nbHits">&nbsp;</td>
@@ -548,7 +548,7 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;1234</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> forcedDirectoryMode;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered">&nbsp;1249</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> forcedDirectoryMode;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;294</td>  <td class="nbHits">&nbsp;</td>
@@ -582,7 +582,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">boolean</span> getIncludeEmptyDirs()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;310</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;311</td>  <td class="nbHitsCovered">&nbsp;48241</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> includeEmptyDirs;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;311</td>  <td class="nbHitsCovered">&nbsp;48291</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> includeEmptyDirs;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;312</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;313</td>  <td class="nbHits">&nbsp;</td>
@@ -769,8 +769,8 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> ArchiveEntry updateArchiveEntryAttributes( ArchiveEntry entry )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;428</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsUncovered"><a title="Line 429: Conditional coverage 50% (3/6) [each condition: 50%, 50%, 50%].">&nbsp;52477</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 429: Conditional coverage 50% (3/6) [each condition: 50%, 50%, 50%].">        <span class="keyword">if</span> ( getOverrideUid() &gt; -1 || getOverrideGid() &gt; -1 || getOverrideUserName() != <span class="keyword">null</span></a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsUncovered"><a title="Line 430: Conditional coverage 50% (1/2).">&nbsp;52477</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 430: Conditional coverage 50% (1/2).">            || getOverrideGroupName() != <span class="keyword">null</span> )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsUncovered"><a title="Line 429: Conditional coverage 50% (3/6) [each condition: 50%, 50%, 50%].">&nbsp;52587</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 429: Conditional coverage 50% (3/6) [each condition: 50%, 50%, 50%].">        <span class="keyword">if</span> ( getOverrideUid() &gt; -1 || getOverrideGid() &gt; -1 || getOverrideUserName() != <span class="keyword">null</span></a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsUncovered"><a title="Line 430: Conditional coverage 50% (1/2).">&nbsp;52587</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 430: Conditional coverage 50% (1/2).">            || getOverrideGroupName() != <span class="keyword">null</span> )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;431</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;432</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            entry.setResourceAttributes( <span class="keyword">new</span> SimpleResourceAttributes( getOverrideUid(), getOverrideUserName(),</span></pre></td></tr>
@@ -778,7 +778,7 @@
 <tr>  <td class="numLineCover">&nbsp;434</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                                                                       entry.getMode() ) );</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;435</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;436</td>  <td class="nbHitsCovered">&nbsp;52477</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> entry;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;436</td>  <td class="nbHitsCovered">&nbsp;52587</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> entry;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;437</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;438</td>  <td class="nbHits">&nbsp;</td>
@@ -791,7 +791,7 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> ArchiverException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;442</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;443</td>  <td class="nbHitsUncovered"><a title="Line 443: Conditional coverage 50% (1/2).">&nbsp;52201</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 443: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !resource.isExisting() )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;443</td>  <td class="nbHitsUncovered"><a title="Line 443: Conditional coverage 50% (1/2).">&nbsp;52311</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 443: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !resource.isExisting() )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;444</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;445</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ArchiverException( resource.getName() + <span class="string">" not found."</span> );</span></pre></td></tr>
@@ -801,22 +801,22 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;448</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        ArchiveEntry entry;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;449</td>  <td class="nbHitsCovered"><a title="Line 449: Conditional coverage 100% (2/2).">&nbsp;52201</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 449: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( resource.isFile() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;449</td>  <td class="nbHitsCovered"><a title="Line 449: Conditional coverage 100% (2/2).">&nbsp;52311</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 449: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( resource.isFile() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;450</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;451</td>  <td class="nbHitsCovered">&nbsp;50185</td>  <td class="src"><pre class="src">&nbsp;            entry = ArchiveEntry.createFileEntry( destFileName, resource, permissions, collection, getDirectoryMode() );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;451</td>  <td class="nbHitsCovered">&nbsp;50273</td>  <td class="src"><pre class="src">&nbsp;            entry = ArchiveEntry.createFileEntry( destFileName, resource, permissions, collection, getDirectoryMode() );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;452</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;453</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;454</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;2016</td>  <td class="src"><pre class="src">&nbsp;            entry = ArchiveEntry.createDirectoryEntry( destFileName, resource, permissions, getDirectoryMode() );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;2038</td>  <td class="src"><pre class="src">&nbsp;            entry = ArchiveEntry.createDirectoryEntry( destFileName, resource, permissions, getDirectoryMode() );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;456</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;457</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;458</td>  <td class="nbHitsCovered">&nbsp;52201</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> updateArchiveEntryAttributes( entry );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;458</td>  <td class="nbHitsCovered">&nbsp;52311</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> updateArchiveEntryAttributes( entry );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;459</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;460</td>  <td class="nbHits">&nbsp;</td>
@@ -827,29 +827,29 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> ArchiverException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;463</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String destFileName = collection.resources.getName( resource );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String destFileName = collection.resources.getName( resource );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;465</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;466</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">int</span> fromResource = PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;467</td>  <td class="nbHitsCovered"><a title="Line 467: Conditional coverage 100% (2/2).">&nbsp;52200</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 467: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( resource <span class="keyword">instanceof</span> ResourceAttributeSupplier )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;466</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">int</span> fromResource = PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;467</td>  <td class="nbHitsCovered"><a title="Line 467: Conditional coverage 100% (2/2).">&nbsp;52310</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 467: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( resource <span class="keyword">instanceof</span> ResourceAttributeSupplier )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;468</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;469</td>  <td class="nbHitsCovered">&nbsp;52182</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> PlexusIoResourceAttributes attrs = ( (ResourceAttributeSupplier) resource ).getAttributes();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;469</td>  <td class="nbHitsCovered">&nbsp;52292</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> PlexusIoResourceAttributes attrs = ( (ResourceAttributeSupplier) resource ).getAttributes();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;470</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;471</td>  <td class="nbHitsUncovered"><a title="Line 471: Conditional coverage 50% (1/2).">&nbsp;52182</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 471: Conditional coverage 50% (1/2).">            <span class="keyword">if</span> ( attrs != <span class="keyword">null</span> )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;471</td>  <td class="nbHitsUncovered"><a title="Line 471: Conditional coverage 50% (1/2).">&nbsp;52292</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 471: Conditional coverage 50% (1/2).">            <span class="keyword">if</span> ( attrs != <span class="keyword">null</span> )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;472</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;473</td>  <td class="nbHitsCovered">&nbsp;52182</td>  <td class="src"><pre class="src">&nbsp;                fromResource = attrs.getOctalMode();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;473</td>  <td class="nbHitsCovered">&nbsp;52292</td>  <td class="src"><pre class="src">&nbsp;                fromResource = attrs.getOctalMode();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;474</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;475</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;476</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;477</td>  <td class="nbHitsCovered">&nbsp;104400</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> asArchiveEntry( resource, destFileName,</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;478</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;                               collection.maybeOverridden( fromResource, resource.isDirectory() ),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;                               collection.resources );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;477</td>  <td class="nbHitsCovered">&nbsp;104620</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> asArchiveEntry( resource, destFileName,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;478</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;                               collection.maybeOverridden( fromResource, resource.isDirectory() ),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;                               collection.resources );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;480</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
@@ -959,10 +959,10 @@
   <td class="src"><pre class="src">&nbsp;                <span class="keyword">do</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;543</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;544</td>  <td class="nbHitsCovered"><a title="Line 544: Conditional coverage 100% (2/2).">&nbsp;105232</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 544: Conditional coverage 100% (2/2).">                    <span class="keyword">if</span> ( nextEntry == <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;544</td>  <td class="nbHitsCovered"><a title="Line 544: Conditional coverage 100% (2/2).">&nbsp;105452</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 544: Conditional coverage 100% (2/2).">                    <span class="keyword">if</span> ( nextEntry == <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;545</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;546</td>  <td class="nbHitsCovered"><a title="Line 546: Conditional coverage 100% (2/2).">&nbsp;52685</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 546: Conditional coverage 100% (2/2).">                        <span class="keyword">if</span> ( ioResourceIter == <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;546</td>  <td class="nbHitsCovered"><a title="Line 546: Conditional coverage 100% (2/2).">&nbsp;52795</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 546: Conditional coverage 100% (2/2).">                        <span class="keyword">if</span> ( ioResourceIter == <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;547</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;548</td>  <td class="nbHitsCovered"><a title="Line 548: Conditional coverage 100% (2/2).">&nbsp;404</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 548: Conditional coverage 100% (2/2).">                            <span class="keyword">if</span> ( addedResourceIter.hasNext() )</a></pre></td></tr>
@@ -1016,12 +1016,12 @@
   <td class="src"><pre class="src">&nbsp;                        <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;579</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;580</td>  <td class="nbHitsCovered"><a title="Line 580: Conditional coverage 100% (2/2).">&nbsp;52281</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 580: Conditional coverage 100% (2/2).">                            <span class="keyword">if</span> ( ioResourceIter.hasNext() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;580</td>  <td class="nbHitsCovered"><a title="Line 580: Conditional coverage 100% (2/2).">&nbsp;52391</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 580: Conditional coverage 100% (2/2).">                            <span class="keyword">if</span> ( ioResourceIter.hasNext() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;581</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;582</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;                                <span class="keyword">final</span> PlexusIoResource resource = (PlexusIoResource) ioResourceIter.next();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;583</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;                                nextEntry = asArchiveEntry( currentResourceCollection, resource );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;584</td>  <td class="nbHitsCovered">&nbsp;52200</td>  <td class="src"><pre class="src">&nbsp;                            }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;582</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;                                <span class="keyword">final</span> PlexusIoResource resource = (PlexusIoResource) ioResourceIter.next();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;583</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;                                nextEntry = asArchiveEntry( currentResourceCollection, resource );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;584</td>  <td class="nbHitsCovered">&nbsp;52310</td>  <td class="src"><pre class="src">&nbsp;                            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;585</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                            <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;586</td>  <td class="nbHits">&nbsp;</td>
@@ -1046,7 +1046,7 @@
   <td class="src"><pre class="src">&nbsp;                    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;597</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered"><a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;105232</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">                    <span class="keyword">if</span> ( nextEntry != <span class="keyword">null</span> &amp;&amp; seenEntries.contains( normalizedForDuplicateCheck( nextEntry ) ) )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered"><a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;105452</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">                    <span class="keyword">if</span> ( nextEntry != <span class="keyword">null</span> &amp;&amp; seenEntries.contains( normalizedForDuplicateCheck( nextEntry ) ) )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;599</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;600</td>  <td class="nbHitsCovered">&nbsp;15</td>  <td class="src"><pre class="src">&nbsp;                        <span class="keyword">final</span> String path = nextEntry.getName();</pre></td></tr>
@@ -1088,10 +1088,10 @@
   <td class="src"><pre class="src">&nbsp;                    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;623</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;624</td>  <td class="nbHitsCovered"><a title="Line 624: Conditional coverage 100% (6/6) [each condition: 100%, 100%, 100%].">&nbsp;105232</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 624: Conditional coverage 100% (6/6) [each condition: 100%, 100%, 100%].">                <span class="keyword">while</span> ( nextEntry == <span class="keyword">null</span> &amp;&amp; !( ioResourceIter == <span class="keyword">null</span> &amp;&amp; !addedResourceIter.hasNext() ) );</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;624</td>  <td class="nbHitsCovered"><a title="Line 624: Conditional coverage 100% (6/6) [each condition: 100%, 100%, 100%].">&nbsp;105452</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 624: Conditional coverage 100% (6/6) [each condition: 100%, 100%, 100%].">                <span class="keyword">while</span> ( nextEntry == <span class="keyword">null</span> &amp;&amp; !( ioResourceIter == <span class="keyword">null</span> &amp;&amp; !addedResourceIter.hasNext() ) );</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;625</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;626</td>  <td class="nbHitsCovered"><a title="Line 626: Conditional coverage 100% (2/2).">&nbsp;105126</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 626: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> nextEntry != <span class="keyword">null</span>;</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;626</td>  <td class="nbHitsCovered"><a title="Line 626: Conditional coverage 100% (2/2).">&nbsp;105346</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 626: Conditional coverage 100% (2/2).">                <span class="keyword">return</span> nextEntry != <span class="keyword">null</span>;</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;627</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;628</td>  <td class="nbHits">&nbsp;</td>
@@ -1113,7 +1113,7 @@
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">public</span> ArchiveEntry next()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;638</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;639</td>  <td class="nbHitsUncovered"><a title="Line 639: Conditional coverage 50% (1/2).">&nbsp;52460</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 639: Conditional coverage 50% (1/2).">                <span class="keyword">if</span> ( !hasNext() )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;639</td>  <td class="nbHitsUncovered"><a title="Line 639: Conditional coverage 50% (1/2).">&nbsp;52570</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 639: Conditional coverage 50% (1/2).">                <span class="keyword">if</span> ( !hasNext() )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;640</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;641</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span></pre></td></tr>
@@ -1121,14 +1121,14 @@
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;643</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;644</td>  <td class="nbHitsCovered">&nbsp;52460</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> ArchiveEntry next = nextEntry;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;645</td>  <td class="nbHitsCovered">&nbsp;52460</td>  <td class="src"><pre class="src">&nbsp;                nextEntry = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;644</td>  <td class="nbHitsCovered">&nbsp;52570</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> ArchiveEntry next = nextEntry;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;645</td>  <td class="nbHitsCovered">&nbsp;52570</td>  <td class="src"><pre class="src">&nbsp;                nextEntry = <span class="keyword">null</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;646</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;647</td>  <td class="nbHitsCovered">&nbsp;52460</td>  <td class="src"><pre class="src">&nbsp;                seenEntries.add( normalizedForDuplicateCheck( next ) );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;647</td>  <td class="nbHitsCovered">&nbsp;52570</td>  <td class="src"><pre class="src">&nbsp;                seenEntries.add( normalizedForDuplicateCheck( next ) );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;648</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;649</td>  <td class="nbHitsCovered">&nbsp;52460</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> next;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;649</td>  <td class="nbHitsCovered">&nbsp;52570</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> next;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;650</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;651</td>  <td class="nbHits">&nbsp;</td>
@@ -1148,7 +1148,7 @@
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">private</span> String normalizedForDuplicateCheck( ArchiveEntry entry )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;659</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;660</td>  <td class="nbHitsCovered">&nbsp;157482</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> entry.getName().replace( <span class="string">'\\'</span>, <span class="string">'/'</span> );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;660</td>  <td class="nbHitsCovered">&nbsp;157812</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">return</span> entry.getName().replace( <span class="string">'\\'</span>, <span class="string">'/'</span> );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;661</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;662</td>  <td class="nbHits">&nbsp;</td>
@@ -1244,7 +1244,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> File getDestFile()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;717</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;718</td>  <td class="nbHitsCovered">&nbsp;47529</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> destFile;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;718</td>  <td class="nbHitsCovered">&nbsp;47569</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> destFile;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;719</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;720</td>  <td class="nbHits">&nbsp;</td>
@@ -1273,7 +1273,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">protected</span> Logger getLogger()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;734</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;735</td>  <td class="nbHitsCovered"><a title="Line 735: Conditional coverage 100% (2/2).">&nbsp;48542</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 735: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( logger == <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;735</td>  <td class="nbHitsCovered"><a title="Line 735: Conditional coverage 100% (2/2).">&nbsp;48592</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 735: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( logger == <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;736</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;737</td>  <td class="nbHitsCovered"><a title="Line 737: Conditional coverage 100% (2/2).">&nbsp;95</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 737: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( <span class="keyword">super</span>.getLogger() != <span class="keyword">null</span> )</a></pre></td></tr>
@@ -1293,7 +1293,7 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;746</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;747</td>  <td class="nbHitsCovered">&nbsp;48542</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> logger;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;747</td>  <td class="nbHitsCovered">&nbsp;48592</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> logger;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;748</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;749</td>  <td class="nbHits">&nbsp;</td>
@@ -2082,7 +2082,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Date getLastModifiedDate()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1219</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1220</td>  <td class="nbHitsCovered">&nbsp;52570</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> lastModifiedDate;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1220</td>  <td class="nbHitsCovered">&nbsp;52680</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> lastModifiedDate;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1221</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1222</td>  <td class="nbHits">&nbsp;</td>
@@ -2132,7 +2132,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">int</span> getOverrideUid()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1248</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1249</td>  <td class="nbHitsCovered">&nbsp;52546</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideUid;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1249</td>  <td class="nbHitsCovered">&nbsp;52656</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideUid;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1250</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1251</td>  <td class="nbHits">&nbsp;</td>
@@ -2143,7 +2143,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String getOverrideUserName()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1254</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1255</td>  <td class="nbHitsCovered">&nbsp;52546</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideUserName;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1255</td>  <td class="nbHitsCovered">&nbsp;52656</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideUserName;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1256</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1257</td>  <td class="nbHits">&nbsp;</td>
@@ -2174,7 +2174,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">int</span> getOverrideGid()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1272</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1273</td>  <td class="nbHitsCovered">&nbsp;52546</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideGid;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1273</td>  <td class="nbHitsCovered">&nbsp;52656</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideGid;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1274</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1275</td>  <td class="nbHits">&nbsp;</td>
@@ -2185,7 +2185,7 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String getOverrideGroupName()</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1278</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1279</td>  <td class="nbHitsCovered">&nbsp;52546</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideGroupName;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1279</td>  <td class="nbHitsCovered">&nbsp;52656</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> overrideGroupName;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1280</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1281</td>  <td class="nbHits">&nbsp;</td>
@@ -2262,6 +2262,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 1/31/21 6:55 PM.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 4/18/21 6:53 PM.</div>
 </body>
 </html>

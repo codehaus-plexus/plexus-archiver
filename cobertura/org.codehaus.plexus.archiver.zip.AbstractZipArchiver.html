@@ -76,9 +76,9 @@
 <tr>  <td class="numLine">&nbsp;28</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Date;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;29</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Hashtable;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Deque;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;30</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Stack;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Hashtable;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;31</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.concurrent.ExecutionException;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;32</td>  <td class="nbHits">&nbsp;</td>
@@ -646,15 +646,15 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException, ArchiverException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;365</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;366</td>  <td class="nbHitsCovered"><a title="Line 366: Conditional coverage 100% (2/2).">&nbsp;48318</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 366: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> ( resources.hasNext() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;366</td>  <td class="nbHitsCovered"><a title="Line 366: Conditional coverage 100% (2/2).">&nbsp;48368</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 366: Conditional coverage 100% (2/2).">        <span class="keyword">while</span> ( resources.hasNext() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;367</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;368</td>  <td class="nbHitsCovered">&nbsp;48265</td>  <td class="src"><pre class="src">&nbsp;            ArchiveEntry entry = resources.next();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;369</td>  <td class="nbHitsCovered">&nbsp;48265</td>  <td class="src"><pre class="src">&nbsp;            String name = entry.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;370</td>  <td class="nbHitsCovered">&nbsp;48265</td>  <td class="src"><pre class="src">&nbsp;            name = name.replace( File.separatorChar, <span class="string">'/'</span> );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;368</td>  <td class="nbHitsCovered">&nbsp;48315</td>  <td class="src"><pre class="src">&nbsp;            ArchiveEntry entry = resources.next();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;369</td>  <td class="nbHitsCovered">&nbsp;48315</td>  <td class="src"><pre class="src">&nbsp;            String name = entry.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;370</td>  <td class="nbHitsCovered">&nbsp;48315</td>  <td class="src"><pre class="src">&nbsp;            name = name.replace( File.separatorChar, <span class="string">'/'</span> );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;371</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;372</td>  <td class="nbHitsCovered"><a title="Line 372: Conditional coverage 100% (2/2).">&nbsp;48265</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 372: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( <span class="string">""</span>.equals( name ) )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;372</td>  <td class="nbHitsCovered"><a title="Line 372: Conditional coverage 100% (2/2).">&nbsp;48315</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 372: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( <span class="string">""</span>.equals( name ) )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;373</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;374</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">continue</span>;</pre></td></tr>
@@ -662,31 +662,31 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;376</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;377</td>  <td class="nbHitsCovered"><a title="Line 377: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;48239</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 377: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">            <span class="keyword">if</span> ( entry.getResource().isDirectory() &amp;&amp; !name.endsWith( <span class="string">"/"</span> ) )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;377</td>  <td class="nbHitsCovered"><a title="Line 377: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;48289</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 377: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">            <span class="keyword">if</span> ( entry.getResource().isDirectory() &amp;&amp; !name.endsWith( <span class="string">"/"</span> ) )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;378</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;758</td>  <td class="src"><pre class="src">&nbsp;                name = name + <span class="string">"/"</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;767</td>  <td class="src"><pre class="src">&nbsp;                name = name + <span class="string">"/"</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;381</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;48239</td>  <td class="src"><pre class="src">&nbsp;            addParentDirs( entry, <span class="keyword">null</span>, name, zOut );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;48289</td>  <td class="src"><pre class="src">&nbsp;            addParentDirs( entry, <span class="keyword">null</span>, name, zOut );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;383</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;384</td>  <td class="nbHitsCovered"><a title="Line 384: Conditional coverage 100% (2/2).">&nbsp;48239</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 384: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( entry.getResource().isFile() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;384</td>  <td class="nbHitsCovered"><a title="Line 384: Conditional coverage 100% (2/2).">&nbsp;48289</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 384: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( entry.getResource().isFile() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;                zipFile( entry, zOut, name );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;                zipFile( entry, zOut, name );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;387</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;389</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsCovered">&nbsp;867</td>  <td class="src"><pre class="src">&nbsp;                zipDir( entry.getResource(), zOut, name, entry.getMode(), encoding );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsCovered">&nbsp;877</td>  <td class="src"><pre class="src">&nbsp;                zipDir( entry.getResource(), zOut, name, entry.getMode(), encoding );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;391</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;392</td>  <td class="nbHitsCovered">&nbsp;48239</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;392</td>  <td class="nbHitsCovered">&nbsp;48289</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;393</td>  <td class="nbHitsCovered">&nbsp;53</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;394</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
@@ -718,13 +718,13 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;408</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsUncovered"><a title="Line 409: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">&nbsp;48239</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 409: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">        <span class="keyword">if</span> ( !doFilesonly &amp;&amp; getIncludeEmptyDirs() )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsUncovered"><a title="Line 409: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">&nbsp;48289</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 409: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">        <span class="keyword">if</span> ( !doFilesonly &amp;&amp; getIncludeEmptyDirs() )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;410</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsCovered">&nbsp;48239</td>  <td class="src"><pre class="src">&nbsp;            Stack&lt;String&gt; directories = addedDirs.asStringStack( entry );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsCovered">&nbsp;48289</td>  <td class="src"><pre class="src">&nbsp;            Deque&lt;String&gt; directories = addedDirs.asStringDeque( entry );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;412</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;413</td>  <td class="nbHitsCovered"><a title="Line 413: Conditional coverage 100% (2/2).">&nbsp;48391</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 413: Conditional coverage 100% (2/2).">            <span class="keyword">while</span> ( !directories.isEmpty() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;413</td>  <td class="nbHitsCovered"><a title="Line 413: Conditional coverage 100% (2/2).">&nbsp;48441</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 413: Conditional coverage 100% (2/2).">            <span class="keyword">while</span> ( !directories.isEmpty() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;414</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;415</td>  <td class="nbHitsCovered">&nbsp;152</td>  <td class="src"><pre class="src">&nbsp;                String dir = directories.pop();</pre></td></tr>
@@ -752,7 +752,7 @@
 <tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsCovered">&nbsp;152</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;430</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsCovered">&nbsp;48239</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsCovered">&nbsp;48289</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;432</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;433</td>  <td class="nbHits">&nbsp;</td>
@@ -799,26 +799,26 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException, ArchiverException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;454</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;        getLogger().debug( <span class="string">"adding entry "</span> + vPath );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;455</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;        getLogger().debug( <span class="string">"adding entry "</span> + vPath );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;456</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;        entries.put( vPath, vPath );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;457</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;        entries.put( vPath, vPath );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;458</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsUncovered"><a title="Line 459: Conditional coverage 50% (1/2).">&nbsp;47391</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 459: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !skipWriting )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;459</td>  <td class="nbHitsUncovered"><a title="Line 459: Conditional coverage 50% (1/2).">&nbsp;47431</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 459: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !skipWriting )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;460</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;461</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;            ZipArchiveEntry ze = <span class="keyword">new</span> ZipArchiveEntry( vPath );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;462</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;            setTime( ze, lastModified );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;461</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;            ZipArchiveEntry ze = <span class="keyword">new</span> ZipArchiveEntry( vPath );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;462</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;            setTime( ze, lastModified );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;463</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered"><a title="Line 464: Conditional coverage 100% (2/2).">&nbsp;47391</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 464: Conditional coverage 100% (2/2).">            ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;465</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;            ze.setUnixMode( UnixStat.FILE_FLAG | mode );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;464</td>  <td class="nbHitsCovered"><a title="Line 464: Conditional coverage 100% (2/2).">&nbsp;47431</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 464: Conditional coverage 100% (2/2).">            ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;465</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;            ze.setUnixMode( UnixStat.FILE_FLAG | mode );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;466</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;467</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            InputStream payload;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;468</td>  <td class="nbHitsCovered"><a title="Line 468: Conditional coverage 100% (2/2).">&nbsp;47391</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 468: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( ze.isUnixSymlink() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;468</td>  <td class="nbHitsCovered"><a title="Line 468: Conditional coverage 100% (2/2).">&nbsp;47431</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 468: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( ze.isUnixSymlink() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;469</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;470</td>  <td class="nbHitsCovered">&nbsp;78</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> <span class="keyword">byte</span>[] bytes = encodeArchiveEntry( symlinkDestination, getEncoding() );</pre></td></tr>
@@ -829,12 +829,12 @@
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">else</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;475</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;476</td>  <td class="nbHitsCovered">&nbsp;47313</td>  <td class="src"><pre class="src">&nbsp;                zOut.addArchiveEntry( ze, in, addInParallel );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;476</td>  <td class="nbHitsCovered">&nbsp;47353</td>  <td class="src"><pre class="src">&nbsp;                zOut.addArchiveEntry( ze, in, addInParallel );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;477</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;478</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;47391</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;479</td>  <td class="nbHitsCovered">&nbsp;47431</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;480</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
@@ -869,8 +869,8 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException, ArchiverException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;496</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;497</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> PlexusIoResource resource = entry.getResource();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50% (1/2).">&nbsp;47372</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( ResourceUtils.isSame( resource, getDestFile() ) )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;497</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> PlexusIoResource resource = entry.getResource();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50% (1/2).">&nbsp;47412</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( ResourceUtils.isSame( resource, getDestFile() ) )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;499</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;500</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ArchiverException( <span class="string">"A zip file cannot include itself"</span> );</span></pre></td></tr>
@@ -878,10 +878,10 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;502</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;503</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> <span class="keyword">boolean</span> b = entry.getResource() <span class="keyword">instanceof</span> SymlinkDestinationSupplier;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;504</td>  <td class="nbHitsCovered"><a title="Line 504: Conditional coverage 100% (2/2).">&nbsp;47372</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 504: Conditional coverage 100% (2/2).">        String symlinkTarget = b ? ( (SymlinkDestinationSupplier) entry.getResource() ).getSymlinkDestination() : <span class="keyword">null</span>;</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;505</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;        InputStreamSupplier in = <span class="keyword">new</span> InputStreamSupplier()</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;506</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;503</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> <span class="keyword">boolean</span> b = entry.getResource() <span class="keyword">instanceof</span> SymlinkDestinationSupplier;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;504</td>  <td class="nbHitsCovered"><a title="Line 504: Conditional coverage 100% (2/2).">&nbsp;47412</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 504: Conditional coverage 100% (2/2).">        String symlinkTarget = b ? ( (SymlinkDestinationSupplier) entry.getResource() ).getSymlinkDestination() : <span class="keyword">null</span>;</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;505</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;        InputStreamSupplier in = <span class="keyword">new</span> InputStreamSupplier()</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;506</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;507</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;508</td>  <td class="nbHits">&nbsp;</td>
@@ -894,7 +894,7 @@
   <td class="src"><pre class="src">&nbsp;                <span class="keyword">try</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;512</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;513</td>  <td class="nbHitsCovered">&nbsp;47294</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> entry.getInputStream();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;513</td>  <td class="nbHitsCovered">&nbsp;47332</td>  <td class="src"><pre class="src">&nbsp;                    <span class="keyword">return</span> entry.getInputStream();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;514</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;515</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">catch</span> ( IOException e )</span></pre></td></tr>
@@ -913,23 +913,23 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;523</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;524</td>  <td class="nbHitsCovered">&nbsp;94744</td>  <td class="src"><pre class="src">&nbsp;            zipFile( in, zOut, vPath, resource.getLastModified(), <span class="keyword">null</span>, entry.getMode(), symlinkTarget,</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;525</td>  <td class="nbHitsCovered"><a title="Line 525: Conditional coverage 100% (2/2).">&nbsp;47372</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 525: Conditional coverage 100% (2/2).">                     !entry.shouldAddSynchronously() );</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;524</td>  <td class="nbHitsCovered">&nbsp;94824</td>  <td class="src"><pre class="src">&nbsp;            zipFile( in, zOut, vPath, resource.getLastModified(), <span class="keyword">null</span>, entry.getMode(), symlinkTarget,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;525</td>  <td class="nbHitsCovered"><a title="Line 525: Conditional coverage 100% (2/2).">&nbsp;47412</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 525: Conditional coverage 100% (2/2).">                     !entry.shouldAddSynchronously() );</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;526</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;527</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">catch</span> ( IOException e )</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;528</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;529</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> ArchiverException( <span class="string">"IOException when zipping r"</span> + entry.getName() + <span class="string">": "</span> + e.getMessage(), e );</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;530</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;531</td>  <td class="nbHitsCovered">&nbsp;47372</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;530</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;531</td>  <td class="nbHitsCovered">&nbsp;47412</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;532</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;533</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> setTime( java.util.zip.ZipEntry zipEntry, <span class="keyword">long</span> lastModified )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;534</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;535</td>  <td class="nbHitsCovered"><a title="Line 535: Conditional coverage 100% (2/2).">&nbsp;48427</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 535: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( getLastModifiedDate() != <span class="keyword">null</span> )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;535</td>  <td class="nbHitsCovered"><a title="Line 535: Conditional coverage 100% (2/2).">&nbsp;48477</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 535: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> ( getLastModifiedDate() != <span class="keyword">null</span> )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;536</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;537</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;            lastModified = getLastModifiedDate().getTime();</pre></td></tr>
@@ -953,7 +953,7 @@
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// than precompiled pages, rendering precompilation useless.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;547</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// plexus-archiver chooses to round up.</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;548</td>  <td class="nbHitsCovered">&nbsp;48427</td>  <td class="src"><pre class="src">&nbsp;        zipEntry.setTime( lastModified + 1999 );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;548</td>  <td class="nbHitsCovered">&nbsp;48477</td>  <td class="src"><pre class="src">&nbsp;        zipEntry.setTime( lastModified + 1999 );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;549</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;550</td>  <td class="nbHits">&nbsp;</td>
@@ -980,7 +980,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">         }</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;561</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">         */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;562</td>  <td class="nbHitsCovered">&nbsp;48427</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;562</td>  <td class="nbHitsCovered">&nbsp;48477</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;563</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;564</td>  <td class="nbHits">&nbsp;</td>
@@ -991,7 +991,7 @@
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">throws</span> IOException</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;567</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;568</td>  <td class="nbHitsUncovered"><a title="Line 568: Conditional coverage 50% (1/2).">&nbsp;1036</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 568: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( addedDirs.update( vPath ) )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;568</td>  <td class="nbHitsUncovered"><a title="Line 568: Conditional coverage 50% (1/2).">&nbsp;1046</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 568: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( addedDirs.update( vPath ) )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;569</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;570</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span>;</span></pre></td></tr>
@@ -999,16 +999,16 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;572</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;573</td>  <td class="nbHitsCovered">&nbsp;1036</td>  <td class="src"><pre class="src">&nbsp;        getLogger().debug( <span class="string">"adding directory "</span> + vPath );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;573</td>  <td class="nbHitsCovered">&nbsp;1046</td>  <td class="src"><pre class="src">&nbsp;        getLogger().debug( <span class="string">"adding directory "</span> + vPath );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;574</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;575</td>  <td class="nbHitsUncovered"><a title="Line 575: Conditional coverage 50% (1/2).">&nbsp;1036</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 575: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !skipWriting )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;575</td>  <td class="nbHitsUncovered"><a title="Line 575: Conditional coverage 50% (1/2).">&nbsp;1046</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 575: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> ( !skipWriting )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;576</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;577</td>  <td class="nbHitsCovered">&nbsp;1036</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">boolean</span> isSymlink = dir <span class="keyword">instanceof</span> SymlinkDestinationSupplier;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;577</td>  <td class="nbHitsCovered">&nbsp;1046</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">final</span> <span class="keyword">boolean</span> isSymlink = dir <span class="keyword">instanceof</span> SymlinkDestinationSupplier;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;578</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;579</td>  <td class="nbHitsUncovered"><a title="Line 579: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">&nbsp;1036</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 579: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">            <span class="keyword">if</span> ( isSymlink &amp;&amp; vPath.endsWith( File.separator ) )</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;579</td>  <td class="nbHitsUncovered"><a title="Line 579: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">&nbsp;1046</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 579: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">            <span class="keyword">if</span> ( isSymlink &amp;&amp; vPath.endsWith( File.separator ) )</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;580</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;581</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;                vPath = vPath.substring( 0, vPath.length() - 1 );</pre></td></tr>
@@ -1016,7 +1016,7 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;583</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;584</td>  <td class="nbHitsCovered">&nbsp;1036</td>  <td class="src"><pre class="src">&nbsp;            ZipArchiveEntry ze = <span class="keyword">new</span> ZipArchiveEntry( vPath );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;584</td>  <td class="nbHitsCovered">&nbsp;1046</td>  <td class="src"><pre class="src">&nbsp;            ZipArchiveEntry ze = <span class="keyword">new</span> ZipArchiveEntry( vPath );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;585</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;586</td>  <td class="nbHits">&nbsp;</td>
@@ -1033,7 +1033,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">             * This forces us to process the data twice.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;592</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">             */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;593</td>  <td class="nbHitsCovered"><a title="Line 593: Conditional coverage 100% (2/2).">&nbsp;1036</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 593: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( isSymlink )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;593</td>  <td class="nbHitsCovered"><a title="Line 593: Conditional coverage 100% (2/2).">&nbsp;1046</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 593: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( isSymlink )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;594</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;595</td>  <td class="nbHitsCovered">&nbsp;26</td>  <td class="src"><pre class="src">&nbsp;                mode = UnixStat.LINK_FLAG | mode;</pre></td></tr>
@@ -1041,10 +1041,10 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;597</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered"><a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;1036</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">            <span class="keyword">if</span> ( dir != <span class="keyword">null</span> &amp;&amp; dir.isExisting() )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;598</td>  <td class="nbHitsCovered"><a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">&nbsp;1046</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 598: Conditional coverage 100% (4/4) [each condition: 100%, 100%].">            <span class="keyword">if</span> ( dir != <span class="keyword">null</span> &amp;&amp; dir.isExisting() )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;599</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;600</td>  <td class="nbHitsCovered">&nbsp;867</td>  <td class="src"><pre class="src">&nbsp;                setTime( ze, dir.getLastModified() );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;600</td>  <td class="nbHitsCovered">&nbsp;877</td>  <td class="src"><pre class="src">&nbsp;                setTime( ze, dir.getLastModified() );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;601</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;602</td>  <td class="nbHits">&nbsp;</td>
@@ -1056,23 +1056,23 @@
 <tr>  <td class="numLineCover">&nbsp;605</td>  <td class="nbHitsCovered">&nbsp;169</td>  <td class="src"><pre class="src">&nbsp;                setTime( ze, System.currentTimeMillis() );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;606</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;607</td>  <td class="nbHitsCovered"><a title="Line 607: Conditional coverage 100% (2/2).">&nbsp;1036</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 607: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( !isSymlink )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;607</td>  <td class="nbHitsCovered"><a title="Line 607: Conditional coverage 100% (2/2).">&nbsp;1046</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 607: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( !isSymlink )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;608</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;609</td>  <td class="nbHitsCovered">&nbsp;1010</td>  <td class="src"><pre class="src">&nbsp;                ze.setSize( 0 );</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;610</td>  <td class="nbHitsCovered">&nbsp;1010</td>  <td class="src"><pre class="src">&nbsp;                ze.setMethod( ZipArchiveEntry.STORED );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;609</td>  <td class="nbHitsCovered">&nbsp;1020</td>  <td class="src"><pre class="src">&nbsp;                ze.setSize( 0 );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;610</td>  <td class="nbHitsCovered">&nbsp;1020</td>  <td class="src"><pre class="src">&nbsp;                ze.setMethod( ZipArchiveEntry.STORED );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;611</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// This is faintly ridiculous:</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;612</td>  <td class="nbHitsCovered">&nbsp;1010</td>  <td class="src"><pre class="src">&nbsp;                ze.setCrc( EMPTY_CRC );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;612</td>  <td class="nbHitsCovered">&nbsp;1020</td>  <td class="src"><pre class="src">&nbsp;                ze.setCrc( EMPTY_CRC );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;613</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;614</td>  <td class="nbHitsCovered">&nbsp;1036</td>  <td class="src"><pre class="src">&nbsp;            ze.setUnixMode( mode );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;614</td>  <td class="nbHitsCovered">&nbsp;1046</td>  <td class="src"><pre class="src">&nbsp;            ze.setUnixMode( mode );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;615</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;616</td>  <td class="nbHitsCovered"><a title="Line 616: Conditional coverage 100% (2/2).">&nbsp;1036</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 616: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( !isSymlink )</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;616</td>  <td class="nbHitsCovered"><a title="Line 616: Conditional coverage 100% (2/2).">&nbsp;1046</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 616: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> ( !isSymlink )</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;617</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;618</td>  <td class="nbHitsCovered">&nbsp;1010</td>  <td class="src"><pre class="src">&nbsp;                zOut.addArchiveEntry( ze, createInputStreamSupplier( <span class="keyword">new</span> ByteArrayInputStream( <span class="string">""</span>.getBytes() ) ), <span class="keyword">true</span> );</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;618</td>  <td class="nbHitsCovered">&nbsp;1020</td>  <td class="src"><pre class="src">&nbsp;                zOut.addArchiveEntry( ze, createInputStreamSupplier( <span class="keyword">new</span> ByteArrayInputStream( <span class="string">""</span>.getBytes() ) ), <span class="keyword">true</span> );</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;619</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;620</td>  <td class="nbHits">&nbsp;</td>
@@ -1087,7 +1087,7 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;627</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;628</td>  <td class="nbHitsCovered">&nbsp;1036</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;628</td>  <td class="nbHitsCovered">&nbsp;1046</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;629</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;630</td>  <td class="nbHits">&nbsp;</td>
@@ -1111,8 +1111,8 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">protected</span> InputStreamSupplier createInputStreamSupplier( <span class="keyword">final</span> InputStream inputStream )</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;642</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;643</td>  <td class="nbHitsCovered">&nbsp;1133</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> InputStreamSupplier()</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;644</td>  <td class="nbHitsCovered">&nbsp;1133</td>  <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;643</td>  <td class="nbHitsCovered">&nbsp;1143</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">new</span> InputStreamSupplier()</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;644</td>  <td class="nbHitsCovered">&nbsp;1143</td>  <td class="src"><pre class="src">&nbsp;        {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;645</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;646</td>  <td class="nbHits">&nbsp;</td>
@@ -1479,6 +1479,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 1/31/21 6:55 PM.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 4/18/21 6:53 PM.</div>
 </body>
 </html>
