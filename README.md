@@ -18,6 +18,7 @@ This patch has been integrated into the Release 3.6.0
 
 You can find details about the different releases in the [Release Notes](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md).
 
+ * [Release 4.2.5](https://github.com/codehaus-plexus/plexus-archiver/releases/tag/plexus-archiver-4.2.5).
  * [Release 4.2.4](https://github.com/codehaus-plexus/plexus-archiver/releases/tag/plexus-archiver-4.2.4).
  * [Release 4.2.3](https://github.com/codehaus-plexus/plexus-archiver/releases/tag/plexus-archiver-4.2.3).
  * [Release 4.2.2](https://github.com/codehaus-plexus/plexus-archiver/releases/tag/plexus-archiver-4.2.2).
@@ -25,9 +26,4 @@ You can find details about the different releases in the [Release Notes](https:/
  * [Release 4.2.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-420).
  * [Release 4.1.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-410).
  * [Release 4.0.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-400).
- * [Release 3.7.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-370).
- * [Release 3.6.0](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-360).
- * [Release 3.5](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-35).
- * [Release 3.4](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-34).
- * [Release 3.3](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-33).
- * [Release 3.2](https://github.com/codehaus-plexus/plexus-archiver/blob/master/ReleaseNotes.md#plexus-archiver-32).
+ 
