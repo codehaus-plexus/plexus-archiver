@@ -373,7 +373,11 @@ public abstract class AbstractUnArchiver
                 }
             }
 
-            targetFileName.setLastModified( entryDate.getTime() );
+            final long millis = entryDate.getTime();
+            if ( millis >= 0 )
+            {
+                targetFileName.setLastModified( millis );
+            }
 
             if ( !isIgnorePermissions() && mode != null && !isDirectory )
             {
