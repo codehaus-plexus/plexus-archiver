@@ -75,7 +75,7 @@ public abstract class AbstractArchiver
      * of {@link ArchiveEntry} by {@link #getResources()}.
      * </ul>
      */
-    private final List<Object> resources = new ArrayList<Object>();
+    private final List<Object> resources = new ArrayList<>();
 
     private boolean includeEmptyDirs = true;
 
@@ -98,7 +98,7 @@ public abstract class AbstractArchiver
     // On lunix-like systems, we replace windows backslashes with forward slashes
     private final boolean replacePathSlashesToJavaPaths = File.separatorChar == '/';
 
-    private final List<Closeable> closeables = new ArrayList<Closeable>();
+    private final List<Closeable> closeables = new ArrayList<>();
 
     /**
      * since 2.2 is on by default
@@ -113,27 +113,27 @@ public abstract class AbstractArchiver
     private Date lastModifiedDate;
 
     /**
-     * @sine 4.2.0
+     * @since 4.2.0
      */
     private Comparator<String> filenameComparator;
 
     /**
-     * @sine 4.2.0
+     * @since 4.2.0
      */
     private int overrideUid = -1;
 
     /**
-     * @sine 4.2.0
+     * @since 4.2.0
      */
     private String overrideUserName;
 
     /**
-     * @sine 4.2.0
+     * @since 4.2.0
      */
     private int overrideGid = -1;
 
     /**
-     * @sine 4.2.0
+     * @since 4.2.0
      */
     private String overrideGroupName;
 
@@ -695,7 +695,7 @@ public abstract class AbstractArchiver
     {
         try
         {
-            final Map<String, ArchiveEntry> map = new HashMap<String, ArchiveEntry>();
+            final Map<String, ArchiveEntry> map = new HashMap<>();
             for ( final ResourceIterator iter = getResources(); iter.hasNext(); )
             {
                 final ArchiveEntry entry = iter.next();

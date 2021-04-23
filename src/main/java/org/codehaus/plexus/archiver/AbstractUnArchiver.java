@@ -22,8 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +55,7 @@ public abstract class AbstractUnArchiver
 
     private FileMapper[] fileMappers;
 
-    private List finalizers;
+    private List<ArchiveFinalizer> finalizers;
 
     private FileSelector[] fileSelectors;
 
@@ -166,14 +164,14 @@ public abstract class AbstractUnArchiver
     {
         if ( finalizers == null )
         {
-            finalizers = new ArrayList();
+            finalizers = new ArrayList<>();
         }
 
         finalizers.add( finalizer );
     }
 
     @Override
-    public void setArchiveFinalizers( final List archiveFinalizers )
+    public void setArchiveFinalizers( final List<ArchiveFinalizer> archiveFinalizers )
     {
         finalizers = archiveFinalizers;
     }
@@ -183,10 +181,8 @@ public abstract class AbstractUnArchiver
     {
         if ( finalizers != null )
         {
-            for ( Object finalizer1 : finalizers )
+            for ( ArchiveFinalizer finalizer : finalizers )
             {
-                final ArchiveFinalizer finalizer = (ArchiveFinalizer) finalizer1;
-
                 finalizer.finalizeArchiveExtraction( this );
             }
         }
