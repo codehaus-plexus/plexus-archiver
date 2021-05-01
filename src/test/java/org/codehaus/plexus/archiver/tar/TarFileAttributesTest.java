@@ -9,6 +9,7 @@ import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.components.io.attributes.AttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
@@ -87,8 +88,7 @@ public class TarFileAttributesTest
             writer.write( "This is a test file." );
         }
 
-        int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
-        assertEquals( 0, result );
+        AttributeUtils.chmod(tempFile, 0440);
 
         TarArchiver tarArchiver = getPosixCompliantTarArchiver();
 
@@ -153,9 +153,7 @@ public class TarFileAttributesTest
             writer.write( "This is a test file." );
         }
 
-        int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
-
-        assertEquals( 0, result );
+        AttributeUtils.chmod(tempFile, 0440);
 
         PlexusIoResourceAttributes fileAttributes = PlexusIoResourceAttributeUtils.getFileAttributes( tempFile );
 
@@ -214,8 +212,7 @@ public class TarFileAttributesTest
             writer.write( "This is a test file." );
         }
 
-        int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
-        assertEquals( 0, result );
+        AttributeUtils.chmod(tempFile, 0440);
 
         TarArchiver tarArchiver = getPosixCompliantTarArchiver();
 
@@ -272,8 +269,7 @@ public class TarFileAttributesTest
             writer.write( "This is a test file." );
         }
 
-        int result = Runtime.getRuntime().exec( "chmod 440 " + tempFile.getAbsolutePath() ).waitFor();
-        assertEquals( 0, result );
+        AttributeUtils.chmod(tempFile, 0440);
 
         TarArchiver tarArchiver = getPosixCompliantTarArchiver();
 
