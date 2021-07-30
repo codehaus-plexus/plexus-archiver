@@ -2,7 +2,7 @@ Plexus-archiver
 ===============
 
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/codehaus-plexus/plexus-archiver.svg?label=License)](http://www.apache.org/licenses/)
-[![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.plexus/plexus-archiver.svg?label=Maven%20Central)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22org.codehaus.plexus%22%20a%3A%22plexus-archiver%22)
+[![Maven Central](https://img.shields.io/maven-central/v/org.codehaus.plexus/plexus-archiver.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.codehaus.plexus/plexus-archiver)
 [![Build Status](https://travis-ci.org/codehaus-plexus/plexus-archiver.svg?branch=master)](https://travis-ci.org/codehaus-plexus/plexus-archiver)
 [![Reproducible Builds](https://img.shields.io/badge/Reproducible_Builds-ok-green?labelColor=blue)](https://github.com/jvm-repo-rebuild/reproducible-central#org.codehaus.plexus:plexus-archiver)
 
