@@ -200,6 +200,22 @@ public class AbstractUnArchiverTest
         assertThat( this.log.getWarns(), not( hasItem( new LogMessageMatcher( "names differ only by case" ) ) ) );
     }
 
+
+    @Test
+    public void shouldExtractWhenCasingDifferOnlyInEntryNamePath() throws IOException
+    {
+        // given
+        File file = new File( temporaryFolder.getRoot() + File.separator + "folder", "whatever.txt" ); // does not create the file!
+        file.mkdirs();
+        file.createNewFile();
+        String entryname = "folder/whatever.txt";
+        Date entryDate = new Date(System.currentTimeMillis()+5000);
+
+        // when & then
+        this.abstractUnArchiver.setOverwrite( true );
+        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( true ) );
+    }
+
     static class LogMessageMatcher extends BaseMatcher<CapturingLog.Message> {
         private final StringContains delegateMatcher;
 

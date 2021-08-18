@@ -409,7 +409,7 @@ public abstract class AbstractUnArchiver
                 "" )
                 + suffix;
         boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
-        boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
+        boolean differentCasing = !entryName.replace("/", File.separator).equals( relativeCanonicalDestPath );
 
         String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
                 + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
