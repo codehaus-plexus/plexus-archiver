@@ -182,4 +182,21 @@ public class AbstractUnArchiverTest
         assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
         assertEquals( 0, this.abstractUnArchiver.casingMessageEmitted.get() );
     }
+
+    @Test
+    public void shouldExtractWhenCasingDifferOnlyInEntryNamePath( @TempDir File temporaryFolder)
+            throws IOException
+    {
+        // given
+        String entryName = "directory/whatever.txt";
+        File file = new File( temporaryFolder, entryName ); // does not create the file!
+        file.mkdirs();
+        file.createNewFile();
+        Date entryDate = new Date(System.currentTimeMillis() + 5000);
+
+        // when & then
+        abstractUnArchiver.setOverwrite( true );
+        assertTrue( abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryName, entryDate ) );
+        assertEquals(0, abstractUnArchiver.casingMessageEmitted.get());
+    }
 }
