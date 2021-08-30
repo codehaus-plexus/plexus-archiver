@@ -18,12 +18,12 @@
 package org.codehaus.plexus.archiver.zip;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.SequenceInputStream;
+import java.nio.file.Files;
+
 import org.apache.commons.io.output.ThresholdingOutputStream;
 
 /**
@@ -147,7 +147,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream
         {
             outputFile = File.createTempFile( prefix, suffix, directory );
         }
-        currentOutputStream = new FileOutputStream( outputFile );
+        currentOutputStream = Files.newOutputStream( outputFile.toPath() );
     }
 
     public InputStream getInputStream() throws IOException
@@ -158,7 +158,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream
         {
             return memoryAsInput;
         }
-        return new SequenceInputStream( memoryAsInput, new FileInputStream( outputFile ) );
+        return new SequenceInputStream( memoryAsInput, Files.newInputStream( outputFile.toPath() ) );
     }
 
     // --------------------------------------------------------- Public methods

@@ -3,6 +3,9 @@ package org.codehaus.plexus.archiver.tar;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.plexus.PlexusTestCase;
@@ -83,7 +86,7 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        try ( FileWriter writer = new FileWriter( tempFile ) )
+        try ( Writer writer = Files.newBufferedWriter( tempFile.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }
@@ -148,7 +151,7 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        try ( FileWriter writer = new FileWriter( tempFile ) )
+        try ( Writer writer = Files.newBufferedWriter( tempFile.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }
@@ -207,7 +210,7 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        try ( FileWriter writer = new FileWriter( tempFile ) )
+        try ( Writer writer = Files.newBufferedWriter( tempFile.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }
@@ -264,7 +267,7 @@ public class TarFileAttributesTest
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
-        try ( FileWriter writer = new FileWriter( tempFile ) )
+        try ( Writer writer = Files.newBufferedWriter( tempFile.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }

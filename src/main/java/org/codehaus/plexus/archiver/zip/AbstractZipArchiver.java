@@ -16,20 +16,24 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Deque;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 import java.util.zip.CRC32;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipEncoding;
@@ -47,8 +51,6 @@ import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
-import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
 @SuppressWarnings(
 {
@@ -671,7 +673,7 @@ public abstract class AbstractZipArchiver
         // Must create it manually.
         getLogger().info( "Note: creating empty " + archiveType + " archive " + zipFile );
 
-        try ( OutputStream os = new FileOutputStream( zipFile ) )
+        try ( OutputStream os = Files.newOutputStream( zipFile.toPath() ) )
         {
             // Cf. PKZIP specification.
             byte[] empty = new byte[ 22 ];

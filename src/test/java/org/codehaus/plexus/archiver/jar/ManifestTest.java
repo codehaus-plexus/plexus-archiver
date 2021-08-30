@@ -16,11 +16,12 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.jar.Attributes;
+
 import org.codehaus.plexus.PlexusTestCase;
 
 /**
@@ -342,13 +343,13 @@ public class ManifestTest
      *
      * @return a manifest
      *
-     * @throws java.io.IOException .
-     * @throws ManifestException .
+     * @throws java.io.IOException
+     * @throws ManifestException
      */
     private Manifest getManifest( String filename )
         throws IOException, ManifestException
     {
-        try ( InputStream is = new FileInputStream( getTestFile( filename ) ) )
+        try ( InputStream is = Files.newInputStream( getTestFile( filename ).toPath() ) )
         {
             return new Manifest( is );
         }

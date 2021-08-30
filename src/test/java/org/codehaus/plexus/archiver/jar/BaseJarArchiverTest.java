@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -60,7 +62,7 @@ public abstract class BaseJarArchiverTest
             ZipEntry classFileEntry = resultingArchive.getEntry( "com/example/app/Main.class" );
             InputStream resultingClassFile = resultingArchive.getInputStream( classFileEntry );
             InputStream originalClassFile =
-                new FileInputStream( "src/test/resources/java-classes/com/example/app/Main.class" );
+                Files.newInputStream( Paths.get( "src/test/resources/java-classes/com/example/app/Main.class" ) );
 
             assertTrue( IOUtil.contentEquals( originalClassFile, resultingClassFile ) );
         }

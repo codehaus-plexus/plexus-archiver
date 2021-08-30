@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoResource;
 
@@ -29,8 +30,6 @@ public class AnonymousResource extends AbstractPlexusIoResource
         throws IOException
     {
         throw new UnsupportedOperationException( "not supp" );
-        // Does this really have an input stream ?
-        //return new FileInputStream( file );
     }
 
     @Override

@@ -18,13 +18,14 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
@@ -363,7 +364,7 @@ public abstract class AbstractUnArchiver
             }
             else
             {
-                try ( OutputStream out = new FileOutputStream( targetFileName ) )
+                try ( OutputStream out = Files.newOutputStream( targetFileName.toPath() ) )
                 {
                     IOUtil.copy( compressedInputStream, out );
                 }

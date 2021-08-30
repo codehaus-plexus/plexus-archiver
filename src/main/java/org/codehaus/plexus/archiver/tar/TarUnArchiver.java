@@ -16,12 +16,14 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
-import java.io.BufferedInputStream;
+import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
@@ -30,7 +32,6 @@ import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.codehaus.plexus.util.IOUtil;
 import org.iq80.snappy.SnappyInputStream;
 
 /**
@@ -102,7 +103,7 @@ public class TarUnArchiver
             getLogger().info( "Expanding: " + sourceFile + " into " + destDirectory );
             TarFile tarFile = new TarFile( sourceFile );
             try ( TarArchiveInputStream tis = new TarArchiveInputStream(
-                decompress( compression, sourceFile, new BufferedInputStream( new FileInputStream( sourceFile ) ) ) ) )
+                decompress( compression, sourceFile, bufferedInputStream( fileInputStream( sourceFile ) ) ) ) )
             {
                 TarArchiveEntry te;
                 while ( ( te = tis.getNextTarEntry() ) != null )

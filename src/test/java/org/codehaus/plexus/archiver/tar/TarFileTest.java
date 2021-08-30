@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Enumeration;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -117,7 +118,7 @@ public class TarFileTest
             }
             final File teFile = new File( "src", te.getName() );
             final InputStream teStream = tarFile.getInputStream( te );
-            final InputStream fileStream = new FileInputStream( teFile );
+            final InputStream fileStream = Files.newInputStream( teFile.toPath() );
             assertTrue( Arrays.equals( IOUtil.toByteArray( teStream ), IOUtil.toByteArray( fileStream ) ) );
             teStream.close();
             fileStream.close();

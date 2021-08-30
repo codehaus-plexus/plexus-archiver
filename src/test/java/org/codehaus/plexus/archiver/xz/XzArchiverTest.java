@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.xz;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -103,7 +104,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         final ZipFile juZipFile = new ZipFile( zipFile );
         final ZipEntry zipEntry = juZipFile.getEntry( "prfx/target/output/pom.xml" );
         final InputStream archivePom = juZipFile.getInputStream( zipEntry );
-        final InputStream pom = new FileInputStream( pomFile );
+        final InputStream pom = Files.newInputStream( pomFile.toPath() );
 
         assertTrue( Arrays.equals( IOUtil.toByteArray( pom ), IOUtil.toByteArray( archivePom ) ) );
         archivePom.close();

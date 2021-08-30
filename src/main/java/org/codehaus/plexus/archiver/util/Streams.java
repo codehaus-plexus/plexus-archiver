@@ -18,14 +18,14 @@ package org.codehaus.plexus.archiver.util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+
 import javax.annotation.WillClose;
 import javax.annotation.WillNotClose;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -53,18 +53,18 @@ public class Streams
         return new byte[ 8 * 1024 ];
     }
 
-    public static FileInputStream fileInputStream( File file )
-        throws FileNotFoundException
+    public static InputStream fileInputStream( File file )
+        throws IOException
     {
-        return new FileInputStream( file );
+        return Files.newInputStream( file.toPath() );
     }
 
-    public static FileInputStream fileInputStream( File file, String operation )
+    public static InputStream fileInputStream( File file, String operation )
         throws ArchiverException
     {
         try
         {
-            return new FileInputStream( file );
+            return Files.newInputStream( file.toPath() );
         }
         catch ( IOException e )
         {
@@ -74,18 +74,18 @@ public class Streams
         }
     }
 
-    public static FileOutputStream fileOutputStream( File file )
-        throws FileNotFoundException
+    public static OutputStream fileOutputStream( File file )
+        throws IOException
     {
-        return new FileOutputStream( file );
+        return Files.newOutputStream( file.toPath() );
     }
 
-    public static FileOutputStream fileOutputStream( File file, String operation )
+    public static OutputStream fileOutputStream( File file, String operation )
         throws ArchiverException
     {
         try
         {
-            return new FileOutputStream( file );
+            return Files.newOutputStream( file.toPath() );
         }
         catch ( IOException e )
         {

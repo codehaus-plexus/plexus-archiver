@@ -2,10 +2,12 @@ package org.codehaus.plexus.archiver;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
+
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -48,7 +50,7 @@ public class DotDirectiveArchiveFinalizer
 
             for ( File dotFile : dotFiles )
             {
-                try ( BufferedReader in = new BufferedReader( new FileReader( dotFile ) ) )
+                try ( BufferedReader in = Files.newBufferedReader( dotFile.toPath(), StandardCharsets.UTF_8 ) )
                 {
 
                     for ( String line = in.readLine(); line != null; line = in.readLine() )

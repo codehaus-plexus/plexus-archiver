@@ -30,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.text.DateFormat;
@@ -348,7 +350,7 @@ public class ZipArchiverTest
             file.getParentFile().mkdirs();
         }
 
-        try ( FileWriter writer = new FileWriter( file ) )
+        try ( Writer writer = Files.newBufferedWriter( file.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }
@@ -401,13 +403,13 @@ public class ZipArchiverTest
         assertEquals( ZipEntry.STORED, rarEntry.getMethod() );
         assertEquals( ZipEntry.DEFLATED, tarEntry.getMethod() );
         // ...and no file is corrupted in the process
-        assertTrue( IOUtil.contentEquals( new FileInputStream( getTestFile( "src/test/jars/test.zip" ) ),
+        assertTrue( IOUtil.contentEquals( Files.newInputStream( getTestFile( "src/test/jars/test.zip" ).toPath() ),
                     zfDontRecompress.getInputStream( zipEntry ) ) );
-        assertTrue( IOUtil.contentEquals( new FileInputStream( getTestFile( "src/test/jars/test.jar" ) ),
+        assertTrue( IOUtil.contentEquals( Files.newInputStream( getTestFile( "src/test/jars/test.jar" ).toPath() ),
                 zfDontRecompress.getInputStream( jarEntry ) ) );
-        assertTrue( IOUtil.contentEquals( new FileInputStream( getTestFile( "src/test/jars/test.rar" ) ),
+        assertTrue( IOUtil.contentEquals( Files.newInputStream( getTestFile( "src/test/jars/test.rar" ).toPath() ),
                 zfDontRecompress.getInputStream( rarEntry ) ) );
-        assertTrue( IOUtil.contentEquals( new FileInputStream( getTestFile( "src/test/jars/test.tar.gz" ) ),
+        assertTrue( IOUtil.contentEquals( Files.newInputStream( getTestFile( "src/test/jars/test.tar.gz" ).toPath() ),
                 zfDontRecompress.getInputStream( tarEntry ) ) );
         zfDontRecompress.close();
     }
