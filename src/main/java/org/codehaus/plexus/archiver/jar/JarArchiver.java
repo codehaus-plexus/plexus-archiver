@@ -16,10 +16,13 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -35,6 +38,7 @@ import java.util.SortedMap;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.Vector;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
@@ -44,8 +48,6 @@ import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.logging.console.ConsoleLogger;
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
-import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
 /**
  * Base class for tasks that build archives in JAR file format.
@@ -195,7 +197,7 @@ public class JarArchiver
      *
      * @param newManifest The new manifest
      *
-     * @throws ManifestException .
+     * @throws ManifestException
      */
     public void addConfiguredManifest( Manifest newManifest )
         throws ManifestException
@@ -218,7 +220,6 @@ public class JarArchiver
      * @param manifestFile the manifest file to use.
      *
      * @throws org.codehaus.plexus.archiver.ArchiverException
-     * .
      */
     @SuppressWarnings(
     {
@@ -238,7 +239,7 @@ public class JarArchiver
     private Manifest getManifest( File manifestFile )
         throws ArchiverException
     {
-        try ( InputStream in = new FileInputStream( manifestFile ) )
+        try ( InputStream in = fileInputStream( manifestFile ) )
         {
             return getManifest( in );
         }
@@ -403,7 +404,6 @@ public class JarArchiver
      * @throws IOException thrown if there is an error while creating the
      * index and adding it to the zip stream.
      * @throws org.codehaus.plexus.archiver.ArchiverException
-     * .
      */
     private void createIndexList( ConcurrentJarCreator zOut )
         throws IOException, ArchiverException
@@ -772,7 +772,7 @@ public class JarArchiver
      * @param files .
      * @param dirs .
      *
-     * @throws java.io.IOException .
+     * @throws java.io.IOException
      */
     protected static void grabFilesAndDirs( String file, List<String> dirs, List<String> files )
         throws IOException

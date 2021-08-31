@@ -1,10 +1,11 @@
 package org.codehaus.plexus.archiver.util;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+
 import org.codehaus.plexus.components.io.functions.FileSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
@@ -77,7 +78,7 @@ public class ResourceUtils
     public static void copyFile( PlexusIoResource in, File outFile )
         throws IOException
     {
-        try ( InputStream input = in.getContents(); OutputStream output = new FileOutputStream( outFile ) )
+        try ( InputStream input = in.getContents(); OutputStream output = Files.newOutputStream( outFile.toPath() ) )
         {
             IOUtil.copy( input, output );
         }
@@ -92,7 +93,7 @@ public class ResourceUtils
         OutputStream output = null;
         try
         {
-            output = new FileOutputStream( outFile );
+            output = Files.newOutputStream( outFile.toPath() );
             IOUtil.copy( input, output );
             output.close();
             output = null;

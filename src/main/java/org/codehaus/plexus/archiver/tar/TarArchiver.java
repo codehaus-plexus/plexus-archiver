@@ -16,12 +16,15 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.zip.GZIPOutputStream;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
@@ -39,7 +42,6 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.iq80.snappy.SnappyOutputStream;
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
@@ -133,7 +135,7 @@ public class TarArchiver
 
         try
         {
-            tOut = new TarArchiveOutputStream( compress( compression, new FileOutputStream( tarFile ) ), "UTF8" );
+            tOut = new TarArchiveOutputStream( compress( compression, Files.newOutputStream( tarFile.toPath() ) ), "UTF8" );
             if ( longFileMode.isTruncateMode() )
             {
                 tOut.setLongFileMode( TarArchiveOutputStream.LONGFILE_TRUNCATE );
@@ -488,7 +490,7 @@ public class TarArchiver
     {
         if ( TarCompressionMethod.gzip.equals( tarCompressionMethod ) )
         {
-            return Streams.bufferedOutputStream( new GZIPOutputStream( ostream ) );
+            return bufferedOutputStream( new GZIPOutputStream( ostream ) );
         }
         else if ( TarCompressionMethod.bzip2.equals( tarCompressionMethod ) )
         {

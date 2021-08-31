@@ -5,7 +5,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Enumeration;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.codehaus.plexus.PlexusTestCase;
@@ -79,7 +82,7 @@ public class DuplicateFilesTest
         File archive = createArchive( archiver, "tar" );
         TarArchiveInputStream tis;
 
-        tis = new TarArchiveInputStream( new BufferedInputStream( new FileInputStream( archive ) ) );
+        tis = new TarArchiveInputStream( new BufferedInputStream( Files.newInputStream( archive.toPath() ) ) );
         int entryCount = 0;
         while ( ( tis.getNextEntry() ) != null )
         {
@@ -141,10 +144,10 @@ public class DuplicateFilesTest
     {
         File outputFile = getTestFile( path );
         assertTrue( outputFile.exists() );
-        BufferedReader reader = new BufferedReader( new FileReader( outputFile ) );
+        BufferedReader reader = Files.newBufferedReader( outputFile.toPath(), StandardCharsets.UTF_8 );
         String firstLine = reader.readLine();
         reader.close();
-        reader = new BufferedReader( new FileReader( file2 ) );
+        reader = Files.newBufferedReader( file2.toPath(), StandardCharsets.UTF_8 );
         String expectedFirstLine = reader.readLine();
         reader.close();
         assertEquals( expectedFirstLine, firstLine );

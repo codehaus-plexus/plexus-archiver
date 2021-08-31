@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.components.io.attributes.AttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
@@ -60,7 +61,6 @@ public class PlexusIoVirtualFileResource
         throws IOException
     {
         throw new UnsupportedOperationException( "We're not really sure we can do this" );
-        //return new FileInputStream( getFile() );
     }
 
     @Override

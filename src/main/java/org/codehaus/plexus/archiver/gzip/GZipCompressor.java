@@ -16,13 +16,15 @@
  */
 package org.codehaus.plexus.archiver.gzip;
 
-import java.io.FileOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.zip.GZIPOutputStream;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
-import org.codehaus.plexus.archiver.util.Streams;
 
 public class GZipCompressor
     extends Compressor
@@ -39,7 +41,7 @@ public class GZipCompressor
     {
         try
         {
-            zOut = Streams.bufferedOutputStream( new GZIPOutputStream( new FileOutputStream( getDestFile() ) ) );
+            zOut = bufferedOutputStream( new GZIPOutputStream( fileOutputStream( getDestFile() ) ) );
             compress( getSource(), zOut );
         }
         catch ( IOException ioe )

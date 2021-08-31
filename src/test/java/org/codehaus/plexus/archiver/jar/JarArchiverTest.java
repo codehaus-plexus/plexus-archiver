@@ -1,9 +1,11 @@
 package org.codehaus.plexus.archiver.jar;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.Random;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Test;
 
@@ -58,7 +60,7 @@ public class JarArchiverTest
         {
             File f = new File( tmpDir, "file" + i );
             f.deleteOnExit();
-            FileOutputStream out = new FileOutputStream( f );
+            OutputStream out = Files.newOutputStream( f.toPath() );
             byte[] data = new byte[ 512 ]; // 512bytes per file
             rand.nextBytes( data );
             out.write( data );

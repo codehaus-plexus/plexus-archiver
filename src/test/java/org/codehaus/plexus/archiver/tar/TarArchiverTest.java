@@ -23,14 +23,20 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
+import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.codehaus.plexus.PlexusTestCase;
@@ -50,8 +56,6 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
 import org.junit.Assert;
-import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
-import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
 
 /**
  * @author Emmanuel Venisse
@@ -266,7 +270,7 @@ public class TarArchiverTest
             file.getParentFile().mkdirs();
         }
 
-        try ( FileWriter writer = new FileWriter( file ) )
+        try ( Writer writer = Files.newBufferedWriter( file.toPath(), StandardCharsets.UTF_8 ) )
         {
             writer.write( "This is a test file." );
         }
@@ -315,7 +319,7 @@ public class TarArchiverTest
 
         TarArchiveInputStream tis;
 
-        tis = new TarArchiveInputStream( bufferedInputStream( new FileInputStream( archiver.getDestFile() ) ) );
+        tis = new TarArchiveInputStream( bufferedInputStream( Files.newInputStream( archiver.getDestFile().toPath() ) ) );
         TarArchiveEntry te;
 
         while ( ( te = tis.getNextTarEntry() ) != null )
@@ -372,7 +376,7 @@ public class TarArchiverTest
 
         TarArchiveInputStream tis;
 
-        tis = new TarArchiveInputStream( new BufferedInputStream( new FileInputStream( archiver.getDestFile() ) ) );
+        tis = new TarArchiveInputStream( new BufferedInputStream( Files.newInputStream( archiver.getDestFile().toPath() ) ) );
         TarArchiveEntry te;
 
         while ( ( te = tis.getNextTarEntry() ) != null )

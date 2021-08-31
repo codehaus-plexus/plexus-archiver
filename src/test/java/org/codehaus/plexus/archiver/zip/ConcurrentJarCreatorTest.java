@@ -2,9 +2,10 @@ package org.codehaus.plexus.archiver.zip;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+
 import org.apache.commons.compress.archivers.zip.UnixStat;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -83,9 +84,9 @@ public class ConcurrentJarCreatorTest
                 {
                     try
                     {
-                        return file.isFile() ? new FileInputStream( file ) : null;
+                        return file.isFile() ? Files.newInputStream( file.toPath() ) : null;
                     }
-                    catch ( FileNotFoundException e )
+                    catch ( IOException e )
                     {
                         throw new RuntimeException( e );
                     }
@@ -116,9 +117,9 @@ public class ConcurrentJarCreatorTest
             mos.putArchiveEntry( za );
             if ( file.isFile() )
             {
-                FileInputStream input = new FileInputStream( file );
-                IOUtils.copy( input, mos );
-                input.close();
+                try (InputStream input = Files.newInputStream( file.toPath() )) {
+                    IOUtils.copy( input, mos );
+                }
             }
             mos.closeArchiveEntry();
         }
