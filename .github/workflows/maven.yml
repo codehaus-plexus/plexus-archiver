@@ -15,40 +15,32 @@
 # specific language governing permissions and limitations
 # under the License.
 
-name: GitHub CI
+name: Maven build
 
 on: [push, pull_request]
 
 jobs:
   build:
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest,windows-latest, macOS-latest]
-        java: [8, 11, 16, 17-ea]
-        jdk: [temurin, zulu]
-      fail-fast: false
-
+    name: Java ${{ matrix.java }} (${{ matrix.distribution }})  - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
+        java: ['8', '11', '16', '17']
+        distribution: ['temurin', 'zulu']
+        include:
+          - java: '18-ea'
+            distribution: 'zulu'
+            os: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.4
-
-      - name: Set up cache for ~./m2/repository
-        uses: actions/cache@v2.1.6
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ matrix.os }}-java${{ matrix.java }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-${{ matrix.os }}-java${{ matrix.java }}-
-            maven-${{ matrix.os }}-
-
-      - name: Set up JDK
+        uses: actions/checkout@v2
+      - name: Set up JDK ${{ matrix.Java }} (${{ matrix.distribution }})
         uses: actions/setup-java@v2
         with:
-          distribution: ${{ matrix.jdk }}
+          distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.java }}
-
+          cache: 'maven'
       - name: Build with Maven
         run: mvn install javadoc:javadoc -e -B -V -Pno-tests-if-not-on-osx
