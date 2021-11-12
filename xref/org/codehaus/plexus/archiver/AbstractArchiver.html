@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment">     * of {@link ArchiveEntry} by {@link #getResources()}.</em>
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;Object&gt; resources = <strong class="jxr_keyword">new</strong> ArrayList&lt;Object&gt;();
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;Object&gt; resources = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> includeEmptyDirs = <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
@@ -106,7 +106,7 @@
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      <em class="jxr_comment">// On lunix-like systems, we replace windows backslashes with forward slashes</em>
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> replacePathSlashesToJavaPaths = File.separatorChar == '/';
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> 
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;Closeable&gt; closeables = <strong class="jxr_keyword">new</strong> ArrayList&lt;Closeable&gt;();
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;Closeable&gt; closeables = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> 
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     * since 2.2 is on by default</em>
@@ -121,27 +121,27 @@
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     <strong class="jxr_keyword">private</strong> Date lastModifiedDate;
 <a class="jxr_linenumber" name="L114" href="#L114">114</a> 
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @sine 4.2.0</em>
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">private</strong> Comparator&lt;String&gt; filenameComparator;
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> 
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">     * @sine 4.2.0</em>
+<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> overrideUid = -1;
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> 
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * @sine 4.2.0</em>
+<a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>     <strong class="jxr_keyword">private</strong> String overrideUserName;
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     * @sine 4.2.0</em>
+<a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> overrideGid = -1;
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> 
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * @sine 4.2.0</em>
+<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">private</strong> String overrideGroupName;
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> 
@@ -432,7 +432,7 @@
 <a class="jxr_linenumber" name="L424" href="#L424">424</a>             ArchiveEntry.createSymlinkEntry( symlinkName, permissions, symlinkDestination, getDirectoryMode() ) );
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>     }
 <a class="jxr_linenumber" name="L426" href="#L426">426</a> 
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">private</strong> <a name="ArchiveEntry" href="../../../../or<a name="ArchiveEntry" href="../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a>lexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> updateArchiveEntryAttributes( <a name="ArchiveEntry" href="../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> entry )
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">private</strong> <a name="ArchiveEntry" href="../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> updateArchiveEntryAttributes( <a name="ArchiveEntry" href="../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> entry )
 <a class="jxr_linenumber" name="L428" href="#L428">428</a>     {
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">if</strong> ( getOverrideUid() &gt; -1 || getOverrideGid() &gt; -1 || getOverrideUserName() != <strong class="jxr_keyword">null</strong>
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>             || getOverrideGroupName() != <strong class="jxr_keyword">null</strong> )
@@ -703,7 +703,7 @@
 <a class="jxr_linenumber" name="L695" href="#L695">695</a>     {
 <a class="jxr_linenumber" name="L696" href="#L696">696</a>         <strong class="jxr_keyword">try</strong>
 <a class="jxr_linenumber" name="L697" href="#L697">697</a>         {
-<a class="jxr_linenumber" name="L698" href="#L698">698</a>             <strong class="jxr_keyword">final</strong> Map&lt;String, ArchiveEntry&gt; map = <strong class="jxr_keyword">new</strong> HashMap&lt;String, ArchiveEntry&gt;();
+<a class="jxr_linenumber" name="L698" href="#L698">698</a>             <strong class="jxr_keyword">final</strong> Map&lt;String, ArchiveEntry&gt; map = <strong class="jxr_keyword">new</strong> HashMap&lt;&gt;();
 <a class="jxr_linenumber" name="L699" href="#L699">699</a>             <strong class="jxr_keyword">for</strong> ( <strong class="jxr_keyword">final</strong> <a name="ResourceIterator" href="../../../../org/codehaus/plexus/archiver/ResourceIterator.html#ResourceIterator">ResourceIterator</a> iter = getResources(); iter.hasNext(); )
 <a class="jxr_linenumber" name="L700" href="#L700">700</a>             {
 <a class="jxr_linenumber" name="L701" href="#L701">701</a>                 <strong class="jxr_keyword">final</strong> <a name="ArchiveEntry" href="../../../../org/codehaus/plexus/archiver/ArchiveEntry.html#ArchiveEntry">ArchiveEntry</a> entry = iter.next();
