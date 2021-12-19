@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -55,8 +57,11 @@ public abstract class BaseJarArchiverTest
         // verify that the JAR file is created and contains the expected files
         try ( ZipFile resultingArchive = new ZipFile( jarFile ) )
         {
-            // verify that the JAR file contains manifest file
-            assertNotNull( resultingArchive.getEntry( "META-INF/MANIFEST.MF" )  );
+            // verify that the JAR file contains manifest directory and file
+            // and that those are the first two entries.
+            Enumeration<? extends ZipEntry> resultingEntries = resultingArchive.entries();
+            assertEquals( "META-INF/", resultingEntries.nextElement().getName() );
+            assertEquals( "META-INF/MANIFEST.MF", resultingEntries.nextElement().getName() );
 
             // verify the JAR contains the class and it is not corrupted
             ZipEntry classFileEntry = resultingArchive.getEntry( "com/example/app/Main.class" );

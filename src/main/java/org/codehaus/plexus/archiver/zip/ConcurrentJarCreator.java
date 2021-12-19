@@ -44,11 +44,11 @@ public class ConcurrentJarCreator
 
     private final boolean compressAddedZips;
 
-    private final ScatterZipOutputStream directories;
-
     private final ScatterZipOutputStream metaInfDir;
 
     private final ScatterZipOutputStream manifest;
+
+    private final ScatterZipOutputStream directories;
 
     private final ScatterZipOutputStream synchronousEntries;
 
@@ -123,9 +123,9 @@ public class ConcurrentJarCreator
     {
         this.compressAddedZips = compressAddedZips;
         ScatterGatherBackingStoreSupplier defaultSupplier = new DeferredSupplier( 100000000 / nThreads );
-        directories = createDeferred( defaultSupplier );
-        manifest = createDeferred( defaultSupplier );
         metaInfDir = createDeferred( defaultSupplier );
+        manifest = createDeferred( defaultSupplier );
+        directories = createDeferred( defaultSupplier );
         synchronousEntries = createDeferred( defaultSupplier );
         parallelScatterZipCreator = new ParallelScatterZipCreator( Executors.newFixedThreadPool( nThreads ),
                                                                    defaultSupplier );
@@ -152,20 +152,10 @@ public class ConcurrentJarCreator
         {
             throw new IllegalArgumentException( "Method must be set on the supplied zipArchiveEntry" );
         }
-        if ( zipArchiveEntry.isDirectory() && !zipArchiveEntry.isUnixSymlink() )
-        {
-            final ByteArrayInputStream payload = new ByteArrayInputStream( new byte[]
-            {
-            } );
-
-            directories.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry, createInputStreamSupplier(
-                                                                       payload ) ) );
-
-            payload.close();
-        }
-        else if ( "META-INF".equals( zipArchiveEntry.getName() ) || "META-INF/".equals( zipArchiveEntry.getName() ) )
+        if ( "META-INF".equals( zipArchiveEntry.getName() ) || "META-INF/".equals( zipArchiveEntry.getName() ) )
         {
             InputStream payload = source.get();
+            // TODO This should be enforced because META-INF non-directory does not make any sense?!
             if ( zipArchiveEntry.isDirectory() )
             {
                 zipArchiveEntry.setMethod( ZipEntry.STORED );
@@ -178,12 +168,24 @@ public class ConcurrentJarCreator
         else if ( "META-INF/MANIFEST.MF".equals( zipArchiveEntry.getName() ) )
         {
             InputStream payload = source.get();
+            // TODO This should be enforced because META-INF/MANIFEST as non-file does not make any sense?!
             if ( zipArchiveEntry.isDirectory() )
             {
                 zipArchiveEntry.setMethod( ZipEntry.STORED );
             }
             manifest.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry,
                                                                     createInputStreamSupplier( payload ) ) );
+
+            payload.close();
+        }
+        else if ( zipArchiveEntry.isDirectory() && !zipArchiveEntry.isUnixSymlink() )
+        {
+            final ByteArrayInputStream payload = new ByteArrayInputStream( new byte[]
+            {
+            } );
+
+            directories.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry, createInputStreamSupplier(
+                                                                       payload ) ) );
 
             payload.close();
         }
