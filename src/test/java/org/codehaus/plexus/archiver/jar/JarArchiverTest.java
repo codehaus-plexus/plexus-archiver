@@ -1,13 +1,20 @@
 package org.codehaus.plexus.archiver.jar;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotEquals;
 
 public class JarArchiverTest
     extends BaseJarArchiverTest
@@ -74,6 +81,38 @@ public class JarArchiverTest
         archiver.setDestFile( jarFile );
         archiver.addDirectory( tmpDir );
         archiver.createArchive();
+    }
+
+    @Test
+    public void testExcludingIndexEntries()
+            throws IOException, ArchiverException
+    {
+        Path tmpDir = File.createTempFile( "jarWithIndexList", null ).toPath();
+        Files.delete( tmpDir );
+
+        Files.createDirectories( tmpDir.resolve( "dir.jar" ) );
+        Files.createFile( tmpDir.resolve( "dir.jar/file" ) );
+        Files.createFile( tmpDir.resolve( "file.jar" ) );
+
+        File jarFile = new File( "target/output/jarWithIndexList.jar" );
+
+        JarArchiver archiver = getJarArchiver();
+        archiver.setDestFile( jarFile );
+        archiver.addDirectory( tmpDir.toFile() );
+        archiver.setIndex( true );
+        archiver.createArchive();
+
+        try ( ZipFile resultingArchive = new ZipFile( jarFile ) )
+        {
+            ZipEntry indexList = resultingArchive.getEntry( "META-INF/INDEX.LIST" );
+            try ( BufferedReader in = new BufferedReader( new InputStreamReader( resultingArchive.getInputStream( indexList ) ) ) )
+            {
+                for ( String line = in.readLine(); line != null; line = in.readLine() ) {
+                    assertNotEquals( "dir.jar", line );
+                    assertNotEquals( "file.jar", line );
+                }
+            }
+        }
     }
 
     @Override
