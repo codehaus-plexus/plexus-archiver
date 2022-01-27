@@ -685,13 +685,17 @@ public class JarArchiver
                 dir = dir.substring( 0, pos );
             }
 
-            // name newline
-            writer.println( dir );
+            if ( !dir.endsWith(".jar") ) {
+                // name newline
+                writer.println( dir );
+            }
         }
 
         for ( String file : files )
         {
-            writer.println( file );
+            if ( !file.endsWith(".jar") ) {
+                writer.println( file );
+            }
         }
     }
 
