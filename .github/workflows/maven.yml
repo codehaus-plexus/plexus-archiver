@@ -21,26 +21,5 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Java ${{ matrix.java }} (${{ matrix.distribution }})  - ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: ['ubuntu-latest', 'windows-latest', 'macOS-latest']
-        java: ['8', '11', '17', '18']
-        distribution: ['temurin']
-        include:
-          - java: '19-ea'
-            distribution: 'zulu'
-            os: 'ubuntu-latest'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up JDK ${{ matrix.Java }} (${{ matrix.distribution }})
-        uses: actions/setup-java@v3
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.java }}
-          cache: 'maven'
-      - name: Build with Maven
-        run: mvn install javadoc:javadoc -e -B -V
+    name: Build it
+    uses: codehaus-plexus/.github/.github/workflows/maven.yml@master
