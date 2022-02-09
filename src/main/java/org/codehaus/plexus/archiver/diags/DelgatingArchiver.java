@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.diags;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
@@ -333,16 +334,36 @@ public class DelgatingArchiver implements Archiver
         target.setIgnorePermissions( ignorePermissions );
     }
 
+    /**
+     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void setLastModifiedDate( final Date lastModifiedDate )
     {
         target.setLastModifiedDate( lastModifiedDate );
     }
 
+    /**
+     * @deprecated Use {@link #getLastModifiedTime()} instead.
+     */
     @Override
+    @Deprecated
     public Date getLastModifiedDate()
     {
         return target.getLastModifiedDate();
+    }
+
+    @Override
+    public void setLastModifiedTime( final FileTime lastModifiedTime )
+    {
+        target.setLastModifiedTime( lastModifiedTime );
+    }
+
+    @Override
+    public FileTime getLastModifiedTime()
+    {
+        return target.getLastModifiedTime();
     }
 
     @Override
@@ -399,10 +420,20 @@ public class DelgatingArchiver implements Archiver
         return target.getOverrideGroupName();
     }
 
+    /**
+     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void configureReproducible( Date lastModifiedDate )
     {
         target.configureReproducible( lastModifiedDate );
+    }
+
+    @Override
+    public void configureReproducibleBuild( FileTime lastModifiedTime )
+    {
+        target.configureReproducibleBuild( lastModifiedTime );
     }
 
 }

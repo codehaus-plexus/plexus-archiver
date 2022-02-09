@@ -19,11 +19,13 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -390,13 +392,37 @@ public interface Archiver
      *
      * @param lastModifiedDate
      * @since 4.2.0
+     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead
      */
+    @Deprecated
     void setLastModifiedDate( final Date lastModifiedDate );
 
     /**
      * @since 4.2.0
+     * @deprecated Use {@link #getLastModifiedTime()} instead
      */
+    @Deprecated
     Date getLastModifiedDate();
+
+    /**
+     * Sets the last modification time of the entries (if non null).
+     *
+     * @param lastModifiedTime to set in the archive entries
+     *
+     * @see #getLastModifiedTime()
+     * @since 4.3.0
+     */
+    void setLastModifiedTime( final FileTime lastModifiedTime );
+
+    /**
+     * Returns the last modification time of the archiver.
+     *
+     * @return The last modification time of the archiver, null if not specified
+     *
+     * @see #setLastModifiedTime(FileTime)
+     * @since 4.3.0
+     */
+    FileTime getLastModifiedTime();
 
     /**
      * Set filename comparator, used to sort file entries when scanning directories since File.list() does not
@@ -447,6 +473,17 @@ public interface Archiver
     String getOverrideGroupName();
 
     /**
+     * This method is obsolete and will just call {@link #configureReproducibleBuild(FileTime)}
+     * with the Date transformed into FileTime.
+     *
+     * @param lastModifiedDate the date to use for archive entries last modified time
+     * @since 4.2.0
+     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
+     */
+    @Deprecated
+    void configureReproducible( Date lastModifiedDate );
+
+    /**
      * Configure the archiver to create archives in a reproducible way (see
      * <a href="https://reproducible-builds.org/">Reproducible Builds</a>).
      * <p>This will configure:
@@ -455,9 +492,11 @@ public interface Archiver
      * <li>defined entries timestamp</li>
      * <li>and reproducible entries Unix mode.</li>
      * </ul>
-     * 
-     * @param lastModifiedDate the date to use for archive entries last modified time
-     * @since 4.2.0
+     *
+     * @param lastModifiedTime The last modification time of the entries
+     *
+     * @see <a href="https://reproducible-builds.org/">Reproducible Builds</a>
+     * @since 4.3.0
      */
-    void configureReproducible( Date lastModifiedDate );
+    void configureReproducibleBuild( FileTime lastModifiedTime );
 }

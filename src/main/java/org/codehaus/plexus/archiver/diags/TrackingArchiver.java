@@ -18,16 +18,19 @@
  */
 package org.codehaus.plexus.archiver.diags;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nonnull;
+
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
@@ -54,7 +57,7 @@ public class TrackingArchiver
 
     private boolean ignorePermissions;
 
-    private Date lastModified;
+    private FileTime lastModifiedTime;
 
     private Comparator<String> filenameComparator;
 
@@ -406,23 +409,47 @@ public class TrackingArchiver
         this.ignorePermissions = ignorePermissions;
     }
 
+    /**
+     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void setLastModifiedDate( final Date lastModifiedDate )
     {
-        this.lastModified = lastModifiedDate;
+        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis( lastModifiedDate.getTime() ) : null;
+    }
+
+    /**
+     * @deprecated Use {@link #getLastModifiedTime()} instead.
+     */
+    @Override
+    @Deprecated
+    public Date getLastModifiedDate()
+    {
+        return lastModifiedTime != null ? new Date( lastModifiedTime.toMillis() ) : null;
     }
 
     @Override
-    public Date getLastModifiedDate()
+    public void setLastModifiedTime( final FileTime lastModifiedTime )
     {
-        return lastModified;
+        this.lastModifiedTime = lastModifiedTime;
     }
 
+    @Override
+    public FileTime getLastModifiedTime()
+    {
+        return lastModifiedTime;
+    }
 
     @Override
     public void setFilenameComparator( final Comparator<String> filenameComparator )
     {
         this.filenameComparator = filenameComparator;
+    }
+
+    public Comparator<String> getFilenameComparator()
+    {
+        return filenameComparator;
     }
 
     @Override
@@ -469,8 +496,17 @@ public class TrackingArchiver
         return null;
     }
 
+    /**
+     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void configureReproducible( Date lastModifiedDate )
+    {
+    }
+
+    @Override
+    public void configureReproducibleBuild( FileTime lastModifiedTime )
     {
     }
 }

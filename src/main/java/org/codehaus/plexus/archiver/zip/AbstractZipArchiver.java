@@ -27,10 +27,12 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Deque;
 import java.util.Hashtable;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.zip.CRC32;
 
@@ -534,9 +536,9 @@ public abstract class AbstractZipArchiver
 
     private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
     {
-        if ( getLastModifiedDate() != null )
+        if ( getLastModifiedTime() != null )
         {
-            lastModified = getLastModifiedDate().getTime();
+            lastModified = getLastModifiedTime().toMillis();
         }
 
         // Zip archives store file modification times with a
@@ -838,12 +840,12 @@ public abstract class AbstractZipArchiver
     }
 
     @Override
-    protected Date normalizeLastModifiedDate( Date lastModifiedDate )
+    protected FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
     {
         // timestamp of zip entries at zip storage level ignores timezone: managed in ZipEntry.setTime,
         // that turns javaToDosTime: need to revert the operation here to get reproducible
         // zip entry time
-        return new Date( dosToJavaTime( lastModifiedDate.getTime() ) );
+        return FileTime.fromMillis( dosToJavaTime( lastModifiedTime.toMillis() ) );
     }
 
     /**
@@ -854,7 +856,7 @@ public abstract class AbstractZipArchiver
      */
     private static long dosToJavaTime( long dosTime )
     {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance( TimeZone.getDefault(), Locale.ROOT );
         cal.setTimeInMillis( dosTime );
         return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
     }

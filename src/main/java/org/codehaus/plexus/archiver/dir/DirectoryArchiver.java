@@ -17,6 +17,8 @@ package org.codehaus.plexus.archiver.dir;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.plexus.archiver.AbstractArchiver;
@@ -173,7 +175,14 @@ public class DirectoryArchiver
                 @Override
                 public void run()
                 {
-                    setFileModes( entry, outFile, inLastModified );
+                    try
+                    {
+                        setFileModes( entry, outFile, inLastModified );
+                    }
+                    catch ( IOException e )
+                    {
+                        throw new ArchiverException( "Failed setting file attributes", e );
+                    }
                 }
 
             } );
@@ -194,21 +203,23 @@ public class DirectoryArchiver
     }
 
     private void setFileModes( ArchiveEntry entry, File outFile, long inLastModified )
+        throws IOException
     {
         if ( !isIgnorePermissions() )
         {
             ArchiveEntryUtils.chmod( outFile, entry.getMode() );
         }
 
-        if ( getLastModifiedDate() == null )
+        if ( getLastModifiedTime() == null )
         {
-            outFile.setLastModified( inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                                         ? System.currentTimeMillis()
-                                         : inLastModified );
+            FileTime fromMillis = FileTime.fromMillis( inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+                            ? System.currentTimeMillis()
+                            : inLastModified );
+            Files.setLastModifiedTime( outFile.toPath(), fromMillis );
         }
         else
         {
-            outFile.setLastModified( getLastModifiedDate().getTime() );
+            Files.setLastModifiedTime( outFile.toPath(), getLastModifiedTime() );
         }
     }
 

@@ -26,8 +26,6 @@ package org.codehaus.plexus.archiver.zip;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
@@ -901,7 +899,7 @@ public class ZipArchiverTest
 
         final File zipFile = getTestFile( "target/output/zip-with-fixed-entry-modification-times.zip" );
         final ZipArchiver archiver = getZipArchiver( zipFile );
-        archiver.setLastModifiedDate( new Date( almostMinDosTime ) );
+        archiver.setLastModifiedTime( FileTime.fromMillis( almostMinDosTime ) );
         archiver.addDirectory( new File( "src/test/resources/zip-timestamp" ) );
         archiver.createArchive();
 

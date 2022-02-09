@@ -122,7 +122,7 @@ public class ArchiveFileComparator
     {
         Assert.assertEquals( entry1.isDirectory(), entry2.isDirectory() );
         Assert.assertEquals( entry1.isUnixSymlink(), entry2.isUnixSymlink() );
-        long timeDelta = entry1.getLastModifiedDate().getTime() - entry2.getLastModifiedDate().getTime();
+        long timeDelta = entry1.getTime() - entry2.getTime();
         Assert.assertTrue( Math.abs( timeDelta ) <= 1000 );
 
         final InputStream is1 = file1.getInputStream( entry1 );
