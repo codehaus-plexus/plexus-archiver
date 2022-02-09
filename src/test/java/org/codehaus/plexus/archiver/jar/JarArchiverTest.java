@@ -1,10 +1,22 @@
 package org.codehaus.plexus.archiver.jar;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.FileTime;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Test;
@@ -74,6 +86,67 @@ public class JarArchiverTest
         archiver.setDestFile( jarFile );
         archiver.addDirectory( tmpDir );
         archiver.createArchive();
+    }
+
+    @Test
+    public void testReproducibleBuild()
+        throws IOException, ManifestException, ParseException
+    {
+        String[] tzList = { "America/Managua", "America/New_York", "America/Buenos_Aires", "America/Sao_Paulo",
+            "America/Los_Angeles", "Africa/Cairo", "Africa/Lagos", "Africa/Nairobi", "Europe/Lisbon", "Europe/Madrid",
+            "Europe/Moscow", "Europe/Oslo", "Australia/Sydney", "Asia/Tokyo", "Asia/Singapore", "Asia/Qatar",
+            "Asia/Seoul", "Atlantic/Bermuda", "UTC", "GMT", "Etc/GMT-14" };
+        for ( String tzId : tzList )
+        {
+            // Every single run with different Time Zone should set the same modification time.
+            createReproducibleBuild( tzId );
+        }
+    }
+
+    private void createReproducibleBuild( String timeZoneId )
+        throws IOException, ManifestException, ParseException
+    {
+        final TimeZone defaultTz = TimeZone.getDefault();
+        TimeZone.setDefault( TimeZone.getTimeZone( timeZoneId ) );
+        try
+        {
+            String tzName = timeZoneId.substring( timeZoneId.lastIndexOf( '/' ) + 1 );
+            Path jarFile = Files.createTempFile( "JarArchiverTest-" + tzName + "-", ".jar" );
+            jarFile.toFile().deleteOnExit();
+
+            Manifest manifest = new Manifest();
+            Manifest.Attribute attribute = new Manifest.Attribute( "Main-Class", "com.example.app.Main" );
+            manifest.addConfiguredAttribute( attribute );
+
+            JarArchiver archiver = getJarArchiver();
+            archiver.setDestFile( jarFile.toFile() );
+            archiver.addConfiguredManifest( manifest );
+            archiver.addDirectory( new File( "src/test/resources/java-classes" ) );
+
+            SimpleDateFormat isoFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssXXX" );
+            long parsedTime = isoFormat.parse( "2038-01-19T03:14:08Z" ).getTime();
+            FileTime lastModTime = FileTime.fromMillis( parsedTime );
+
+            archiver.configureReproducibleBuild( lastModTime );
+            archiver.createArchive();
+
+            // zip 2 seconds precision, normalized to UTC
+            long expectedTime = normalizeLastModifiedTime( parsedTime - ( parsedTime % 2000 ) );
+            try ( ZipFile zip = new ZipFile( jarFile.toFile() ) )
+            {
+                Enumeration<? extends ZipEntry> entries = zip.entries();
+                while ( entries.hasMoreElements() )
+                {
+                    ZipEntry entry = entries.nextElement();
+                    long time = entry.getTime();
+                    assertEquals( "last modification time does not match", expectedTime, time );
+                }
+            }
+        }
+        finally
+        {
+            TimeZone.setDefault( defaultTz );
+        }
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ZipResource extends AbstractPlexusIoResource
 
     public ZipResource( ZipFile zipFile, ZipArchiveEntry entry, InputStreamTransformer streamTransformer )
     {
-        super( entry.getName(), getLastModofied( entry ),
+        super( entry.getName(), getLastModified( entry ),
                entry.isDirectory() ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : entry.getSize(), !entry.isDirectory(),
                entry.isDirectory(), true );
 
@@ -38,10 +38,10 @@ public class ZipResource extends AbstractPlexusIoResource
         this.streamTransformer = streamTransformer;
     }
 
-    private static long getLastModofied( ZipArchiveEntry entry )
+    private static long getLastModified( ZipArchiveEntry entry )
     {
-        long l = entry.getLastModifiedDate().getTime();
-        return l == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;
+        long time = entry.getTime();
+        return time == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : time;
     }
 
     @Override

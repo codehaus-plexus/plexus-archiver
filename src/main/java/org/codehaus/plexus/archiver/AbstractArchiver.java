@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -107,10 +108,7 @@ public abstract class AbstractArchiver
      */
     private boolean useJvmChmod = true;
 
-    /**
-     * @since 4.2.0
-     */
-    private Date lastModifiedDate;
+    private FileTime lastModifiedTime;
 
     /**
      * @since 4.2.0
@@ -1208,16 +1206,36 @@ public abstract class AbstractArchiver
         this.ignorePermissions = ignorePermissions;
     }
 
+    /**
+     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void setLastModifiedDate( Date lastModifiedDate )
     {
-        this.lastModifiedDate = lastModifiedDate;
+        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis( lastModifiedDate.getTime() ) : null;
+    }
+
+    /**
+     * @deprecated Use {@link #getLastModifiedTime()} instead.
+     */
+    @Override
+    @Deprecated
+    public Date getLastModifiedDate()
+    {
+        return lastModifiedTime != null ? new Date( lastModifiedTime.toMillis() ) : null;
     }
 
     @Override
-    public Date getLastModifiedDate()
+    public void setLastModifiedTime( FileTime lastModifiedTime )
     {
-        return lastModifiedDate;
+        this.lastModifiedTime = lastModifiedTime;
+    }
+
+    @Override
+    public FileTime getLastModifiedTime()
+    {
+        return lastModifiedTime;
     }
 
     @Override
@@ -1279,11 +1297,21 @@ public abstract class AbstractArchiver
         return overrideGroupName;
     }
 
+    /**
+     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
+     */
     @Override
+    @Deprecated
     public void configureReproducible( Date lastModifiedDate )
     {
+        configureReproducibleBuild( FileTime.fromMillis( lastModifiedDate.getTime() ) );
+    }
+
+    @Override
+    public void configureReproducibleBuild( FileTime lastModifiedTime )
+    {
         // 1. force last modified date
-        setLastModifiedDate( normalizeLastModifiedDate( lastModifiedDate ) );
+        setLastModifiedTime( normalizeLastModifiedTime ( lastModifiedTime ) );
 
         // 2. sort filenames in each directory when scanning filesystem
         setFilenameComparator( new Comparator<String>()
@@ -1309,14 +1337,18 @@ public abstract class AbstractArchiver
 
     /**
      * Normalize last modified time value to get reproducible archive entries, based on
-     * archive binary format (tar uses UTC timestamp but zip uses local time then requires
-     * tweaks to make the value reproducible whatever the current timezone is).
+     * archive binary format.
      *
-     * @param lastModifiedDate 
-     * @return
+     * <p>tar uses UTC timestamp, but zip uses local time then requires
+     * tweaks to make the value reproducible whatever the current timezone is.
+     *
+     * @param lastModifiedTime The last modification time
+     * @return The normalized last modification time
+     *
+     * @see #configureReproducibleBuild(FileTime)
      */
-    protected Date normalizeLastModifiedDate( Date lastModifiedDate )
+    protected FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
     {
-        return lastModifiedDate;
+        return lastModifiedTime;
     }
 }

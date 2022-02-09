@@ -16,23 +16,24 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.util.IOUtil;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Enumeration;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
 
 public abstract class BaseJarArchiverTest
 {
@@ -71,6 +72,13 @@ public abstract class BaseJarArchiverTest
 
             assertTrue( IOUtil.contentEquals( originalClassFile, resultingClassFile ) );
         }
+    }
+
+    protected static long normalizeLastModifiedTime( long dosTime )
+    {
+        Calendar cal = Calendar.getInstance( TimeZone.getDefault(), Locale.ROOT );
+        cal.setTimeInMillis( dosTime );
+        return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
     }
 
     protected abstract JarArchiver getJarArchiver();
