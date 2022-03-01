@@ -35,7 +35,7 @@ jobs:
             os: 'ubuntu-latest'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
       - name: Set up JDK ${{ matrix.Java }} (${{ matrix.distribution }})
         uses: actions/setup-java@v2
         with:
