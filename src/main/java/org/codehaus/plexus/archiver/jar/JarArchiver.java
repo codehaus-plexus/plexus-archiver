@@ -825,4 +825,22 @@ public class JarArchiver
         }
     }
 
+    /**
+     * Override the behavior of the Zip Archiver to match the output of the JAR tool.
+     *
+     * @param zipEntry to set the last modified time
+     * @param lastModified to set in the zip entry only if the {@link #getLastModifiedTime()} returns null.
+     */
+    @Override
+    protected void setTime( ZipArchiveEntry zipEntry, long lastModified )
+    {
+        if ( getLastModifiedTime() != null )
+        {
+            lastModified = getLastModifiedTime().toMillis();
+        }
+
+        // The JAR tool does not round up, so we keep that behavior here (JDK-8277755).
+        zipEntry.setTime( lastModified );
+    }
+
 }
