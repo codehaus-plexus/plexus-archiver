@@ -16,17 +16,30 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
-import org.apache.commons.compress.parallel.InputStreamSupplier;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.commons.compress.parallel.InputStreamSupplier;
+import org.apache.commons.io.output.NullOutputStream;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
+import org.codehaus.plexus.util.IOUtil;
 
 /**
  * A {@link ModularJarArchiver} implementation that uses
@@ -57,6 +70,8 @@ public class JarToolModularJarArchiver
     private Object jarTool;
 
     private boolean moduleDescriptorFound;
+
+    private boolean hasJarDateOption;
 
     public JarToolModularJarArchiver()
     {
@@ -111,17 +126,29 @@ public class JarToolModularJarArchiver
             getLogger().debug( "Using the jar tool to " +
                 "update the archive to modular JAR." );
 
-			Integer result = (Integer) jarTool.getClass()
-                .getMethod( "run",
-                    PrintStream.class, PrintStream.class, String[].class )
-                .invoke( jarTool,
-                    System.out, System.err,
-                    getJarToolArguments() );
+            final Method jarRun = jarTool.getClass()
+                .getMethod( "run", PrintStream.class, PrintStream.class, String[].class );
+
+            if ( getLastModifiedTime() != null )
+            {
+                hasJarDateOption = isJarDateOptionSupported( jarRun );
+                getLogger().debug( "jar tool --date option is supported: " + hasJarDateOption );
+            }
+
+            Integer result = (Integer) jarRun.invoke( jarTool, System.out, System.err, getJarToolArguments() );
 
             if ( result != null && result != 0 )
             {
                 throw new ArchiverException( "Could not create modular JAR file. " +
                     "The JDK jar tool exited with " + result );
+            }
+
+            if ( !hasJarDateOption && getLastModifiedTime() != null )
+            {
+                getLogger().debug( "Fix last modified time zip entries." );
+                // --date option not supported, fallback to rewrite the JAR file
+                // https://github.com/codehaus-plexus/plexus-archiver/issues/164
+                fixLastModifiedTimeZipEntries();
             }
         }
         catch ( IOException | ReflectiveOperationException | SecurityException e )
@@ -129,6 +156,36 @@ public class JarToolModularJarArchiver
             throw new ArchiverException( "Exception occurred " +
                 "while creating modular JAR file", e );
         }
+    }
+
+    /**
+     * Fallback to rewrite the JAR file with the correct timestamp if the {@code --date} option is not available.
+     */
+    private void fixLastModifiedTimeZipEntries()
+        throws IOException
+    {
+        long timeMillis = getLastModifiedTime().toMillis();
+        Path destFile = getDestFile().toPath();
+        Path tmpZip = Files.createTempFile( destFile.getParent(), null, null );
+        try ( ZipFile zipFile = new ZipFile( getDestFile() );
+              ZipOutputStream out = new ZipOutputStream( Files.newOutputStream( tmpZip ) ) )
+        {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while ( entries.hasMoreElements() )
+            {
+                ZipEntry entry = entries.nextElement();
+                // Not using setLastModifiedTime(FileTime) as it sets the extended timestamp
+                // which is not compatible with the jar tool output.
+                entry.setTime( timeMillis );
+                out.putNextEntry( entry );
+                if ( !entry.isDirectory() )
+                {
+                    IOUtil.copy( zipFile.getInputStream( entry ), out );
+                }
+                out.closeEntry();
+            }
+        }
+        Files.move( tmpZip, destFile, StandardCopyOption.REPLACE_EXISTING );
     }
 
     /**
@@ -201,11 +258,51 @@ public class JarToolModularJarArchiver
             args.add( "--no-compress" );
         }
 
+        if ( hasJarDateOption )
+        {
+            // The --date option already normalize the time, so revert to the local time
+            FileTime localTime = revertToLocalTime( getLastModifiedTime() );
+            args.add( "--date" );
+            args.add( localTime.toString() );
+        }
+
         args.add( "-C" );
         args.add( tempEmptyDir.getAbsolutePath() );
         args.add( "." );
 
         return args.toArray( new String[0] );
+    }
+
+    private static FileTime revertToLocalTime( FileTime time )
+    {
+        long restoreToLocalTime = time.toMillis();
+        Calendar cal = Calendar.getInstance( TimeZone.getDefault(), Locale.ROOT );
+        cal.setTimeInMillis( restoreToLocalTime );
+        restoreToLocalTime = restoreToLocalTime + ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+        return FileTime.fromMillis( restoreToLocalTime );
+    }
+
+    /**
+     * Check support for {@code --date} option introduced since Java 17.0.3 (JDK-8279925).
+     *
+     * @return true if the JAR tool supports the {@code --date} option
+     */
+    private boolean isJarDateOptionSupported( Method runMethod )
+    {
+        try
+        {
+            // Test the output code validating the --date option.
+            String[] args = { "--date", "2099-12-31T23:59:59Z", "--version" };
+
+            PrintStream nullPrintStream = new PrintStream( NullOutputStream.NULL_OUTPUT_STREAM );
+            Integer result = (Integer) runMethod.invoke( jarTool, nullPrintStream, nullPrintStream, args );
+
+            return result != null && result.intValue() == 0;
+        }
+        catch ( ReflectiveOperationException | SecurityException e )
+        {
+            return false;
+        }
     }
 
 }

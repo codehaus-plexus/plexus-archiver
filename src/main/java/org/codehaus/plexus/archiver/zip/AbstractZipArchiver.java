@@ -534,7 +534,7 @@ public abstract class AbstractZipArchiver
         }
     }
 
-    private void setTime( java.util.zip.ZipEntry zipEntry, long lastModified )
+    protected void setTime( ZipArchiveEntry zipEntry, long lastModified )
     {
         if ( getLastModifiedTime() != null )
         {

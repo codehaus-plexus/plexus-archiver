@@ -16,9 +16,16 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
+
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -29,10 +36,6 @@ import java.util.zip.ZipFile;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 public class JarToolModularJarArchiverTest
     extends BaseJarArchiverTest
@@ -252,25 +255,57 @@ public class JarToolModularJarArchiverTest
     {
         assumeTrue( modulesAreSupported() );
 
+        // Add two module-info.class, one on the root and one on the multi-release dir.
         archiver.addFile( new File( "src/test/resources/java-module-descriptor/module-info.class" ),
-            "META-INF/versions/9/module-info.class" );
+                          "META-INF/versions/9/module-info.class" );
+        archiver.addFile( new File( "src/test/resources/java-module-descriptor/module-info.class" ),
+                          "module-info.class" );
+
         Manifest manifest = new Manifest();
+        manifest.addConfiguredAttribute( new Manifest.Attribute( "Main-Class", "com.example.app.Main2" ) );
         manifest.addConfiguredAttribute( new Manifest.Attribute( "Multi-Release", "true" ) );
         archiver.addConfiguredManifest( manifest );
+
         archiver.setModuleVersion( "1.0.0" );
+        // This attribute overwrites the one from the manifest.
         archiver.setModuleMainClass( "com.example.app.Main" );
 
+        SimpleDateFormat isoFormat = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssXXX" );
+        long dateTimeMillis = isoFormat.parse( "2020-02-29T23:59:59Z" ).getTime();
+        FileTime lastModTime = FileTime.fromMillis( dateTimeMillis );
+
+        archiver.configureReproducibleBuild( lastModTime );
         archiver.createArchive();
+
+        // Round-down two seconds precision
+        long roundedDown = lastModTime.toMillis() - ( lastModTime.toMillis() % 2000 );
+        // Normalize to UTC
+        long expectedLastModifiedTime = normalizeLastModifiedTime( roundedDown );
 
         // verify that the resulting modular jar has the proper version and main class set
         try ( ZipFile resultingArchive = new ZipFile( archiver.getDestFile() ) )
         {
-            ZipEntry moduleDescriptorEntry =
-                resultingArchive.getEntry( "META-INF/versions/9/module-info.class" );
+            ZipEntry moduleDescriptorEntry = resultingArchive.getEntry( "META-INF/versions/9/module-info.class" );
             InputStream resultingModuleDescriptor = resultingArchive.getInputStream( moduleDescriptorEntry );
+            assertModuleDescriptor( resultingModuleDescriptor, "1.0.0", "com.example.app.Main", "com.example.app",
+                                    "com.example.resources" );
 
-            assertModuleDescriptor( resultingModuleDescriptor,
-                    "1.0.0", "com.example.app.Main", "com.example.app", "com.example.resources" );
+            ZipEntry rootModuleDescriptorEntry = resultingArchive.getEntry( "module-info.class" );
+            InputStream rootResultingModuleDescriptor = resultingArchive.getInputStream( rootModuleDescriptorEntry );
+            assertModuleDescriptor( rootResultingModuleDescriptor, "1.0.0", "com.example.app.Main", "com.example.app",
+                                    "com.example.resources" );
+
+            // verify every entry has the correct last modified time
+            Enumeration<? extends ZipEntry> entries = resultingArchive.entries();
+            while ( entries.hasMoreElements() )
+            {
+                ZipEntry element = entries.nextElement();
+                assertEquals( "Last Modified Time does not match with expected", expectedLastModifiedTime,
+                              element.getTime() );
+                FileTime expectedFileTime = FileTime.fromMillis( expectedLastModifiedTime );
+                assertEquals( "Last Modified Time does not match with expected", expectedFileTime,
+                              element.getLastModifiedTime() );
+            }
         }
     }
 
