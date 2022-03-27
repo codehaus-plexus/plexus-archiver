@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.2.8-SNAPSHOT</version>
+  <version>4.3.0-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
 
   <scm>
@@ -31,7 +31,7 @@
   </distributionManagement>
 
   <properties>
-    <javaVersion>7</javaVersion>
+    <javaVersion>8</javaVersion>
     <project.build.outputTimestamp>2022-01-02T11:13:08Z</project.build.outputTimestamp>
   </properties>
 
