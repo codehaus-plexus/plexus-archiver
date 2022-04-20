@@ -463,7 +463,7 @@ public abstract class AbstractZipArchiver
         if ( !skipWriting )
         {
             ZipArchiveEntry ze = new ZipArchiveEntry( vPath );
-            setTime( ze, lastModified );
+            setZipEntryTime( ze, lastModified );
 
             ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );
             ze.setUnixMode( UnixStat.FILE_FLAG | mode );
@@ -534,35 +534,26 @@ public abstract class AbstractZipArchiver
         }
     }
 
-    protected void setTime( ZipArchiveEntry zipEntry, long lastModified )
+    /**
+     * Set the ZipEntry dostime using the date if specified otherwise the original time.
+     *
+     * <p>Zip archives store file modification times with a granularity of two seconds, so the times will either be
+     * rounded up or down. If you round down, the archive will always seem out-of-date when you rerun the task, so the
+     * default is to round up. Rounding up may lead to a different type of problems like JSPs inside a web archive that
+     * seem to be slightly more recent than precompiled pages, rendering precompilation useless.
+     * plexus-archiver chooses to round up.
+     *
+     * @param zipEntry to set the last modified time
+     * @param lastModifiedTime to set in the zip entry only if {@link #getLastModifiedTime()} returns null
+     */
+    protected void setZipEntryTime( ZipArchiveEntry zipEntry, long lastModifiedTime )
     {
         if ( getLastModifiedTime() != null )
         {
-            lastModified = getLastModifiedTime().toMillis();
+            lastModifiedTime = getLastModifiedTime().toMillis();
         }
 
-        // Zip archives store file modification times with a
-        // granularity of two seconds, so the times will either be rounded
-        // up or down. If you round down, the archive will always seem
-        // out-of-date when you rerun the task, so the default is to round
-        // up. Rounding up may lead to a different type of problems like
-        // JSPs inside a web archive that seem to be slightly more recent
-        // than precompiled pages, rendering precompilation useless.
-        // plexus-archiver chooses to round up.
-        zipEntry.setTime( lastModified + 1999 );
-
-        /*   Consider adding extended file stamp support.....
-
-         X5455_ExtendedTimestamp ts =  new X5455_ExtendedTimestamp();
-         ts.setModifyJavaTime(new Date(lastModified));
-         if (zipEntry.getExtra() != null){
-         // Uh-oh. What do we do now.
-         throw new IllegalStateException("DIdnt expect to see xtradata here ?");
-
-         }  else {
-         zipEntry.setExtra(ts.getLocalFileDataData());
-         }
-         */
+        zipEntry.setTime( lastModifiedTime + 1999 );
     }
 
     protected void zipDir( PlexusIoResource dir, ConcurrentJarCreator zOut, String vPath, int mode,
@@ -601,12 +592,12 @@ public abstract class AbstractZipArchiver
 
             if ( dir != null && dir.isExisting() )
             {
-                setTime( ze, dir.getLastModified() );
+                setZipEntryTime( ze, dir.getLastModified() );
             }
             else
             {
                 // ZIPs store time with a granularity of 2 seconds, round up
-                setTime( ze, System.currentTimeMillis() );
+                setZipEntryTime( ze, System.currentTimeMillis() );
             }
             if ( !isSymlink )
             {

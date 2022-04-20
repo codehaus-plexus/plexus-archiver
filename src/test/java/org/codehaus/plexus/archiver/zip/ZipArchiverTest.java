@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -76,6 +77,7 @@ import org.codehaus.plexus.components.io.resources.ResourceFactory;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
+import org.junit.Test;
 
 /**
  * @author Emmanuel Venisse
@@ -631,27 +633,34 @@ public class ZipArchiverTest
      * Zip archives store file modification times with a granularity of two seconds.
      * Verify that ZipArchiver rounds up the last modified time.
      */
+    @Test
     public void testLastModifiedTimeRounding()
         throws Exception
     {
-        File oddSecondsTimestampFile = File.createTempFile( "odd-seconds-timestamp", null );
-        oddSecondsTimestampFile.deleteOnExit();
+        Path oddSecondsTimestampFile = Files.createTempFile( "odd-seconds-timestamp", null );
+        oddSecondsTimestampFile.toFile().deleteOnExit();
         // The milliseconds part is set to zero as not all filesystem support timestamp more granular than second.
-        Files.setLastModifiedTime( oddSecondsTimestampFile.toPath(), FileTime.fromMillis( 1534189011_000L ) );
-        File evenSecondsTimestampFile = File.createTempFile( "even-seconds-timestamp", null );
-        evenSecondsTimestampFile.deleteOnExit();
-        Files.setLastModifiedTime( evenSecondsTimestampFile.toPath(), FileTime.fromMillis( 1534189012_000L ) );
+        Files.setLastModifiedTime( oddSecondsTimestampFile, FileTime.fromMillis( 1534189011_000L ) );
+        Path evenSecondsTimestampFile = Files.createTempFile( "even-seconds-timestamp", null );
+        evenSecondsTimestampFile.toFile().deleteOnExit();
+        Files.setLastModifiedTime( evenSecondsTimestampFile, FileTime.fromMillis( 1534189012_000L ) );
 
         File destFile = getTestFile( "target/output/last-modified-time.zip" );
         ZipArchiver archiver = getZipArchiver( destFile );
-        archiver.addFile( oddSecondsTimestampFile, "odd-seconds" );
-        archiver.addFile( evenSecondsTimestampFile, "even-seconds" );
+        archiver.addFile( oddSecondsTimestampFile.toFile(), "odd-seconds" );
+        archiver.addFile( evenSecondsTimestampFile.toFile(), "even-seconds" );
         archiver.createArchive();
 
         // verify that the last modified time of the entry is equal or newer than the original file
-        ZipFile resultingZipFile = new ZipFile( destFile );
-        assertEquals( 1534189012_000L, resultingZipFile.getEntry( "odd-seconds" ).getTime() );
-        assertEquals( 1534189012_000L, resultingZipFile.getEntry( "even-seconds" ).getTime() );
+        try ( ZipFile resultingZipFile = new ZipFile( destFile ) )
+        {
+            assertEquals( 1534189012_000L, resultingZipFile.getEntry( "odd-seconds" ).getTime() );
+            assertEquals( 1534189012_000L, resultingZipFile.getEntry( "even-seconds" ).getTime() );
+
+            FileTime expected = FileTime.fromMillis( 1534189012_000L );
+            assertEquals( expected, resultingZipFile.getEntry( "odd-seconds" ).getLastModifiedTime() );
+            assertEquals( expected, resultingZipFile.getEntry( "even-seconds" ).getLastModifiedTime() );
+        }
     }
 
     /*
