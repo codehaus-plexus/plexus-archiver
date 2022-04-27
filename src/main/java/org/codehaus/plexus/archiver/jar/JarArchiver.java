@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,7 +38,6 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -139,12 +139,12 @@ public class JarArchiver
      * <p/>
      * Will not be filled unless the user has asked for an index.
      */
-    private Vector<String> rootEntries;
+    private List<String> rootEntries;
 
     /**
      * Path containing jars that shall be indexed in addition to this archive.
      */
-    private ArrayList<String> indexJars;
+    private List<String> indexJars;
 
     /**
      * Creates a minimal default manifest with {@code Manifest-Version: 1.0} only.
@@ -159,7 +159,7 @@ public class JarArchiver
         super();
         archiveType = "jar";
         setEncoding( "UTF8" );
-        rootEntries = new Vector<String>();
+        rootEntries = new ArrayList<>();
     }
 
     /**
@@ -299,7 +299,7 @@ public class JarArchiver
     {
         if ( indexJars == null )
         {
-            indexJars = new ArrayList<String>();
+            indexJars = new ArrayList<>();
         }
         indexJars.add( indexJar.getAbsolutePath() );
     }
@@ -373,13 +373,14 @@ public class JarArchiver
         }
 
         zipDir( null, zOut, "META-INF/", DEFAULT_DIR_MODE, getEncoding() );
-        // time to write the manifest
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        manifest.write( baos );
 
-        ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
-        super.zipFile( createInputStreamSupplier( bais ), zOut, MANIFEST_NAME, System.currentTimeMillis(), null,
-                       DEFAULT_FILE_MODE, null, false );
+        // time to write the manifest
+        ByteArrayOutputStream baos = new ByteArrayOutputStream( 128 );
+        manifest.write( baos );
+        InputStreamSupplier in = () -> new ByteArrayInputStream( baos.toByteArray() );
+
+        super.zipFile( in, zOut, MANIFEST_NAME, System.currentTimeMillis(), null, DEFAULT_FILE_MODE, null,
+                       false );
         super.initZipOutputStream( zOut );
     }
 
@@ -408,9 +409,9 @@ public class JarArchiver
     private void createIndexList( ConcurrentJarCreator zOut )
         throws IOException, ArchiverException
     {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream( 128 );
         // encoding must be UTF8 as specified in the specs.
-        PrintWriter writer = new PrintWriter( new OutputStreamWriter( baos, "UTF8" ) );
+        PrintWriter writer = new PrintWriter( new OutputStreamWriter( baos, StandardCharsets.UTF_8 ) );
 
         // version-info blankline
         writer.println( "JarIndex-Version: 1.0" );
@@ -440,7 +441,7 @@ public class JarArchiver
                 filteredDirs.remove( META_INF_NAME + '/' );
             }
         }
-        writeIndexLikeList( new ArrayList<String>( filteredDirs ), rootEntries, writer );
+        writeIndexLikeList( new ArrayList<>( filteredDirs ), rootEntries, writer );
         writer.println();
 
         if ( indexJars != null )
@@ -464,8 +465,8 @@ public class JarArchiver
                 String name = findJarName( indexJar, cpEntries );
                 if ( name != null )
                 {
-                    ArrayList<String> dirs = new ArrayList<String>();
-                    ArrayList<String> files = new ArrayList<String>();
+                    List<String> dirs = new ArrayList<>();
+                    List<String> files = new ArrayList<>();
                     grabFilesAndDirs( indexJar, dirs, files );
                     if ( dirs.size() + files.size() > 0 )
                     {
@@ -479,9 +480,9 @@ public class JarArchiver
 
         writer.flush();
 
-        ByteArrayInputStream bais = new ByteArrayInputStream( baos.toByteArray() );
+        InputStreamSupplier in = () -> new ByteArrayInputStream( baos.toByteArray() );
 
-        super.zipFile( createInputStreamSupplier( bais ), zOut, INDEX_NAME, System.currentTimeMillis(), null,
+        super.zipFile( in, zOut, INDEX_NAME, System.currentTimeMillis(), null,
                        DEFAULT_FILE_MODE, null, true );
     }
 
@@ -511,9 +512,9 @@ public class JarArchiver
         }
         else
         {
-            if ( index && ( !vPath.contains( "/" ) ) )
+            if ( index && !vPath.contains( "/" ) )
             {
-                rootEntries.addElement( vPath );
+                rootEntries.add( vPath );
             }
             super.zipFile( is, zOut, vPath, lastModified, fromArchive, mode, symlinkDestination, addInParallel );
         }
@@ -624,7 +625,7 @@ public class JarArchiver
             filesetManifest = null;
             originalManifest = null;
         }
-        rootEntries.removeAllElements();
+        rootEntries.clear();
     }
 
     /**
@@ -722,21 +723,9 @@ public class JarArchiver
             return new File( fileName ).getName();
         }
         fileName = fileName.replace( File.separatorChar, '/' );
-        SortedMap<String, String> matches = new TreeMap<String, String>( new Comparator<String>()
-        {
 
-            // longest match comes first
-            @Override
-            public int compare( String o1, String o2 )
-            {
-                if ( ( o1 != null ) && ( o2 != null ) )
-                {
-                    return o2.length() - o1.length();
-                }
-                return 0;
-            }
-
-        } );
+        // longest match comes first
+        SortedMap<String, String> matches = new TreeMap<>( Comparator.comparingInt( String::length ).reversed() );
 
         for ( String aClasspath : classpath )
         {

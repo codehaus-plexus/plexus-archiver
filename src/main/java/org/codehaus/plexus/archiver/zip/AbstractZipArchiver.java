@@ -22,10 +22,11 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.util.Calendar;
@@ -41,7 +42,6 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipEncoding;
 import org.apache.commons.compress.archivers.zip.ZipEncodingHelper;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
-import org.apache.commons.compress.utils.Charsets;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
@@ -50,6 +50,7 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
+import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
@@ -96,6 +97,7 @@ public abstract class AbstractZipArchiver
     /**
      * @deprecated Use {@link Archiver#setDuplicateBehavior(String)} instead.
      */
+    @Deprecated
     protected final String duplicate = Archiver.DUPLICATES_SKIP;
 
     /**
@@ -330,11 +332,11 @@ public abstract class AbstractZipArchiver
             effectiveEncoding = Charset.defaultCharset().name();
         }
 
-        boolean utf8 = Charsets.UTF_8.name().equalsIgnoreCase( effectiveEncoding );
+        boolean utf8 = StandardCharsets.UTF_8.name().equalsIgnoreCase( effectiveEncoding );
 
         if ( !utf8 )
         {
-            for ( String alias : Charsets.UTF_8.aliases() )
+            for ( String alias : StandardCharsets.UTF_8.aliases() )
             {
                 if ( alias.equalsIgnoreCase( effectiveEncoding ) )
                 {
@@ -468,12 +470,11 @@ public abstract class AbstractZipArchiver
             ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );
             ze.setUnixMode( UnixStat.FILE_FLAG | mode );
 
-            InputStream payload;
             if ( ze.isUnixSymlink() )
             {
                 final byte[] bytes = encodeArchiveEntry( symlinkDestination, getEncoding() );
-                payload = new ByteArrayInputStream( bytes );
-                zOut.addArchiveEntry( ze, createInputStreamSupplier( payload ), true );
+                InputStreamSupplier payload = () -> new ByteArrayInputStream( bytes );
+                zOut.addArchiveEntry( ze, payload, true );
             }
             else
             {
@@ -506,22 +507,15 @@ public abstract class AbstractZipArchiver
 
         final boolean b = entry.getResource() instanceof SymlinkDestinationSupplier;
         String symlinkTarget = b ? ( (SymlinkDestinationSupplier) entry.getResource() ).getSymlinkDestination() : null;
-        InputStreamSupplier in = new InputStreamSupplier()
-        {
-
-            @Override
-            public InputStream get()
+        InputStreamSupplier in = () -> {
+            try
             {
-                try
-                {
-                    return entry.getInputStream();
-                }
-                catch ( IOException e )
-                {
-                    throw new RuntimeException( e );
-                }
+                return entry.getInputStream();
             }
-
+            catch ( IOException e )
+            {
+                throw new UncheckedIOException( e );
+            }
         };
         try
         {
@@ -619,14 +613,14 @@ public abstract class AbstractZipArchiver
 
             if ( !isSymlink )
             {
-                zOut.addArchiveEntry( ze, createInputStreamSupplier( new ByteArrayInputStream( "".getBytes() ) ), true );
+                zOut.addArchiveEntry( ze, () -> Streams.EMPTY_INPUTSTREAM, true );
             }
             else
             {
                 String symlinkDestination = ( (SymlinkDestinationSupplier) dir ).getSymlinkDestination();
                 final byte[] bytes = encodeArchiveEntry( symlinkDestination, encodingToUse );
                 ze.setMethod( ZipArchiveEntry.DEFLATED );
-                zOut.addArchiveEntry( ze, createInputStreamSupplier( new ByteArrayInputStream( bytes ) ), true );
+                zOut.addArchiveEntry( ze, () -> new ByteArrayInputStream( bytes ), true );
             }
         }
     }
@@ -640,20 +634,6 @@ public abstract class AbstractZipArchiver
         encodedPayloadByteBuffer.get( encodedPayloadBytes );
 
         return encodedPayloadBytes;
-    }
-
-    protected InputStreamSupplier createInputStreamSupplier( final InputStream inputStream )
-    {
-        return new InputStreamSupplier()
-        {
-
-            @Override
-            public InputStream get()
-            {
-                return inputStream;
-            }
-
-        };
     }
 
     /**
