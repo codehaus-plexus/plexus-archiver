@@ -39,7 +39,7 @@ public class DirectoryArchiver
     extends AbstractArchiver
 {
 
-    private final List<Runnable> directoryChmods = new ArrayList<Runnable>();
+    private final List<Runnable> directoryChmods = new ArrayList<>();
 
     public void resetArchiver()
         throws IOException
@@ -103,10 +103,7 @@ public class DirectoryArchiver
                 }
             }
 
-            for ( Runnable directoryChmod : directoryChmods )
-            {
-                directoryChmod.run();
-            }
+            directoryChmods.forEach( Runnable::run );
             directoryChmods.clear();
         }
         catch ( final IOException ioe )
@@ -169,22 +166,15 @@ public class DirectoryArchiver
                 throw new ArchiverException( "Unable to create directory or parent directory of " + outFile );
             }
 
-            directoryChmods.add( new Runnable()
-            {
-
-                @Override
-                public void run()
+            directoryChmods.add( () -> {
+                try
                 {
-                    try
-                    {
-                        setFileModes( entry, outFile, inLastModified );
-                    }
-                    catch ( IOException e )
-                    {
-                        throw new ArchiverException( "Failed setting file attributes", e );
-                    }
+                    setFileModes( entry, outFile, inLastModified );
                 }
-
+                catch ( IOException e )
+                {
+                    throw new ArchiverException( "Failed setting file attributes", e );
+                }
             } );
         }
 

@@ -17,6 +17,7 @@ package org.codehaus.plexus.archiver.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +32,8 @@ import org.codehaus.plexus.util.IOUtil;
 
 public class Streams
 {
+
+    public static final InputStream EMPTY_INPUTSTREAM = new ByteArrayInputStream( new byte[0] );
 
     public static BufferedInputStream bufferedInputStream( InputStream is )
     {
