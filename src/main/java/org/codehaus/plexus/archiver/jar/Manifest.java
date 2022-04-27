@@ -510,7 +510,7 @@ public class Manifest
          */
         public Attribute getAttribute( String attributeName )
         {
-            return attributes.get( attributeName.toLowerCase() );
+            return attributes.get( attributeName.toLowerCase( Locale.ENGLISH ) );
         }
 
         /**

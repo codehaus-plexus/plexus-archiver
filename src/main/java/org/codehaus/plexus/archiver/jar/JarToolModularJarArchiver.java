@@ -36,7 +36,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.compress.parallel.InputStreamSupplier;
-import org.apache.commons.io.output.NullOutputStream;
+import org.apache.commons.io.output.NullPrintStream;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.util.IOUtil;
@@ -294,7 +294,7 @@ public class JarToolModularJarArchiver
             // Test the output code validating the --date option.
             String[] args = { "--date", "2099-12-31T23:59:59Z", "--version" };
 
-            PrintStream nullPrintStream = new PrintStream( NullOutputStream.NULL_OUTPUT_STREAM );
+            PrintStream nullPrintStream = NullPrintStream.NULL_PRINT_STREAM;
             Integer result = (Integer) runMethod.invoke( jarTool, nullPrintStream, nullPrintStream, args );
 
             return result != null && result.intValue() == 0;

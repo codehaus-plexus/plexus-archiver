@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
@@ -412,7 +413,7 @@ public abstract class AbstractUnArchiver
         boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
         boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
 
-        String casingMessage = String.format( "Archive entry '%s' and existing file '%s' names differ only by case."
+        String casingMessage = String.format( Locale.ENGLISH, "Archive entry '%s' and existing file '%s' names differ only by case."
                 + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
 
         // (1)
