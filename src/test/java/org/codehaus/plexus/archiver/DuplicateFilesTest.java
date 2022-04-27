@@ -3,14 +3,13 @@ package org.codehaus.plexus.archiver;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Enumeration;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
@@ -34,7 +33,8 @@ public class DuplicateFilesTest
         throws Exception
     {
         super.setUp();
-        getContainer().getLoggerManager().setThreshold( Logger.LEVEL_DEBUG );
+        DefaultPlexusContainer container = (DefaultPlexusContainer) getContainer();
+        container.getLoggerManager().setThreshold( Logger.LEVEL_DEBUG );
     }
 
     public void testZipArchiver()
