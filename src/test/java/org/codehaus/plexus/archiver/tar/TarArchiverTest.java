@@ -58,6 +58,7 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -527,19 +528,7 @@ public class TarArchiverTest
         final File tarFile2 = tarHandler.createTarfile2( tarFile );
         final TarFile cmp1 = tarHandler.newTarFile( tarFile );
         final TarFile cmp2 = new TarFile( tarFile2 );
-        ArchiveFileComparator.forEachTarArchiveEntry( cmp1, new ArchiveFileComparator.TarArchiveEntryConsumer()
-        {
-
-            @Override
-            public void accept( TarArchiveEntry ze1 )
-                throws IOException
-            {
-                final String name1 = ze1.getName();
-                assertNotNull( name1 );
-
-            }
-
-        } );
+        ArchiveFileComparator.forEachTarArchiveEntry( cmp1, ze1 -> Assert.assertNotNull( ze1.getName() ) );
         cmp1.close();
         cmp2.close();
 
@@ -571,7 +560,7 @@ public class TarArchiverTest
         final File tarFile2 = tarHandler.createTarfile2( tarFile );
         final TarFile cmp1 = tarHandler.newTarFile( tarFile );
         final TarFile cmp2 = new TarFile( tarFile2 );
-        ArchiveFileComparator.assertEquals( cmp1, cmp2, "prfx/" );
+        ArchiveFileComparator.assertTarEquals( cmp1, cmp2, "prfx/" );
         cmp1.close();
         cmp2.close();
     }
@@ -591,7 +580,7 @@ public class TarArchiverTest
 
         final TarFile cmp1 = new TarFile( tarFile );
         final TarFile cmp2 = new TarFile( tarFile2 );
-        ArchiveFileComparator.assertEquals( cmp1, cmp2, "" );
+        ArchiveFileComparator.assertTarEquals( cmp1, cmp2, "" );
     }
 
 }

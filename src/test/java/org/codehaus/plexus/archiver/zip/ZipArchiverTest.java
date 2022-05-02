@@ -644,7 +644,7 @@ public class ZipArchiverTest
 
         final ZipFile cmp1 = new ZipFile( zipFile );
         final ZipFile cmp2 = new ZipFile( zipFile2 );
-        ArchiveFileComparator.assertEquals( cmp1, cmp2, "" );
+        ArchiveFileComparator.assertZipEquals( cmp1, cmp2, "" );
     }
 
     /*
@@ -811,7 +811,7 @@ public class ZipArchiverTest
 
         final ZipFile cmp1 = new ZipFile( zipFile );
         final ZipFile cmp2 = new ZipFile( zipFile2 );
-        ArchiveFileComparator.assertEquals( cmp1, cmp2, "prfx/" );
+        ArchiveFileComparator.assertZipEquals( cmp1, cmp2, "prfx/" );
         cmp1.close();
         cmp2.close();
     }
@@ -842,7 +842,7 @@ public class ZipArchiverTest
 
         final TarFile cmp1 = new TarFile( tarFile );
         final ZipFile cmp2 = new ZipFile( zipFile );
-        ArchiveFileComparator.assertEquals( cmp1, cmp2, "prfx/" );
+        ArchiveFileComparator.assertTarZipEquals( cmp1, cmp2, "prfx/" );
         cmp1.close();
         cmp2.close();
     }
