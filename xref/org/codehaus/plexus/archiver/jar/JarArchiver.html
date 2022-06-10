@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>D:\Entwicklung\Projekte\plexus-archiver\target\checkout\src\main\java\org\codehaus\plexus\archiver\jar\JarArchiver.java xref</title>
+<title>JarArchiver xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../../../../apidocs/org/codehaus/plexus/archiver/jar">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../../../../apidocs/org/codehaus/plexus/archiver/jar/JarArchiver.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_javadoccomment"> * Copyright 2004 The Apache Software Foundation</em>
@@ -35,17 +35,17 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.io.OutputStreamWriter;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.io.PrintWriter;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.util.Comparator;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.HashSet;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.util.Set;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.util.SortedMap;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.util.StringTokenizer;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.util.TreeMap;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.Vector;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.nio.charset.StandardCharsets;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.util.Collections;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.util.Comparator;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.Enumeration;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.util.HashSet;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> java.util.Set;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> java.util.SortedMap;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> java.util.StringTokenizer;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> java.util.TreeMap;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -147,12 +147,12 @@
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * &lt;p/&gt;</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * Will not be filled unless the user has asked for an index.</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">private</strong> Vector&lt;String&gt; rootEntries;
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; rootEntries;
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> 
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * Path containing jars that shall be indexed in addition to this archive.</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">private</strong> ArrayList&lt;String&gt; indexJars;
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; indexJars;
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> 
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     * Creates a minimal default manifest with {@code Manifest-Version: 1.0} only.</em>
@@ -167,7 +167,7 @@
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         <strong class="jxr_keyword">super</strong>();
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         archiveType = <span class="jxr_string">"jar"</span>;
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         setEncoding( <span class="jxr_string">"UTF8"</span> );
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>         rootEntries = <strong class="jxr_keyword">new</strong> Vector&lt;String&gt;();
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         rootEntries = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>     }
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> 
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>     <em class="jxr_javadoccomment">/**</em>
@@ -307,7 +307,7 @@
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>     {
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>         <strong class="jxr_keyword">if</strong> ( indexJars == <strong class="jxr_keyword">null</strong> )
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>         {
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>             indexJars = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>             indexJars = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>         }
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>         indexJars.add( indexJar.getAbsolutePath() );
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>     }
@@ -381,459 +381,466 @@
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>         }
 <a class="jxr_linenumber" name="L374" href="#L374">374</a> 
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>         zipDir( <strong class="jxr_keyword">null</strong>, zOut, <span class="jxr_string">"META-INF/"</span>, DEFAULT_DIR_MODE, getEncoding() );
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>         <em class="jxr_comment">// time to write the manifest</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>();
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>         manifest.write( baos );
-<a class="jxr_linenumber" name="L379" href="#L379">379</a> 
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         <strong class="jxr_keyword">super</strong>.zipFile( createInputStreamSupplier( bais ), zOut, MANIFEST_NAME, System.currentTimeMillis(), <strong class="jxr_keyword">null</strong>,
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>                        DEFAULT_FILE_MODE, <strong class="jxr_keyword">null</strong>, false );
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <strong class="jxr_keyword">super</strong>.initZipOutputStream( zOut );
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>     }
-<a class="jxr_linenumber" name="L385" href="#L385">385</a> 
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>     @Override
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> finalizeZipOutputStream( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>     {
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         <strong class="jxr_keyword">if</strong> ( index )
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>         {
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>             createIndexList( zOut );
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         }
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>     }
-<a class="jxr_linenumber" name="L395" href="#L395">395</a> 
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L397" href="#L397">397</a> <em class="jxr_javadoccomment">     * Create the index list to speed up classloading.</em>
-<a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     * This is a JDK 1.3+ specific feature and is enabled by default. See</em>
-<a class="jxr_linenumber" name="L399" href="#L399">399</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html" target="alexandria_uri">http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html</a>#JAR%20Index"&gt;</em>
-<a class="jxr_linenumber" name="L400" href="#L400">400</a> <em class="jxr_javadoccomment">     * the JAR index specification&lt;/a&gt; for more details.</em>
-<a class="jxr_linenumber" name="L401" href="#L401">401</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     * @param zOut the zip stream representing the jar being built.</em>
-<a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     * @throws IOException thrown if there is an error while creating the</em>
-<a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     * index and adding it to the zip stream.</em>
-<a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * @throws org.codehaus.plexus.archiver.ArchiverException</em>
-<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createIndexList( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     {
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>();
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <em class="jxr_comment">// encoding must be UTF8 as specified in the specs.</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         PrintWriter writer = <strong class="jxr_keyword">new</strong> PrintWriter( <strong class="jxr_keyword">new</strong> OutputStreamWriter( baos, <span class="jxr_string">"UTF8"</span> ) );
-<a class="jxr_linenumber" name="L414" href="#L414">414</a> 
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         <em class="jxr_comment">// version-info blankline</em>
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>         writer.println( <span class="jxr_string">"JarIndex-Version: 1.0"</span> );
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         writer.println();
-<a class="jxr_linenumber" name="L418" href="#L418">418</a> 
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <em class="jxr_comment">// header newline</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>         writer.println( getDestFile().getName() );
-<a class="jxr_linenumber" name="L421" href="#L421">421</a> 
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         <em class="jxr_comment">// filter out META-INF if it doesn't contain anything other than the index and manifest.</em>
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         <em class="jxr_comment">// this is what sun.misc.JarIndex does, guess we ought to be consistent.</em>
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         Set&lt;String&gt; filteredDirs = addedDirs.allAddedDirs();
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <em class="jxr_comment">// our added dirs always have a trailing slash</em>
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">if</strong> ( filteredDirs.contains( META_INF_NAME + '/' ) )
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">boolean</strong> add = false;
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">for</strong> ( String entry : entries.keySet() )
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>             {
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>                 <strong class="jxr_keyword">if</strong> ( entry.startsWith( META_INF_NAME + '/' ) &amp;&amp; !entry.equals( INDEX_NAME )
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>                          &amp;&amp; !entry.equals( MANIFEST_NAME ) )
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>                 {
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>                     add = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>                 }
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>             }
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>             <strong class="jxr_keyword">if</strong> ( !add )
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>             {
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>                 filteredDirs.remove( META_INF_NAME + '/' );
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>             }
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         }
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         writeIndexLikeList( <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;( filteredDirs ), rootEntries, writer );
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         writer.println();
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">if</strong> ( indexJars != <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         {
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             java.util.jar.Manifest mf = createManifest();
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>             String classpath = mf.getMainAttributes().getValue( ManifestConstants.ATTRIBUTE_CLASSPATH );
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>             String[] cpEntries = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>             <strong class="jxr_keyword">if</strong> ( classpath != <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>             {
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>                 StringTokenizer tok = <strong class="jxr_keyword">new</strong> StringTokenizer( classpath, <span class="jxr_string">" "</span> );
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>                 cpEntries = <strong class="jxr_keyword">new</strong> String[ tok.countTokens() ];
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>                 <strong class="jxr_keyword">int</strong> c = 0;
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>                 <strong class="jxr_keyword">while</strong> ( tok.hasMoreTokens() )
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>                 {
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>                     cpEntries[c++] = tok.nextToken();
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>                 }
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>             }
-<a class="jxr_linenumber" name="L461" href="#L461">461</a> 
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>             <strong class="jxr_keyword">for</strong> ( String indexJar : indexJars )
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>             {
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>                 String name = findJarName( indexJar, cpEntries );
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 <strong class="jxr_keyword">if</strong> ( name != <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 {
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>                     ArrayList&lt;String&gt; dirs = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>                     ArrayList&lt;String&gt; files = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;();
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>                     grabFilesAndDirs( indexJar, dirs, files );
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>                     <strong class="jxr_keyword">if</strong> ( dirs.size() + files.size() &gt; 0 )
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>                     {
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>                         writer.println( name );
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>                         writeIndexLikeList( dirs, files, writer );
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>                         writer.println();
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>                     }
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>                 }
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>             }
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>         }
-<a class="jxr_linenumber" name="L479" href="#L479">479</a> 
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>         writer.flush();
-<a class="jxr_linenumber" name="L481" href="#L481">481</a> 
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         ByteArrayInputStream bais = <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
-<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">super</strong>.zipFile( createInputStreamSupplier( bais ), zOut, INDEX_NAME, System.currentTimeMillis(), <strong class="jxr_keyword">null</strong>,
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>                        DEFAULT_FILE_MODE, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">true</strong> );
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>     }
-<a class="jxr_linenumber" name="L487" href="#L487">487</a> 
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * Overridden from Zip class to deal with manifests and index lists.</em>
-<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>     @Override
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> zipFile( InputStreamSupplier is, <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut, String vPath,
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>                             <strong class="jxr_keyword">long</strong> lastModified, File fromArchive,
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>                             <strong class="jxr_keyword">int</strong> mode, String symlinkDestination, <strong class="jxr_keyword">boolean</strong> addInParallel )
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>     {
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">if</strong> ( MANIFEST_NAME.equalsIgnoreCase( vPath ) )
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>         {
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>             <strong class="jxr_keyword">if</strong> ( !doubleFilePass || skipWriting )
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>             {
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 <strong class="jxr_keyword">try</strong> ( InputStream manifestInputStream = is.get() )
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>                 {
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>                     filesetManifest( fromArchive, manifestInputStream );
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 }
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>             }
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>         }
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( INDEX_NAME.equalsIgnoreCase( vPath ) &amp;&amp; index )
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>         {
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>             getLogger().warn( <span class="jxr_string">"Warning: selected "</span> + archiveType + <span class="jxr_string">" files include a META-INF/INDEX.LIST which will"</span>
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>                                   + <span class="jxr_string">" be replaced by a newly generated one."</span> );
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>         }
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>         <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>         {
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>             <strong class="jxr_keyword">if</strong> ( index &amp;&amp; ( !vPath.contains( <span class="jxr_string">"/"</span> ) ) )
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>             {
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>                 rootEntries.addElement( vPath );
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>             }
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>             <strong class="jxr_keyword">super</strong>.zipFile( is, zOut, vPath, lastModified, fromArchive, mode, symlinkDestination, addInParallel );
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>         }
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>     }
-<a class="jxr_linenumber" name="L521" href="#L521">521</a> 
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> filesetManifest( File file, InputStream is )
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>     {
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>         <strong class="jxr_keyword">if</strong> ( ( manifestFile != <strong class="jxr_keyword">null</strong> ) &amp;&amp; manifestFile.equals( file ) )
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>         {
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>             <em class="jxr_comment">// If this is the same name specified in 'manifest', this</em>
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>             <em class="jxr_comment">// is the manifest to use</em>
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>             getLogger().debug( <span class="jxr_string">"Found manifest "</span> + file );
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>             <strong class="jxr_keyword">if</strong> ( is != <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>             {
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>                 manifest = getManifest( is );
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>             }
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>             {
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>                 manifest = getManifest( file );
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>             }
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>         }
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ( filesetManifestConfig != <strong class="jxr_keyword">null</strong> ) &amp;&amp; filesetManifestConfig != FilesetManifestConfig.skip )
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>         {
-<a class="jxr_linenumber" name="L541" href="#L541">541</a>             <em class="jxr_comment">// we add this to our group of fileset manifests</em>
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>             getLogger().debug( <span class="jxr_string">"Found manifest to merge in file "</span> + file );
-<a class="jxr_linenumber" name="L543" href="#L543">543</a> 
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>             <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> newManifest;
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>             <strong class="jxr_keyword">if</strong> ( is != <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>             {
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>                 newManifest = getManifest( is );
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>             }
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>             {
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>                 newManifest = getManifest( file );
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>             }
-<a class="jxr_linenumber" name="L553" href="#L553">553</a> 
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>             <strong class="jxr_keyword">if</strong> ( filesetManifest == <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L555" href="#L555">555</a>             {
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>                 filesetManifest = newManifest;
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>             }
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L559" href="#L559">559</a>             {
-<a class="jxr_linenumber" name="L560" href="#L560">560</a>                 JdkManifestFactory.merge( filesetManifest, newManifest, false );
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>             }
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>         }
-<a class="jxr_linenumber" name="L563" href="#L563">563</a>     }
-<a class="jxr_linenumber" name="L564" href="#L564">564</a> 
-<a class="jxr_linenumber" name="L565" href="#L565">565</a>     @Override
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> createEmptyZip( File zipFile )
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>     {
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>         <strong class="jxr_keyword">if</strong> ( !createEmpty )
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>         {
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>         }
-<a class="jxr_linenumber" name="L573" href="#L573">573</a> 
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>         <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>         {
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>             getLogger().debug( <span class="jxr_string">"Building MANIFEST-only jar: "</span> + getDestFile().getAbsolutePath() );
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>             zipArchiveOutputStream =
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>                 <strong class="jxr_keyword">new</strong> ZipArchiveOutputStream( bufferedOutputStream( fileOutputStream( getDestFile(), <span class="jxr_string">"jar"</span> ) ) );
-<a class="jxr_linenumber" name="L579" href="#L579">579</a> 
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>             zipArchiveOutputStream.setEncoding( getEncoding() );
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>             <strong class="jxr_keyword">if</strong> ( isCompress() )
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>             {
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>                 zipArchiveOutputStream.setMethod( ZipArchiveOutputStream.DEFLATED );
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>             }
-<a class="jxr_linenumber" name="L585" href="#L585">585</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>             {
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>                 zipArchiveOutputStream.setMethod( ZipArchiveOutputStream.STORED );
-<a class="jxr_linenumber" name="L588" href="#L588">588</a>             }
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>             <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> ps =
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>                 <strong class="jxr_keyword">new</strong> <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a>( isRecompressAddedZips(), Runtime.getRuntime().availableProcessors() );
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>             initZipOutputStream( ps );
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>             finalizeZipOutputStream( ps );
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>         }
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>         <strong class="jxr_keyword">catch</strong> ( IOException ioe )
-<a class="jxr_linenumber" name="L595" href="#L595">595</a>         {
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Could not create almost empty JAR archive ("</span> + ioe.getMessage() + <span class="jxr_string">")"</span>, ioe );
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>         }
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>         <strong class="jxr_keyword">finally</strong>
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>         {
-<a class="jxr_linenumber" name="L600" href="#L600">600</a>             <em class="jxr_comment">// Close the output stream.</em>
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>             <em class="jxr_comment">//IOUtil.close( zOut );</em>
-<a class="jxr_linenumber" name="L602" href="#L602">602</a>             createEmpty = false;
-<a class="jxr_linenumber" name="L603" href="#L603">603</a>         }
-<a class="jxr_linenumber" name="L604" href="#L604">604</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L605" href="#L605">605</a>     }
-<a class="jxr_linenumber" name="L606" href="#L606">606</a> 
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L608" href="#L608">608</a> <em class="jxr_javadoccomment">     * Make sure we don't think we already have a MANIFEST next time this task</em>
-<a class="jxr_linenumber" name="L609" href="#L609">609</a> <em class="jxr_javadoccomment">     * gets executed.</em>
-<a class="jxr_linenumber" name="L610" href="#L610">610</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L611" href="#L611">611</a> <em class="jxr_javadoccomment">     * @see ZipArchiver#cleanUp</em>
-<a class="jxr_linenumber" name="L612" href="#L612">612</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>     @Override
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> cleanUp()
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="L616" href="#L616">616</a>     {
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>         <strong class="jxr_keyword">super</strong>.cleanUp();
-<a class="jxr_linenumber" name="L618" href="#L618">618</a> 
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>         <em class="jxr_comment">// we want to save this info if we are going to make another pass</em>
-<a class="jxr_linenumber" name="L620" href="#L620">620</a>         <strong class="jxr_keyword">if</strong> ( !doubleFilePass || !skipWriting )
-<a class="jxr_linenumber" name="L621" href="#L621">621</a>         {
-<a class="jxr_linenumber" name="L622" href="#L622">622</a>             manifest = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L623" href="#L623">623</a>             configuredManifest = savedConfiguredManifest;
-<a class="jxr_linenumber" name="L624" href="#L624">624</a>             filesetManifest = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L625" href="#L625">625</a>             originalManifest = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>         }
-<a class="jxr_linenumber" name="L627" href="#L627">627</a>         rootEntries.removeAllElements();
-<a class="jxr_linenumber" name="L628" href="#L628">628</a>     }
-<a class="jxr_linenumber" name="L629" href="#L629">629</a> 
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L631" href="#L631">631</a> <em class="jxr_javadoccomment">     * reset to default values.</em>
-<a class="jxr_linenumber" name="L632" href="#L632">632</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L633" href="#L633">633</a> <em class="jxr_javadoccomment">     * @see ZipArchiver#reset</em>
-<a class="jxr_linenumber" name="L634" href="#L634">634</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>     @Override
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> reset()
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>     {
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>         <strong class="jxr_keyword">super</strong>.reset();
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>         configuredManifest = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>         filesetManifestConfig = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>         mergeManifestsMain = false;
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>         manifestFile = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>         index = false;
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>     }
-<a class="jxr_linenumber" name="L645" href="#L645">645</a> 
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>     <strong class="jxr_keyword">public</strong> enum FilesetManifestConfig
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>     {
-<a class="jxr_linenumber" name="L648" href="#L648">648</a> 
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>         skip,
-<a class="jxr_linenumber" name="L650" href="#L650">650</a>         merge,
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>         mergewithoutmain
-<a class="jxr_linenumber" name="L652" href="#L652">652</a> 
-<a class="jxr_linenumber" name="L653" href="#L653">653</a>     }
-<a class="jxr_linenumber" name="L654" href="#L654">654</a> 
-<a class="jxr_linenumber" name="L655" href="#L655">655</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L656" href="#L656">656</a> <em class="jxr_javadoccomment">     * Writes the directory entries from the first and the filenames</em>
-<a class="jxr_linenumber" name="L657" href="#L657">657</a> <em class="jxr_javadoccomment">     * from the second list to the given writer, one entry per line.</em>
-<a class="jxr_linenumber" name="L658" href="#L658">658</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L659" href="#L659">659</a> <em class="jxr_javadoccomment">     * @param dirs The directories</em>
-<a class="jxr_linenumber" name="L660" href="#L660">660</a> <em class="jxr_javadoccomment">     * @param files The files</em>
-<a class="jxr_linenumber" name="L661" href="#L661">661</a> <em class="jxr_javadoccomment">     * @param writer The printwriter ;)</em>
-<a class="jxr_linenumber" name="L662" href="#L662">662</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L663" href="#L663">663</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> writeIndexLikeList( List&lt;String&gt; dirs, List&lt;String&gt; files, PrintWriter writer )
-<a class="jxr_linenumber" name="L664" href="#L664">664</a>     {
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>         <em class="jxr_comment">// JarIndex is sorting the directories by ascending order.</em>
-<a class="jxr_linenumber" name="L666" href="#L666">666</a>         <em class="jxr_comment">// it has no value but cosmetic since it will be read into a</em>
-<a class="jxr_linenumber" name="L667" href="#L667">667</a>         <em class="jxr_comment">// hashtable by the classloader, but we'll do so anyway.</em>
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>         Collections.sort( dirs );
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>         Collections.sort( files );
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>         <strong class="jxr_keyword">for</strong> ( String dir : dirs )
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>         {
-<a class="jxr_linenumber" name="L672" href="#L672">672</a>             <em class="jxr_comment">// try to be smart, not to be fooled by a weird directory name</em>
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>             dir = dir.replace( '&#92;&#92;', '/' );
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>             <strong class="jxr_keyword">if</strong> ( dir.startsWith( <span class="jxr_string">"./"</span> ) )
-<a class="jxr_linenumber" name="L675" href="#L675">675</a>             {
-<a class="jxr_linenumber" name="L676" href="#L676">676</a>                 dir = dir.substring( 2 );
-<a class="jxr_linenumber" name="L677" href="#L677">677</a>             }
-<a class="jxr_linenumber" name="L678" href="#L678">678</a>             <strong class="jxr_keyword">while</strong> ( dir.startsWith( <span class="jxr_string">"/"</span> ) )
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>             {
-<a class="jxr_linenumber" name="L680" href="#L680">680</a>                 dir = dir.substring( 1 );
-<a class="jxr_linenumber" name="L681" href="#L681">681</a>             }
-<a class="jxr_linenumber" name="L682" href="#L682">682</a>             <strong class="jxr_keyword">int</strong> pos = dir.lastIndexOf( '/' );
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>             <strong class="jxr_keyword">if</strong> ( pos != -1 )
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>             {
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>                 dir = dir.substring( 0, pos );
-<a class="jxr_linenumber" name="L686" href="#L686">686</a>             }
-<a class="jxr_linenumber" name="L687" href="#L687">687</a> 
-<a class="jxr_linenumber" name="L688" href="#L688">688</a>             <em class="jxr_comment">// name newline</em>
-<a class="jxr_linenumber" name="L689" href="#L689">689</a>             writer.println( dir );
-<a class="jxr_linenumber" name="L690" href="#L690">690</a>         }
-<a class="jxr_linenumber" name="L691" href="#L691">691</a> 
-<a class="jxr_linenumber" name="L692" href="#L692">692</a>         <strong class="jxr_keyword">for</strong> ( String file : files )
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>         {
-<a class="jxr_linenumber" name="L694" href="#L694">694</a>             writer.println( file );
-<a class="jxr_linenumber" name="L695" href="#L695">695</a>         }
-<a class="jxr_linenumber" name="L696" href="#L696">696</a>     }
-<a class="jxr_linenumber" name="L697" href="#L697">697</a> 
-<a class="jxr_linenumber" name="L698" href="#L698">698</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L699" href="#L699">699</a> <em class="jxr_javadoccomment">     * try to guess the name of the given file.</em>
-<a class="jxr_linenumber" name="L700" href="#L700">700</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L701" href="#L701">701</a> <em class="jxr_javadoccomment">     * If this jar has a classpath attribute in its manifest, we</em>
-<a class="jxr_linenumber" name="L702" href="#L702">702</a> <em class="jxr_javadoccomment">     * can assume that it will only require an index of jars listed</em>
-<a class="jxr_linenumber" name="L703" href="#L703">703</a> <em class="jxr_javadoccomment">     * there. try to find which classpath entry is most likely the</em>
-<a class="jxr_linenumber" name="L704" href="#L704">704</a> <em class="jxr_javadoccomment">     * one the given file name points to.&lt;/p&gt;</em>
-<a class="jxr_linenumber" name="L705" href="#L705">705</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L706" href="#L706">706</a> <em class="jxr_javadoccomment">     * In the absence of a classpath attribute, assume the other</em>
-<a class="jxr_linenumber" name="L707" href="#L707">707</a> <em class="jxr_javadoccomment">     * files will be placed inside the same directory as this jar and</em>
-<a class="jxr_linenumber" name="L708" href="#L708">708</a> <em class="jxr_javadoccomment">     * use their basename.&lt;/p&gt;</em>
-<a class="jxr_linenumber" name="L709" href="#L709">709</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L710" href="#L710">710</a> <em class="jxr_javadoccomment">     * if there is a classpath and the given file doesn't match any</em>
-<a class="jxr_linenumber" name="L711" href="#L711">711</a> <em class="jxr_javadoccomment">     * of its entries, return null.&lt;/p&gt;</em>
-<a class="jxr_linenumber" name="L712" href="#L712">712</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L713" href="#L713">713</a> <em class="jxr_javadoccomment">     * @param fileName .</em>
-<a class="jxr_linenumber" name="L714" href="#L714">714</a> <em class="jxr_javadoccomment">     * @param classpath .</em>
-<a class="jxr_linenumber" name="L715" href="#L715">715</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L716" href="#L716">716</a> <em class="jxr_javadoccomment">     * @return The guessed name</em>
-<a class="jxr_linenumber" name="L717" href="#L717">717</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> String findJarName( String fileName, String[] classpath )
-<a class="jxr_linenumber" name="L719" href="#L719">719</a>     {
-<a class="jxr_linenumber" name="L720" href="#L720">720</a>         <strong class="jxr_keyword">if</strong> ( classpath == <strong class="jxr_keyword">null</strong> )
-<a class="jxr_linenumber" name="L721" href="#L721">721</a>         {
-<a class="jxr_linenumber" name="L722" href="#L722">722</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> File( fileName ).getName();
-<a class="jxr_linenumber" name="L723" href="#L723">723</a>         }
-<a class="jxr_linenumber" name="L724" href="#L724">724</a>         fileName = fileName.replace( File.separatorChar, '/' );
-<a class="jxr_linenumber" name="L725" href="#L725">725</a>         SortedMap&lt;String, String&gt; matches = <strong class="jxr_keyword">new</strong> TreeMap&lt;String, String&gt;( <strong class="jxr_keyword">new</strong> Comparator&lt;String&gt;()
-<a class="jxr_linenumber" name="L726" href="#L726">726</a>         {
-<a class="jxr_linenumber" name="L727" href="#L727">727</a> 
-<a class="jxr_linenumber" name="L728" href="#L728">728</a>             <em class="jxr_comment">// longest match comes first</em>
-<a class="jxr_linenumber" name="L729" href="#L729">729</a>             @Override
-<a class="jxr_linenumber" name="L730" href="#L730">730</a>             <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> compare( String o1, String o2 )
-<a class="jxr_linenumber" name="L731" href="#L731">731</a>             {
-<a class="jxr_linenumber" name="L732" href="#L732">732</a>                 <strong class="jxr_keyword">if</strong> ( ( o1 != <strong class="jxr_keyword">null</strong> ) &amp;&amp; ( o2 != <strong class="jxr_keyword">null</strong> ) )
-<a class="jxr_linenumber" name="L733" href="#L733">733</a>                 {
-<a class="jxr_linenumber" name="L734" href="#L734">734</a>                     <strong class="jxr_keyword">return</strong> o2.length() - o1.length();
-<a class="jxr_linenumber" name="L735" href="#L735">735</a>                 }
-<a class="jxr_linenumber" name="L736" href="#L736">736</a>                 <strong class="jxr_keyword">return</strong> 0;
-<a class="jxr_linenumber" name="L737" href="#L737">737</a>             }
-<a class="jxr_linenumber" name="L738" href="#L738">738</a> 
-<a class="jxr_linenumber" name="L739" href="#L739">739</a>         } );
-<a class="jxr_linenumber" name="L740" href="#L740">740</a> 
-<a class="jxr_linenumber" name="L741" href="#L741">741</a>         <strong class="jxr_keyword">for</strong> ( String aClasspath : classpath )
-<a class="jxr_linenumber" name="L742" href="#L742">742</a>         {
-<a class="jxr_linenumber" name="L743" href="#L743">743</a>             <strong class="jxr_keyword">if</strong> ( fileName.endsWith( aClasspath ) )
-<a class="jxr_linenumber" name="L744" href="#L744">744</a>             {
-<a class="jxr_linenumber" name="L745" href="#L745">745</a>                 matches.put( aClasspath, aClasspath );
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>             }
-<a class="jxr_linenumber" name="L747" href="#L747">747</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L748" href="#L748">748</a>             {
-<a class="jxr_linenumber" name="L749" href="#L749">749</a>                 <strong class="jxr_keyword">int</strong> slash = aClasspath.indexOf( <span class="jxr_string">"/"</span> );
-<a class="jxr_linenumber" name="L750" href="#L750">750</a>                 String candidate = aClasspath;
-<a class="jxr_linenumber" name="L751" href="#L751">751</a>                 <strong class="jxr_keyword">while</strong> ( slash &gt; -1 )
-<a class="jxr_linenumber" name="L752" href="#L752">752</a>                 {
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>                     candidate = candidate.substring( slash + 1 );
-<a class="jxr_linenumber" name="L754" href="#L754">754</a>                     <strong class="jxr_keyword">if</strong> ( fileName.endsWith( candidate ) )
-<a class="jxr_linenumber" name="L755" href="#L755">755</a>                     {
-<a class="jxr_linenumber" name="L756" href="#L756">756</a>                         matches.put( candidate, aClasspath );
-<a class="jxr_linenumber" name="L757" href="#L757">757</a>                         <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L758" href="#L758">758</a>                     }
-<a class="jxr_linenumber" name="L759" href="#L759">759</a>                     slash = candidate.indexOf( <span class="jxr_string">"/"</span> );
-<a class="jxr_linenumber" name="L760" href="#L760">760</a>                 }
-<a class="jxr_linenumber" name="L761" href="#L761">761</a>             }
-<a class="jxr_linenumber" name="L762" href="#L762">762</a>         }
-<a class="jxr_linenumber" name="L763" href="#L763">763</a> 
-<a class="jxr_linenumber" name="L764" href="#L764">764</a>         <strong class="jxr_keyword">return</strong> matches.size() == 0 ? <strong class="jxr_keyword">null</strong> : matches.get( matches.firstKey() );
-<a class="jxr_linenumber" name="L765" href="#L765">765</a>     }
-<a class="jxr_linenumber" name="L766" href="#L766">766</a> 
-<a class="jxr_linenumber" name="L767" href="#L767">767</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L768" href="#L768">768</a> <em class="jxr_javadoccomment">     * Grab lists of all root-level files and all directories</em>
-<a class="jxr_linenumber" name="L769" href="#L769">769</a> <em class="jxr_javadoccomment">     * contained in the given archive.</em>
-<a class="jxr_linenumber" name="L770" href="#L770">770</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L771" href="#L771">771</a> <em class="jxr_javadoccomment">     * @param file .</em>
-<a class="jxr_linenumber" name="L772" href="#L772">772</a> <em class="jxr_javadoccomment">     * @param files .</em>
-<a class="jxr_linenumber" name="L773" href="#L773">773</a> <em class="jxr_javadoccomment">     * @param dirs .</em>
-<a class="jxr_linenumber" name="L774" href="#L774">774</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L775" href="#L775">775</a> <em class="jxr_javadoccomment">     * @throws java.io.IOException</em>
-<a class="jxr_linenumber" name="L776" href="#L776">776</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L777" href="#L777">777</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> grabFilesAndDirs( String file, List&lt;String&gt; dirs, List&lt;String&gt; files )
-<a class="jxr_linenumber" name="L778" href="#L778">778</a>         <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="L779" href="#L779">779</a>     {
-<a class="jxr_linenumber" name="L780" href="#L780">780</a>         File zipFile = <strong class="jxr_keyword">new</strong> File( file );
-<a class="jxr_linenumber" name="L781" href="#L781">781</a>         <strong class="jxr_keyword">if</strong> ( !zipFile.exists() )
-<a class="jxr_linenumber" name="L782" href="#L782">782</a>         {
-<a class="jxr_linenumber" name="L783" href="#L783">783</a>             Logger logger = <strong class="jxr_keyword">new</strong> ConsoleLogger( Logger.LEVEL_INFO, <span class="jxr_string">"console"</span> );
-<a class="jxr_linenumber" name="L784" href="#L784">784</a>             logger.error( <span class="jxr_string">"JarArchive skipping non-existing file: "</span> + zipFile.getAbsolutePath() );
-<a class="jxr_linenumber" name="L785" href="#L785">785</a>         }
-<a class="jxr_linenumber" name="L786" href="#L786">786</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( zipFile.isDirectory() )
-<a class="jxr_linenumber" name="L787" href="#L787">787</a>         {
-<a class="jxr_linenumber" name="L788" href="#L788">788</a>             Logger logger = <strong class="jxr_keyword">new</strong> ConsoleLogger( Logger.LEVEL_INFO, <span class="jxr_string">"console"</span> );
-<a class="jxr_linenumber" name="L789" href="#L789">789</a>             logger.info( <span class="jxr_string">"JarArchiver skipping indexJar "</span> + zipFile + <span class="jxr_string">" because it is not a jar"</span> );
-<a class="jxr_linenumber" name="L790" href="#L790">790</a>         }
-<a class="jxr_linenumber" name="L791" href="#L791">791</a>         <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L792" href="#L792">792</a>         {
-<a class="jxr_linenumber" name="L793" href="#L793">793</a>             <strong class="jxr_keyword">try</strong> ( ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( file, <span class="jxr_string">"utf-8"</span> ) )
-<a class="jxr_linenumber" name="L794" href="#L794">794</a>             {
-<a class="jxr_linenumber" name="L795" href="#L795">795</a>                 Enumeration&lt;ZipArchiveEntry&gt; entries = zf.getEntries();
-<a class="jxr_linenumber" name="L796" href="#L796">796</a>                 HashSet&lt;String&gt; dirSet = <strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;();
-<a class="jxr_linenumber" name="L797" href="#L797">797</a>                 <strong class="jxr_keyword">while</strong> ( entries.hasMoreElements() )
-<a class="jxr_linenumber" name="L798" href="#L798">798</a>                 {
-<a class="jxr_linenumber" name="L799" href="#L799">799</a>                     ZipArchiveEntry ze = entries.nextElement();
-<a class="jxr_linenumber" name="L800" href="#L800">800</a>                     String name = ze.getName();
-<a class="jxr_linenumber" name="L801" href="#L801">801</a>                     <em class="jxr_comment">// avoid index for manifest-only jars.</em>
-<a class="jxr_linenumber" name="L802" href="#L802">802</a>                     <strong class="jxr_keyword">if</strong> ( !name.equals( META_INF_NAME ) &amp;&amp; !name.equals( META_INF_NAME + '/' ) &amp;&amp; !name.equals(
-<a class="jxr_linenumber" name="L803" href="#L803">803</a>                         INDEX_NAME ) &amp;&amp; !name.equals( MANIFEST_NAME ) )
-<a class="jxr_linenumber" name="L804" href="#L804">804</a>                     {
-<a class="jxr_linenumber" name="L805" href="#L805">805</a>                         <strong class="jxr_keyword">if</strong> ( ze.isDirectory() )
-<a class="jxr_linenumber" name="L806" href="#L806">806</a>                         {
-<a class="jxr_linenumber" name="L807" href="#L807">807</a>                             dirSet.add( name );
-<a class="jxr_linenumber" name="L808" href="#L808">808</a>                         }
-<a class="jxr_linenumber" name="L809" href="#L809">809</a>                         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( !name.contains( <span class="jxr_string">"/"</span> ) )
-<a class="jxr_linenumber" name="L810" href="#L810">810</a>                         {
-<a class="jxr_linenumber" name="L811" href="#L811">811</a>                             files.add( name );
-<a class="jxr_linenumber" name="L812" href="#L812">812</a>                         }
-<a class="jxr_linenumber" name="L813" href="#L813">813</a>                         <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L814" href="#L814">814</a>                         {
-<a class="jxr_linenumber" name="L815" href="#L815">815</a>                             <em class="jxr_comment">// a file, not in the root</em>
-<a class="jxr_linenumber" name="L816" href="#L816">816</a>                             <em class="jxr_comment">// since the jar may be one without directory</em>
-<a class="jxr_linenumber" name="L817" href="#L817">817</a>                             <em class="jxr_comment">// entries, add the parent dir of this file as</em>
-<a class="jxr_linenumber" name="L818" href="#L818">818</a>                             <em class="jxr_comment">// well.</em>
-<a class="jxr_linenumber" name="L819" href="#L819">819</a>                             dirSet.add( name.substring( 0, name.lastIndexOf( <span class="jxr_string">"/"</span> ) + 1 ) );
-<a class="jxr_linenumber" name="L820" href="#L820">820</a>                         }
-<a class="jxr_linenumber" name="L821" href="#L821">821</a>                     }
-<a class="jxr_linenumber" name="L822" href="#L822">822</a>                 }
-<a class="jxr_linenumber" name="L823" href="#L823">823</a>                 dirs.addAll( dirSet );
-<a class="jxr_linenumber" name="L824" href="#L824">824</a>             }
-<a class="jxr_linenumber" name="L825" href="#L825">825</a>         }
-<a class="jxr_linenumber" name="L826" href="#L826">826</a>     }
-<a class="jxr_linenumber" name="L827" href="#L827">827</a> 
-<a class="jxr_linenumber" name="L828" href="#L828">828</a> }
+<a class="jxr_linenumber" name="L376" href="#L376">376</a> 
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>         <em class="jxr_comment">// time to write the manifest</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>( 128 );
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         manifest.write( baos );
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>         InputStreamSupplier in = () -&gt; <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
+<a class="jxr_linenumber" name="L381" href="#L381">381</a> 
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>         <strong class="jxr_keyword">super</strong>.zipFile( in, zOut, MANIFEST_NAME, System.currentTimeMillis(), <strong class="jxr_keyword">null</strong>, DEFAULT_FILE_MODE, <strong class="jxr_keyword">null</strong>,
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>                        false );
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <strong class="jxr_keyword">super</strong>.initZipOutputStream( zOut );
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>     }
+<a class="jxr_linenumber" name="L386" href="#L386">386</a> 
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>     @Override
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> finalizeZipOutputStream( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     {
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>         <strong class="jxr_keyword">if</strong> ( index )
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>         {
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>             createIndexList( zOut );
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>         }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     }
+<a class="jxr_linenumber" name="L396" href="#L396">396</a> 
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     * Create the index list to speed up classloading.</em>
+<a class="jxr_linenumber" name="L399" href="#L399">399</a> <em class="jxr_javadoccomment">     * This is a JDK 1.3+ specific feature and is enabled by default. See</em>
+<a class="jxr_linenumber" name="L400" href="#L400">400</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html" target="alexandria_uri">http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html</a>#JAR%20Index"&gt;</em>
+<a class="jxr_linenumber" name="L401" href="#L401">401</a> <em class="jxr_javadoccomment">     * the JAR index specification&lt;/a&gt; for more details.</em>
+<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     * @param zOut the zip stream representing the jar being built.</em>
+<a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     * @throws IOException thrown if there is an error while creating the</em>
+<a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * index and adding it to the zip stream.</em>
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     * @throws org.codehaus.plexus.archiver.ArchiverException</em>
+<a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> createIndexList( <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut )
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     {
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a> baos = <strong class="jxr_keyword">new</strong> <a name="ByteArrayOutputStream" href="../../../../../org/codehaus/plexus/archiver/zip/ByteArrayOutputStream.html#ByteArrayOutputStream">ByteArrayOutputStream</a>( 128 );
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>         <em class="jxr_comment">// encoding must be UTF8 as specified in the specs.</em>
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         PrintWriter writer = <strong class="jxr_keyword">new</strong> PrintWriter( <strong class="jxr_keyword">new</strong> OutputStreamWriter( baos, StandardCharsets.UTF_8 ) );
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         <em class="jxr_comment">// version-info blankline</em>
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         writer.println( <span class="jxr_string">"JarIndex-Version: 1.0"</span> );
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         writer.println();
+<a class="jxr_linenumber" name="L419" href="#L419">419</a> 
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <em class="jxr_comment">// header newline</em>
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         writer.println( getDestFile().getName() );
+<a class="jxr_linenumber" name="L422" href="#L422">422</a> 
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         <em class="jxr_comment">// filter out META-INF if it doesn't contain anything other than the index and manifest.</em>
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <em class="jxr_comment">// this is what sun.misc.JarIndex does, guess we ought to be consistent.</em>
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>         Set&lt;String&gt; filteredDirs = addedDirs.allAddedDirs();
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <em class="jxr_comment">// our added dirs always have a trailing slash</em>
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">if</strong> ( filteredDirs.contains( META_INF_NAME + '/' ) )
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">boolean</strong> add = false;
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>             <strong class="jxr_keyword">for</strong> ( String entry : entries.keySet() )
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>             {
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>                 <strong class="jxr_keyword">if</strong> ( entry.startsWith( META_INF_NAME + '/' ) &amp;&amp; !entry.equals( INDEX_NAME )
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>                          &amp;&amp; !entry.equals( MANIFEST_NAME ) )
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>                 {
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>                     add = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>                 }
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>             }
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>             <strong class="jxr_keyword">if</strong> ( !add )
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>             {
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>                 filteredDirs.remove( META_INF_NAME + '/' );
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>             }
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>         }
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         writeIndexLikeList( <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;( filteredDirs ), rootEntries, writer );
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>         writer.println();
+<a class="jxr_linenumber" name="L446" href="#L446">446</a> 
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">if</strong> ( indexJars != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>         {
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>             java.util.jar.Manifest mf = createManifest();
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>             String classpath = mf.getMainAttributes().getValue( ManifestConstants.ATTRIBUTE_CLASSPATH );
+<a class="jxr_linenumber" name="L451" href="#L451">451</a>             String[] cpEntries = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>             <strong class="jxr_keyword">if</strong> ( classpath != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>             {
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>                 StringTokenizer tok = <strong class="jxr_keyword">new</strong> StringTokenizer( classpath, <span class="jxr_string">" "</span> );
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>                 cpEntries = <strong class="jxr_keyword">new</strong> String[ tok.countTokens() ];
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>                 <strong class="jxr_keyword">int</strong> c = 0;
+<a class="jxr_linenumber" name="L457" href="#L457">457</a>                 <strong class="jxr_keyword">while</strong> ( tok.hasMoreTokens() )
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>                 {
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>                     cpEntries[c++] = tok.nextToken();
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>                 }
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>             }
+<a class="jxr_linenumber" name="L462" href="#L462">462</a> 
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>             <strong class="jxr_keyword">for</strong> ( String indexJar : indexJars )
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>             {
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>                 String name = findJarName( indexJar, cpEntries );
+<a class="jxr_linenumber" name="L466" href="#L466">466</a>                 <strong class="jxr_keyword">if</strong> ( name != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>                 {
+<a class="jxr_linenumber" name="L468" href="#L468">468</a>                     List&lt;String&gt; dirs = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>                     List&lt;String&gt; files = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>                     grabFilesAndDirs( indexJar, dirs, files );
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>                     <strong class="jxr_keyword">if</strong> ( dirs.size() + files.size() &gt; 0 )
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>                     {
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>                         writer.println( name );
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>                         writeIndexLikeList( dirs, files, writer );
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>                         writer.println();
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>                     }
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>                 }
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>             }
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>         }
+<a class="jxr_linenumber" name="L480" href="#L480">480</a> 
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>         writer.flush();
+<a class="jxr_linenumber" name="L482" href="#L482">482</a> 
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>         InputStreamSupplier in = () -&gt; <strong class="jxr_keyword">new</strong> ByteArrayInputStream( baos.toByteArray() );
+<a class="jxr_linenumber" name="L484" href="#L484">484</a> 
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>         <strong class="jxr_keyword">super</strong>.zipFile( in, zOut, INDEX_NAME, System.currentTimeMillis(), <strong class="jxr_keyword">null</strong>,
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>                        DEFAULT_FILE_MODE, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">true</strong> );
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> 
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     * Overridden from Zip class to deal with manifests and index lists.</em>
+<a class="jxr_linenumber" name="L491" href="#L491">491</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     @Override
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> zipFile( InputStreamSupplier is, <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> zOut, String vPath,
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>                             <strong class="jxr_keyword">long</strong> lastModified, File fromArchive,
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>                             <strong class="jxr_keyword">int</strong> mode, String symlinkDestination, <strong class="jxr_keyword">boolean</strong> addInParallel )
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>         <strong class="jxr_keyword">throws</strong> IOException, <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>     {
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">if</strong> ( MANIFEST_NAME.equalsIgnoreCase( vPath ) )
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>         {
+<a class="jxr_linenumber" name="L500" href="#L500">500</a>             <strong class="jxr_keyword">if</strong> ( !doubleFilePass || skipWriting )
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>             {
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>                 <strong class="jxr_keyword">try</strong> ( InputStream manifestInputStream = is.get() )
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>                 {
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>                     filesetManifest( fromArchive, manifestInputStream );
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>                 }
+<a class="jxr_linenumber" name="L506" href="#L506">506</a>             }
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>         }
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( INDEX_NAME.equalsIgnoreCase( vPath ) &amp;&amp; index )
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>         {
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>             getLogger().warn( <span class="jxr_string">"Warning: selected "</span> + archiveType + <span class="jxr_string">" files include a META-INF/INDEX.LIST which will"</span>
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>                                   + <span class="jxr_string">" be replaced by a newly generated one."</span> );
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>         }
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>         <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>         {
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>             <strong class="jxr_keyword">if</strong> ( index &amp;&amp; !vPath.contains( <span class="jxr_string">"/"</span> ) )
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>             {
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>                 rootEntries.add( vPath );
+<a class="jxr_linenumber" name="L518" href="#L518">518</a>             }
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>             <strong class="jxr_keyword">super</strong>.zipFile( is, zOut, vPath, lastModified, fromArchive, mode, symlinkDestination, addInParallel );
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>         }
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>     }
+<a class="jxr_linenumber" name="L522" href="#L522">522</a> 
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> filesetManifest( File file, InputStream is )
+<a class="jxr_linenumber" name="L524" href="#L524">524</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>     {
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>         <strong class="jxr_keyword">if</strong> ( ( manifestFile != <strong class="jxr_keyword">null</strong> ) &amp;&amp; manifestFile.equals( file ) )
+<a class="jxr_linenumber" name="L527" href="#L527">527</a>         {
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>             <em class="jxr_comment">// If this is the same name specified in 'manifest', this</em>
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>             <em class="jxr_comment">// is the manifest to use</em>
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>             getLogger().debug( <span class="jxr_string">"Found manifest "</span> + file );
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>             <strong class="jxr_keyword">if</strong> ( is != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>             {
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>                 manifest = getManifest( is );
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>             }
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>             {
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>                 manifest = getManifest( file );
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>             }
+<a class="jxr_linenumber" name="L539" href="#L539">539</a>         }
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( ( filesetManifestConfig != <strong class="jxr_keyword">null</strong> ) &amp;&amp; filesetManifestConfig != FilesetManifestConfig.skip )
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>         {
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>             <em class="jxr_comment">// we add this to our group of fileset manifests</em>
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>             getLogger().debug( <span class="jxr_string">"Found manifest to merge in file "</span> + file );
+<a class="jxr_linenumber" name="L544" href="#L544">544</a> 
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>             <a name="Manifest" href="../../../../../org/codehaus/plexus/archiver/jar/Manifest.html#Manifest">Manifest</a> newManifest;
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>             <strong class="jxr_keyword">if</strong> ( is != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>             {
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>                 newManifest = getManifest( is );
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>             }
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>             {
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>                 newManifest = getManifest( file );
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>             }
+<a class="jxr_linenumber" name="L554" href="#L554">554</a> 
+<a class="jxr_linenumber" name="L555" href="#L555">555</a>             <strong class="jxr_keyword">if</strong> ( filesetManifest == <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L556" href="#L556">556</a>             {
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>                 filesetManifest = newManifest;
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>             }
+<a class="jxr_linenumber" name="L559" href="#L559">559</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>             {
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>                 JdkManifestFactory.merge( filesetManifest, newManifest, false );
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>             }
+<a class="jxr_linenumber" name="L563" href="#L563">563</a>         }
+<a class="jxr_linenumber" name="L564" href="#L564">564</a>     }
+<a class="jxr_linenumber" name="L565" href="#L565">565</a> 
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>     @Override
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> createEmptyZip( File zipFile )
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>         <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>
+<a class="jxr_linenumber" name="L569" href="#L569">569</a>     {
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>         <strong class="jxr_keyword">if</strong> ( !createEmpty )
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>         {
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L573" href="#L573">573</a>         }
+<a class="jxr_linenumber" name="L574" href="#L574">574</a> 
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>         <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="L576" href="#L576">576</a>         {
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>             getLogger().debug( <span class="jxr_string">"Building MANIFEST-only jar: "</span> + getDestFile().getAbsolutePath() );
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>             zipArchiveOutputStream =
+<a class="jxr_linenumber" name="L579" href="#L579">579</a>                 <strong class="jxr_keyword">new</strong> ZipArchiveOutputStream( bufferedOutputStream( fileOutputStream( getDestFile(), <span class="jxr_string">"jar"</span> ) ) );
+<a class="jxr_linenumber" name="L580" href="#L580">580</a> 
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>             zipArchiveOutputStream.setEncoding( getEncoding() );
+<a class="jxr_linenumber" name="L582" href="#L582">582</a>             <strong class="jxr_keyword">if</strong> ( isCompress() )
+<a class="jxr_linenumber" name="L583" href="#L583">583</a>             {
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>                 zipArchiveOutputStream.setMethod( ZipArchiveOutputStream.DEFLATED );
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>             }
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>             {
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>                 zipArchiveOutputStream.setMethod( ZipArchiveOutputStream.STORED );
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>             }
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>             <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a> ps =
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>                 <strong class="jxr_keyword">new</strong> <a name="ConcurrentJarCreator" href="../../../../../org/codehaus/plexus/archiver/zip/ConcurrentJarCreator.html#ConcurrentJarCreator">ConcurrentJarCreator</a>( isRecompressAddedZips(), Runtime.getRuntime().availableProcessors() );
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>             initZipOutputStream( ps );
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>             finalizeZipOutputStream( ps );
+<a class="jxr_linenumber" name="L594" href="#L594">594</a>         }
+<a class="jxr_linenumber" name="L595" href="#L595">595</a>         <strong class="jxr_keyword">catch</strong> ( IOException ioe )
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>         {
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>( <span class="jxr_string">"Could not create almost empty JAR archive ("</span> + ioe.getMessage() + <span class="jxr_string">")"</span>, ioe );
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>         }
+<a class="jxr_linenumber" name="L599" href="#L599">599</a>         <strong class="jxr_keyword">finally</strong>
+<a class="jxr_linenumber" name="L600" href="#L600">600</a>         {
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>             <em class="jxr_comment">// Close the output stream.</em>
+<a class="jxr_linenumber" name="L602" href="#L602">602</a>             <em class="jxr_comment">//IOUtil.close( zOut );</em>
+<a class="jxr_linenumber" name="L603" href="#L603">603</a>             createEmpty = false;
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>         }
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L606" href="#L606">606</a>     }
+<a class="jxr_linenumber" name="L607" href="#L607">607</a> 
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L609" href="#L609">609</a> <em class="jxr_javadoccomment">     * Make sure we don't think we already have a MANIFEST next time this task</em>
+<a class="jxr_linenumber" name="L610" href="#L610">610</a> <em class="jxr_javadoccomment">     * gets executed.</em>
+<a class="jxr_linenumber" name="L611" href="#L611">611</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L612" href="#L612">612</a> <em class="jxr_javadoccomment">     * @see ZipArchiver#cleanUp</em>
+<a class="jxr_linenumber" name="L613" href="#L613">613</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>     @Override
+<a class="jxr_linenumber" name="L615" href="#L615">615</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> cleanUp()
+<a class="jxr_linenumber" name="L616" href="#L616">616</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="L617" href="#L617">617</a>     {
+<a class="jxr_linenumber" name="L618" href="#L618">618</a>         <strong class="jxr_keyword">super</strong>.cleanUp();
+<a class="jxr_linenumber" name="L619" href="#L619">619</a> 
+<a class="jxr_linenumber" name="L620" href="#L620">620</a>         <em class="jxr_comment">// we want to save this info if we are going to make another pass</em>
+<a class="jxr_linenumber" name="L621" href="#L621">621</a>         <strong class="jxr_keyword">if</strong> ( !doubleFilePass || !skipWriting )
+<a class="jxr_linenumber" name="L622" href="#L622">622</a>         {
+<a class="jxr_linenumber" name="L623" href="#L623">623</a>             manifest = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L624" href="#L624">624</a>             configuredManifest = savedConfiguredManifest;
+<a class="jxr_linenumber" name="L625" href="#L625">625</a>             filesetManifest = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L626" href="#L626">626</a>             originalManifest = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L627" href="#L627">627</a>         }
+<a class="jxr_linenumber" name="L628" href="#L628">628</a>         rootEntries.clear();
+<a class="jxr_linenumber" name="L629" href="#L629">629</a>     }
+<a class="jxr_linenumber" name="L630" href="#L630">630</a> 
+<a class="jxr_linenumber" name="L631" href="#L631">631</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L632" href="#L632">632</a> <em class="jxr_javadoccomment">     * reset to default values.</em>
+<a class="jxr_linenumber" name="L633" href="#L633">633</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L634" href="#L634">634</a> <em class="jxr_javadoccomment">     * @see ZipArchiver#reset</em>
+<a class="jxr_linenumber" name="L635" href="#L635">635</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>     @Override
+<a class="jxr_linenumber" name="L637" href="#L637">637</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> reset()
+<a class="jxr_linenumber" name="L638" href="#L638">638</a>     {
+<a class="jxr_linenumber" name="L639" href="#L639">639</a>         <strong class="jxr_keyword">super</strong>.reset();
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>         configuredManifest = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L641" href="#L641">641</a>         filesetManifestConfig = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>         mergeManifestsMain = false;
+<a class="jxr_linenumber" name="L643" href="#L643">643</a>         manifestFile = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L644" href="#L644">644</a>         index = false;
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>     }
+<a class="jxr_linenumber" name="L646" href="#L646">646</a> 
+<a class="jxr_linenumber" name="L647" href="#L647">647</a>     <strong class="jxr_keyword">public</strong> enum FilesetManifestConfig
+<a class="jxr_linenumber" name="L648" href="#L648">648</a>     {
+<a class="jxr_linenumber" name="L649" href="#L649">649</a> 
+<a class="jxr_linenumber" name="L650" href="#L650">650</a>         skip,
+<a class="jxr_linenumber" name="L651" href="#L651">651</a>         merge,
+<a class="jxr_linenumber" name="L652" href="#L652">652</a>         mergewithoutmain
+<a class="jxr_linenumber" name="L653" href="#L653">653</a> 
+<a class="jxr_linenumber" name="L654" href="#L654">654</a>     }
+<a class="jxr_linenumber" name="L655" href="#L655">655</a> 
+<a class="jxr_linenumber" name="L656" href="#L656">656</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L657" href="#L657">657</a> <em class="jxr_javadoccomment">     * Writes the directory entries from the first and the filenames</em>
+<a class="jxr_linenumber" name="L658" href="#L658">658</a> <em class="jxr_javadoccomment">     * from the second list to the given writer, one entry per line.</em>
+<a class="jxr_linenumber" name="L659" href="#L659">659</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L660" href="#L660">660</a> <em class="jxr_javadoccomment">     * @param dirs The directories</em>
+<a class="jxr_linenumber" name="L661" href="#L661">661</a> <em class="jxr_javadoccomment">     * @param files The files</em>
+<a class="jxr_linenumber" name="L662" href="#L662">662</a> <em class="jxr_javadoccomment">     * @param writer The printwriter ;)</em>
+<a class="jxr_linenumber" name="L663" href="#L663">663</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L664" href="#L664">664</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> writeIndexLikeList( List&lt;String&gt; dirs, List&lt;String&gt; files, PrintWriter writer )
+<a class="jxr_linenumber" name="L665" href="#L665">665</a>     {
+<a class="jxr_linenumber" name="L666" href="#L666">666</a>         <em class="jxr_comment">// JarIndex is sorting the directories by ascending order.</em>
+<a class="jxr_linenumber" name="L667" href="#L667">667</a>         <em class="jxr_comment">// it has no value but cosmetic since it will be read into a</em>
+<a class="jxr_linenumber" name="L668" href="#L668">668</a>         <em class="jxr_comment">// hashtable by the classloader, but we'll do so anyway.</em>
+<a class="jxr_linenumber" name="L669" href="#L669">669</a>         Collections.sort( dirs );
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>         Collections.sort( files );
+<a class="jxr_linenumber" name="L671" href="#L671">671</a>         <strong class="jxr_keyword">for</strong> ( String dir : dirs )
+<a class="jxr_linenumber" name="L672" href="#L672">672</a>         {
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>             <em class="jxr_comment">// try to be smart, not to be fooled by a weird directory name</em>
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>             dir = dir.replace( '&#92;&#92;', '/' );
+<a class="jxr_linenumber" name="L675" href="#L675">675</a>             <strong class="jxr_keyword">if</strong> ( dir.startsWith( <span class="jxr_string">"./"</span> ) )
+<a class="jxr_linenumber" name="L676" href="#L676">676</a>             {
+<a class="jxr_linenumber" name="L677" href="#L677">677</a>                 dir = dir.substring( 2 );
+<a class="jxr_linenumber" name="L678" href="#L678">678</a>             }
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>             <strong class="jxr_keyword">while</strong> ( dir.startsWith( <span class="jxr_string">"/"</span> ) )
+<a class="jxr_linenumber" name="L680" href="#L680">680</a>             {
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>                 dir = dir.substring( 1 );
+<a class="jxr_linenumber" name="L682" href="#L682">682</a>             }
+<a class="jxr_linenumber" name="L683" href="#L683">683</a>             <strong class="jxr_keyword">int</strong> pos = dir.lastIndexOf( '/' );
+<a class="jxr_linenumber" name="L684" href="#L684">684</a>             <strong class="jxr_keyword">if</strong> ( pos != -1 )
+<a class="jxr_linenumber" name="L685" href="#L685">685</a>             {
+<a class="jxr_linenumber" name="L686" href="#L686">686</a>                 dir = dir.substring( 0, pos );
+<a class="jxr_linenumber" name="L687" href="#L687">687</a>             }
+<a class="jxr_linenumber" name="L688" href="#L688">688</a> 
+<a class="jxr_linenumber" name="L689" href="#L689">689</a>             <em class="jxr_comment">// name newline</em>
+<a class="jxr_linenumber" name="L690" href="#L690">690</a>             writer.println( dir );
+<a class="jxr_linenumber" name="L691" href="#L691">691</a>         }
+<a class="jxr_linenumber" name="L692" href="#L692">692</a> 
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>         <strong class="jxr_keyword">for</strong> ( String file : files )
+<a class="jxr_linenumber" name="L694" href="#L694">694</a>         {
+<a class="jxr_linenumber" name="L695" href="#L695">695</a>             writer.println( file );
+<a class="jxr_linenumber" name="L696" href="#L696">696</a>         }
+<a class="jxr_linenumber" name="L697" href="#L697">697</a>     }
+<a class="jxr_linenumber" name="L698" href="#L698">698</a> 
+<a class="jxr_linenumber" name="L699" href="#L699">699</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L700" href="#L700">700</a> <em class="jxr_javadoccomment">     * try to guess the name of the given file.</em>
+<a class="jxr_linenumber" name="L701" href="#L701">701</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L702" href="#L702">702</a> <em class="jxr_javadoccomment">     * If this jar has a classpath attribute in its manifest, we</em>
+<a class="jxr_linenumber" name="L703" href="#L703">703</a> <em class="jxr_javadoccomment">     * can assume that it will only require an index of jars listed</em>
+<a class="jxr_linenumber" name="L704" href="#L704">704</a> <em class="jxr_javadoccomment">     * there. try to find which classpath entry is most likely the</em>
+<a class="jxr_linenumber" name="L705" href="#L705">705</a> <em class="jxr_javadoccomment">     * one the given file name points to.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L706" href="#L706">706</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L707" href="#L707">707</a> <em class="jxr_javadoccomment">     * In the absence of a classpath attribute, assume the other</em>
+<a class="jxr_linenumber" name="L708" href="#L708">708</a> <em class="jxr_javadoccomment">     * files will be placed inside the same directory as this jar and</em>
+<a class="jxr_linenumber" name="L709" href="#L709">709</a> <em class="jxr_javadoccomment">     * use their basename.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L710" href="#L710">710</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L711" href="#L711">711</a> <em class="jxr_javadoccomment">     * if there is a classpath and the given file doesn't match any</em>
+<a class="jxr_linenumber" name="L712" href="#L712">712</a> <em class="jxr_javadoccomment">     * of its entries, return null.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L713" href="#L713">713</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L714" href="#L714">714</a> <em class="jxr_javadoccomment">     * @param fileName .</em>
+<a class="jxr_linenumber" name="L715" href="#L715">715</a> <em class="jxr_javadoccomment">     * @param classpath .</em>
+<a class="jxr_linenumber" name="L716" href="#L716">716</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L717" href="#L717">717</a> <em class="jxr_javadoccomment">     * @return The guessed name</em>
+<a class="jxr_linenumber" name="L718" href="#L718">718</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L719" href="#L719">719</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> String findJarName( String fileName, String[] classpath )
+<a class="jxr_linenumber" name="L720" href="#L720">720</a>     {
+<a class="jxr_linenumber" name="L721" href="#L721">721</a>         <strong class="jxr_keyword">if</strong> ( classpath == <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L722" href="#L722">722</a>         {
+<a class="jxr_linenumber" name="L723" href="#L723">723</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> File( fileName ).getName();
+<a class="jxr_linenumber" name="L724" href="#L724">724</a>         }
+<a class="jxr_linenumber" name="L725" href="#L725">725</a>         fileName = fileName.replace( File.separatorChar, '/' );
+<a class="jxr_linenumber" name="L726" href="#L726">726</a> 
+<a class="jxr_linenumber" name="L727" href="#L727">727</a>         <em class="jxr_comment">// longest match comes first</em>
+<a class="jxr_linenumber" name="L728" href="#L728">728</a>         SortedMap&lt;String, String&gt; matches = <strong class="jxr_keyword">new</strong> TreeMap&lt;&gt;( Comparator.comparingInt( String::length ).reversed() );
+<a class="jxr_linenumber" name="L729" href="#L729">729</a> 
+<a class="jxr_linenumber" name="L730" href="#L730">730</a>         <strong class="jxr_keyword">for</strong> ( String aClasspath : classpath )
+<a class="jxr_linenumber" name="L731" href="#L731">731</a>         {
+<a class="jxr_linenumber" name="L732" href="#L732">732</a>             <strong class="jxr_keyword">if</strong> ( fileName.endsWith( aClasspath ) )
+<a class="jxr_linenumber" name="L733" href="#L733">733</a>             {
+<a class="jxr_linenumber" name="L734" href="#L734">734</a>                 matches.put( aClasspath, aClasspath );
+<a class="jxr_linenumber" name="L735" href="#L735">735</a>             }
+<a class="jxr_linenumber" name="L736" href="#L736">736</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L737" href="#L737">737</a>             {
+<a class="jxr_linenumber" name="L738" href="#L738">738</a>                 <strong class="jxr_keyword">int</strong> slash = aClasspath.indexOf( <span class="jxr_string">"/"</span> );
+<a class="jxr_linenumber" name="L739" href="#L739">739</a>                 String candidate = aClasspath;
+<a class="jxr_linenumber" name="L740" href="#L740">740</a>                 <strong class="jxr_keyword">while</strong> ( slash &gt; -1 )
+<a class="jxr_linenumber" name="L741" href="#L741">741</a>                 {
+<a class="jxr_linenumber" name="L742" href="#L742">742</a>                     candidate = candidate.substring( slash + 1 );
+<a class="jxr_linenumber" name="L743" href="#L743">743</a>                     <strong class="jxr_keyword">if</strong> ( fileName.endsWith( candidate ) )
+<a class="jxr_linenumber" name="L744" href="#L744">744</a>                     {
+<a class="jxr_linenumber" name="L745" href="#L745">745</a>                         matches.put( candidate, aClasspath );
+<a class="jxr_linenumber" name="L746" href="#L746">746</a>                         <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L747" href="#L747">747</a>                     }
+<a class="jxr_linenumber" name="L748" href="#L748">748</a>                     slash = candidate.indexOf( <span class="jxr_string">"/"</span> );
+<a class="jxr_linenumber" name="L749" href="#L749">749</a>                 }
+<a class="jxr_linenumber" name="L750" href="#L750">750</a>             }
+<a class="jxr_linenumber" name="L751" href="#L751">751</a>         }
+<a class="jxr_linenumber" name="L752" href="#L752">752</a> 
+<a class="jxr_linenumber" name="L753" href="#L753">753</a>         <strong class="jxr_keyword">return</strong> matches.size() == 0 ? <strong class="jxr_keyword">null</strong> : matches.get( matches.firstKey() );
+<a class="jxr_linenumber" name="L754" href="#L754">754</a>     }
+<a class="jxr_linenumber" name="L755" href="#L755">755</a> 
+<a class="jxr_linenumber" name="L756" href="#L756">756</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L757" href="#L757">757</a> <em class="jxr_javadoccomment">     * Grab lists of all root-level files and all directories</em>
+<a class="jxr_linenumber" name="L758" href="#L758">758</a> <em class="jxr_javadoccomment">     * contained in the given archive.</em>
+<a class="jxr_linenumber" name="L759" href="#L759">759</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L760" href="#L760">760</a> <em class="jxr_javadoccomment">     * @param file .</em>
+<a class="jxr_linenumber" name="L761" href="#L761">761</a> <em class="jxr_javadoccomment">     * @param files .</em>
+<a class="jxr_linenumber" name="L762" href="#L762">762</a> <em class="jxr_javadoccomment">     * @param dirs .</em>
+<a class="jxr_linenumber" name="L763" href="#L763">763</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L764" href="#L764">764</a> <em class="jxr_javadoccomment">     * @throws java.io.IOException</em>
+<a class="jxr_linenumber" name="L765" href="#L765">765</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L766" href="#L766">766</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> grabFilesAndDirs( String file, List&lt;String&gt; dirs, List&lt;String&gt; files )
+<a class="jxr_linenumber" name="L767" href="#L767">767</a>         <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="L768" href="#L768">768</a>     {
+<a class="jxr_linenumber" name="L769" href="#L769">769</a>         File zipFile = <strong class="jxr_keyword">new</strong> File( file );
+<a class="jxr_linenumber" name="L770" href="#L770">770</a>         <strong class="jxr_keyword">if</strong> ( !zipFile.exists() )
+<a class="jxr_linenumber" name="L771" href="#L771">771</a>         {
+<a class="jxr_linenumber" name="L772" href="#L772">772</a>             Logger logger = <strong class="jxr_keyword">new</strong> ConsoleLogger( Logger.LEVEL_INFO, <span class="jxr_string">"console"</span> );
+<a class="jxr_linenumber" name="L773" href="#L773">773</a>             logger.error( <span class="jxr_string">"JarArchive skipping non-existing file: "</span> + zipFile.getAbsolutePath() );
+<a class="jxr_linenumber" name="L774" href="#L774">774</a>         }
+<a class="jxr_linenumber" name="L775" href="#L775">775</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( zipFile.isDirectory() )
+<a class="jxr_linenumber" name="L776" href="#L776">776</a>         {
+<a class="jxr_linenumber" name="L777" href="#L777">777</a>             Logger logger = <strong class="jxr_keyword">new</strong> ConsoleLogger( Logger.LEVEL_INFO, <span class="jxr_string">"console"</span> );
+<a class="jxr_linenumber" name="L778" href="#L778">778</a>             logger.info( <span class="jxr_string">"JarArchiver skipping indexJar "</span> + zipFile + <span class="jxr_string">" because it is not a jar"</span> );
+<a class="jxr_linenumber" name="L779" href="#L779">779</a>         }
+<a class="jxr_linenumber" name="L780" href="#L780">780</a>         <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L781" href="#L781">781</a>         {
+<a class="jxr_linenumber" name="L782" href="#L782">782</a>             <strong class="jxr_keyword">try</strong> ( ZipFile zf = <strong class="jxr_keyword">new</strong> ZipFile( file, <span class="jxr_string">"utf-8"</span> ) )
+<a class="jxr_linenumber" name="L783" href="#L783">783</a>             {
+<a class="jxr_linenumber" name="L784" href="#L784">784</a>                 Enumeration&lt;ZipArchiveEntry&gt; entries = zf.getEntries();
+<a class="jxr_linenumber" name="L785" href="#L785">785</a>                 HashSet&lt;String&gt; dirSet = <strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;();
+<a class="jxr_linenumber" name="L786" href="#L786">786</a>                 <strong class="jxr_keyword">while</strong> ( entries.hasMoreElements() )
+<a class="jxr_linenumber" name="L787" href="#L787">787</a>                 {
+<a class="jxr_linenumber" name="L788" href="#L788">788</a>                     ZipArchiveEntry ze = entries.nextElement();
+<a class="jxr_linenumber" name="L789" href="#L789">789</a>                     String name = ze.getName();
+<a class="jxr_linenumber" name="L790" href="#L790">790</a>                     <em class="jxr_comment">// avoid index for manifest-only jars.</em>
+<a class="jxr_linenumber" name="L791" href="#L791">791</a>                     <strong class="jxr_keyword">if</strong> ( !name.equals( META_INF_NAME ) &amp;&amp; !name.equals( META_INF_NAME + '/' ) &amp;&amp; !name.equals(
+<a class="jxr_linenumber" name="L792" href="#L792">792</a>                         INDEX_NAME ) &amp;&amp; !name.equals( MANIFEST_NAME ) )
+<a class="jxr_linenumber" name="L793" href="#L793">793</a>                     {
+<a class="jxr_linenumber" name="L794" href="#L794">794</a>                         <strong class="jxr_keyword">if</strong> ( ze.isDirectory() )
+<a class="jxr_linenumber" name="L795" href="#L795">795</a>                         {
+<a class="jxr_linenumber" name="L796" href="#L796">796</a>                             dirSet.add( name );
+<a class="jxr_linenumber" name="L797" href="#L797">797</a>                         }
+<a class="jxr_linenumber" name="L798" href="#L798">798</a>                         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> ( !name.contains( <span class="jxr_string">"/"</span> ) )
+<a class="jxr_linenumber" name="L799" href="#L799">799</a>                         {
+<a class="jxr_linenumber" name="L800" href="#L800">800</a>                             files.add( name );
+<a class="jxr_linenumber" name="L801" href="#L801">801</a>                         }
+<a class="jxr_linenumber" name="L802" href="#L802">802</a>                         <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L803" href="#L803">803</a>                         {
+<a class="jxr_linenumber" name="L804" href="#L804">804</a>                             <em class="jxr_comment">// a file, not in the root</em>
+<a class="jxr_linenumber" name="L805" href="#L805">805</a>                             <em class="jxr_comment">// since the jar may be one without directory</em>
+<a class="jxr_linenumber" name="L806" href="#L806">806</a>                             <em class="jxr_comment">// entries, add the parent dir of this file as</em>
+<a class="jxr_linenumber" name="L807" href="#L807">807</a>                             <em class="jxr_comment">// well.</em>
+<a class="jxr_linenumber" name="L808" href="#L808">808</a>                             dirSet.add( name.substring( 0, name.lastIndexOf( <span class="jxr_string">"/"</span> ) + 1 ) );
+<a class="jxr_linenumber" name="L809" href="#L809">809</a>                         }
+<a class="jxr_linenumber" name="L810" href="#L810">810</a>                     }
+<a class="jxr_linenumber" name="L811" href="#L811">811</a>                 }
+<a class="jxr_linenumber" name="L812" href="#L812">812</a>                 dirs.addAll( dirSet );
+<a class="jxr_linenumber" name="L813" href="#L813">813</a>             }
+<a class="jxr_linenumber" name="L814" href="#L814">814</a>         }
+<a class="jxr_linenumber" name="L815" href="#L815">815</a>     }
+<a class="jxr_linenumber" name="L816" href="#L816">816</a> 
+<a class="jxr_linenumber" name="L817" href="#L817">817</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L818" href="#L818">818</a> <em class="jxr_javadoccomment">     * Override the behavior of the Zip Archiver to match the output of the JAR tool.</em>
+<a class="jxr_linenumber" name="L819" href="#L819">819</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L820" href="#L820">820</a> <em class="jxr_javadoccomment">     * @param zipEntry to set the last modified time</em>
+<a class="jxr_linenumber" name="L821" href="#L821">821</a> <em class="jxr_javadoccomment">     * @param lastModifiedTime to set in the zip entry only if {@link #getLastModifiedTime()} returns null</em>
+<a class="jxr_linenumber" name="L822" href="#L822">822</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L823" href="#L823">823</a>     @Override
+<a class="jxr_linenumber" name="L824" href="#L824">824</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> setZipEntryTime( ZipArchiveEntry zipEntry, <strong class="jxr_keyword">long</strong> lastModifiedTime )
+<a class="jxr_linenumber" name="L825" href="#L825">825</a>     {
+<a class="jxr_linenumber" name="L826" href="#L826">826</a>         <strong class="jxr_keyword">if</strong> ( getLastModifiedTime() != <strong class="jxr_keyword">null</strong> )
+<a class="jxr_linenumber" name="L827" href="#L827">827</a>         {
+<a class="jxr_linenumber" name="L828" href="#L828">828</a>             lastModifiedTime = getLastModifiedTime().toMillis();
+<a class="jxr_linenumber" name="L829" href="#L829">829</a>         }
+<a class="jxr_linenumber" name="L830" href="#L830">830</a> 
+<a class="jxr_linenumber" name="L831" href="#L831">831</a>         <em class="jxr_comment">// The JAR tool does not round up, so we keep that behavior here (JDK-8277755).</em>
+<a class="jxr_linenumber" name="L832" href="#L832">832</a>         zipEntry.setTime( lastModifiedTime );
+<a class="jxr_linenumber" name="L833" href="#L833">833</a>     }
+<a class="jxr_linenumber" name="L834" href="#L834">834</a> 
+<a class="jxr_linenumber" name="L835" href="#L835">835</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2022 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>

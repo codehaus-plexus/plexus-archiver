@@ -130,7 +130,7 @@
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     {
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         Assert.assertEquals( entry1.isDirectory(), entry2.isDirectory() );
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         Assert.assertEquals( entry1.isUnixSymlink(), entry2.isUnixSymlink() );
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">long</strong> timeDelta = entry1.getLastModifiedDate().getTime() - entry2.getLastModifiedDate().getTime();
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">long</strong> timeDelta = entry1.getTime() - entry2.getTime();
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         Assert.assertTrue( Math.abs( timeDelta ) &lt;= 1000 );
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">final</strong> InputStream is1 = file1.getInputStream( entry1 );
