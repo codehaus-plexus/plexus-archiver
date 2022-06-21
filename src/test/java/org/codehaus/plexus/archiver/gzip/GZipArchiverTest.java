@@ -47,11 +47,11 @@ public class GZipArchiverTest
     public void testCreateArchive()
         throws Exception
     {
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.addDirectory( getTestFile( "src" ) );
         zipArchiver.setDestFile( getTestFile( "target/output/archiveForGzip.zip" ) );
         zipArchiver.createArchive();
-        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.ROLE, "gzip" );
+        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
         String[] inputFiles = new String[ 1 ];
         inputFiles[0] = "archiveForGzip.zip";
         archiver.addDirectory( getTestFile( "target/output" ), inputFiles, null );
@@ -63,7 +63,7 @@ public class GZipArchiverTest
     public void testCreateEmptyArchive()
         throws Exception
     {
-        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.ROLE, "gzip" );
+        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
         archiver.setDestFile( getTestFile( "target/output/empty.gz" ) );
         try
         {
@@ -81,14 +81,14 @@ public class GZipArchiverTest
     {
         final File pomFile = new File( "pom.xml" );
         final File gzFile = new File( "target/output/pom.xml.gz" );
-        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.ROLE, "gzip" );
+        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
         gzipArchiver.setDestFile( gzFile );
         gzipArchiver.addFile( pomFile, "pom.xml" );
         FileUtils.removePath( gzFile.getPath() );
         gzipArchiver.createArchive();
 
         final File zipFile = new File( "target/output/pom.zip" );
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.setDestFile( zipFile );
         zipArchiver.addArchivedFileSet( gzFile, "prfx/" );
         FileUtils.removePath( zipFile.getPath() );

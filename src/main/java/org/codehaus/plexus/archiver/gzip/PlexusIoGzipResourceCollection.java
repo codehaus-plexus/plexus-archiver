@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
 import javax.annotation.Nonnull;
+import javax.inject.Named;
 
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
@@ -19,6 +20,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
  * Abstract base class for compressed files, aka singleton
  * resource collections.
  */
+@Named( "gzip" )
 public class PlexusIoGzipResourceCollection
     extends PlexusIoCompressedFileResourceCollection
 {

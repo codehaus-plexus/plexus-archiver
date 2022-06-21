@@ -26,7 +26,7 @@ public class SarArchiverTest
     public void testLookup()
         throws Exception
     {
-        ArchiverManager dam = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager dam = lookup( ArchiverManager.class );
         PlexusIoResourceCollection sar = dam.getResourceCollection( "sar" );
         assertNotNull( sar );
         PlexusIoResourceCollection archiver =

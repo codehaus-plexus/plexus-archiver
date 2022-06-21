@@ -12,13 +12,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.io.IOUtils;
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
 
 public class PlexusIoZipFileResourceCollectionTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testNamelessRootFolder()
@@ -71,7 +71,7 @@ public class PlexusIoZipFileResourceCollectionTest
         throws Exception
     {
         File testZip = new File( getBasedir(), "src/test/resources/archiveWithIllegalHtmlFileName.zip" );
-        Set<String> seen = new HashSet<String>();
+        Set<String> seen = new HashSet<>();
         seen.add( "AFileThatNeedsHtmlEsc%3F&gt" );
         seen.add( "Afile&lt;Yo&gt;.txt" );
         seen.add( "File With Space.txt" );
@@ -93,7 +93,7 @@ public class PlexusIoZipFileResourceCollectionTest
         throws Exception
     {
         File testZip = new File( getBasedir(), "src/test/resources/symlinks/symlinks.zip" );
-        Map<String, String> symLinks = new HashMap<String, String>();
+        Map<String, String> symLinks = new HashMap<>();
         symLinks.put( "symDir", "targetDir/" );
         symLinks.put( "symLinkToDirOnTheOutside", "../dirOnTheOutside/" );
         symLinks.put( "symLinkToTheOutside", "../onTheOutside.txt" );

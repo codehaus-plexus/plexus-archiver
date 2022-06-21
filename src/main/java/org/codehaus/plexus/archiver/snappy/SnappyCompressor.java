@@ -19,7 +19,7 @@ package org.codehaus.plexus.archiver.snappy;
 import java.io.IOException;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
-import org.iq80.snappy.SnappyOutputStream;
+import org.iq80.snappy.SnappyFramedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
@@ -30,7 +30,7 @@ public class SnappyCompressor
     extends Compressor
 {
 
-    private SnappyOutputStream zOut;
+    private SnappyFramedOutputStream zOut;
 
     /**
      * perform the Snappy compression operation.
@@ -41,7 +41,7 @@ public class SnappyCompressor
     {
         try
         {
-            zOut = new SnappyOutputStream( bufferedOutputStream( fileOutputStream( getDestFile() ) ) );
+            zOut = new SnappyFramedOutputStream( bufferedOutputStream( fileOutputStream( getDestFile() ) ) );
             compress( getSource(), zOut );
         }
         catch ( IOException ioe )

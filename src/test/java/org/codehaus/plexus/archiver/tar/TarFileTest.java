@@ -1,15 +1,14 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Enumeration;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.bzip2.BZip2Compressor;
 import org.codehaus.plexus.archiver.gzip.GZipCompressor;
 import org.codehaus.plexus.archiver.util.Compressor;
@@ -21,7 +20,7 @@ import static org.codehaus.plexus.components.io.resources.ResourceFactory.create
  * Test case for {@link TarFile}.
  */
 public class TarFileTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     private interface TarFileCreator
@@ -92,7 +91,7 @@ public class TarFileTest
         throws Exception
     {
         File file = new File( "target/output/TarFileTest.tar" );
-        final TarArchiver archiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        final TarArchiver archiver = (TarArchiver) lookup( Archiver.class, "tar" );
         archiver.setLongfile( TarLongFileMode.posix );
         archiver.setDestFile( file );
         archiver.addDirectory( new File( "src" ) );

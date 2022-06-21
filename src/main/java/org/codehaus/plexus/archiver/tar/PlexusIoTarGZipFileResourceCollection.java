@@ -1,7 +1,10 @@
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import java.io.File;
 
+@Named( "tar.gz" )
 public class PlexusIoTarGZipFileResourceCollection
     extends PlexusIoTarFileResourceCollection
 {

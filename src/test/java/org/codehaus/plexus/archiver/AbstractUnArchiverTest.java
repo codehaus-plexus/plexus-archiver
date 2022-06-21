@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.core.StringContains;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -31,10 +28,10 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 
 /**
  * Unit test for {@link AbstractUnArchiver}
@@ -50,7 +47,6 @@ public class AbstractUnArchiverTest
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private AbstractUnArchiver abstractUnArchiver;
-    private CapturingLog log = new CapturingLog( 0 /*debug*/, "AbstractUnArchiver" );
 
     @Before
     public void setUp()
@@ -71,7 +67,6 @@ public class AbstractUnArchiverTest
                 // unused
             }
         };
-        this.abstractUnArchiver.enableLogging( log );
     }
 
     @After
@@ -147,7 +142,7 @@ public class AbstractUnArchiverTest
 
         // when & then
         assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( false ) );
-        assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
+        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), greaterThan(0)  );
     }
 
     @Test
@@ -182,7 +177,7 @@ public class AbstractUnArchiverTest
         assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
         this.abstractUnArchiver.setOverwrite( false );
         assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
-        assertThat( this.log.getWarns(), hasItem( new LogMessageMatcher( "names differ only by case" ) ) );
+        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), greaterThan(0)  );
     }
 
     @Test
@@ -197,34 +192,6 @@ public class AbstractUnArchiverTest
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
         assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
-        assertThat( this.log.getWarns(), not( hasItem( new LogMessageMatcher( "names differ only by case" ) ) ) );
-    }
-
-    static class LogMessageMatcher extends BaseMatcher<CapturingLog.Message> {
-        private final StringContains delegateMatcher;
-
-        LogMessageMatcher( String needle )
-        {
-            this.delegateMatcher = new StringContains( needle );
-        }
-
-        @Override
-        public void describeTo( Description description )
-        {
-            description.appendText( "a log message with " );
-            delegateMatcher.describeTo( description );
-        }
-
-        @Override
-        public boolean matches( Object item )
-        {
-            if ( item instanceof CapturingLog.Message )
-            {
-                CapturingLog.Message message = (CapturingLog.Message) item;
-                String haystack = message.message;
-                return delegateMatcher.matches( haystack );
-            }
-            return false;
-        }
+        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), equalTo( 0 ) );
     }
 }

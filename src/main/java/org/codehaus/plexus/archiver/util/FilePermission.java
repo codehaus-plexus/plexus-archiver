@@ -26,17 +26,17 @@ package org.codehaus.plexus.archiver.util;
 public class FilePermission
 {
 
-    private boolean executable;
+    private final boolean executable;
 
-    private boolean ownerOnlyExecutable;
+    private final boolean ownerOnlyExecutable;
 
-    private boolean ownerOnlyReadable;
+    private final boolean ownerOnlyReadable;
 
-    private boolean readable;
+    private final boolean readable;
 
-    private boolean ownerOnlyWritable;
+    private final boolean ownerOnlyWritable;
 
-    private boolean writable;
+    private final boolean writable;
 
     public FilePermission( boolean executable, boolean ownerOnlyExecutable, boolean ownerOnlyReadable,
                            boolean readable, boolean ownerOnlyWritable, boolean writable )

@@ -14,7 +14,7 @@ public class DefaultArchivedFileSet
     implements ArchivedFileSet
 {
 
-    private File archive;
+    private final File archive;
 
     public DefaultArchivedFileSet( @Nonnull File archive )
     {

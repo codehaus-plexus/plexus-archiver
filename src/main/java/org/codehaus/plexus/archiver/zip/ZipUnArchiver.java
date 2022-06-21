@@ -16,11 +16,14 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import javax.inject.Named;
+
 import java.io.File;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
+@Named( "zip" )
 public class ZipUnArchiver
     extends AbstractZipUnArchiver
 {

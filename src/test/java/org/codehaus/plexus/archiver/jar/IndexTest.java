@@ -18,21 +18,22 @@ package org.codehaus.plexus.archiver.jar;
 
 import java.io.InputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 
 /**
  * @author <a href="mailto:richardv@mxtelecom.com">Richard van der Hoff</a>
  */
-public class IndexTest extends PlexusTestCase
+public class IndexTest extends TestSupport
 {
 
     public void testCreateArchiveWithIndexedJars()
         throws Exception
     {
         /* create a dummy jar */
-        JarArchiver archiver1 = (JarArchiver) lookup( Archiver.ROLE, "jar" );
+        JarArchiver archiver1 = (JarArchiver) lookup( Archiver.class, "jar" );
         archiver1.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), "one.txt" );
         archiver1.setDestFile( getTestFile( "target/output/archive1.jar" ) );
         archiver1.createArchive();
@@ -43,7 +44,7 @@ public class IndexTest extends PlexusTestCase
         Manifest.Attribute classpathAttr = new Manifest.Attribute( "Class-Path", "archive1.jar" );
         m.addConfiguredAttribute( classpathAttr );
 
-        JarArchiver archiver2 = (JarArchiver) lookup( Archiver.ROLE, "jar" );
+        JarArchiver archiver2 = (JarArchiver) lookup( Archiver.class, "jar" );
         archiver2.addFile( getTestFile( "src/test/resources/manifests/manifest2.mf" ), "two.txt" );
         archiver2.setIndex( true );
         archiver2.addConfiguredIndexJars( archiver1.getDestFile() );
@@ -75,7 +76,7 @@ public class IndexTest extends PlexusTestCase
         throws Exception
     {
         /* create a dummy jar */
-        JarArchiver archiver1 = (JarArchiver) lookup( Archiver.ROLE, "jar" );
+        JarArchiver archiver1 = (JarArchiver) lookup( Archiver.class, "jar" );
         archiver1.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), "one.txt" );
 
         // add a file in the META-INF directory, as this previously didn't make it into the index
@@ -84,7 +85,7 @@ public class IndexTest extends PlexusTestCase
         archiver1.createArchive();
 
         /* create another dummy jar, with an index but nothing else in META-INF. Also checks non-leaf files. */
-        JarArchiver archiver3 = (JarArchiver) lookup( Archiver.ROLE, "jar" );
+        JarArchiver archiver3 = (JarArchiver) lookup( Archiver.class, "jar" );
         archiver3.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), "org/apache/maven/one.txt" );
         archiver3.addFile( getTestFile( "src/test/resources/manifests/manifest2.mf" ), "META-INF/INDEX.LIST" );
         archiver3.setDestFile( getTestFile( "target/output/archive3.jar" ) );
@@ -96,7 +97,7 @@ public class IndexTest extends PlexusTestCase
         Manifest.Attribute classpathAttr = new Manifest.Attribute( "Class-Path", "archive1.jar archive3.jar" );
         m.addConfiguredAttribute( classpathAttr );
 
-        JarArchiver archiver2 = (JarArchiver) lookup( Archiver.ROLE, "jar" );
+        JarArchiver archiver2 = (JarArchiver) lookup( Archiver.class, "jar" );
         archiver2.addFile( getTestFile( "src/test/resources/manifests/manifest2.mf" ), "two.txt" );
         archiver2.setIndex( true );
         archiver2.addConfiguredIndexJars( archiver1.getDestFile() );

@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.List;
 
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -63,7 +64,7 @@ public class DotDirectiveArchiveFinalizer
 
                             System.out.println( "adding directory = " + directory );
 
-                            archiver.addDirectory( directory );
+                            archiver.addFileSet( new DefaultFileSet( directory ) );
                         }
                         else
                         {
@@ -73,11 +74,12 @@ public class DotDirectiveArchiveFinalizer
 
                             if ( s[1].endsWith( "/" ) )
                             {
-                                archiver.addDirectory( directory, s[1] );
+
+                                archiver.addFileSet( new DefaultFileSet( directory ).prefixed( s[1] ) );
                             }
                             else
                             {
-                                archiver.addDirectory( directory, s[1] + "/" );
+                                archiver.addFileSet( new DefaultFileSet( directory ).prefixed( s[1] + "/" ) );
                             }
                         }
                     }

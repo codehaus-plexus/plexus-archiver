@@ -16,12 +16,15 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import java.io.File;
 
 /**
  * Extract files in tar with snappy compression
  *
  */
+@Named( "tar.snappy" )
 public class TarSnappyUnArchiver
     extends TarUnArchiver
 {

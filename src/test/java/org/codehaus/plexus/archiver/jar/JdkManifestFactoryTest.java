@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.util.Streams;
 
 /**
  * @author Kristian Rosenvold
  */
 public class JdkManifestFactoryTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testGetDefaultManifest()

@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.ear;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -27,6 +29,7 @@ import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 /**
  * Creates a EAR archive. Based on WAR task
  */
+@Named( "ear" )
 public class EarArchiver
     extends JarArchiver
 {

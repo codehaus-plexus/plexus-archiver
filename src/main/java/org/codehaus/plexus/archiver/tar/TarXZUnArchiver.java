@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import java.io.File;
 
 /**
@@ -22,6 +24,7 @@ import java.io.File;
  * @author philip.lourandos
  * @since 3.3
  */
+@Named( "tar.xz" )
 public class TarXZUnArchiver extends TarUnArchiver
 {
 
@@ -37,7 +40,7 @@ public class TarXZUnArchiver extends TarUnArchiver
         setupCompressionMethod();
     }
 
-    private final void setupCompressionMethod()
+    private void setupCompressionMethod()
     {
         setCompression( TarUnArchiver.UntarCompressionMethod.XZ );
     }

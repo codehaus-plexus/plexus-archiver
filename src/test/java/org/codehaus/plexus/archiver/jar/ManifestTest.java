@@ -22,13 +22,13 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.util.jar.Attributes;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
 
 /**
  * @author Emmanuel Venisse
  */
 public class ManifestTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testManifest1()

@@ -49,7 +49,7 @@ public class RarArchiverTest
     public void testArchive()
         throws Exception
     {
-        Archiver archiver = (Archiver) lookup( Archiver.ROLE, "rar" );
+        Archiver archiver = lookup( Archiver.class, "rar" );
         archiver.setDestFile( new File( getTargetRarFolder(), "test.rar" ) );
         //archiver.addDirectory( , "manifests" );
         archiver.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), "manifests/manifest1.mf" );
@@ -57,7 +57,7 @@ public class RarArchiverTest
         archiver.createArchive();
         assertTrue( new File( getTargetRarFolder(), "test.rar" ).exists() );
 
-        UnArchiver unArchiver = (UnArchiver) lookup( UnArchiver.ROLE, "rar" );
+        UnArchiver unArchiver = lookup( UnArchiver.class, "rar" );
         unArchiver.setSourceFile( new File( getTargetRarFolder(), "test.rar" ) );
         unArchiver.setDestDirectory( getTargetRarFolder() );
         unArchiver.extract();
@@ -72,7 +72,7 @@ public class RarArchiverTest
         throws Exception
     {
 
-        UnArchiver unArchiver = (UnArchiver) lookup( UnArchiver.ROLE, "rar" );
+        UnArchiver unArchiver = lookup( UnArchiver.class, "rar" );
         File rarFile = new File( getBasedir() + "/src/test/jars/test.rar" );
         assertTrue( rarFile.exists() );
         unArchiver.setSourceFile( rarFile );

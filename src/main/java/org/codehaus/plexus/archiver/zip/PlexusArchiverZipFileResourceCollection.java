@@ -1,9 +1,12 @@
 package org.codehaus.plexus.archiver.zip;
 
+import javax.inject.Named;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Iterator;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -12,16 +15,12 @@ import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResour
 import org.codehaus.plexus.components.io.resources.EncodingSupported;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
+@Named( "zip" )
 public class PlexusArchiverZipFileResourceCollection
     extends AbstractPlexusIoArchiveResourceCollection implements EncodingSupported
 {
 
-    /**
-     * The zip file resource collections role hint.
-     */
-    public static final String ROLE_HINT = "zip";
-
-    private Charset charset = Charset.forName( "UTF-8" );
+    private Charset charset = StandardCharsets.UTF_8;
 
     @Override
     protected Iterator<PlexusIoResource> getEntries()

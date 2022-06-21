@@ -28,7 +28,6 @@ import static org.codehaus.plexus.components.io.resources.ResourceFactory.create
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -39,9 +38,9 @@ import java.util.Map;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.bzip2.BZip2Compressor;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
@@ -61,7 +60,7 @@ import org.junit.Assert;
  * @author Emmanuel Venisse
  */
 public class TarArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testCreateArchiveWithDetectedModes()
@@ -404,7 +403,7 @@ public class TarArchiverTest
 
     private TarArchiver getPosixTarArchiver() throws Exception
     {
-        TarArchiver archiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver archiver = (TarArchiver) lookup( Archiver.class, "tar" );
         archiver.setLongfile( TarLongFileMode.posix );
         return archiver;
     }

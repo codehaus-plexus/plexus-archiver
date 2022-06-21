@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.xz;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
  * @author lore
  * @since 3.3
  */
+@Named( "xz" )
 public class PlexusIoXZResourceCollection extends PlexusIoCompressedFileResourceCollection
 {
 

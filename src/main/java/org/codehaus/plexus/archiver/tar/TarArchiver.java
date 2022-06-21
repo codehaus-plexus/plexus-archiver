@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 
 import java.io.File;
@@ -46,6 +48,7 @@ import org.iq80.snappy.SnappyOutputStream;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
+@Named( "tar" )
 public class TarArchiver
     extends AbstractArchiver
 {
@@ -59,7 +62,7 @@ public class TarArchiver
 
     private TarCompressionMethod compression = TarCompressionMethod.none;
 
-    private TarOptions options = new TarOptions();
+    private final TarOptions options = new TarOptions();
 
     private TarArchiveOutputStream tOut;
 
@@ -474,7 +477,7 @@ public class TarArchiver
     /**
      * Valid Modes for Compression attribute to Tar Task
      */
-    public static enum TarCompressionMethod
+    public enum TarCompressionMethod
     {
 
         none,

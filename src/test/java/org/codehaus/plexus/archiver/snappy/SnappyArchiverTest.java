@@ -24,7 +24,6 @@
 package org.codehaus.plexus.archiver.snappy;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
@@ -47,11 +46,11 @@ public class SnappyArchiverTest
     public void testCreateArchive()
         throws Exception
     {
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.addDirectory( getTestFile( "src" ) );
         zipArchiver.setDestFile( getTestFile( "target/output/archiveForSnappy.zip" ) );
         zipArchiver.createArchive();
-        SnappyArchiver archiver = (SnappyArchiver) lookup( Archiver.ROLE, "snappy" );
+        SnappyArchiver archiver = (SnappyArchiver) lookup( Archiver.class, "snappy" );
         String[] inputFiles = new String[ 1 ];
         inputFiles[0] = "archiveForSnappy.zip";
         archiver.addDirectory( getTestFile( "target/output" ), inputFiles, null );
@@ -62,7 +61,7 @@ public class SnappyArchiverTest
     public void testCreateEmptyArchive()
         throws Exception
     {
-        SnappyArchiver archiver = (SnappyArchiver) lookup( Archiver.ROLE, "snappy" );
+        SnappyArchiver archiver = (SnappyArchiver) lookup( Archiver.class, "snappy" );
         archiver.setDestFile( getTestFile( "target/output/empty.snappy" ) );
         try
         {
@@ -80,7 +79,7 @@ public class SnappyArchiverTest
     {
         final File pomFile = new File( "pom.xml" );
         final File snappyFile = new File( "target/output/pom.xml.snappy" );
-        SnappyArchiver SnappyArchiver = (SnappyArchiver) lookup( Archiver.ROLE, "snappy" );
+        SnappyArchiver SnappyArchiver = (SnappyArchiver) lookup( Archiver.class, "snappy" );
         SnappyArchiver.setDestFile( snappyFile );
         SnappyArchiver.addFile( pomFile, "pom.xml" );
         FileUtils.removePath( snappyFile.getPath() );
@@ -89,7 +88,7 @@ public class SnappyArchiverTest
         System.out.println( "Created: " + snappyFile.getAbsolutePath() );
 
         final File zipFile = new File( "target/output/pom.zip" );
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.setDestFile( zipFile );
         zipArchiver.addArchivedFileSet( snappyFile, "prfx/" );
         FileUtils.removePath( zipFile.getPath() );

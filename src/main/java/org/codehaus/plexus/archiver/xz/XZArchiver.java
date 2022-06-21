@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.xz;
 
+import javax.inject.Named;
+
 import java.io.IOException;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -26,6 +28,7 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
  * @author philiplourandos
  * @since 3.3
  */
+@Named( "xz" )
 public class XZArchiver extends AbstractArchiver
 {
 

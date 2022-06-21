@@ -2,14 +2,13 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 import java.util.jar.JarFile;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
 
 /**
  * @author Jason van Zyl
  */
 public class DotDirectiveArchiveFinalizerTest
-    extends PlexusTestCase
+    extends TestSupport
 {
 
     public void testDotDirectiveArchiveFinalizer()

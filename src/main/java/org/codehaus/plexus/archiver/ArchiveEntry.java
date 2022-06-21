@@ -40,7 +40,7 @@ public class ArchiveEntry
 
     public static final int SYMLINK = 3;
 
-    @Nonnull private PlexusIoResource resource;
+    @Nonnull private final PlexusIoResource resource;
 
     private final String name;
 

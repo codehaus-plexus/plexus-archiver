@@ -1,7 +1,7 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
@@ -10,7 +10,7 @@ import org.codehaus.plexus.util.FileUtils;
 /**
  * @author <a href="mailto:viktor@jv-ration.com">Viktor Sadovnikov</a>
  */
-public class TarUnArchiverTest extends PlexusTestCase
+public class TarUnArchiverTest extends TestSupport
 {
 
     private void runUnarchiver( FileSelector[] selectors, boolean[] results )
@@ -22,7 +22,7 @@ public class TarUnArchiverTest extends PlexusTestCase
 
         File outputDirectory = new File( getBasedir(), s );
 
-        TarUnArchiver tarUn = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar.gz" );
+        TarUnArchiver tarUn = (TarUnArchiver) lookup( UnArchiver.class, "tar.gz" );
         tarUn.setSourceFile( testJar );
         tarUn.setDestDirectory( outputDirectory );
         tarUn.setFileSelectors( selectors );

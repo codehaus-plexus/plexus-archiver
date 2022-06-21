@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.WillNotClose;
+import javax.inject.Named;
 
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
@@ -18,6 +19,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
  * Implementation of {@link PlexusIoResourceCollection} for
  * bzip2 compressed files.
  */
+@Named( "bzip2" )
 public class PlexusIoBzip2ResourceCollection
     extends PlexusIoCompressedFileResourceCollection
 {

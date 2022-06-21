@@ -55,10 +55,7 @@ import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
 
-@SuppressWarnings(
-{
-    "NullableProblems", "UnusedDeclaration"
-} )
+@SuppressWarnings( { "UnusedDeclaration" } )
 public abstract class AbstractZipArchiver
     extends AbstractArchiver
 {
@@ -316,8 +313,8 @@ public abstract class AbstractZipArchiver
     /**
      * Gets the {@code UnicodeExtraFieldPolicy} to apply.
      *
-     * @return {@link ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NEVER}, if the effective encoding is
-     * UTF-8; {@link ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS}, if the effective encoding is not
+     * @return {@link ZipArchiveOutputStream.UnicodeExtraFieldPolicy#NEVER}, if the effective encoding is
+     * UTF-8; {@link ZipArchiveOutputStream.UnicodeExtraFieldPolicy#ALWAYS}, if the effective encoding is not
      * UTF-8.
      *
      * @see #getEncoding()

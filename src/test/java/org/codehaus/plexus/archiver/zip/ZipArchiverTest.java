@@ -317,7 +317,7 @@ public class ZipArchiverTest
     {
         try
         {
-            return (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+            return (ZipArchiver) lookup( Archiver.class, "zip" );
         }
         catch ( Exception e )
         {
@@ -335,7 +335,7 @@ public class ZipArchiverTest
     private ZipUnArchiver getZipUnArchiver( File testJar )
         throws Exception
     {
-        ZipUnArchiver zu = (ZipUnArchiver) lookup( UnArchiver.ROLE, "zip" );
+        ZipUnArchiver zu = (ZipUnArchiver) lookup( UnArchiver.class, "zip" );
         zu.setSourceFile( testJar );
         return zu;
     }
@@ -633,7 +633,6 @@ public class ZipArchiverTest
      * Zip archives store file modification times with a granularity of two seconds.
      * Verify that ZipArchiver rounds up the last modified time.
      */
-    @Test
     public void testLastModifiedTimeRounding()
         throws Exception
     {
@@ -796,7 +795,7 @@ public class ZipArchiverTest
         throws Exception
     {
         final File tarFile = getTestFile( "target/output/zip-non-concurrent.tar" );
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setDestFile( tarFile );
         // We're testing concurrency issue so we need large amount of files
         for ( int i = 0; i < 100; i++ )

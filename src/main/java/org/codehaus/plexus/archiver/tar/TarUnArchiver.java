@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
 
@@ -32,11 +34,12 @@ import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.iq80.snappy.SnappyInputStream;
+import org.iq80.snappy.SnappyFramedInputStream;
 
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
+@Named( "tar" )
 public class TarUnArchiver
     extends AbstractUnArchiver
 {
@@ -150,7 +153,7 @@ public class TarUnArchiver
         }
         else if ( compression == UntarCompressionMethod.SNAPPY )
         {
-            return new SnappyInputStream( istream, true );
+            return new SnappyFramedInputStream( istream, true );
         }
         else if ( compression == UntarCompressionMethod.XZ )
         {
@@ -162,7 +165,7 @@ public class TarUnArchiver
     /**
      * Valid Modes for Compression attribute to Untar Task
      */
-    public static enum UntarCompressionMethod
+    public enum UntarCompressionMethod
     {
 
         NONE( "none" ),

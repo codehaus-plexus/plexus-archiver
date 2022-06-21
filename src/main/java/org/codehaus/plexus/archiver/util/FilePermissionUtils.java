@@ -20,8 +20,8 @@ package org.codehaus.plexus.archiver.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
 
 /**
  * @author Olivier Lamy
@@ -52,7 +52,7 @@ public class FilePermissionUtils
             throw new IllegalArgumentException( " file mode must be 3 or 4 characters" );
         }
 
-        List<String> modes = new ArrayList<String>( mode.length() );
+        List<String> modes = new ArrayList<>( mode.length() );
         for ( int i = 0, size = mode.length(); i < size; i++ )
         {
             modes.add( String.valueOf( mode.charAt( i ) ) );
@@ -64,7 +64,7 @@ public class FilePermissionUtils
         // handle user perm
         try
         {
-            int userMode = Integer.valueOf( modes.get( mode.length() == 4 ? 1 : 0 ) );
+            int userMode = Integer.parseInt( modes.get( mode.length() == 4 ? 1 : 0 ) );
             switch ( userMode )
             {
                 case 0:
@@ -107,7 +107,7 @@ public class FilePermissionUtils
         // handle all perm
         try
         {
-            int allMode = Integer.valueOf( modes.get( mode.length() == 4 ? 3 : 2 ) );
+            int allMode = Integer.parseInt( modes.get( mode.length() == 4 ? 3 : 2 ) );
             switch ( allMode )
             {
                 case 0:

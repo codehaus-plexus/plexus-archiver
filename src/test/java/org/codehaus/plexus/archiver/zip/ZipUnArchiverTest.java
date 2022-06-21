@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -19,7 +19,7 @@ import org.codehaus.plexus.util.FileUtils;
  * @author Jason van Zyl
  */
 public class ZipUnArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testExtractingZipPreservesExecutableFlag()
@@ -180,7 +180,7 @@ public class ZipUnArchiverTest
 
     private ZipUnArchiver getZipUnArchiver( File testJar ) throws Exception
     {
-        ZipUnArchiver zu = (ZipUnArchiver) lookup( UnArchiver.ROLE, "zip" );
+        ZipUnArchiver zu = (ZipUnArchiver) lookup( UnArchiver.class, "zip" );
         zu.setSourceFile( testJar );
         return zu;
     }
@@ -322,7 +322,7 @@ public class ZipUnArchiverTest
     {
         try
         {
-            return (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+            return (ZipArchiver) lookup( Archiver.class, "zip" );
         }
         catch ( Exception e )
         {

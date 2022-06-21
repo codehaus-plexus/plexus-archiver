@@ -24,8 +24,8 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.gzip.GZipArchiver;
 
@@ -33,13 +33,13 @@ import org.codehaus.plexus.archiver.gzip.GZipArchiver;
  * @author Dan Tran
  */
 public class TarGZipUnArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public void testExtract()
         throws Exception
     {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setLongfile( TarLongFileMode.posix );
 
         String fileName1 = "TarGZipUnArchiverTest1.txt";
@@ -54,14 +54,14 @@ public class TarGZipUnArchiverTest
         tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
         tarArchiver.createArchive();
 
-        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.ROLE, "gzip" );
+        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
 
         File testGZipFile = getTestFile( "target/output/archive.tar.gz" );
         gzipArchiver.setDestFile( testGZipFile );
         gzipArchiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
         gzipArchiver.createArchive();
 
-        TarGZipUnArchiver tarGZipUnArchiver = (TarGZipUnArchiver) lookup( UnArchiver.ROLE, "tgz" );
+        TarGZipUnArchiver tarGZipUnArchiver = (TarGZipUnArchiver) lookup( UnArchiver.class, "tgz" );
         tarGZipUnArchiver.setDestDirectory( getTestFile( "target/output" ) );
         tarGZipUnArchiver.setSourceFile( testGZipFile );
         tarGZipUnArchiver.extract();
@@ -77,7 +77,7 @@ public class TarGZipUnArchiverTest
     public void testLookup()
         throws Exception
     {
-        lookup( UnArchiver.ROLE, "tar.gz" );
+        lookup( UnArchiver.class, "tar.gz" );
     }
 
 }

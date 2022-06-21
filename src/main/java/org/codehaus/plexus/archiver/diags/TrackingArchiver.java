@@ -51,7 +51,7 @@ public class TrackingArchiver
 
     private File destFile;
 
-    public final List<Addition> added = new ArrayList<Addition>();
+    public final List<Addition> added = new ArrayList<>();
 
     private boolean useJvmChmod;
 
@@ -290,7 +290,7 @@ public class TrackingArchiver
     @Override
     public Map<String, ArchiveEntry> getFiles()
     {
-        return new HashMap<String, ArchiveEntry>();
+        return new HashMap<>();
     }
 
     @Override

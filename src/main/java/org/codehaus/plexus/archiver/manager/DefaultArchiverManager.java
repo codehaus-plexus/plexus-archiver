@@ -18,65 +18,71 @@ package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.Map;
+
 import javax.annotation.Nonnull;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
+import javax.inject.Singleton;
+
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * @author dantran
  */
+@Singleton
+@Named
 public class DefaultArchiverManager
-    implements ArchiverManager, Contextualizable
+    implements ArchiverManager
 {
 
-    private PlexusContainer container;
+    private final Map<String, Provider<Archiver>> archivers;
 
-    // ----------------------------------------------------------------------
-    // Component Lifecycle
-    // ----------------------------------------------------------------------
+    private final Map<String, Provider<UnArchiver>> unArchivers;
 
-    @Override
-    public void contextualize( Context context )
-        throws ContextException
+    private final Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections;
+
+    @Inject
+    public DefaultArchiverManager( Map<String, Provider<Archiver>> archivers,
+                                   Map<String, Provider<UnArchiver>> unArchivers,
+                                   Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections )
     {
-        container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
+        this.archivers = requireNonNull( archivers );
+        this.unArchivers = requireNonNull( unArchivers );
+        this.plexusIoResourceCollections = requireNonNull( plexusIoResourceCollections );
     }
 
     @Override
     @Nonnull public Archiver getArchiver( @Nonnull String archiverName )
         throws NoSuchArchiverException
     {
-        try
-        {
-            return (Archiver) container.lookup( Archiver.ROLE, archiverName );
-        }
-        catch ( ComponentLookupException e )
+        requireNonNull( archiverName );
+        Provider<Archiver> archiver = archivers.get( archiverName );
+        if ( archiver == null )
         {
             throw new NoSuchArchiverException( archiverName );
         }
+        return archiver.get();
     }
 
     @Override
     @Nonnull public UnArchiver getUnArchiver( @Nonnull String unArchiverName )
         throws NoSuchArchiverException
     {
-        try
-        {
-            return (UnArchiver) container.lookup( UnArchiver.ROLE, unArchiverName );
-        }
-        catch ( ComponentLookupException e )
+        requireNonNull( unArchiverName );
+        Provider<UnArchiver> unArchiver = unArchivers.get( unArchiverName );
+        if ( unArchiver == null )
         {
             throw new NoSuchArchiverException( unArchiverName );
         }
+        return unArchiver.get();
     }
 
     @Override
@@ -84,15 +90,14 @@ public class DefaultArchiverManager
     PlexusIoResourceCollection getResourceCollection( String resourceCollectionName )
         throws NoSuchArchiverException
     {
-        try
-        {
-            return (PlexusIoResourceCollection) container.lookup( PlexusIoResourceCollection.ROLE,
-                                                                  resourceCollectionName );
-        }
-        catch ( ComponentLookupException e )
+        requireNonNull( resourceCollectionName );
+        Provider<PlexusIoResourceCollection> resourceCollection =
+                plexusIoResourceCollections.get( resourceCollectionName );
+        if ( resourceCollection == null )
         {
             throw new NoSuchArchiverException( resourceCollectionName );
         }
+        return resourceCollection.get();
     }
 
     private static @Nonnull

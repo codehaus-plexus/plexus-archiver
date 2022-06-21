@@ -37,7 +37,7 @@ public interface BaseFileSet
 
     /**
      * Returns, whether the include/exclude patterns are
-     * case sensitive.
+     * case-sensitive.
      */
     boolean isCaseSensitive();
 
