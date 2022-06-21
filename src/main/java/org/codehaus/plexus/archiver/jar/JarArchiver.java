@@ -48,8 +48,6 @@ import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 
 /**
  * Base class for tasks that build archives in JAR file format.
@@ -762,19 +760,17 @@ public class JarArchiver
      *
      * @throws java.io.IOException
      */
-    protected static void grabFilesAndDirs( String file, List<String> dirs, List<String> files )
+    private void grabFilesAndDirs( String file, List<String> dirs, List<String> files )
         throws IOException
     {
         File zipFile = new File( file );
         if ( !zipFile.exists() )
         {
-            Logger logger = new ConsoleLogger( Logger.LEVEL_INFO, "console" );
-            logger.error( "JarArchive skipping non-existing file: " + zipFile.getAbsolutePath() );
+            getLogger().error( "JarArchive skipping non-existing file: " + zipFile.getAbsolutePath() );
         }
         else if ( zipFile.isDirectory() )
         {
-            Logger logger = new ConsoleLogger( Logger.LEVEL_INFO, "console" );
-            logger.info( "JarArchiver skipping indexJar " + zipFile + " because it is not a jar" );
+            getLogger().info( "JarArchiver skipping indexJar " + zipFile + " because it is not a jar" );
         }
         else
         {
