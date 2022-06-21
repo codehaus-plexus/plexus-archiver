@@ -4,8 +4,7 @@ import javax.inject.Named;
 
 import java.io.File;
 
-// TODO: Name is okay? Seems not
-@Named( "snappy.gz" )
+@Named( "tar.snappy" )
 public class PlexusIoTarSnappyFileResourceCollection
     extends PlexusIoTarFileResourceCollection
 {
