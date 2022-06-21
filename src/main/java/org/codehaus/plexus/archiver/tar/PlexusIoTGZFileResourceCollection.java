@@ -11,11 +11,4 @@ import java.io.File;
 public class PlexusIoTGZFileResourceCollection
     extends PlexusIoTarGZipFileResourceCollection
 {
-
-    @Override
-    protected TarFile newTarFile( File file )
-    {
-        return new GZipTarFile( file );
-    }
-
 }
