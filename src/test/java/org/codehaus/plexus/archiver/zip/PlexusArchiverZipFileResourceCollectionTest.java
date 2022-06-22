@@ -11,11 +11,16 @@ import java.util.Set;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PlexusArchiverZipFileResourceCollectionTest
         extends TestSupport
 {
 
+    @Test
     public void testFilesWithIllegalHtmlChars()
         throws Exception
     {
@@ -37,6 +42,7 @@ public class PlexusArchiverZipFileResourceCollectionTest
         }
     }
 
+    @Test
     public void testFileModes()
         throws IOException
     {

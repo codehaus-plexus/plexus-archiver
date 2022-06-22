@@ -36,6 +36,13 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -44,6 +51,7 @@ public class GZipArchiverTest
     extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
@@ -59,7 +67,7 @@ public class GZipArchiverTest
         archiver.createArchive();
     }
 
-
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
@@ -76,6 +84,7 @@ public class GZipArchiverTest
         }
     }
 
+    @Test
     public void testCreateResourceCollection()
         throws Exception
     {
@@ -110,6 +119,7 @@ public class GZipArchiverTest
      *
      * @throws Exception
      */
+    @Test
     public void testTarGzIsForcedBehaviour() throws Exception
     {
         GZipArchiver gZipArchiver = (GZipArchiver) createArchiver( "gzip" );
@@ -128,7 +138,7 @@ public class GZipArchiverTest
 
         final long firstRunTime = gZipArchiver.getDestFile().lastModified();
 
-        assertFalse( creationTime == firstRunTime );
+        assertNotEquals( creationTime, firstRunTime );
 
         gZipArchiver = (GZipArchiver) createArchiver( "gzip" );
 

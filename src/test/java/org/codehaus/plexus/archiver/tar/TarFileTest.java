@@ -14,7 +14,10 @@ import org.codehaus.plexus.archiver.gzip.GZipCompressor;
 import org.codehaus.plexus.archiver.util.Compressor;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test case for {@link TarFile}.
@@ -33,6 +36,7 @@ public class TarFileTest
     /**
      * Test for the uncompressed tar file, {@link TarFile}.
      */
+    @Test
     public void testTarFile() throws Exception
     {
         testTarFile( null, null, new TarFileCreator()
@@ -51,6 +55,7 @@ public class TarFileTest
     /**
      * Test for the gzip compressed tar file, {@link GZipTarFile}.
      */
+    @Test
     public void testGZipTarFile() throws Exception
     {
         final GZipCompressor compressor = new GZipCompressor();
@@ -70,6 +75,7 @@ public class TarFileTest
     /**
      * Test for the bzip2 compressed tar file, {@link BZip2TarFile}.
      */
+    @Test
     public void testBZip2TarFile() throws Exception
     {
         final BZip2Compressor compressor = new BZip2Compressor();

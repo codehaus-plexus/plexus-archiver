@@ -6,6 +6,9 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:viktor@jv-ration.com">Viktor Sadovnikov</a>
@@ -44,6 +47,7 @@ public class TarUnArchiverTest extends TestSupport
                       exists, f0.exists() );
     }
 
+    @Test
     public void testExtractingADirectory() throws Exception
     {
         runUnarchiver( null,
@@ -54,6 +58,7 @@ public class TarUnArchiverTest extends TestSupport
 
     }
 
+    @Test
     public void testSelectors()
         throws Exception
     {

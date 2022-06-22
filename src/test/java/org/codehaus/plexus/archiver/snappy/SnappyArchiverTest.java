@@ -35,6 +35,13 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests for the snappy archiver
@@ -43,6 +50,7 @@ public class SnappyArchiverTest
     extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
@@ -58,6 +66,7 @@ public class SnappyArchiverTest
         archiver.createArchive();
     }
 
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
@@ -74,6 +83,7 @@ public class SnappyArchiverTest
         }
     }
 
+    @Test
     public void testCreateResourceCollection()
         throws Exception
     {
@@ -111,6 +121,7 @@ public class SnappyArchiverTest
      *
      * @throws Exception
      */
+    @Test
     public void testsnappyIsForcedBehaviour() throws Exception
     {
         SnappyArchiver SnappyArchiver = (SnappyArchiver) createArchiver( "snappy" );
@@ -129,7 +140,7 @@ public class SnappyArchiverTest
 
         final long firstRunTime = SnappyArchiver.getDestFile().lastModified();
 
-        assertFalse( creationTime == firstRunTime );
+        assertNotEquals( creationTime, firstRunTime );
 
         SnappyArchiver = (SnappyArchiver) createArchiver( "snappy" );
 

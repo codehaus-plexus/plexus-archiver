@@ -1,18 +1,29 @@
 package org.codehaus.plexus.archiver;
 
-import org.codehaus.plexus.ContainerConfiguration;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusTestCase;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.eclipse.sisu.launch.InjectedTest;
 
 /**
  * Test support class.
  */
 public abstract class TestSupport
-        extends PlexusTestCase
+        extends InjectedTest
 {
-    @Override
-    protected void customizeContainerConfiguration( ContainerConfiguration configuration )
+    private static Path basedir()
     {
-        configuration.setAutoWiring( true ).setClassPathScanning( PlexusConstants.SCANNING_INDEX );
+        return Paths.get( System.getProperty( "basedir", ( new File( "" ) ).getAbsolutePath() ) );
+    }
+
+    protected static File getTestFile( final String path )
+    {
+        return basedir().resolve( path ).toFile();
+    }
+
+    protected static File getTestFile( final String basedir, final String path )
+    {
+        return basedir().resolve( basedir ).resolve( path ).toFile();
     }
 }

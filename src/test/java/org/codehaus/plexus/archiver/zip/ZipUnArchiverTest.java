@@ -14,6 +14,11 @@ import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Jason van Zyl
@@ -22,6 +27,7 @@ public class ZipUnArchiverTest
         extends TestSupport
 {
 
+    @Test
     public void testExtractingZipPreservesExecutableFlag()
         throws Exception
     {
@@ -48,6 +54,7 @@ public class ZipUnArchiverTest
         }
     }
 
+    @Test
     public void testZeroFileModeInZip()
         throws Exception
     {
@@ -76,6 +83,7 @@ public class ZipUnArchiverTest
         }
     }
 
+    @Test
     public void testUnarchiveUtf8()
         throws Exception
     {
@@ -94,6 +102,7 @@ public class ZipUnArchiverTest
         assertTrue( new File( dest, "\u20acuro.txt" ).exists() );
     }
 
+    @Test
     public void testUnarchiveUnicodePathExtra()
         throws Exception
     {
@@ -114,6 +123,7 @@ public class ZipUnArchiverTest
                 new HashSet<>( Arrays.asList( dest.list() ) ) );
     }
 
+    @Test
     public void testUnarchiveUnicodePathExtraSelector()
         throws Exception
     {
@@ -185,6 +195,7 @@ public class ZipUnArchiverTest
         return zu;
     }
 
+    @Test
     public void testExtractingADirectoryFromAJarFile()
         throws Exception
     {
@@ -200,6 +211,7 @@ public class ZipUnArchiverTest
                        } );
     }
 
+    @Test
     public void testSelectors()
         throws Exception
     {
@@ -251,6 +263,7 @@ public class ZipUnArchiverTest
                        } );
     }
 
+    @Test
     public void testExtractingZipWithEntryOutsideDestDirThrowsException()
             throws Exception
     {
@@ -275,6 +288,7 @@ public class ZipUnArchiverTest
         assertTrue( ex.getMessage().startsWith( "Entry is outside of the target directory" ) );
     }
 
+    @Test
     public void testZipOutputSizeException()
         throws Exception
     {
@@ -300,6 +314,7 @@ public class ZipUnArchiverTest
         assertTrue( ex.getMessage().startsWith( "Maximum output size limit reached" ) );
     }
 
+    @Test
     public void testZipMaxOutputSizeEqualToExtractedFileSize()
         throws Exception
     {

@@ -25,6 +25,10 @@ package org.codehaus.plexus.archiver.tar;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -54,7 +58,7 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
-import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author Emmanuel Venisse
@@ -63,6 +67,7 @@ public class TarArchiverTest
         extends TestSupport
 {
 
+    @Test
     public void testCreateArchiveWithDetectedModes()
         throws Exception
     {
@@ -231,6 +236,7 @@ public class TarArchiverTest
         }
     }
 
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
@@ -247,6 +253,7 @@ public class TarArchiverTest
         }
     }
 
+    @Test
     public void testUnicode() throws Exception
     {
         File tmpDir = getTestFile( "src/test/resources/utf8" );
@@ -277,6 +284,7 @@ public class TarArchiverTest
         ArchiveEntryUtils.chmod( file, mode );
     }
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
@@ -356,6 +364,7 @@ public class TarArchiverTest
 
     }
 
+    @Test
     public void testCreateArchiveWithJiustASymlink()
         throws Exception
     {
@@ -495,18 +504,21 @@ public class TarArchiverTest
 
     }
 
+    @Test
     public void testUncompressedResourceCollection()
         throws Exception
     {
         testCreateResourceCollection( new TarHandler() );
     }
 
+    @Test
     public void testGzipCompressedResourceCollection()
         throws Exception
     {
         testCreateResourceCollection( new GZipTarHandler() );
     }
 
+    @Test
     public void testGzipFIleHandleLeak()
         throws Exception
     {
@@ -523,7 +535,7 @@ public class TarArchiverTest
                 throws IOException
             {
                 final String name1 = ze1.getName();
-                Assert.assertNotNull( name1 );
+                assertNotNull( name1 );
 
             }
 
@@ -533,12 +545,14 @@ public class TarArchiverTest
 
     }
 
+    @Test
     public void testBzip2CompressedResourceCollection()
         throws Exception
     {
         testCreateResourceCollection( new BZip2TarHandler() );
     }
 
+    @Test
     public void testTarFileNotClosingInputStream()
         throws Exception
     {
@@ -562,6 +576,7 @@ public class TarArchiverTest
         cmp2.close();
     }
 
+    @Test
     public void testSymlinkArchivedFileSet()
         throws Exception
     {

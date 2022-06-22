@@ -10,6 +10,10 @@ import org.codehaus.plexus.archiver.tar.TarUnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 import org.codehaus.plexus.util.Os;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kristian Rosenvold
@@ -18,6 +22,7 @@ public class SymlinkTest
     extends TestSupport
 {
 
+    @Test
     public void testSymlinkDir()
         throws IOException
     {
@@ -29,6 +34,7 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkDirWithSlash()
         throws IOException
     {
@@ -40,6 +46,7 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkFile()
     {
         if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
@@ -50,6 +57,7 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkTar()
         throws Exception
     {
@@ -69,6 +77,7 @@ public class SymlinkTest
         unarchiver.extract();
     }
 
+    @Test
     public void testSymlinkZip()
         throws Exception
     {
@@ -89,6 +98,7 @@ public class SymlinkTest
         unarchiver.extract();
     }
 
+    @Test
     public void testSymlinkDirArchiver()
         throws Exception
     {

@@ -11,6 +11,9 @@ import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class DirectoryArchiverUnpackJarTest
         extends TestSupport
@@ -39,6 +42,7 @@ public class DirectoryArchiverUnpackJarTest
 
     }
 
+    @Test
     public void test_dependency_sets_depSet_unpacked_rdonly()
         throws Exception
     {

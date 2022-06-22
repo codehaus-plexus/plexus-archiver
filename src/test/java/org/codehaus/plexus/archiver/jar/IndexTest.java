@@ -20,8 +20,11 @@ import java.io.InputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
+import org.junit.Test;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author <a href="mailto:richardv@mxtelecom.com">Richard van der Hoff</a>
@@ -29,6 +32,7 @@ import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 public class IndexTest extends TestSupport
 {
 
+    @Test
     public void testCreateArchiveWithIndexedJars()
         throws Exception
     {
@@ -72,6 +76,7 @@ public class IndexTest extends TestSupport
      * this is pretty much a duplicate of testCreateArchiveWithIndexedJars(), but adds some extra
      * tests for files in META-INF
      */
+    @Test
     public void testCreateArchiveWithIndexedJarsAndMetaInf()
         throws Exception
     {

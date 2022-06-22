@@ -16,11 +16,17 @@ import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class PlexusIoZipFileResourceCollectionTest
         extends TestSupport
 {
 
+    @Test
     public void testNamelessRootFolder()
         throws Exception
     {
@@ -34,6 +40,7 @@ public class PlexusIoZipFileResourceCollectionTest
         assertEquals( "dummy content", d.readLine() );
     }
 
+    @Test
     public void testDescriptionForError()
         throws Exception
     {
@@ -46,6 +53,7 @@ public class PlexusIoZipFileResourceCollectionTest
         assertTrue( descriptionForError.endsWith( "namelessrootfolder.jar!//dummy.txt" ) );
     }
 
+    @Test
     public void testFilesWithIllegalHtmlChars()
         throws Exception
     {
@@ -67,6 +75,7 @@ public class PlexusIoZipFileResourceCollectionTest
         }
     }
 
+    @Test
     public void testFilesThatAreNotThere()
         throws Exception
     {
@@ -89,6 +98,7 @@ public class PlexusIoZipFileResourceCollectionTest
         }
     }
 
+    @Test
     public void testSymlinkEntries()
         throws Exception
     {
@@ -123,6 +133,7 @@ public class PlexusIoZipFileResourceCollectionTest
         assertTrue( symLinks.isEmpty() );
     }
 
+    @Test
     public void testUnarchiveUnicodePathExtra()
         throws Exception
     {

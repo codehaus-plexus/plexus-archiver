@@ -27,6 +27,12 @@ import java.io.File;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Dan T. Tran
@@ -35,6 +41,7 @@ public class ArchiverManagerTest
         extends TestSupport
 {
 
+    @Test
     public void testLookupArchiver()
         throws Exception
     {
@@ -44,6 +51,7 @@ public class ArchiverManagerTest
         assertNotNull( archiver );
     }
 
+    @Test
     public void testReuseArchiver()
         throws Exception
     {
@@ -61,6 +69,7 @@ public class ArchiverManagerTest
         assertTrue( !newArchiver.getResources().hasNext() );
     }
 
+    @Test
     public void testLookupUnArchiver()
         throws Exception
     {
@@ -70,6 +79,7 @@ public class ArchiverManagerTest
         assertNotNull( unarchiver );
     }
 
+    @Test
     public void testLookupUnknownArchiver()
         throws Exception
     {
@@ -84,6 +94,7 @@ public class ArchiverManagerTest
         }
     }
 
+    @Test
     public void testLookupUnknownUnArchiver()
         throws Exception
     {
@@ -98,6 +109,7 @@ public class ArchiverManagerTest
         }
     }
 
+    @Test
     public void testLookupUnArchiverUsingFile()
         throws Exception
     {
@@ -123,6 +135,7 @@ public class ArchiverManagerTest
 
     }
 
+    @Test
     public void testLookupArchiverUsingFile()
         throws Exception
     {
@@ -139,6 +152,7 @@ public class ArchiverManagerTest
 
     }
 
+    @Test
     public void testUnspportedLookupArchiverUsingFile()
         throws Exception
     {

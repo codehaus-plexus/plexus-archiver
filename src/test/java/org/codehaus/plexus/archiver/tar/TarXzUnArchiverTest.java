@@ -21,6 +21,12 @@ import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.xz.XZArchiver;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author philip.lourandos
@@ -29,6 +35,7 @@ import org.codehaus.plexus.util.FileUtils;
 public class TarXzUnArchiverTest extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
@@ -77,6 +84,7 @@ public class TarXzUnArchiverTest extends TestSupport
         assertEquals( testXZFile, tarXZUnArchiver.getSourceFile() );
     }
 
+    @Test
     public void testLookup() throws Exception
     {
         assertNotNull( lookup( UnArchiver.class, "tar.xz" ) );

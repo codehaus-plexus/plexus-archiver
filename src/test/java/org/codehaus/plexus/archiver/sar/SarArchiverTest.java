@@ -18,11 +18,15 @@ package org.codehaus.plexus.archiver.sar;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class SarArchiverTest
     extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testLookup()
         throws Exception
     {
@@ -30,7 +34,7 @@ public class SarArchiverTest
         PlexusIoResourceCollection sar = dam.getResourceCollection( "sar" );
         assertNotNull( sar );
         PlexusIoResourceCollection archiver =
-            (PlexusIoResourceCollection) lookup( PlexusIoResourceCollection.ROLE, "sar" );
+            (PlexusIoResourceCollection) lookup( PlexusIoResourceCollection.class, "sar" );
 
         assertNotNull( archiver );
     }

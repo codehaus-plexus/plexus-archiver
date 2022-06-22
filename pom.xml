@@ -66,7 +66,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-io</artifactId>
-      <version>3.3.1</version>
+      <version>3.3.2-SNAPSHOT</version>
     </dependency>
     <!-- Apache Commons dependencies -->
     <dependency>
@@ -130,7 +130,7 @@
     <!-- Plexus container dependencies -->
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
-      <artifactId>org.eclipse.sisu.plexus</artifactId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
       <version>${sisuVersion}</version>
       <scope>test</scope>
     </dependency>

@@ -26,6 +26,9 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Daniel Krisher
@@ -34,12 +37,14 @@ public class EmptyDirectoryTest
     extends TestSupport
 {
 
+    @Test
     public void testZipArchiver()
         throws Exception
     {
         testEmptyDirectory( "zip", lookup( Archiver.class, "zip" ) );
     }
 
+    @Test
     public void testJarArchiver()
         throws Exception
     {
@@ -47,6 +52,7 @@ public class EmptyDirectoryTest
 //        testEmptyDirectory( "jar" );
     }
 
+    @Test
     public void testTarArchiver()
         throws Exception
     {

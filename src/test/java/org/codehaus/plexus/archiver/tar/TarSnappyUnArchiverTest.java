@@ -28,6 +28,10 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.snappy.SnappyArchiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Snappy tar archives
@@ -36,6 +40,7 @@ public class TarSnappyUnArchiverTest
         extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
@@ -73,6 +78,7 @@ public class TarSnappyUnArchiverTest
         assertEquals( testSnappyFile, tarSnappyUnArchiver.getSourceFile() );
     }
 
+    @Test
     public void testLookup()
         throws Exception
     {

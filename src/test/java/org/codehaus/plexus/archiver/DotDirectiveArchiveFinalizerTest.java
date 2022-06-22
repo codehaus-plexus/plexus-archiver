@@ -3,6 +3,9 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.util.jar.JarFile;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Jason van Zyl
@@ -11,6 +14,7 @@ public class DotDirectiveArchiveFinalizerTest
     extends TestSupport
 {
 
+    @Test
     public void testDotDirectiveArchiveFinalizer()
         throws Exception
     {
@@ -38,6 +42,7 @@ public class DotDirectiveArchiveFinalizerTest
         assertNotNull( jar.getEntry( "META-INF/maven/NOTICE.txt" ) );
     }
 
+    @Test
     public void testDefaultDotDirectiveBehaviour()
         throws Exception
     {

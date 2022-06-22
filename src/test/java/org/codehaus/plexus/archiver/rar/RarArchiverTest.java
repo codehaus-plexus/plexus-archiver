@@ -20,6 +20,12 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:olamy@codehaus.org">olamy</a>
@@ -35,7 +41,7 @@ public class RarArchiverTest
     }
 
     @Override
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();
@@ -46,6 +52,7 @@ public class RarArchiverTest
         }
     }
 
+    @Test
     public void testArchive()
         throws Exception
     {
@@ -68,6 +75,7 @@ public class RarArchiverTest
         assertTrue( manifestsFile.exists() );
     }
 
+    @Test
     public void testUnarchive()
         throws Exception
     {
@@ -92,6 +100,7 @@ public class RarArchiverTest
      *
      * @throws Exception
      */
+    @Test
     public void testRarIsForcedBehaviour() throws Exception
     {
         Archiver rarArvhiver = createArchiver( "rar" );
@@ -112,7 +121,7 @@ public class RarArchiverTest
         rarArvhiver.createArchive();
 
         final long firstRunTime = rarArvhiver.getDestFile().lastModified();
-        assertFalse( creationTime == firstRunTime );
+        assertNotEquals( creationTime, firstRunTime );
 
         //waitUntilNewTimestamp( rarArvhiver.getDestFile(), firstRunTime );
         rarArvhiver = createArchiver( "rar" );

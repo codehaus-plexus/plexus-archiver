@@ -9,11 +9,13 @@ import java.util.Enumeration;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Erik Engstrom
@@ -28,14 +30,8 @@ public class DuplicateFilesTest
 
     private static final File destination = getTestFile( "target/output/duplicateFiles" );
 
-    public void setUp()
-        throws Exception
-    {
-        super.setUp();
-        DefaultPlexusContainer container = (DefaultPlexusContainer) getContainer();
-        container.getLoggerManager().setThreshold( Logger.LEVEL_DEBUG );
-    }
 
+    @Test
     public void testZipArchiver()
         throws Exception
     {
@@ -62,6 +58,7 @@ public class DuplicateFilesTest
         testArchive( archive, "zip" );
     }
 
+    @Test
     public void testDirArchiver()
         throws Exception
     {
@@ -71,6 +68,7 @@ public class DuplicateFilesTest
 
     }
 
+    @Test
     public void testTarArchiver()
         throws Exception
     {

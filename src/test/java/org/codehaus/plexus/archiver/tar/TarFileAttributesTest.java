@@ -16,6 +16,9 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUti
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.Os;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings( "ResultOfMethodCallIgnored" )
 public class TarFileAttributesTest
@@ -72,6 +75,7 @@ public class TarFileAttributesTest
         System.out.println( "\n\nRunning: " + e.getMethodName() + "\n\n" );
     }
 
+    @Test
     public void testUseAttributesFromTarArchiveInputInTarArchiverOutput()
         throws Exception
     {
@@ -137,6 +141,7 @@ public class TarFileAttributesTest
 
     }
 
+    @Test
     public void testUseDetectedFileAttributes()
         throws Exception
     {
@@ -195,6 +200,7 @@ public class TarFileAttributesTest
         return Os.isFamily( Os.FAMILY_WINDOWS );
     }
 
+    @Test
     public void testOverrideDetectedFileAttributes()
         throws Exception
     {
@@ -253,6 +259,7 @@ public class TarFileAttributesTest
         return tarArchiver;
     }
 
+    @Test
     public void testOverrideDetectedFileAttributesUsingFileMode()
         throws Exception
     {

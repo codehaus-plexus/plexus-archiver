@@ -6,6 +6,10 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kristian Rosenvold
@@ -16,6 +20,7 @@ public class WarArchiverTest
 
     private final int expected = 8;
 
+    @Test
     public void testReAddingPlatformSpecificEncoding()
         throws Exception
     {
@@ -36,6 +41,7 @@ public class WarArchiverTest
         assertTrue( new File( getTargetRarFolder(), "test.war" ).exists() );
     }
 
+    @Test
     public void testInfiniteRecursion()
         throws Exception
     {
@@ -58,7 +64,7 @@ public class WarArchiverTest
     }
 
     @Override
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();

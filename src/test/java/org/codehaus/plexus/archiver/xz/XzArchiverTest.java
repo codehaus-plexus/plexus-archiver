@@ -28,6 +28,12 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author philip.lourandos
@@ -36,6 +42,7 @@ import org.codehaus.plexus.util.IOUtil;
 public class XzArchiverTest extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
@@ -62,6 +69,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         assertTrue( targetOutputFile.exists() );
     }
 
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
@@ -78,6 +86,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         }
     }
 
+    @Test
     public void testCreateResourceCollection() throws Exception
     {
         final File pomFile = new File( "pom.xml" );
@@ -114,6 +123,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
      *
      * @throws Exception
      */
+    @Test
     public void testXzIsForcedBehaviour() throws Exception
     {
         XZArchiver xzArchiver = (XZArchiver) createArchiver( "xz" );

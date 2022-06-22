@@ -77,7 +77,14 @@ import org.codehaus.plexus.components.io.resources.ResourceFactory;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -87,6 +94,7 @@ public class ZipArchiverTest
     extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testImplicitPermissions()
         throws IOException
     {
@@ -117,6 +125,7 @@ public class ZipArchiverTest
         assertEquals( 0100111, pam.getUnixMode() );
     }
 
+    @Test
     public void testOveriddenPermissions()
         throws IOException
     {
@@ -140,6 +149,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     public void testCreateArchiveWithDetectedModes()
         throws Exception
     {
@@ -297,6 +307,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
@@ -358,6 +369,7 @@ public class ZipArchiverTest
         ArchiveEntryUtils.chmod( file, mode );
     }
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
@@ -366,6 +378,7 @@ public class ZipArchiverTest
         createArchive( archiver );
     }
 
+    @Test
     public void testRecompressAddedZips() throws Exception
     {
         // check that by default the zip archives are re-compressed
@@ -414,6 +427,7 @@ public class ZipArchiverTest
         zfDontRecompress.close();
     }
 
+    @Test
     public void testAddArchivedFileSet()
         throws Exception
     {
@@ -450,6 +464,7 @@ public class ZipArchiverTest
         assertTrue( a3byteFile.length() == 3 );
     }
 
+    @Test
     public void testCreateArchiveWithStreamTransformer()
         throws IOException
     {
@@ -567,6 +582,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     public void testSymlinkZip()
         throws Exception
     {
@@ -591,6 +607,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     @SuppressWarnings( "ResultOfMethodCallIgnored" )
     public void testSymlinkFileSet()
         throws Exception
@@ -615,6 +632,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     public void testSymlinkArchivedFileSet()
         throws Exception
     {
@@ -633,6 +651,7 @@ public class ZipArchiverTest
      * Zip archives store file modification times with a granularity of two seconds.
      * Verify that ZipArchiver rounds up the last modified time.
      */
+    @Test
     public void testLastModifiedTimeRounding()
         throws Exception
     {
@@ -664,6 +683,7 @@ public class ZipArchiverTest
 
     /*
      */
+    @Test
     public void testForced()
         throws Exception
     {
@@ -699,6 +719,7 @@ public class ZipArchiverTest
     }
 
     // Used to investigate extrafields
+    @Test
     public void testLookAtExtraZipFields_from_macos()
         throws IOException
     {
@@ -721,6 +742,7 @@ public class ZipArchiverTest
     }
 
     // Used to investigate date roundtrip behaviour across zip versions
+    @Test
     public void testZipStuff()
         throws IOException
     {
@@ -747,6 +769,8 @@ public class ZipArchiverTest
         System.out.println( "evenEntry.getTime() = " + new Date( evenEntry.getTime() ).toString() );
     }
 
+    @Ignore("Junit3 method name is notest")
+    @Test
     public void notestJustThatOne()
         throws Exception
     {
@@ -766,6 +790,7 @@ public class ZipArchiverTest
         zipArchiver2.createArchive();
     }
 
+    @Test
     public void testCreateResourceCollection()
         throws Exception
     {
@@ -791,6 +816,7 @@ public class ZipArchiverTest
         cmp2.close();
     }
 
+    @Test
     public void testZipNonConcurrentResourceCollection()
         throws Exception
     {
@@ -821,6 +847,7 @@ public class ZipArchiverTest
         cmp2.close();
     }
 
+    @Test
     public void testDefaultUTF8()
         throws IOException
     {
@@ -829,6 +856,7 @@ public class ZipArchiverTest
         zipArchiver.createArchive();
     }
 
+    @Test
     public void testDefaultUTF8withUTF8()
         throws IOException
     {
@@ -838,6 +866,7 @@ public class ZipArchiverTest
         zipArchiver.createArchive();
     }
 
+    @Test
     public void testForcedFileModes()
         throws IOException
     {
@@ -900,6 +929,7 @@ public class ZipArchiverTest
         }
     }
 
+    @Test
     public void testFixedEntryModificationTime()
             throws IOException
     {

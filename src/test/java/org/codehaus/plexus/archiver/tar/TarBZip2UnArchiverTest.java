@@ -28,6 +28,10 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.bzip2.BZip2Archiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Dan Tran
@@ -36,6 +40,7 @@ public class TarBZip2UnArchiverTest
         extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
@@ -76,6 +81,7 @@ public class TarBZip2UnArchiverTest
 
     }
 
+    @Test
     public void testLookup()
         throws Exception
     {
