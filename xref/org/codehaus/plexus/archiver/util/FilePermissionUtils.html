@@ -28,8 +28,8 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.logging.Logger;
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.StringUtils;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.StringUtils;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.slf4j.Logger;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> * @author Olivier Lamy</em>
@@ -60,7 +60,7 @@
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException( <span class="jxr_string">" file mode must be 3 or 4 characters"</span> );
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          List&lt;String&gt; modes = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;( mode.length() );
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          List&lt;String&gt; modes = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;( mode.length() );
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">for</strong> ( <strong class="jxr_keyword">int</strong> i = 0, size = mode.length(); i &lt; size; i++ )
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              modes.add( String.valueOf( mode.charAt( i ) ) );
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <em class="jxr_comment">// handle user perm</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">try</strong>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          {
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">int</strong> userMode = Integer.valueOf( modes.get( mode.length() == 4 ? 1 : 0 ) );
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">int</strong> userMode = Integer.parseInt( modes.get( mode.length() == 4 ? 1 : 0 ) );
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              <strong class="jxr_keyword">switch</strong> ( userMode )
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>              {
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>                  <strong class="jxr_keyword">case</strong> 0:
@@ -115,7 +115,7 @@
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         <em class="jxr_comment">// handle all perm</em>
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>         <strong class="jxr_keyword">try</strong>
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>         {
-<a class="jxr_linenumber" name="L110" href="#L110">110</a>             <strong class="jxr_keyword">int</strong> allMode = Integer.valueOf( modes.get( mode.length() == 4 ? 3 : 2 ) );
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>             <strong class="jxr_keyword">int</strong> allMode = Integer.parseInt( modes.get( mode.length() == 4 ? 3 : 2 ) );
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>             <strong class="jxr_keyword">switch</strong> ( allMode )
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>             {
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>                 <strong class="jxr_keyword">case</strong> 0:

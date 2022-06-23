@@ -25,10 +25,10 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2001 - 2022 Codehaus Plexus</copyright>
     <item>
-      <title>File: 100,
-             Errors: 181,
+      <title>File: 129,
+             Errors: 224,
              Warnings: 170,
-             Infos: 49
+             Infos: 45
       </title>
             <link>https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html</link>
       <description>
@@ -47,6 +47,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.UnixStat.java">org/codehaus/plexus/archiver/UnixStat.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.jar.JarUnArchiver.java">org/codehaus/plexus/archiver/jar/JarUnArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -116,20 +130,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.BZip2TarFile.java">org/codehaus/plexus/archiver/tar/BZip2TarFile.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.diags.DryRunArchiver.java">org/codehaus/plexus/archiver/diags/DryRunArchiver.java</a>
                 </td>
                 <td>
@@ -144,10 +144,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.resources.PlexusIoVirtualSymlinkResource.java">org/codehaus/plexus/archiver/resources/PlexusIoVirtualSymlinkResource.java</a>
-                </td>
-                <td>
-                  0
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.BZip2TarFile.java">org/codehaus/plexus/archiver/tar/BZip2TarFile.java</a>
                 </td>
                 <td>
                   0
@@ -155,10 +152,13 @@ under the License.
                 <td>
                   1
                 </td>
+                <td>
+                  1
+                </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.util.FilePermission.java">org/codehaus/plexus/archiver/util/FilePermission.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.resources.PlexusIoVirtualSymlinkResource.java">org/codehaus/plexus/archiver/resources/PlexusIoVirtualSymlinkResource.java</a>
                 </td>
                 <td>
                   0
@@ -186,7 +186,35 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.util.FilePermission.java">org/codehaus/plexus/archiver/util/FilePermission.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.gzip.GZipArchiver.java">org/codehaus/plexus/archiver/gzip/GZipArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ear.PlexusIoEarFileResourceCollection.java">org/codehaus/plexus/archiver/ear/PlexusIoEarFileResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -228,7 +256,21 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.ZipSymlinkResource.java">org/codehaus/plexus/archiver/zip/ZipSymlinkResource.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.Archiver.java">org/codehaus/plexus/archiver/Archiver.java</a>
+                </td>
+                <td>
+                  5
+                </td>
+                <td>
+                  45
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ResourceIterator.java">org/codehaus/plexus/archiver/ResourceIterator.java</a>
                 </td>
                 <td>
                   0
@@ -242,21 +284,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.Archiver.java">org/codehaus/plexus/archiver/Archiver.java</a>
-                </td>
-                <td>
-                  6
-                </td>
-                <td>
-                  45
-                </td>
-                <td>
-                  19
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ResourceIterator.java">org/codehaus/plexus/archiver/ResourceIterator.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.gzip.PlexusIoGzResourceCollection.java">org/codehaus/plexus/archiver/gzip/PlexusIoGzResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -284,7 +312,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ArchiveFinalizer.java">org/codehaus/plexus/archiver/ArchiveFinalizer.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.ZipSymlinkResource.java">org/codehaus/plexus/archiver/zip/ZipSymlinkResource.java</a>
                 </td>
                 <td>
                   0
@@ -298,7 +326,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.gzip.GZipCompressor.java">org/codehaus/plexus/archiver/gzip/GZipCompressor.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ArchiveFinalizer.java">org/codehaus/plexus/archiver/ArchiveFinalizer.java</a>
                 </td>
                 <td>
                   0
@@ -326,7 +354,63 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.gzip.GZipCompressor.java">org/codehaus/plexus/archiver/gzip/GZipCompressor.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.rar.PlexusIoRarFileResourceCollection.java">org/codehaus/plexus/archiver/rar/PlexusIoRarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TBZ2UnArchiver.java">org/codehaus/plexus/archiver/tar/TBZ2UnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTarFileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.par.PlexusIoJarFileResourceCollection.java">org/codehaus/plexus/archiver/par/PlexusIoJarFileResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -349,12 +433,40 @@ under the License.
                   0
                 </td>
                 <td>
-                  2
+                  1
                 </td>
               </tr>
                           <tr>
                 <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TarResource.java">org/codehaus/plexus/archiver/tar/TarResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.diags.DelgatingArchiver.java">org/codehaus/plexus/archiver/diags/DelgatingArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.war.PlexusIoWarFileResourceCollection.java">org/codehaus/plexus/archiver/war/PlexusIoWarFileResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -382,7 +494,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.diags.DelgatingArchiver.java">org/codehaus/plexus/archiver/diags/DelgatingArchiver.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TXZUnArchiver.java">org/codehaus/plexus/archiver/tar/TXZUnArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -391,7 +503,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  1
+                  2
                 </td>
               </tr>
                           <tr>
@@ -406,6 +518,20 @@ under the License.
                 </td>
                 <td>
                   3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTBZ2FileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTBZ2FileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
               </tr>
                           <tr>
@@ -452,10 +578,38 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.car.PlexusIoCarFileResourceCollection.java">org/codehaus/plexus/archiver/car/PlexusIoCarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ear.EarUnArchiver.java">org/codehaus/plexus/archiver/ear/EarUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.filters.JarSecurityFileSelector.java">org/codehaus/plexus/archiver/filters/JarSecurityFileSelector.java</a>
                 </td>
                 <td>
-                  2
+                  1
                 </td>
                 <td>
                   0
@@ -494,20 +648,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.SnappyTarFile.java">org/codehaus/plexus/archiver/tar/SnappyTarFile.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.snappy.SnappyCompressor.java">org/codehaus/plexus/archiver/snappy/SnappyCompressor.java</a>
                 </td>
                 <td>
@@ -515,6 +655,20 @@ under the License.
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.SnappyTarFile.java">org/codehaus/plexus/archiver/tar/SnappyTarFile.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   1
@@ -564,20 +718,6 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.OffloadingOutputStream.java">org/codehaus/plexus/archiver/zip/OffloadingOutputStream.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.util.FilterSupport.java">org/codehaus/plexus/archiver/util/FilterSupport.java</a>
                 </td>
                 <td>
@@ -592,6 +732,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.OffloadingOutputStream.java">org/codehaus/plexus/archiver/zip/OffloadingOutputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection.java">org/codehaus/plexus/archiver/zip/PlexusIoZipFileResourceCollection.java</a>
                 </td>
                 <td>
@@ -601,7 +755,7 @@ under the License.
                   1
                 </td>
                 <td>
-                  4
+                  5
                 </td>
               </tr>
                           <tr>
@@ -643,7 +797,7 @@ under the License.
                   2
                 </td>
                 <td>
-                  5
+                  4
                 </td>
               </tr>
                           <tr>
@@ -676,7 +830,49 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTXZFileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTXZFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.AnonymousResource.java">org/codehaus/plexus/archiver/zip/AnonymousResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.nar.PlexusIoNarFileResourceCollection.java">org/codehaus/plexus/archiver/nar/PlexusIoNarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.bzip2.PlexusIoBz2ResourceCollection.java">org/codehaus/plexus/archiver/bzip2/PlexusIoBz2ResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -704,6 +900,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTGZFileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTGZFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.util.AbstractFileSet.java">org/codehaus/plexus/archiver/util/AbstractFileSet.java</a>
                 </td>
                 <td>
@@ -718,7 +928,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.components.io.resources.PlexusIoZipFileResourceCollection.java">org/codehaus/plexus/components/io/resources/PlexusIoZipFileResourceCollection.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTarBZip2FileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTarBZip2FileResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -746,7 +956,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTarBZip2FileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTarBZip2FileResourceCollection.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.components.io.resources.PlexusIoZipFileResourceCollection.java">org/codehaus/plexus/components/io/resources/PlexusIoZipFileResourceCollection.java</a>
                 </td>
                 <td>
                   0
@@ -798,6 +1008,34 @@ under the License.
                 </td>
                 <td>
                   1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.par.ParUnArchiver.java">org/codehaus/plexus/archiver/par/ParUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.rar.RarArchiver.java">org/codehaus/plexus/archiver/rar/RarArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
                 </td>
               </tr>
                           <tr>
@@ -872,6 +1110,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.sar.PlexusIoSarFileResourceCollection.java">org/codehaus/plexus/archiver/sar/PlexusIoSarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.snappy.SnappyUnArchiver.java">org/codehaus/plexus/archiver/snappy/SnappyUnArchiver.java</a>
                 </td>
                 <td>
@@ -914,6 +1166,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.jar.PlexusIoJarFileResourceCollection.java">org/codehaus/plexus/archiver/jar/PlexusIoJarFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  19
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.ArchivedFileSet.java">org/codehaus/plexus/archiver/ArchivedFileSet.java</a>
                 </td>
                 <td>
@@ -937,7 +1203,7 @@ under the License.
                   2
                 </td>
                 <td>
-                  2
+                  1
                 </td>
               </tr>
                           <tr>
@@ -951,7 +1217,7 @@ under the License.
                   1
                 </td>
                 <td>
-                  9
+                  10
                 </td>
               </tr>
                           <tr>
@@ -959,13 +1225,41 @@ under the License.
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.UnArchiver.java">org/codehaus/plexus/archiver/UnArchiver.java</a>
                 </td>
                 <td>
-                  1
+                  0
                 </td>
                 <td>
                   6
                 </td>
                 <td>
                   3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.war.WarUnArchiver.java">org/codehaus/plexus/archiver/war/WarUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.swc.PlexusIoSwcFileResourceCollection.java">org/codehaus/plexus/archiver/swc/PlexusIoSwcFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
               </tr>
                           <tr>
@@ -993,12 +1287,54 @@ under the License.
                   3
                 </td>
                 <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.car.CarUnArchiver.java">org/codehaus/plexus/archiver/car/CarUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TGZUnArchiver.java">org/codehaus/plexus/archiver/tar/TGZUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
                   2
                 </td>
               </tr>
                           <tr>
                 <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.xz.XZCompressor.java">org/codehaus/plexus/archiver/xz/XZCompressor.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TarSymlinkResource.java">org/codehaus/plexus/archiver/tar/TarSymlinkResource.java</a>
                 </td>
                 <td>
                   0
@@ -1026,35 +1362,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.TarSymlinkResource.java">org/codehaus/plexus/archiver/tar/TarSymlinkResource.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.tar.PlexusIoTarGZipFileResourceCollection.java">org/codehaus/plexus/archiver/tar/PlexusIoTarGZipFileResourceCollection.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.xz.XZArchiver.java">org/codehaus/plexus/archiver/xz/XZArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -1082,6 +1390,20 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.xz.XZArchiver.java">org/codehaus/plexus/archiver/xz/XZArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.bzip2.PlexusIoBzip2ResourceCollection.java">org/codehaus/plexus/archiver/bzip2/PlexusIoBzip2ResourceCollection.java</a>
                 </td>
                 <td>
@@ -1096,7 +1418,35 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.esb.PlexusIoEsbFileResourceCollection.java">org/codehaus/plexus/archiver/esb/PlexusIoEsbFileResourceCollection.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.diags.NoOpArchiver.java">org/codehaus/plexus/archiver/diags/NoOpArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.nar.NarUnArchiver.java">org/codehaus/plexus/archiver/nar/NarUnArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -1125,6 +1475,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.ZipResource.java">org/codehaus/plexus/archiver/zip/ZipResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.swc.SwcUnArchiver.java">org/codehaus/plexus/archiver/swc/SwcUnArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -1183,7 +1547,7 @@ under the License.
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.manager.ArchiverManager.java">org/codehaus/plexus/archiver/manager/ArchiverManager.java</a>
                 </td>
                 <td>
-                  1
+                  0
                 </td>
                 <td>
                   0
@@ -1306,6 +1670,34 @@ under the License.
               </tr>
                           <tr>
                 <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.rar.RarUnArchiver.java">org/codehaus/plexus/archiver/rar/RarUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.sar.SarUnArchiver.java">org/codehaus/plexus/archiver/sar/SarUnArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.zip.ZipArchiver.java">org/codehaus/plexus/archiver/zip/ZipArchiver.java</a>
                 </td>
                 <td>
@@ -1316,6 +1708,20 @@ under the License.
                 </td>
                 <td>
                   1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.exceptions.EmptyArchiveException.java">org/codehaus/plexus/archiver/exceptions/EmptyArchiveException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
                 </td>
               </tr>
                           <tr>
@@ -1334,7 +1740,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.exceptions.EmptyArchiveException.java">org/codehaus/plexus/archiver/exceptions/EmptyArchiveException.java</a>
+                  <a href="https://codehaus-plexus.github.io/plexus-archiver//checkstyle.html#org.codehaus.plexus.archiver.esb.EsbUnArchiver.java">org/codehaus/plexus/archiver/esb/EsbUnArchiver.java</a>
                 </td>
                 <td>
                   0
@@ -1343,7 +1749,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  3
+                  1
                 </td>
               </tr>
                           <tr>
