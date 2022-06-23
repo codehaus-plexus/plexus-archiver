@@ -24,22 +24,27 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.snappy.SnappyArchiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Snappy tar archives
  */
 public class TarSnappyUnArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setLongfile( TarLongFileMode.posix );
 
         String fileName1 = "TarSnappyUnArchiverTest1.txt";
@@ -54,14 +59,14 @@ public class TarSnappyUnArchiverTest
         tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
         tarArchiver.createArchive();
 
-        SnappyArchiver snappyArchiver = (SnappyArchiver) lookup( Archiver.ROLE, "snappy" );
+        SnappyArchiver snappyArchiver = (SnappyArchiver) lookup( Archiver.class, "snappy" );
 
         File testSnappyFile = getTestFile( "target/output/archive.tar.snappy" );
         snappyArchiver.setDestFile( testSnappyFile );
         snappyArchiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
         snappyArchiver.createArchive();
 
-        TarSnappyUnArchiver tarSnappyUnArchiver = (TarSnappyUnArchiver) lookup( UnArchiver.ROLE, "tar.snappy" );
+        TarSnappyUnArchiver tarSnappyUnArchiver = (TarSnappyUnArchiver) lookup( UnArchiver.class, "tar.snappy" );
         tarSnappyUnArchiver.setDestDirectory( getTestFile( "target/output" ) );
         tarSnappyUnArchiver.setSourceFile( testSnappyFile );
         tarSnappyUnArchiver.extract();
@@ -73,10 +78,11 @@ public class TarSnappyUnArchiverTest
         assertEquals( testSnappyFile, tarSnappyUnArchiver.getSourceFile() );
     }
 
+    @Test
     public void testLookup()
         throws Exception
     {
-        lookup( UnArchiver.ROLE, "tar.snappy" );
+        lookup( UnArchiver.class, "tar.snappy" );
     }
 
 }

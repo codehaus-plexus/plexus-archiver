@@ -24,30 +24,38 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Dan T. Tran
  */
 public class ArchiverManagerTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
+    @Test
     public void testLookupArchiver()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         Archiver archiver = manager.getArchiver( "jar" );
         assertNotNull( archiver );
     }
 
+    @Test
     public void testReuseArchiver()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         Archiver archiver = manager.getArchiver( "jar" );
         assertNotNull( archiver );
@@ -61,19 +69,21 @@ public class ArchiverManagerTest
         assertTrue( !newArchiver.getResources().hasNext() );
     }
 
+    @Test
     public void testLookupUnArchiver()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         UnArchiver unarchiver = manager.getUnArchiver( "zip" );
         assertNotNull( unarchiver );
     }
 
+    @Test
     public void testLookupUnknownArchiver()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
         try
         {
             manager.getArchiver( "Unknown" );
@@ -84,10 +94,11 @@ public class ArchiverManagerTest
         }
     }
 
+    @Test
     public void testLookupUnknownUnArchiver()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
         try
         {
             manager.getUnArchiver( "Unknown" );
@@ -98,10 +109,11 @@ public class ArchiverManagerTest
         }
     }
 
+    @Test
     public void testLookupUnArchiverUsingFile()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         UnArchiver unarchiver = manager.getUnArchiver( new File( "test.tar.gz" ) );
         assertNotNull( unarchiver );
@@ -123,10 +135,11 @@ public class ArchiverManagerTest
 
     }
 
+    @Test
     public void testLookupArchiverUsingFile()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         Archiver archiver = manager.getArchiver( new File( "test.gzip" ) );
         assertNotNull( archiver );
@@ -139,10 +152,11 @@ public class ArchiverManagerTest
 
     }
 
+    @Test
     public void testUnspportedLookupArchiverUsingFile()
         throws Exception
     {
-        ArchiverManager manager = (ArchiverManager) lookup( ArchiverManager.ROLE );
+        ArchiverManager manager = lookup( ArchiverManager.class );
 
         try
         {

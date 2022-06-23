@@ -22,13 +22,15 @@ import java.io.IOException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * from org.apache.ant.tools.tar.TarRoundTripTest v1.6
  */
 public class TarRoundTripTest
-    extends TestCase
 {
 
     private static final String LONG_NAME =
@@ -38,6 +40,7 @@ public class TarRoundTripTest
     /**
      * test round-tripping long (GNU) entries
      */
+    @Test
     public void testLongRoundTripping()
         throws IOException
     {

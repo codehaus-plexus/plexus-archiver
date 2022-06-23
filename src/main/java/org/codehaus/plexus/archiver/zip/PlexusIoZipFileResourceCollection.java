@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import javax.inject.Named;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.jar.JarFile;
@@ -33,22 +36,14 @@ import org.codehaus.plexus.components.io.resources.EncodingSupported;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
 
+// TODO: there were two components for same name!
+// @Named( "zip" )
 public class PlexusIoZipFileResourceCollection
     extends AbstractPlexusIoArchiveResourceCollection
     implements EncodingSupported
 {
 
-    /**
-     * The zip file resource collections role hint.
-     */
-    public static final String ROLE_HINT = "zipFile";
-
-    /**
-     * The zip file resource collections role hint for jar files.
-     */
-    public static final String JAR_ROLE_HINT = "jarFile";
-
-    private Charset charset = Charset.forName( "UTF-8" );
+    private Charset charset = StandardCharsets.UTF_8;
 
     public PlexusIoZipFileResourceCollection()
     {

@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.war;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -40,6 +42,7 @@ import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
  *
  * @see JarArchiver
  */
+@Named( "war" )
 public class WarArchiver
     extends JarArchiver
 {

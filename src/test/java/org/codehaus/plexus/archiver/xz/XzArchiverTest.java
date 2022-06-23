@@ -28,10 +28,12 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
-import static org.codehaus.plexus.PlexusTestCase.getTestFile;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author philip.lourandos
@@ -40,15 +42,16 @@ import static org.codehaus.plexus.PlexusTestCase.getTestFile;
 public class XzArchiverTest extends BasePlexusArchiverTest
 {
 
+    @Test
     public void testCreateArchive()
         throws Exception
     {
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.addDirectory( getTestFile( "src" ) );
         zipArchiver.setDestFile( getTestFile( "target/output/archiveForxz.zip" ) );
         zipArchiver.createArchive();
 
-        XZArchiver archiver = (XZArchiver) lookup( Archiver.ROLE, "xz" );
+        XZArchiver archiver = (XZArchiver) lookup( Archiver.class, "xz" );
         String[] inputFiles = new String[ 1 ];
         inputFiles[0] = "archiveForxz.zip";
 
@@ -66,10 +69,11 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         assertTrue( targetOutputFile.exists() );
     }
 
+    @Test
     public void testCreateEmptyArchive()
         throws Exception
     {
-        XZArchiver archiver = (XZArchiver) lookup( Archiver.ROLE, "xz" );
+        XZArchiver archiver = (XZArchiver) lookup( Archiver.class, "xz" );
         archiver.setDestFile( getTestFile( "target/output/empty.xz" ) );
         try
         {
@@ -82,11 +86,12 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         }
     }
 
+    @Test
     public void testCreateResourceCollection() throws Exception
     {
         final File pomFile = new File( "pom.xml" );
         final File xzFile = new File( "target/output/pom.xml.xz" );
-        XZArchiver xzArchiver = (XZArchiver) lookup( Archiver.ROLE, "xz" );
+        XZArchiver xzArchiver = (XZArchiver) lookup( Archiver.class, "xz" );
         xzArchiver.setDestFile( xzFile );
         xzArchiver.addFile( pomFile, "pom.xml" );
         FileUtils.removePath( xzFile.getPath() );
@@ -95,7 +100,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
         System.out.println( "Created: " + xzFile.getAbsolutePath() );
 
         final File zipFile = new File( "target/output/pomxz.zip" );
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
         zipArchiver.setDestFile( zipFile );
         zipArchiver.addArchivedFileSet( xzFile, "prfx/" );
         FileUtils.removePath( zipFile.getPath() );
@@ -118,6 +123,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest
      *
      * @throws Exception
      */
+    @Test
     public void testXzIsForcedBehaviour() throws Exception
     {
         XZArchiver xzArchiver = (XZArchiver) createArchiver( "xz" );

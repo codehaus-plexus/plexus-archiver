@@ -20,9 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.annotation.Nonnull;
+import javax.inject.Named;
+
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.iq80.snappy.SnappyInputStream;
+import org.iq80.snappy.SnappyFramedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.copyFully;
@@ -32,6 +34,7 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 /**
  * Unarchiver for snappy-compressed files.
  */
+@Named( "snappy" )
 public class SnappyUnArchiver
     extends AbstractUnArchiver
 {
@@ -64,12 +67,12 @@ public class SnappyUnArchiver
     }
 
     public static @Nonnull
-    SnappyInputStream getSnappyInputStream( InputStream bis )
+    SnappyFramedInputStream getSnappyInputStream( InputStream bis )
         throws ArchiverException
     {
         try
         {
-            return new SnappyInputStream( bis );
+            return new SnappyFramedInputStream( bis, true );
         }
         catch ( IOException e )
         {

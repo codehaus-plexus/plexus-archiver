@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.annotation.Nonnull;
+import javax.inject.Named;
+
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -32,6 +34,7 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
  * @author philip.lourandos
  * @since 3.3
  */
+@Named( "xz" )
 public class XZUnArchiver extends AbstractUnArchiver
 {
 

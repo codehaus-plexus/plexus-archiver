@@ -27,9 +27,6 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
  */
 public interface ArchiverManager
 {
-
-    String ROLE = ArchiverManager.class.getName();
-
     @Nonnull
     Archiver getArchiver( @Nonnull String archiverName )
         throws NoSuchArchiverException;

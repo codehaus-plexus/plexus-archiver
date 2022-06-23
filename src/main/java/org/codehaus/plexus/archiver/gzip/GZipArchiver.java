@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.gzip;
 
+import javax.inject.Named;
+
 import java.io.IOException;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -23,6 +25,7 @@ import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 
+@Named( "gzip" )
 public class GZipArchiver
     extends AbstractArchiver
 {

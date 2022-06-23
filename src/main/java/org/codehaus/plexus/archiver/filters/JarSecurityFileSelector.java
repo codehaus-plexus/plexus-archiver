@@ -15,6 +15,9 @@ package org.codehaus.plexus.archiver.filters;
 
 import java.io.IOException;
 import javax.annotation.Nonnull;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.util.SelectorUtils;
@@ -22,12 +25,11 @@ import org.codehaus.plexus.util.SelectorUtils;
 /**
  * @since 1.0-alpha-9
  */
+@Singleton
+@Named( "jar-security" )
 public class JarSecurityFileSelector
     implements FileSelector
 {
-
-    public static final String ROLE_HINT = "jar-security";
-
     public static final String[] SECURITY_FILE_PATTERNS =
     {
         "META-INF/*.RSA",

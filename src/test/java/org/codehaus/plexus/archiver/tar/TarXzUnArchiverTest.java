@@ -16,26 +16,30 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.xz.XZArchiver;
 import org.codehaus.plexus.util.FileUtils;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.codehaus.plexus.PlexusTestCase.getTestFile;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author philip.lourandos
  * @since 3.3
  */
-public class TarXzUnArchiverTest extends PlexusTestCase
+public class TarXzUnArchiverTest extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setLongfile( TarLongFileMode.posix );
 
         String fileName1 = "TarBZip2UnArchiverTest1.txt";
@@ -60,7 +64,7 @@ public class TarXzUnArchiverTest extends PlexusTestCase
         tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
         tarArchiver.createArchive();
 
-        XZArchiver xzArchiver = (XZArchiver) lookup( Archiver.ROLE, "xz" );
+        XZArchiver xzArchiver = (XZArchiver) lookup( Archiver.class, "xz" );
 
         xzArchiver.setDestFile( testXZFile );
         xzArchiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
@@ -68,7 +72,7 @@ public class TarXzUnArchiverTest extends PlexusTestCase
 
         assertTrue( testXZFile.exists() );
 
-        TarXZUnArchiver tarXZUnArchiver = (TarXZUnArchiver) lookup( UnArchiver.ROLE, "tar.xz" );
+        TarXZUnArchiver tarXZUnArchiver = (TarXZUnArchiver) lookup( UnArchiver.class, "tar.xz" );
 
         tarXZUnArchiver.setDestDirectory( getTestFile( "target/output" ) );
         tarXZUnArchiver.setSourceFile( testXZFile );
@@ -80,9 +84,10 @@ public class TarXzUnArchiverTest extends PlexusTestCase
         assertEquals( testXZFile, tarXZUnArchiver.getSourceFile() );
     }
 
+    @Test
     public void testLookup() throws Exception
     {
-        assertNotNull( lookup( UnArchiver.ROLE, "tar.xz" ) );
+        assertNotNull( lookup( UnArchiver.class, "tar.xz" ) );
     }
 
 }

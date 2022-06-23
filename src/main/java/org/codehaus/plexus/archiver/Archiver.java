@@ -48,17 +48,15 @@ public interface Archiver
      */
     int DEFAULT_SYMLILNK_MODE = UnixStat.LINK_FLAG | UnixStat.DEFAULT_LINK_PERM;
 
-    String ROLE = Archiver.class.getName();
+    String DUPLICATES_ADD = "add";
 
-    public static final String DUPLICATES_ADD = "add";
+    String DUPLICATES_PRESERVE = "preserve";
 
-    public static final String DUPLICATES_PRESERVE = "preserve";
+    String DUPLICATES_SKIP = "skip";
 
-    public static final String DUPLICATES_SKIP = "skip";
+    String DUPLICATES_FAIL = "fail";
 
-    public static final String DUPLICATES_FAIL = "fail";
-
-    public static final Set<String> DUPLICATES_VALID_BEHAVIORS = new HashSet<String>()
+    Set<String> DUPLICATES_VALID_BEHAVIORS = new HashSet<String>()
     {
 
         private static final long serialVersionUID = 1L;

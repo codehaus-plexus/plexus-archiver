@@ -3,7 +3,6 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.dir.DirectoryArchiver;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
@@ -11,14 +10,19 @@ import org.codehaus.plexus.archiver.tar.TarUnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 import org.codehaus.plexus.util.Os;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kristian Rosenvold
  */
 public class SymlinkTest
-    extends PlexusTestCase
+    extends TestSupport
 {
 
+    @Test
     public void testSymlinkDir()
         throws IOException
     {
@@ -30,6 +34,7 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkDirWithSlash()
         throws IOException
     {
@@ -41,6 +46,7 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkFile()
     {
         if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
@@ -51,10 +57,11 @@ public class SymlinkTest
         }
     }
 
+    @Test
     public void testSymlinkTar()
         throws Exception
     {
-        TarArchiver archiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver archiver = (TarArchiver) lookup( Archiver.class, "tar" );
         archiver.setLongfile( TarLongFileMode.posix );
 
         File dummyContent = getTestFile( "src/test/resources/symlinks/src" );
@@ -64,16 +71,17 @@ public class SymlinkTest
         archiver.createArchive();
         File output = getTestFile( "target/output/untaredSymlinks" );
         output.mkdirs();
-        TarUnArchiver unarchiver = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar" );
+        TarUnArchiver unarchiver = (TarUnArchiver) lookup( UnArchiver.class, "tar" );
         unarchiver.setSourceFile( archiveFile );
         unarchiver.setDestFile( output );
         unarchiver.extract();
     }
 
+    @Test
     public void testSymlinkZip()
         throws Exception
     {
-        ZipArchiver archiver = (ZipArchiver) lookup( Archiver.ROLE, "zip" );
+        ZipArchiver archiver = (ZipArchiver) lookup( Archiver.class, "zip" );
 
         File dummyContent = getTestFile( "src/test/resources/symlinks/src" );
         archiver.addDirectory( dummyContent );
@@ -84,18 +92,19 @@ public class SymlinkTest
 
         File output = getTestFile( "target/output/unzippedSymlinks" );
         output.mkdirs();
-        ZipUnArchiver unarchiver = (ZipUnArchiver) lookup( UnArchiver.ROLE, "zip" );
+        ZipUnArchiver unarchiver = (ZipUnArchiver) lookup( UnArchiver.class, "zip" );
         unarchiver.setSourceFile( archiveFile );
         unarchiver.setDestFile( output );
         unarchiver.extract();
     }
 
+    @Test
     public void testSymlinkDirArchiver()
         throws Exception
     {
         if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
         {
-            DirectoryArchiver archiver = (DirectoryArchiver) lookup( Archiver.ROLE, "dir" );
+            DirectoryArchiver archiver = (DirectoryArchiver) lookup( Archiver.class, "dir" );
 
             File dummyContent = getTestFile( "src/test/resources/symlinks/src" );
             archiver.addDirectory( dummyContent );

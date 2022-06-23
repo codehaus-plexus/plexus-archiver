@@ -22,9 +22,6 @@ import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
 public interface UnArchiver
 {
-
-    String ROLE = UnArchiver.class.getName();
-
     /**
      * Extract the archive.
      *

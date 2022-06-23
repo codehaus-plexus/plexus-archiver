@@ -23,7 +23,7 @@ public class NoSuchArchiverException
     extends Exception
 {
 
-    private String archiverName;
+    private final String archiverName;
 
     public NoSuchArchiverException( String archiverName )
     {

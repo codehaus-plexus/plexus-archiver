@@ -9,18 +9,19 @@ import java.util.Enumeration;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.codehaus.plexus.DefaultPlexusContainer;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
-import org.codehaus.plexus.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Erik Engstrom
  */
 public class DuplicateFilesTest
-    extends PlexusTestCase
+    extends TestSupport
 {
 
     private static final File file1 = getTestFile( "src/test/resources/group-writable/foo.txt" );
@@ -29,18 +30,12 @@ public class DuplicateFilesTest
 
     private static final File destination = getTestFile( "target/output/duplicateFiles" );
 
-    public void setUp()
-        throws Exception
-    {
-        super.setUp();
-        DefaultPlexusContainer container = (DefaultPlexusContainer) getContainer();
-        container.getLoggerManager().setThreshold( Logger.LEVEL_DEBUG );
-    }
 
+    @Test
     public void testZipArchiver()
         throws Exception
     {
-        Archiver archiver = (Archiver) lookup( Archiver.ROLE, "zip" );
+        Archiver archiver = lookup( Archiver.class, "zip" );
         archiver.setDuplicateBehavior( Archiver.DUPLICATES_SKIP );
 
         File archive = createArchive( archiver, "zip" );
@@ -63,19 +58,21 @@ public class DuplicateFilesTest
         testArchive( archive, "zip" );
     }
 
+    @Test
     public void testDirArchiver()
         throws Exception
     {
-        Archiver archiver = (Archiver) lookup( Archiver.ROLE, "dir" );
+        Archiver archiver = lookup( Archiver.class, "dir" );
         createArchive( archiver, "dir" );
         testFinalFile( "target/output/duplicateFiles.dir/duplicateFiles/foo.txt" );
 
     }
 
+    @Test
     public void testTarArchiver()
         throws Exception
     {
-        TarArchiver archiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver archiver = (TarArchiver) lookup( Archiver.class, "tar" );
         archiver.setLongfile( TarLongFileMode.posix );
         archiver.setDuplicateBehavior( Archiver.DUPLICATES_SKIP );
 
@@ -128,7 +125,7 @@ public class DuplicateFilesTest
     {
         // Check the content of the archive by extracting it
 
-        UnArchiver unArchiver = (UnArchiver) lookup( UnArchiver.ROLE, role );
+        UnArchiver unArchiver = lookup( UnArchiver.class, role );
         unArchiver.setSourceFile( archive );
 
         unArchiver.setDestDirectory( getTestFile( "target/output/" ) );

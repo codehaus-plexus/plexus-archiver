@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.WillNotClose;
+import javax.inject.Named;
 
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
@@ -17,6 +18,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
  * Implementation of {@link org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection} for
  * snappy compressed files.
  */
+@Named( "snappy" )
 public class PlexusIoSnappyResourceCollection
     extends PlexusIoCompressedFileResourceCollection
 {

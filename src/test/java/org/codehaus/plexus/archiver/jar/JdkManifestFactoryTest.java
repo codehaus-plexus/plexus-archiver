@@ -5,25 +5,32 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.util.Streams;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * @author Kristian Rosenvold
  */
 public class JdkManifestFactoryTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
+    @Test
     public void testGetDefaultManifest()
         throws Exception
     {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Manifest manifest = JdkManifestFactory.getDefaultManifest();
         manifest.write( byteArrayOutputStream );
-        System.out.println( new String( byteArrayOutputStream.toByteArray() ) );
+        System.out.println( byteArrayOutputStream );
     }
 
+    @Test
     public void testGetDefaultManifestString()
         throws Exception
     {
@@ -37,6 +44,7 @@ public class JdkManifestFactoryTest
         assertEquals( value, value2 );
     }
 
+    @Test
     public void testIllegals()
         throws ManifestException, IOException
     {
@@ -54,6 +62,7 @@ public class JdkManifestFactoryTest
         }
     }
 
+    @Test
     public void testMerge()
         throws ManifestException, IOException
     {
@@ -82,6 +91,7 @@ public class JdkManifestFactoryTest
         assertEquals( "002", redz.getValue( "Baz" ) );
     }
 
+    @Test
     public void testDualClassPath()
         throws ManifestException, IOException
     {

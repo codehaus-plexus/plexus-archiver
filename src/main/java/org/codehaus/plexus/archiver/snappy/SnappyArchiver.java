@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.snappy;
 
+import javax.inject.Named;
+
 import java.io.IOException;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
@@ -26,11 +28,12 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 /**
  * Snappy archiver.
  */
+@Named( "snappy" )
 public class SnappyArchiver
     extends AbstractArchiver
 {
 
-    private SnappyCompressor compressor = new SnappyCompressor();
+    private final SnappyCompressor compressor = new SnappyCompressor();
 
     @Override
     public void execute()

@@ -24,22 +24,27 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.bzip2.BZip2Archiver;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Dan Tran
  */
 public class TarBZip2UnArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
+    @Test
     public void testExtract()
         throws Exception
     {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setLongfile( TarLongFileMode.posix );
 
         String fileName1 = "TarBZip2UnArchiverTest1.txt";
@@ -56,13 +61,13 @@ public class TarBZip2UnArchiverTest
         tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
         tarArchiver.createArchive();
 
-        BZip2Archiver bzip2Archiver = (BZip2Archiver) lookup( Archiver.ROLE, "bzip2" );
+        BZip2Archiver bzip2Archiver = (BZip2Archiver) lookup( Archiver.class, "bzip2" );
 
         bzip2Archiver.setDestFile( testBZip2File );
         bzip2Archiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
         bzip2Archiver.createArchive();
 
-        TarBZip2UnArchiver tarBZip2UnArchiver = (TarBZip2UnArchiver) lookup( UnArchiver.ROLE, "tbz2" );
+        TarBZip2UnArchiver tarBZip2UnArchiver = (TarBZip2UnArchiver) lookup( UnArchiver.class, "tbz2" );
 
         tarBZip2UnArchiver.setDestDirectory( getTestFile( "target/output" ) );
         tarBZip2UnArchiver.setSourceFile( testBZip2File );
@@ -76,10 +81,11 @@ public class TarBZip2UnArchiverTest
 
     }
 
+    @Test
     public void testLookup()
         throws Exception
     {
-        lookup( UnArchiver.ROLE, "tar.bz2" );
+        lookup( UnArchiver.class, "tar.bz2" );
     }
 
 }

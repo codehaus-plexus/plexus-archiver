@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -58,6 +60,7 @@ import org.codehaus.plexus.util.IOUtil;
  * archive created by {@link JarArchiver}
  * is left unchanged.
  */
+@Named( "mjar" )
 public class JarToolModularJarArchiver
     extends ModularJarArchiver
 {

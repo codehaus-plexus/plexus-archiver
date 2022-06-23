@@ -26,16 +26,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.LongAdder;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // TODO there should really be constructors which take the source file.
 
@@ -43,9 +46,14 @@ import org.codehaus.plexus.util.StringUtils;
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
 public abstract class AbstractUnArchiver
-    extends AbstractLogEnabled
     implements UnArchiver, FinalizerEnabled
 {
+    private final Logger logger = LoggerFactory.getLogger( getClass() );
+
+    protected Logger getLogger()
+    {
+        return logger;
+    }
 
     private File destDirectory;
 
@@ -384,6 +392,11 @@ public abstract class AbstractUnArchiver
         }
     }
 
+    /**
+     * Counter for casing message emitted, visible for testing.
+     */
+    final AtomicInteger casingMessageEmitted = new AtomicInteger( 0 );
+
     // Visible for testing
     protected boolean shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) throws IOException
     {
@@ -423,6 +436,7 @@ public abstract class AbstractUnArchiver
             if ( differentCasing )
             {
                 getLogger().warn( casingMessage );
+                casingMessageEmitted.incrementAndGet();
             }
             return false;
         }
@@ -431,6 +445,7 @@ public abstract class AbstractUnArchiver
         if ( differentCasing )
         {
             getLogger().warn( casingMessage );
+            casingMessageEmitted.incrementAndGet();
         }
 
         // (2)

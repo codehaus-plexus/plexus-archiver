@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -26,14 +28,10 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
+@Named( "tar" )
 public class PlexusIoTarFileResourceCollection
     extends AbstractPlexusIoArchiveResourceCollection implements Closeable
 {
-
-    /**
-     * The zip file resource collections role hint.
-     */
-    public static final String ROLE_HINT = "tar";
 
     protected TarFile newTarFile( File file )
     {

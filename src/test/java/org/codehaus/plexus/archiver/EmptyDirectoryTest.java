@@ -24,23 +24,27 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Daniel Krisher
  */
 public class EmptyDirectoryTest
-    extends PlexusTestCase
+    extends TestSupport
 {
 
+    @Test
     public void testZipArchiver()
         throws Exception
     {
-        testEmptyDirectory( "zip", (Archiver) lookup( Archiver.ROLE, "zip" ) );
+        testEmptyDirectory( "zip", lookup( Archiver.class, "zip" ) );
     }
 
+    @Test
     public void testJarArchiver()
         throws Exception
     {
@@ -48,10 +52,11 @@ public class EmptyDirectoryTest
 //        testEmptyDirectory( "jar" );
     }
 
+    @Test
     public void testTarArchiver()
         throws Exception
     {
-        final TarArchiver tar = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        final TarArchiver tar = (TarArchiver) lookup( Archiver.class, "tar" );
         tar.setLongfile( TarLongFileMode.posix );
         testEmptyDirectory( "tar", tar );
     }
@@ -87,7 +92,7 @@ public class EmptyDirectoryTest
         emptyDir.delete();
 
         // Check the content of the archive by extracting it
-        UnArchiver unArchiver = (UnArchiver) lookup( UnArchiver.ROLE, role );
+        UnArchiver unArchiver = lookup( UnArchiver.class, role );
         unArchiver.setSourceFile( archive );
 
         unArchiver.setDestDirectory( getTestFile( "target/output/emptyTest" ) );

@@ -1,16 +1,18 @@
 package org.codehaus.plexus.archiver.util;
 
 import java.io.File;
-import junit.framework.TestCase;
+import org.junit.Test;
+
 import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Kristian Rosenvold
  */
 public class DefaultFileSetTest
-    extends TestCase
 {
 
+    @Test
     public void testCreate()
     {
         final String[] includes =

@@ -28,14 +28,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Base abstract class that all the test-cases for different archivers
  * extend so that they can use its helpful methods.
  */
-public abstract class BasePlexusArchiverTest extends PlexusTestCase
+public abstract class BasePlexusArchiverTest extends TestSupport
 {
 
     /**
@@ -104,7 +103,7 @@ public abstract class BasePlexusArchiverTest extends PlexusTestCase
         final File pomFile = new File( "pom.xml" );
         final File rarFile = new File( "target/output/pom.xml." + format );
 
-        Archiver archiver = (Archiver) lookup( Archiver.ROLE, format );
+        Archiver archiver = (Archiver) lookup( Archiver.class, format );
         archiver.setDestFile( rarFile );
         archiver.addFile( pomFile, "pom.xml" );
 

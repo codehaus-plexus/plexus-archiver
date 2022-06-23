@@ -34,11 +34,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.Nonnull;
-import org.codehaus.plexus.PlexusConstants;
-import org.codehaus.plexus.PlexusContainer;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.attributes.SimpleResourceAttributes;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
@@ -49,21 +49,22 @@ import org.codehaus.plexus.components.io.resources.PlexusIoFileResourceCollectio
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.codehaus.plexus.components.io.resources.proxy.PlexusIoProxyResourceCollection;
-import org.codehaus.plexus.context.Context;
-import org.codehaus.plexus.context.ContextException;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Contextualizable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.codehaus.plexus.archiver.util.DefaultArchivedFileSet.archivedFileSet;
 import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
 
 public abstract class AbstractArchiver
-    extends AbstractLogEnabled
-    implements Archiver, Contextualizable, FinalizerEnabled
+    implements Archiver, FinalizerEnabled
 {
 
-    private Logger logger;
+    private final Logger logger = LoggerFactory.getLogger( getClass() );
+
+    protected Logger getLogger()
+    {
+        return logger;
+    }
 
     private File destFile;
 
@@ -135,8 +136,12 @@ public abstract class AbstractArchiver
      */
     private String overrideGroupName;
 
-    // contextualized.
-    private ArchiverManager archiverManager;
+    /**
+     * Injected: Allows us to pull the ArchiverManager instance out of the container without causing a chicken-and-egg
+     * instantiation/composition problem.
+     */
+    @Inject
+    private Provider<ArchiverManager> archiverManagerProvider;
 
     private static class AddedResourceCollection
     {
@@ -186,7 +191,7 @@ public abstract class AbstractArchiver
         if ( !Archiver.DUPLICATES_VALID_BEHAVIORS.contains( duplicate ) )
         {
             throw new IllegalArgumentException(
-                "Invalid duplicate-file behavior: \'" + duplicate + "\'. Please specify one of: "
+                    "Invalid duplicate-file behavior: '" + duplicate + "'. Please specify one of: "
                     + Archiver.DUPLICATES_VALID_BEHAVIORS );
         }
 
@@ -524,7 +529,7 @@ public abstract class AbstractArchiver
         return new ResourceIterator()
         {
 
-            private final Iterator addedResourceIter = resources.iterator();
+            private final Iterator<Object> addedResourceIter = resources.iterator();
 
             private AddedResourceCollection currentResourceCollection;
 
@@ -532,7 +537,7 @@ public abstract class AbstractArchiver
 
             private ArchiveEntry nextEntry;
 
-            private final Set<String> seenEntries = new HashSet<String>();
+            private final Set<String> seenEntries = new HashSet<>();
 
             @Override
             public boolean hasNext()
@@ -727,24 +732,6 @@ public abstract class AbstractArchiver
         }
     }
 
-    @Override
-    protected Logger getLogger()
-    {
-        if ( logger == null )
-        {
-            if ( super.getLogger() != null )
-            {
-                logger = super.getLogger();
-            }
-            else
-            {
-                logger = new ConsoleLogger( Logger.LEVEL_INFO, "console" );
-            }
-        }
-
-        return logger;
-    }
-
     protected PlexusIoResourceCollection asResourceCollection( final ArchivedFileSet fileSet, Charset charset )
         throws ArchiverException
     {
@@ -753,7 +740,7 @@ public abstract class AbstractArchiver
         final PlexusIoResourceCollection resources;
         try
         {
-            resources = archiverManager.getResourceCollection( archiveFile );
+            resources = archiverManagerProvider.get().getResourceCollection( archiveFile );
         }
         catch ( final NoSuchArchiverException e )
         {
@@ -880,26 +867,6 @@ public abstract class AbstractArchiver
         addArchivedFileSet( archivedFileSet( archiveFile ).includeEmptyDirs( includeEmptyDirs ) );
     }
 
-    /**
-     * Allows us to pull the ArchiverManager instance out of the container without causing a chicken-and-egg
-     * instantiation/composition problem.
-     */
-    @Override
-    public void contextualize( final Context context )
-        throws ContextException
-    {
-        final PlexusContainer container = (PlexusContainer) context.get( PlexusConstants.PLEXUS_KEY );
-
-        try
-        {
-            archiverManager = (ArchiverManager) container.lookup( ArchiverManager.ROLE );
-        }
-        catch ( final ComponentLookupException e )
-        {
-            throw new ContextException( "Error retrieving ArchiverManager instance: " + e.getMessage(), e );
-        }
-    }
-
     @Override
     public boolean isForced()
     {
@@ -917,7 +884,7 @@ public abstract class AbstractArchiver
     {
         if ( finalizers == null )
         {
-            finalizers = new ArrayList<ArchiveFinalizer>();
+            finalizers = new ArrayList<>();
         }
 
         finalizers.add( finalizer );
@@ -946,7 +913,7 @@ public abstract class AbstractArchiver
         }
         final long destTimestamp = getFileLastModifiedTime(zipFile);
 
-        final Iterator it = resources.iterator();
+        final Iterator<Object> it = resources.iterator();
         if ( !it.hasNext() )
         {
             getLogger().debug( "isUp2date: false (No input files.)" );
@@ -1314,14 +1281,7 @@ public abstract class AbstractArchiver
         setLastModifiedTime( normalizeLastModifiedTime ( lastModifiedTime ) );
 
         // 2. sort filenames in each directory when scanning filesystem
-        setFilenameComparator( new Comparator<String>()
-        {
-            @Override
-            public int compare( String s1, String s2 )
-            {
-                return s1.compareTo( s2 );
-            }
-        } );
+        setFilenameComparator( String::compareTo );
 
         // 3. ignore file/directory mode from filesystem, since they may vary based on local user umask
         // notice: this overrides execute bit on Unix (that is already ignored on Windows)

@@ -1,25 +1,30 @@
 package org.codehaus.plexus.archiver.war;
 
 import java.io.File;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ResourceIterator;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kristian Rosenvold
  */
 public class WarArchiverTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     private final int expected = 8;
 
+    @Test
     public void testReAddingPlatformSpecificEncoding()
         throws Exception
     {
-        WarArchiver archiver = (WarArchiver) lookup( Archiver.ROLE, "war" );
+        WarArchiver archiver = (WarArchiver) lookup( Archiver.class, "war" );
         archiver.setDestFile( new File( getTargetRarFolder(), "test.war" ) );
 
         File dummyContent = getTestFile( "src/test/resources/folders" );
@@ -36,10 +41,11 @@ public class WarArchiverTest
         assertTrue( new File( getTargetRarFolder(), "test.war" ).exists() );
     }
 
+    @Test
     public void testInfiniteRecursion()
         throws Exception
     {
-        WarArchiver archiver = (WarArchiver) lookup( Archiver.ROLE, "war" );
+        WarArchiver archiver = (WarArchiver) lookup( Archiver.class, "war" );
         archiver.setDestFile( new File( getTargetRarFolder(), "test.war" ) );
 
         // Easy to produce infinite recursion if you just add existing files again and again
@@ -58,7 +64,7 @@ public class WarArchiverTest
     }
 
     @Override
-    protected void setUp()
+    public void setUp()
         throws Exception
     {
         super.setUp();

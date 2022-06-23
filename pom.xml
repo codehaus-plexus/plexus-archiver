@@ -32,6 +32,8 @@
 
   <properties>
     <javaVersion>8</javaVersion>
+    <sisuVersion>0.3.5</sisuVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <project.build.outputTimestamp>2022-06-10T17:04:57Z</project.build.outputTimestamp>
   </properties>
 
@@ -49,13 +51,13 @@
   </contributors>
 
   <dependencies>
-    <!-- Plexus dependencies -->
+    <!-- JSR330 -->
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-container-default</artifactId>
-      <version>2.1.1</version>
-      <scope>provided</scope>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
     </dependency>
+    <!-- Plexus dependencies -->
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
@@ -64,7 +66,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-io</artifactId>
-      <version>3.3.1</version>
+      <version>3.4.0</version>
     </dependency>
     <!-- Apache Commons dependencies -->
     <dependency>
@@ -78,6 +80,11 @@
       <version>1.21</version>
     </dependency>
     <!-- Other dependencies -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4jVersion}</version>
+    </dependency>
     <dependency>
       <groupId>org.iq80.snappy</groupId>
       <artifactId>snappy</artifactId>
@@ -100,6 +107,37 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>2.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4jVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Plexus container dependencies -->
+    <dependency>
+      <groupId>org.eclipse.sisu</groupId>
+      <artifactId>org.eclipse.sisu.inject</artifactId>
+      <version>${sisuVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>5.1.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -127,12 +165,15 @@
         <version>2.7</version>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-metadata</artifactId>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>${sisuVersion}</version>
         <executions>
           <execution>
+            <id>index-project</id>
             <goals>
-              <goal>generate-metadata</goal>
+              <goal>main-index</goal>
+              <goal>test-index</goal>
             </goals>
           </execution>
         </executions>

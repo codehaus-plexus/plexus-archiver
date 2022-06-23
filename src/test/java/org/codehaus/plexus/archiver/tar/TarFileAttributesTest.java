@@ -1,15 +1,14 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.components.io.attributes.AttributeUtils;
@@ -17,10 +16,13 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUti
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.Os;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 @SuppressWarnings( "ResultOfMethodCallIgnored" )
 public class TarFileAttributesTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     private final List<File> toDelete = new ArrayList<File>();
@@ -73,6 +75,7 @@ public class TarFileAttributesTest
         System.out.println( "\n\nRunning: " + e.getMethodName() + "\n\n" );
     }
 
+    @Test
     public void testUseAttributesFromTarArchiveInputInTarArchiverOutput()
         throws Exception
     {
@@ -118,7 +121,7 @@ public class TarFileAttributesTest
         tarArchiver2.createArchive();
 
         // Cut from here, and feed it into a new tar archiver...then unarchive THAT.
-        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar" );
+        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.class, "tar" );
 
         File tempTarDir = File.createTempFile( "tar-test.", ".dir" );
         tempTarDir.delete();
@@ -138,6 +141,7 @@ public class TarFileAttributesTest
 
     }
 
+    @Test
     public void testUseDetectedFileAttributes()
         throws Exception
     {
@@ -172,7 +176,7 @@ public class TarFileAttributesTest
 
         tarArchiver.createArchive();
 
-        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar" );
+        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.class, "tar" );
 
         File tempTarDir = File.createTempFile( "tar-test.", ".dir" );
         tempTarDir.delete();
@@ -196,6 +200,7 @@ public class TarFileAttributesTest
         return Os.isFamily( Os.FAMILY_WINDOWS );
     }
 
+    @Test
     public void testOverrideDetectedFileAttributes()
         throws Exception
     {
@@ -227,7 +232,7 @@ public class TarFileAttributesTest
 
         tarArchiver.createArchive();
 
-        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar" );
+        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.class, "tar" );
 
         File tempTarDir = File.createTempFile( "tar-test.", ".dir" );
         tempTarDir.delete();
@@ -249,11 +254,12 @@ public class TarFileAttributesTest
 
     private TarArchiver getPosixCompliantTarArchiver() throws Exception
     {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.ROLE, "tar" );
+        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
         tarArchiver.setLongfile( TarLongFileMode.posix );
         return tarArchiver;
     }
 
+    @Test
     public void testOverrideDetectedFileAttributesUsingFileMode()
         throws Exception
     {
@@ -285,7 +291,7 @@ public class TarFileAttributesTest
 
         tarArchiver.createArchive();
 
-        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.ROLE, "tar" );
+        TarUnArchiver tarUnArchiver = (TarUnArchiver) lookup( UnArchiver.class, "tar" );
 
         File tempTarDir = File.createTempFile( "tar-test.", ".dir" );
         tempTarDir.delete();

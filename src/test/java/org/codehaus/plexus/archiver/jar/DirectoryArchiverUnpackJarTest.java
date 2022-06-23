@@ -5,15 +5,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import javax.annotation.Nonnull;
-import org.codehaus.plexus.PlexusTestCase;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class DirectoryArchiverUnpackJarTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
     public static final String[] DEFAULT_INCLUDES_ARRAY =
@@ -39,6 +42,7 @@ public class DirectoryArchiverUnpackJarTest
 
     }
 
+    @Test
     public void test_dependency_sets_depSet_unpacked_rdonly()
         throws Exception
     {
@@ -49,7 +53,7 @@ public class DirectoryArchiverUnpackJarTest
         afs.setExcludes( null );
         afs.setPrefix( "child-1/" );
         afs.setStreamTransformer( new IdentityTransformer() );
-        Archiver archiver = (Archiver) lookup( Archiver.ROLE, "dir" );
+        Archiver archiver = (Archiver) lookup( Archiver.class, "dir" );
         archiver.setDefaultDirectoryMode( 0555 );
         archiver.setDirectoryMode( 0555 ); // causes permission denied if bug is not fixed.
         archiver.setDestFile( new File( "target/depset_unpack" ) );

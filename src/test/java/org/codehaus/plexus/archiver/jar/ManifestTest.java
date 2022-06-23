@@ -22,15 +22,23 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.util.jar.Attributes;
 
-import org.codehaus.plexus.PlexusTestCase;
+import org.codehaus.plexus.archiver.TestSupport;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Emmanuel Venisse
  */
 public class ManifestTest
-    extends PlexusTestCase
+        extends TestSupport
 {
 
+    @Test
     public void testManifest1()
         throws Exception
     {
@@ -39,6 +47,7 @@ public class ManifestTest
         assertEquals( "Manifest was not created with correct version - ", "1.0", version );
     }
 
+    @Test
     public void testManifest2()
         throws Exception
     {
@@ -52,6 +61,7 @@ public class ManifestTest
         }
     }
 
+    @Test
     public void testManifest3()
         throws Exception
     {
@@ -65,6 +75,7 @@ public class ManifestTest
         }
     }
 
+    @Test
     public void testManifest5()
         throws Exception
     {
@@ -78,6 +89,7 @@ public class ManifestTest
         }
     }
 
+    @Test
     public void testAddConfiguredSection()
         throws ManifestException
     {
@@ -89,6 +101,7 @@ public class ManifestTest
         assertEquals( "baz", manifest.getAttributes( "fud" ).getValue( "bar" ) );
     }
 
+    @Test
     public void testAttributeLongLineWrite()
         throws Exception
     {
@@ -108,6 +121,7 @@ public class ManifestTest
 
     }
 
+    @Test
     public void testAttributeLongLineWriteNonAscii()
         throws Exception
     {
@@ -138,6 +152,7 @@ public class ManifestTest
 
     }
 
+    @Test
     public void testDualClassPath()
         throws ManifestException, IOException
     {
@@ -147,6 +162,7 @@ public class ManifestTest
         assertEquals( "baz", attribute );
     }
 
+    @Test
     public void testAttributeMultiLineValue()
         throws Exception
     {
@@ -155,6 +171,7 @@ public class ManifestTest
 
     }
 
+    @Test
     public void testAttributeDifferentLineEndings()
         throws Exception
     {
@@ -163,6 +180,7 @@ public class ManifestTest
 
     }
 
+    @Test
     public void testAddAttributes()
         throws ManifestException, IOException
     {
@@ -173,6 +191,7 @@ public class ManifestTest
         assertEquals( "bzz", manifest.getSection( "Fudz" ).getAttributeValue( "boz" ) );
     }
 
+    @Test
     public void testRemoveAttributes()
         throws ManifestException, IOException
     {
@@ -184,6 +203,7 @@ public class ManifestTest
         assertNull( fudz.getAttributeValue( "boz" ) );
     }
 
+    @Test
     public void testAttributeSerialization()
         throws IOException, ManifestException
     {
@@ -203,6 +223,7 @@ public class ManifestTest
         assertTrue( s.contains( "attB: caB" ) );
     }
 
+    @Test
     public void testDefaultBehaviour()
     {
         Manifest manifest = new Manifest();
@@ -213,6 +234,7 @@ public class ManifestTest
         assertNull( manifest.getSection( "Fud" ) );
     }
 
+    @Test
     public void testGetDefaultManifest()
         throws Exception
     {
@@ -276,6 +298,7 @@ public class ManifestTest
         return out;
     }
 
+    @Test
     public void testAddAttributesPlexusManifest()
         throws ManifestException, IOException
     {
@@ -285,6 +308,7 @@ public class ManifestTest
         assertEquals( "bzz", manifest.getSection( "Fudz" ).getAttributeValue( "boz" ) );
     }
 
+    @Test
     public void testRemoveAttributesPlexusManifest()
         throws ManifestException, IOException
     {
@@ -296,6 +320,7 @@ public class ManifestTest
         assertNull( fudz.getAttributeValue( "boz" ) );
     }
 
+    @Test
     public void testAttributeSerializationPlexusManifest()
         throws IOException, ManifestException
     {
@@ -316,6 +341,7 @@ public class ManifestTest
         assertTrue( s.contains( "attB: caB" ) );
     }
 
+    @Test
     public void testClassPathPlexusManifest()
         throws ManifestException
     {
@@ -325,6 +351,7 @@ public class ManifestTest
         assertEquals( "fud duf", manifest.getMainSection().getAttributeValue( ManifestConstants.ATTRIBUTE_CLASSPATH ) );
     }
 
+    @Test
     public void testAddConfiguredSectionPlexusManifest()
         throws ManifestException
     {

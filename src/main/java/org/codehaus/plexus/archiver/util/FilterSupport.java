@@ -5,7 +5,7 @@ import java.util.List;
 import org.codehaus.plexus.archiver.ArchiveFileFilter;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
-import org.codehaus.plexus.logging.Logger;
+import org.slf4j.Logger;
 
 /**
  * @deprecated Use {@link FileSelector} and {@link Archiver#addFileSet}.

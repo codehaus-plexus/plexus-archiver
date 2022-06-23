@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.gzip;
 
+import javax.inject.Named;
+
 import static org.codehaus.plexus.archiver.util.Streams.copyFully;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
@@ -32,6 +34,7 @@ import org.codehaus.plexus.archiver.util.Streams;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
+@Named( "gzip" )
 public class GZipUnArchiver
     extends AbstractUnArchiver
 {

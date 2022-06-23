@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.dir;
 
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,6 +37,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 /**
  * A plexus archiver implementation that stores the files to archive in a directory.
  */
+@Named( "dir" )
 public class DirectoryArchiver
     extends AbstractArchiver
 {

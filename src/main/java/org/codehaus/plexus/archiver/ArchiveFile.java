@@ -15,7 +15,7 @@ public interface ArchiveFile
      * Any element returned by the enumeration is an instance
      * of {@link org.apache.commons.compress.archivers.ArchiveEntry}.
      */
-    public Enumeration<? extends org.apache.commons.compress.archivers.ArchiveEntry> getEntries()
+    Enumeration<? extends org.apache.commons.compress.archivers.ArchiveEntry> getEntries()
         throws IOException;
 
     /**

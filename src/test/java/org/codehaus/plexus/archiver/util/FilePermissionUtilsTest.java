@@ -18,23 +18,25 @@
  */
 package org.codehaus.plexus.archiver.util;
 
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Olivier Lamy
  */
 public class FilePermissionUtilsTest
-    extends TestCase
 {
 
     Logger getLogger()
     {
-        return new ConsoleLogger( Logger.LEVEL_DEBUG, "foo" );
-
+        return LoggerFactory.getLogger( "foo" );
     }
 
+    @Test
     public void testOnlyWritableOnlyUser() throws Exception
     {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "200", getLogger() );
@@ -45,6 +47,7 @@ public class FilePermissionUtilsTest
         assertFalse( fp.isReadable() );
     }
 
+    @Test
     public void testExecAndRead()
     {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "500", getLogger() );
@@ -55,6 +58,7 @@ public class FilePermissionUtilsTest
         assertTrue( fp.isReadable() );
     }
 
+    @Test
     public void testAllUser()
     {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "700", getLogger() );
@@ -65,6 +69,7 @@ public class FilePermissionUtilsTest
         assertTrue( fp.isReadable() );
     }
 
+    @Test
     public void testAllAllUser()
     {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "707", getLogger() );

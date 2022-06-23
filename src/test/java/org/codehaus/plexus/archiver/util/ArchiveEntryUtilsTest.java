@@ -6,10 +6,15 @@ import java.util.HashMap;
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.codehaus.plexus.util.Os;
 import junit.framework.TestCase;
+import org.junit.Test;
 
-public class ArchiveEntryUtilsTest extends TestCase
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class ArchiveEntryUtilsTest
 {
 
+    @Test
     public void testChmodForFileWithDollarPLXCOMP164() throws Exception
     {
 
@@ -22,6 +27,7 @@ public class ArchiveEntryUtilsTest extends TestCase
         assert0770( temp );
     }
 
+    @Test
     public void testChmodWithJava7() throws Exception
     {
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )

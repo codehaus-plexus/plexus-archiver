@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import javax.inject.Named;
+
 import java.io.File;
 
 /**
@@ -23,6 +25,7 @@ import java.io.File;
  *
  * @author <a href="mailto:dantran@gmail.com">Dan Tran</a>
  */
+@Named( "tar.gz" )
 public class TarGZipUnArchiver
     extends TarUnArchiver
 {

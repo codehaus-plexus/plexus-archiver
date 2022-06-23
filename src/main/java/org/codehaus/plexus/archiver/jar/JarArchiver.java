@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
+import javax.inject.Named;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
@@ -46,16 +48,11 @@ import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.logging.console.ConsoleLogger;
 
 /**
  * Base class for tasks that build archives in JAR file format.
  */
-@SuppressWarnings(
-{
-    "NullableProblems"
-} )
+@Named( "jar" )
 public class JarArchiver
     extends ZipArchiver
 {
@@ -139,7 +136,7 @@ public class JarArchiver
      * <p/>
      * Will not be filled unless the user has asked for an index.
      */
-    private List<String> rootEntries;
+    private final List<String> rootEntries;
 
     /**
      * Path containing jars that shall be indexed in addition to this archive.
@@ -763,26 +760,24 @@ public class JarArchiver
      *
      * @throws java.io.IOException
      */
-    protected static void grabFilesAndDirs( String file, List<String> dirs, List<String> files )
+    private void grabFilesAndDirs( String file, List<String> dirs, List<String> files )
         throws IOException
     {
         File zipFile = new File( file );
         if ( !zipFile.exists() )
         {
-            Logger logger = new ConsoleLogger( Logger.LEVEL_INFO, "console" );
-            logger.error( "JarArchive skipping non-existing file: " + zipFile.getAbsolutePath() );
+            getLogger().error( "JarArchive skipping non-existing file: " + zipFile.getAbsolutePath() );
         }
         else if ( zipFile.isDirectory() )
         {
-            Logger logger = new ConsoleLogger( Logger.LEVEL_INFO, "console" );
-            logger.info( "JarArchiver skipping indexJar " + zipFile + " because it is not a jar" );
+            getLogger().info( "JarArchiver skipping indexJar " + zipFile + " because it is not a jar" );
         }
         else
         {
             try ( ZipFile zf = new ZipFile( file, "utf-8" ) )
             {
                 Enumeration<ZipArchiveEntry> entries = zf.getEntries();
-                HashSet<String> dirSet = new HashSet<String>();
+                HashSet<String> dirSet = new HashSet<>();
                 while ( entries.hasMoreElements() )
                 {
                     ZipArchiveEntry ze = entries.nextElement();
