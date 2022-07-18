@@ -18,9 +18,9 @@ package org.codehaus.plexus.archiver.sar;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SarArchiverTest
     extends BasePlexusArchiverTest

@@ -11,9 +11,9 @@ import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DirectoryArchiverUnpackJarTest
         extends TestSupport

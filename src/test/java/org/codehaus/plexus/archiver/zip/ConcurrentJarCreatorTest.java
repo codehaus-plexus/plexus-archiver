@@ -11,11 +11,11 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.codehaus.plexus.util.DirectoryScanner;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings( "ResultOfMethodCallIgnored" )
-@Ignore
+@Disabled
 public class ConcurrentJarCreatorTest
 {
 
@@ -43,7 +43,7 @@ public class ConcurrentJarCreatorTest
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void classic()
         throws Exception
     {

@@ -12,10 +12,10 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.util.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Erik Engstrom

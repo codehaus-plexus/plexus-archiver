@@ -77,14 +77,14 @@ import org.codehaus.plexus.components.io.resources.ResourceFactory;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -216,7 +216,7 @@ public class ZipArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + exeMode, exeMode, attrs.getOctalMode() );
+                    assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
 
                 for ( String path : confPaths )
@@ -228,8 +228,7 @@ public class ZipArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + confMode, confMode,
-                                  attrs.getOctalMode() );
+                    assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
 
                 for ( String path : logPaths )
@@ -241,7 +240,7 @@ public class ZipArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + logMode, logMode, attrs.getOctalMode() );
+                    assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
             }
 
@@ -270,7 +269,7 @@ public class ZipArchiverTest
 
                 int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + exeMode, exeMode, mode );
+                assertEquals( exeMode, mode, "Wrong mode for: " + path );
             }
 
             for ( String path : confPaths )
@@ -279,7 +278,7 @@ public class ZipArchiverTest
 
                 int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + confMode, confMode, mode );
+                assertEquals( confMode, mode, "Wrong mode for: " + path );
             }
 
             for ( String path : logPaths )
@@ -288,7 +287,7 @@ public class ZipArchiverTest
 
                 int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + logMode, logMode, mode );
+                assertEquals( logMode, mode, "Wrong mode for: " + path );
             }
         }
         finally
@@ -769,7 +768,7 @@ public class ZipArchiverTest
         System.out.println( "evenEntry.getTime() = " + new Date( evenEntry.getTime() ).toString() );
     }
 
-    @Ignore("Junit3 method name is notest")
+    @Disabled("Junit3 method name is notest")
     @Test
     public void notestJustThatOne()
         throws Exception

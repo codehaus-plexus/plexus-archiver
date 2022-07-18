@@ -7,11 +7,11 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.util.Streams;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Kristian Rosenvold

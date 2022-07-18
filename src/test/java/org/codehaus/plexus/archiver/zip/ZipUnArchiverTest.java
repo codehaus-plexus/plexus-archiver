@@ -14,11 +14,11 @@ import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Jason van Zyl
@@ -118,9 +118,9 @@ public class ZipUnArchiverTest
         unarchiver.setDestFile( dest );
         unarchiver.extract();
         // a Unicode Path extra field should only be used when its CRC matches the header file name
-        assertEquals( "should use good extra fields but not bad ones",
-                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
-                new HashSet<>( Arrays.asList( dest.list() ) ) );
+        assertEquals( new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
+                      new HashSet<>( Arrays.asList( dest.list() ) ),
+                      "should use good extra fields but not bad ones" );
     }
 
     @Test
@@ -152,11 +152,10 @@ public class ZipUnArchiverTest
         unarchiver.setFileSelectors( new FileSelector[] { selector } );
         unarchiver.extract();
 
-        assertEquals( "should not extract anything", 0, dest.list().length );
+        assertEquals( 0, dest.list().length, "should not extract anything" );
         // a Unicode Path extra field should only be used when its CRC matches the header file name
-        assertEquals( "should use good extra fields but not bad ones",
-                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
-                selector.collection );
+        assertEquals( new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
+                      selector.collection, "should use good extra fields but not bad ones" );
     }
 
     private void runUnarchiver( String path, FileSelector[] selectors, boolean[] results )

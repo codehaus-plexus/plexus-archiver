@@ -27,12 +27,12 @@ import java.io.File;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dan T. Tran

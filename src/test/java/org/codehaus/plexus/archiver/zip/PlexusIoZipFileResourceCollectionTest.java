@@ -16,11 +16,11 @@ import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlexusIoZipFileResourceCollectionTest
         extends TestSupport
@@ -91,7 +91,7 @@ public class PlexusIoZipFileResourceCollectionTest
         while ( entries.hasNext() )
         {
             final PlexusIoResource next = entries.next();
-            assertTrue( next.getName() + "was not present", seen.remove( next.getName() ) );
+            assertTrue( seen.remove( next.getName() ), next.getName() + "was not present" );
             final URL url = next.getURL();
             final InputStream contents = next.getContents();
             contents.close();
@@ -119,14 +119,14 @@ public class PlexusIoZipFileResourceCollectionTest
             String symLinkTarget = symLinks.remove( next.getName() );
             if ( symLinkTarget != null )
             {
-                assertTrue( next.getName() + " must be symlink", next.isSymbolicLink() );
+                assertTrue( next.isSymbolicLink(), next.getName() + " must be symlink" );
                 assertTrue( next instanceof SymlinkDestinationSupplier );
                 assertEquals( symLinkTarget,
                               ( (SymlinkDestinationSupplier) next ).getSymlinkDestination() );
             }
             else
             {
-                assertFalse( next.getName() + " must not be symlink", next.isSymbolicLink() );
+                assertFalse( next.isSymbolicLink(), next.getName() + " must not be symlink" );
             }
         }
 
@@ -147,9 +147,8 @@ public class PlexusIoZipFileResourceCollectionTest
             names.add(next.getName());
         }
         // a Unicode Path extra field should only be used when its CRC matches the header file name
-        assertEquals( "should use good extra fields but not bad ones",
-                new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ),
-                names );
+        assertEquals( new HashSet<>( Arrays.asList( "nameonly-name", "goodextra-extra", "badextra-name" ) ), names,
+                      "should use good extra fields but not bad ones" );
     }
 
 }

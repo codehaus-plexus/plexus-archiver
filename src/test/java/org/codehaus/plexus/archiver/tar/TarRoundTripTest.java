@@ -22,10 +22,11 @@ import java.io.IOException;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * from org.apache.ant.tools.tar.TarRoundTripTest v1.6
@@ -45,8 +46,8 @@ public class TarRoundTripTest
         throws IOException
     {
         TarArchiveEntry original = new TarArchiveEntry( LONG_NAME );
-        assertEquals( "over 100 chars", true, LONG_NAME.length() > 100 );
-        assertEquals( "original name", LONG_NAME, original.getName() );
+        assertTrue( LONG_NAME.length() > 100, "over 100 chars" );
+        assertEquals( LONG_NAME, original.getName(), "original name" );
 
         ByteArrayOutputStream buff = new ByteArrayOutputStream();
         TarArchiveOutputStream tos = new TarArchiveOutputStream( buff );
@@ -57,8 +58,8 @@ public class TarRoundTripTest
 
         TarArchiveInputStream tis = new TarArchiveInputStream( new ByteArrayInputStream( buff.toByteArray() ) );
         TarArchiveEntry tripped = tis.getNextTarEntry();
-        assertEquals( "round-tripped name", LONG_NAME, tripped.getName() );
-        assertNull( "no more entries", tis.getNextEntry() );
+        assertEquals( LONG_NAME, tripped.getName(), "round-tripped name" );
+        assertNull( tis.getNextEntry(), "no more entries" );
         tis.close();
     }
 

@@ -16,9 +16,11 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUti
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.Os;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings( "ResultOfMethodCallIgnored" )
 public class TarFileAttributesTest
@@ -28,6 +30,7 @@ public class TarFileAttributesTest
     private final List<File> toDelete = new ArrayList<File>();
 
     @Override
+    @BeforeEach
     public void setUp()
         throws Exception
     {
@@ -39,6 +42,7 @@ public class TarFileAttributesTest
     }
 
     @Override
+    @AfterEach
     public void tearDown()
         throws Exception
     {
