@@ -25,10 +25,10 @@ package org.codehaus.plexus.archiver.tar;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -58,8 +58,7 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.Os;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Emmanuel Venisse
@@ -136,7 +135,7 @@ public class TarArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + exeMode, exeMode, attrs.getOctalMode() );
+                    assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
 
                 for ( String path : confPaths )
@@ -149,8 +148,7 @@ public class TarArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + confMode, confMode,
-                                  attrs.getOctalMode() );
+                    assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
 
                 for ( String path : logPaths )
@@ -163,7 +161,7 @@ public class TarArchiverTest
                     }
 
                     assertNotNull( attrs );
-                    assertEquals( "Wrong mode for: " + path + "; expected: " + logMode, logMode, attrs.getOctalMode() );
+                    assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
                 }
             }
 
@@ -200,7 +198,7 @@ public class TarArchiverTest
 
                 int mode = te.getMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + exeMode, exeMode, mode );
+                assertEquals( exeMode, mode, "Wrong mode for: " + path );
             }
 
             for ( String path : confPaths )
@@ -209,7 +207,7 @@ public class TarArchiverTest
 
                 int mode = te.getMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + confMode, confMode, mode );
+                assertEquals( confMode, mode, "Wrong mode for: " + path );
             }
 
             for ( String path : logPaths )
@@ -218,7 +216,7 @@ public class TarArchiverTest
 
                 int mode = te.getMode() & UnixStat.PERM_MASK;
 
-                assertEquals( "Wrong mode for: " + path + "; expected: " + logMode, logMode, mode );
+                assertEquals( logMode, mode, "Wrong mode for: " + path );
             }
         }
         finally
@@ -334,8 +332,8 @@ public class TarArchiverTest
         {
             if ( te.isDirectory() )
             {
-                assertEquals( "un-expected tar-entry mode for [te.name=" + te.getName() + "]", directoryMode,
-                              te.getMode() & UnixStat.PERM_MASK );
+                assertEquals( directoryMode, te.getMode() & UnixStat.PERM_MASK,
+                              "un-expected tar-entry mode for [te.name=" + te.getName() + "]" );
             }
             else if ( te.isSymbolicLink() )
             {
@@ -355,8 +353,8 @@ public class TarArchiverTest
                 }
                 else
                 {
-                    assertEquals( "un-expected tar-entry mode for [te.name=" + te.getName() + "]", defaultFileMode,
-                                  te.getMode() & UnixStat.PERM_MASK );
+                    assertEquals( defaultFileMode, te.getMode() & UnixStat.PERM_MASK,
+                                  "un-expected tar-entry mode for [te.name=" + te.getName() + "]" );
                 }
 
             }
@@ -392,8 +390,8 @@ public class TarArchiverTest
         {
             if ( te.isDirectory() )
             {
-                assertEquals( "un-expected tar-entry mode for [te.name=" + te.getName() + "]", 0500,
-                              te.getMode() & UnixStat.PERM_MASK );
+                assertEquals( 0500, te.getMode() & UnixStat.PERM_MASK,
+                              "un-expected tar-entry mode for [te.name=" + te.getName() + "]" );
             }
             else if ( te.isSymbolicLink() )
             {
@@ -403,8 +401,7 @@ public class TarArchiverTest
             }
             else
             {
-                assertEquals( "un-expected tar-entry mode for [te.name=" + te.getName() + "]", 0400,
-                              te.getMode() & UnixStat.PERM_MASK );
+                assertEquals( 0400, te.getMode() & UnixStat.PERM_MASK, "un-expected tar-entry mode for [te.name=" + te.getName() + "]" );
             }
         }
         tis.close();
@@ -528,7 +525,7 @@ public class TarArchiverTest
         final File tarFile2 = tarHandler.createTarfile2( tarFile );
         final TarFile cmp1 = tarHandler.newTarFile( tarFile );
         final TarFile cmp2 = new TarFile( tarFile2 );
-        ArchiveFileComparator.forEachTarArchiveEntry( cmp1, ze1 -> Assert.assertNotNull( ze1.getName() ) );
+        ArchiveFileComparator.forEachTarArchiveEntry( cmp1, ze1 -> assertNotNull( ze1.getName() ) );
         cmp1.close();
         cmp2.close();
 

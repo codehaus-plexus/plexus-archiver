@@ -16,10 +16,11 @@
  */
 package org.codehaus.plexus.archiver.jar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.io.InputStream;
@@ -34,8 +35,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JarToolModularJarArchiverTest
     extends BaseJarArchiverTest
@@ -46,7 +47,7 @@ public class JarToolModularJarArchiverTest
     /*
      * Configures the ModularJarArchiver for the test cases.
      */
-    @Before
+    @BeforeEach
     public void setup()
         throws Exception
     {
@@ -149,7 +150,7 @@ public class JarToolModularJarArchiverTest
     /*
      * Verify that exception is thrown when the modular JAR is not valid.
      */
-    @Test( expected = ArchiverException.class )
+    @Test
     public void testInvalidModularJar()
         throws Exception
     {
@@ -159,7 +160,7 @@ public class JarToolModularJarArchiverTest
         // Not a valid version
         archiver.setModuleVersion( "notAValidVersion" );
 
-        archiver.createArchive();
+        assertThrows( ArchiverException.class, () -> archiver.createArchive() );
     }
 
     /*
@@ -300,11 +301,11 @@ public class JarToolModularJarArchiverTest
             while ( entries.hasMoreElements() )
             {
                 ZipEntry element = entries.nextElement();
-                assertEquals( "Last Modified Time does not match with expected", expectedLastModifiedTime,
-                              element.getTime() );
+                assertEquals( expectedLastModifiedTime, element.getTime(),
+                              "Last Modified Time does not match with expected" );
                 FileTime expectedFileTime = FileTime.fromMillis( expectedLastModifiedTime );
-                assertEquals( "Last Modified Time does not match with expected", expectedFileTime,
-                              element.getLastModifiedTime() );
+                assertEquals( expectedFileTime, element.getLastModifiedTime(),
+                              "Last Modified Time does not match with expected" );
             }
         }
     }

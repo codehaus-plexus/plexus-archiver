@@ -23,13 +23,13 @@ import java.nio.file.Files;
 import java.util.jar.Attributes;
 
 import org.codehaus.plexus.archiver.TestSupport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -44,7 +44,7 @@ public class ManifestTest
     {
         Manifest manifest = getManifest( "src/test/resources/manifests/manifest1.mf" );
         String version = manifest.getManifestVersion();
-        assertEquals( "Manifest was not created with correct version - ", "1.0", version );
+        assertEquals( "1.0", version, "Manifest was not created with correct version - " );
     }
 
     @Test
@@ -114,10 +114,9 @@ public class ManifestTest
         attr.setValue( longLineOfChars );
         attr.write( writer );
         writer.flush();
-        assertEquals( "should be multiline",
-                      "test: 123456789 123456789 123456789 123456789 123456789 123456789 1234"
+        assertEquals( "test: 123456789 123456789 123456789 123456789 123456789 123456789 1234"
                           + Manifest.EOL + " 56789 123456789 123456789 123456789 " + Manifest.EOL,
-                      writer.toString() );
+                      writer.toString(), "should be multiline" );
 
     }
 
@@ -137,8 +136,7 @@ public class ManifestTest
         attr.setValue( longLineOfChars );
         attr.write( writer );
         writer.flush();
-        assertEquals( "should be multiline",
-                      "test: Ед докэндё форынчйбюж зкрипторэм в"
+        assertEquals( "test: Ед докэндё форынчйбюж зкрипторэм в"
                           + Manifest.EOL + " екж, льабятюр ыкжпэтэндяз мэль ут, квю"
                           + Manifest.EOL + " о ут модо либриз такематыш. Ыюм йн лаб"
                           + Manifest.EOL + " орамюз компльыктётюр, векж ыпикурэи д"
@@ -148,7 +146,7 @@ public class ManifestTest
                           + Manifest.EOL + " оморюм кончюлату векж экз. Ку щольыат "
                           + Manifest.EOL + " вёртюты ёнэрмйщ ыюм."
                           + Manifest.EOL,
-                      writer.toString() );
+                      writer.toString(), "should be multiline" );
 
     }
 
@@ -264,7 +262,7 @@ public class ManifestTest
         // so in case of failure you can see what went wrong.
         System.err.println( "String: " + dumpString( writer.toString() ) );
 
-        assertEquals( "should be indented multiline", "test: " + expected, writer.toString() );
+        assertEquals( "test: " + expected, writer.toString(), "should be indented multiline" );
     }
 
     private static String dumpString( String in )

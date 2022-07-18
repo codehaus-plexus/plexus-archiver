@@ -1,6 +1,6 @@
 package org.codehaus.plexus.archiver.jar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class JarArchiverTest
     extends BaseJarArchiverTest
@@ -137,7 +137,7 @@ public class JarArchiverTest
                 {
                     ZipEntry entry = entries.nextElement();
                     long time = entry.getTime();
-                    assertEquals( "last modification time does not match", expectedTime, time );
+                    assertEquals( expectedTime, time, "last modification time does not match" );
                 }
             }
         }

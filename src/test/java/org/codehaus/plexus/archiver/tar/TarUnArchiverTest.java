@@ -6,9 +6,9 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 import org.codehaus.plexus.util.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:viktor@jv-ration.com">Viktor Sadovnikov</a>
@@ -43,8 +43,8 @@ public class TarUnArchiverTest extends TestSupport
     private void assertFileExistance( String s, String file, boolean exists )
     {
         File f0 = new File( getBasedir(), s + file );
-        assertEquals( String.format( "Did %s expect to find %s file", exists ? "" : "NOT", f0.getAbsoluteFile() ),
-                      exists, f0.exists() );
+        assertEquals( exists, f0.exists(),
+                      String.format( "Did %s expect to find %s file", exists ? "" : "NOT", f0.getAbsoluteFile() ) );
     }
 
     @Test

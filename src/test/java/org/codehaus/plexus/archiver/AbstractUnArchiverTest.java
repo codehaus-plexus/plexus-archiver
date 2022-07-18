@@ -21,17 +21,15 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit test for {@link AbstractUnArchiver}
@@ -40,15 +38,9 @@ import static org.hamcrest.Matchers.greaterThan;
  */
 public class AbstractUnArchiverTest
 {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
     private AbstractUnArchiver abstractUnArchiver;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         this.abstractUnArchiver = new AbstractUnArchiver()
@@ -69,129 +61,121 @@ public class AbstractUnArchiverTest
         };
     }
 
-    @After
+    @AfterEach
     public void tearDown()
     {
         this.abstractUnArchiver = null;
     }
 
     @Test
-    public void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory()
-        throws ArchiverException, IOException
+    public void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory( @TempDir File targetFolder )
+        throws ArchiverException
     {
         // given
-        this.thrown.expectMessage( "Entry is outside of the target directory (../PREFIX/ENTRYNAME.SUFFIX)" );
-        final File targetFolder = temporaryFolder.newFolder();
-        final FileMapper[] fileMappers = new FileMapper[] { new FileMapper()
-        {
-            @Override
-            public String getMappedFileName( String pName )
-            {
-                return "../PREFIX/" + pName;
-            }
-        }, new FileMapper()
-        {
-            @Override
-            public String getMappedFileName( String pName )
-            {
-                return pName + ".SUFFIX";
-            }
-        } };
+        final FileMapper[] fileMappers = new FileMapper[] { pName -> "../PREFIX/" + pName, pName -> pName + ".SUFFIX"};
 
         // when
-        this.abstractUnArchiver.extractFile( null, targetFolder, null, "ENTRYNAME", null, false, null, null,
-                                             fileMappers );
-
+        Exception exception = assertThrows( ArchiverException.class, () ->
+            abstractUnArchiver.extractFile( null, targetFolder, null, "ENTRYNAME", null, false, null, null, fileMappers ) );
         // then
         // ArchiverException is thrown providing the rewritten path
+        assertEquals( "Entry is outside of the target directory (../PREFIX/ENTRYNAME.SUFFIX)", exception.getMessage() );
     }
 
     @Test
-    public void shouldExtractWhenFileOnDiskDoesNotExist() throws IOException
+    public void shouldExtractWhenFileOnDiskDoesNotExist(  @TempDir File temporaryFolder ) throws IOException
     {
         // given
-        File file = new File( temporaryFolder.getRoot(), "whatever.txt" ); // does not create the file!
+        File file = new File( temporaryFolder, "whatever.txt" ); // does not create the file!
         String entryname = file.getName();
         Date entryDate = new Date();
 
         // when & then
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( true ) );
+        assertTrue( abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
-    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive() throws IOException
+    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive( @TempDir File temporaryFolder ) throws IOException
     {
         // given
-        File file = temporaryFolder.newFile();
+        File file = new File( temporaryFolder, "whatever.txt" );
+        file.createNewFile();
         file.setLastModified( System.currentTimeMillis() );
         String entryname = file.getName();
         Date entryDate = new Date( 0 );
 
         // when & then
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( false ) );
+        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
-    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing() throws IOException
+    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing( @TempDir File temporaryFolder )
+        throws IOException
     {
         // given
-        File file = temporaryFolder.newFile();
+        File file = new File( temporaryFolder, "whatever.txt" );
+        file.createNewFile();
         file.setLastModified( System.currentTimeMillis() );
         String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( 0 );
 
         // when & then
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is ( false ) );
-        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), greaterThan(0)  );
+        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertTrue( this.abstractUnArchiver.casingMessageEmitted.get() > 0 );
     }
 
     @Test
-    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk() throws IOException
+    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk( @TempDir File temporaryFolder ) throws IOException
     {
         // given
-        File file = temporaryFolder.newFile();
+        File file = new File( temporaryFolder, "whatever.txt" );
+        file.createNewFile();
         file.setLastModified( 0 );
         String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( System.currentTimeMillis() );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( false );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
+        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
-    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing() throws IOException
+    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing( @TempDir File temporaryFolder )
+        throws IOException
     {
         // given
-        File file = temporaryFolder.newFile();
+        File file = new File( temporaryFolder, "whatever.txt" );
+        file.createNewFile();
         file.setLastModified( 0 );
         String entryname = file.getName().toUpperCase();
         Date entryDate = new Date( System.currentTimeMillis() );
 
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
         this.abstractUnArchiver.setOverwrite( false );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( false ) );
-        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), greaterThan(0)  );
+        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertTrue( this.abstractUnArchiver.casingMessageEmitted.get() > 0 );
     }
 
     @Test
-    public void shouldNotWarnAboutDifferentCasingForDirectoryEntries() throws IOException
+    public void shouldNotWarnAboutDifferentCasingForDirectoryEntries( @TempDir File temporaryFolder )
+        throws IOException
     {
         // given
-        File file = temporaryFolder.newFolder();
+        File file = new File( temporaryFolder, "whatever.txt" );
+        file.createNewFile();
         file.setLastModified( 0 );
         String entryname = file.getName() + '/'; // archive entries for directories end with a '/'
         Date entryDate = new Date();
 
         // when & then
         this.abstractUnArchiver.setOverwrite( true );
-        assertThat( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder.getRoot(), file, entryname, entryDate ), is( true ) );
-        assertThat( this.abstractUnArchiver.casingMessageEmitted.get(), equalTo( 0 ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertEquals( 0, this.abstractUnArchiver.casingMessageEmitted.get() );
     }
 }

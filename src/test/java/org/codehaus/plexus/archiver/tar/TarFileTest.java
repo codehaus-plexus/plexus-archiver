@@ -14,10 +14,10 @@ import org.codehaus.plexus.archiver.gzip.GZipCompressor;
 import org.codehaus.plexus.archiver.util.Compressor;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link TarFile}.

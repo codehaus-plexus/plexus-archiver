@@ -5,6 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.eclipse.sisu.launch.InjectedTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Test support class.
@@ -12,6 +14,18 @@ import org.eclipse.sisu.launch.InjectedTest;
 public abstract class TestSupport
         extends InjectedTest
 {
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+    }
+
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
+
     private static Path basedir()
     {
         return Paths.get( System.getProperty( "basedir", ( new File( "" ) ).getAbsolutePath() ) );

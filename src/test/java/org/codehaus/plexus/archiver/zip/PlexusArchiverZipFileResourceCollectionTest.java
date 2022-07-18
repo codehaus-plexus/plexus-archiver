@@ -11,10 +11,10 @@ import java.util.Set;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlexusArchiverZipFileResourceCollectionTest
         extends TestSupport
@@ -36,7 +36,7 @@ public class PlexusArchiverZipFileResourceCollectionTest
         while ( entries.hasNext() )
         {
             final PlexusIoResource next = entries.next();
-            assertTrue( next.getName() + "was not present", seen.remove( next.getName() ) );
+            assertTrue( seen.remove( next.getName() ), next.getName() + "was not present" );
             final InputStream contents = next.getContents();
             contents.close();
         }

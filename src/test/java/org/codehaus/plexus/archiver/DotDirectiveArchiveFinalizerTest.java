@@ -3,9 +3,9 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.util.jar.JarFile;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Jason van Zyl
