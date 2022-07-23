@@ -76,9 +76,10 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.ResourceFactory;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -126,30 +127,29 @@ public class ZipArchiverTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testOveriddenPermissions()
         throws IOException
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            File zipFile = getTestFile( "target/output/zip-with-overriden-modes.zip" );
+        File zipFile = getTestFile( "target/output/zip-with-overriden-modes.zip" );
 
-            ZipArchiver archiver = getZipArchiver( zipFile );
-            archiver.setDefaultDirectoryMode( 0777 );
-            archiver.setDirectoryMode( 0641 );
-            archiver.setFileMode( 0777 );
-            archiver.addDirectory( new File( "src/test/resources/symlinks/src" ) );
-            archiver.createArchive();
+        ZipArchiver archiver = getZipArchiver( zipFile );
+        archiver.setDefaultDirectoryMode( 0777 );
+        archiver.setDirectoryMode( 0641 );
+        archiver.setFileMode( 0777 );
+        archiver.addDirectory( new File( "src/test/resources/symlinks/src" ) );
+        archiver.createArchive();
 
-            assertTrue( zipFile.exists() );
-            ZipFile zf = new ZipFile( zipFile );
-            ZipArchiveEntry fizz = zf.getEntry( "symDir" );
-            assertTrue( fizz.isUnixSymlink() );
-            ZipArchiveEntry symR = zf.getEntry( "symR" );
-            assertTrue( symR.isUnixSymlink() );
-        }
+        assertTrue( zipFile.exists() );
+        ZipFile zf = new ZipFile( zipFile );
+        ZipArchiveEntry fizz = zf.getEntry( "symDir" );
+        assertTrue( fizz.isUnixSymlink() );
+        ZipArchiveEntry symR = zf.getEntry( "symR" );
+        assertTrue( symR.isUnixSymlink() );
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testCreateArchiveWithDetectedModes()
         throws Exception
     {
@@ -172,14 +172,6 @@ public class ZipArchiverTest
         int exeMode = 0777;
         int confMode = 0600;
         int logMode = 0640;
-
-        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            StackTraceElement e = new Throwable().getStackTrace()[0];
-            System.out.println(
-                "Cannot execute test: " + e.getMethodName() + " on " + System.getProperty( "os.name" ) );
-            return;
-        }
 
         File tmpDir = null;
         try
@@ -582,53 +574,49 @@ public class ZipArchiverTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testSymlinkZip()
         throws Exception
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            final File zipFile = getTestFile( "target/output/pasymlinks.zip" );
-            final ZipArchiver zipArchiver = getZipArchiver( zipFile );
-            PlexusIoFileResourceCollection files = new PlexusIoFileResourceCollection();
-            files.setFollowingSymLinks( false );
-            files.setBaseDir( new File( "src/test/resources/symlinks" ) );
-            files.setPrefix( "plexus/" );
-            zipArchiver.addResources( files );
-            zipArchiver.createArchive();
-            final File output = getTestFile( "target/output/unzipped" );
-            output.mkdirs();
-            final ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
-            zipUnArchiver.setDestFile( output );
-            zipUnArchiver.extract();
-            File symDir = new File( "target/output/unzipped/plexus/src/symDir" );
-            PlexusIoResourceAttributes fa = FileAttributes.uncached( symDir );
-            assertTrue( fa.isSymbolicLink() );
-        }
+        final File zipFile = getTestFile( "target/output/pasymlinks.zip" );
+        final ZipArchiver zipArchiver = getZipArchiver( zipFile );
+        PlexusIoFileResourceCollection files = new PlexusIoFileResourceCollection();
+        files.setFollowingSymLinks( false );
+        files.setBaseDir( new File( "src/test/resources/symlinks" ) );
+        files.setPrefix( "plexus/" );
+        zipArchiver.addResources( files );
+        zipArchiver.createArchive();
+        final File output = getTestFile( "target/output/unzipped" );
+        output.mkdirs();
+        final ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
+        zipUnArchiver.setDestFile( output );
+        zipUnArchiver.extract();
+        File symDir = new File( "target/output/unzipped/plexus/src/symDir" );
+        PlexusIoResourceAttributes fa = FileAttributes.uncached( symDir );
+        assertTrue( fa.isSymbolicLink() );
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     @SuppressWarnings( "ResultOfMethodCallIgnored" )
     public void testSymlinkFileSet()
         throws Exception
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            final File zipFile = getTestFile( "target/output/pasymlinks-fileset.zip" );
-            final ZipArchiver zipArchiver = getZipArchiver( zipFile );
-            final DefaultFileSet fs = new DefaultFileSet();
-            fs.setPrefix( "bzz/" );
-            fs.setDirectory( new File( "src/test/resources/symlinks/src" ) );
-            zipArchiver.addFileSet( fs );
-            zipArchiver.createArchive();
-            final File output = getTestFile( "target/output/unzipped/symlFs" );
-            output.mkdirs();
-            final ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
-            zipUnArchiver.setDestFile( output );
-            zipUnArchiver.extract();
-            File symDir = new File( output, "bzz/symDir" );
-            PlexusIoResourceAttributes fa = FileAttributes.uncached( symDir );
-            assertTrue( fa.isSymbolicLink() );
-        }
+        final File zipFile = getTestFile( "target/output/pasymlinks-fileset.zip" );
+        final ZipArchiver zipArchiver = getZipArchiver( zipFile );
+        final DefaultFileSet fs = new DefaultFileSet();
+        fs.setPrefix( "bzz/" );
+        fs.setDirectory( new File( "src/test/resources/symlinks/src" ) );
+        zipArchiver.addFileSet( fs );
+        zipArchiver.createArchive();
+        final File output = getTestFile( "target/output/unzipped/symlFs" );
+        output.mkdirs();
+        final ZipUnArchiver zipUnArchiver = getZipUnArchiver( zipFile );
+        zipUnArchiver.setDestFile( output );
+        zipUnArchiver.extract();
+        File symDir = new File( output, "bzz/symDir" );
+        PlexusIoResourceAttributes fa = FileAttributes.uncached( symDir );
+        assertTrue( fa.isSymbolicLink() );
     }
 
     @Test

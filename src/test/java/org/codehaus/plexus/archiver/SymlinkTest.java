@@ -9,8 +9,9 @@ import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.archiver.tar.TarUnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
-import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,38 +24,32 @@ public class SymlinkTest
 {
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testSymlinkDir()
         throws IOException
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            File dummyContent = getTestFile( "src/test/resources/symlinks/src/symDir" );
-            assertTrue( dummyContent.isDirectory() );
-            assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
-        }
+        File dummyContent = getTestFile( "src/test/resources/symlinks/src/symDir" );
+        assertTrue( dummyContent.isDirectory() );
+        assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testSymlinkDirWithSlash()
         throws IOException
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            File dummyContent = getTestFile( "src/test/resources/symlinks/src/symDir/" );
-            assertTrue( dummyContent.isDirectory() );
-            assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
-        }
+        File dummyContent = getTestFile( "src/test/resources/symlinks/src/symDir/" );
+        assertTrue( dummyContent.isDirectory() );
+        assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testSymlinkFile()
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            File dummyContent = getTestFile( "src/test/resources/symlinks/src/symR" );
-            assertFalse( dummyContent.isDirectory() );
-            assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
-        }
+        File dummyContent = getTestFile( "src/test/resources/symlinks/src/symR" );
+        assertFalse( dummyContent.isDirectory() );
+        assertTrue( Files.isSymbolicLink( dummyContent.toPath() ) );
     }
 
     @Test
@@ -99,28 +94,26 @@ public class SymlinkTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testSymlinkDirArchiver()
         throws Exception
     {
-        if ( !Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            DirectoryArchiver archiver = (DirectoryArchiver) lookup( Archiver.class, "dir" );
+        DirectoryArchiver archiver = (DirectoryArchiver) lookup( Archiver.class, "dir" );
 
-            File dummyContent = getTestFile( "src/test/resources/symlinks/src" );
-            archiver.addDirectory( dummyContent );
-            final File archiveFile = new File( "target/output/dirarchiver-symlink" );
-            archiveFile.mkdirs();
-            archiver.setDestFile( archiveFile );
-            archiver.addSymlink( "target/output/dirarchiver-symlink/aNewDir/symlink", "." );
+        File dummyContent = getTestFile( "src/test/resources/symlinks/src" );
+        archiver.addDirectory( dummyContent );
+        final File archiveFile = new File( "target/output/dirarchiver-symlink" );
+        archiveFile.mkdirs();
+        archiver.setDestFile( archiveFile );
+        archiver.addSymlink( "target/output/dirarchiver-symlink/aNewDir/symlink", "." );
 
-            archiver.createArchive();
+        archiver.createArchive();
 
-            File symbolicLink = new File( "target/output/dirarchiver-symlink/symR" );
-            assertTrue( Files.isSymbolicLink( symbolicLink.toPath() ) );
+        File symbolicLink = new File( "target/output/dirarchiver-symlink/symR" );
+        assertTrue( Files.isSymbolicLink( symbolicLink.toPath() ) );
 
-            symbolicLink = new File( "target/output/dirarchiver-symlink/aDirWithALink/backOutsideToFileX" );
-            assertTrue( Files.isSymbolicLink( symbolicLink.toPath() ) );
-        }
+        symbolicLink = new File( "target/output/dirarchiver-symlink/aDirWithALink/backOutsideToFileX" );
+        assertTrue( Files.isSymbolicLink( symbolicLink.toPath() ) );
     }
 
 }

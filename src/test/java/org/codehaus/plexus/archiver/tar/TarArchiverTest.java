@@ -57,8 +57,9 @@ import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUti
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 /**
  * @author Emmanuel Venisse
@@ -68,6 +69,7 @@ public class TarArchiverTest
 {
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testCreateArchiveWithDetectedModes()
         throws Exception
     {
@@ -90,15 +92,6 @@ public class TarArchiverTest
         int exeMode = 0777;
         int confMode = 0600;
         int logMode = 0640;
-
-        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            StackTraceElement e = new Throwable().getStackTrace()[0];
-            System.out.println( "Cannot execute test: " + e.getMethodName() + " on "
-                                    + System.getProperty( "os.name" ) );
-
-            return;
-        }
 
         File tmpDir = null;
         try

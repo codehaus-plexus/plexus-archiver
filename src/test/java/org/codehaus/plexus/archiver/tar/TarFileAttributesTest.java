@@ -15,10 +15,11 @@ import org.codehaus.plexus.components.io.attributes.AttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -80,15 +81,11 @@ public class TarFileAttributesTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testUseAttributesFromTarArchiveInputInTarArchiverOutput()
         throws Exception
     {
         printTestHeader();
-        if ( checkForWindows() )
-        {
-            System.out.println( "This test cannot run on windows. Aborting." );
-            return;
-        }
 
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
@@ -146,15 +143,11 @@ public class TarFileAttributesTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testUseDetectedFileAttributes()
         throws Exception
     {
         printTestHeader();
-        if ( checkForWindows() )
-        {
-            System.out.println( "This test cannot run on windows. Aborting." );
-            return;
-        }
 
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
@@ -199,22 +192,12 @@ public class TarFileAttributesTest
 
     }
 
-    private boolean checkForWindows()
-    {
-        return Os.isFamily( Os.FAMILY_WINDOWS );
-    }
-
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testOverrideDetectedFileAttributes()
         throws Exception
     {
         printTestHeader();
-
-        if ( checkForWindows() )
-        {
-            System.out.println( "This test cannot run on windows. Aborting." );
-            return;
-        }
 
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
@@ -264,16 +247,11 @@ public class TarFileAttributesTest
     }
 
     @Test
+    @DisabledOnOs( OS.WINDOWS )
     public void testOverrideDetectedFileAttributesUsingFileMode()
         throws Exception
     {
         printTestHeader();
-        if ( checkForWindows() )
-        {
-            System.out.println( "This test cannot run on windows. Aborting." );
-            return;
-        }
-
         File tempFile = File.createTempFile( "tar-file-attributes.", ".tmp" );
         toDelete.add( tempFile );
 
