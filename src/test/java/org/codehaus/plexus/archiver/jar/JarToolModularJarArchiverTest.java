@@ -19,8 +19,6 @@ package org.codehaus.plexus.archiver.jar;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assumptions.assumeFalse;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.io.File;
 import java.io.InputStream;
@@ -37,6 +35,8 @@ import java.util.zip.ZipFile;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 public class JarToolModularJarArchiverTest
     extends BaseJarArchiverTest
@@ -63,11 +63,10 @@ public class JarToolModularJarArchiverTest
      * Verify that the main class and the version are properly set for a modular JAR file.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testModularJarWithMainClassAndVersion()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         archiver.setModuleVersion( "1.0.0" );
         archiver.setModuleMainClass( "com.example.app.Main" );
@@ -85,11 +84,10 @@ public class JarToolModularJarArchiverTest
      * value is overridden
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testModularJarWithManifestAndModuleMainClass()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(
@@ -111,11 +109,10 @@ public class JarToolModularJarArchiverTest
      * the manifest main class attribute (if present) is used instead
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testModularJarWithManifestMainClassAttribute()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(
@@ -134,11 +131,10 @@ public class JarToolModularJarArchiverTest
      * Verify that a modular JAR file is created even when no additional attributes are set.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testModularJar()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         archiver.createArchive();
 
@@ -151,11 +147,10 @@ public class JarToolModularJarArchiverTest
      * Verify that exception is thrown when the modular JAR is not valid.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testInvalidModularJar()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         // Not a valid version
         archiver.setModuleVersion( "notAValidVersion" );
@@ -168,11 +163,10 @@ public class JarToolModularJarArchiverTest
      * if the Java version does not support modules.
      */
     @Test
+    @DisabledIf( "modulesAreSupported" )
     public void testModularJarPriorJava9()
         throws Exception
     {
-        assumeFalse( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         archiver.setModuleVersion( "1.0.0" );
         archiver.setModuleMainClass( "com.example.app.Main" );
@@ -190,11 +184,10 @@ public class JarToolModularJarArchiverTest
      * Verify that the compression flag is respected.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testNoCompression()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         archiver.setCompress( false );
 
@@ -219,11 +212,10 @@ public class JarToolModularJarArchiverTest
      * is kept after it is updated to modular JAR file.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testCompression()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         archiver.addDirectory( new File( "src/test/resources/java-module-descriptor" ) );
         archiver.addFile( new File( "src/test/jars/test.jar" ), "META-INF/lib/test.jar" );
         archiver.setRecompressAddedZips( false );
@@ -251,11 +243,10 @@ public class JarToolModularJarArchiverTest
      * Verify that a module descriptor in the versioned area is handled correctly.
      */
     @Test
+    @EnabledIf( "modulesAreSupported" )
     public void testModularMultiReleaseJar()
         throws Exception
     {
-        assumeTrue( modulesAreSupported() );
-
         // Add two module-info.class, one on the root and one on the multi-release dir.
         archiver.addFile( new File( "src/test/resources/java-module-descriptor/module-info.class" ),
                           "META-INF/versions/9/module-info.class" );
