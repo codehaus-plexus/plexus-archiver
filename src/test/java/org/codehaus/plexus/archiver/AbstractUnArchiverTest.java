@@ -91,11 +91,14 @@ public class AbstractUnArchiverTest
         Date entryDate = new Date();
 
         // when & then
+        // always extract the file if it does not exist
+        assertTrue( abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        abstractUnArchiver.setOverwrite( false );
         assertTrue( abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
-    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive( @TempDir File temporaryFolder ) throws IOException
+    public void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive( @TempDir File temporaryFolder ) throws IOException
     {
         // given
         File file = new File( temporaryFolder, "whatever.txt" );
@@ -105,11 +108,14 @@ public class AbstractUnArchiverTest
         Date entryDate = new Date( 0 );
 
         // when & then
+        // if the file is newer than archive entry, extract only if overwrite is true (default)
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        abstractUnArchiver.setOverwrite( false );
         assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
-    public void shouldNotExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing( @TempDir File temporaryFolder )
+    public void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing( @TempDir File temporaryFolder )
         throws IOException
     {
         // given
@@ -120,7 +126,7 @@ public class AbstractUnArchiverTest
         Date entryDate = new Date( 0 );
 
         // when & then
-        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
         assertTrue( this.abstractUnArchiver.casingMessageEmitted.get() > 0 );
     }
 
@@ -135,12 +141,10 @@ public class AbstractUnArchiverTest
         Date entryDate = new Date( System.currentTimeMillis() );
 
         // when & then
-        this.abstractUnArchiver.setOverwrite( true );
+        // always extract the file if the archive entry is newer than the file on disk
         assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
-
-        // when & then
         this.abstractUnArchiver.setOverwrite( false );
-        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
     }
 
     @Test
@@ -158,7 +162,7 @@ public class AbstractUnArchiverTest
         this.abstractUnArchiver.setOverwrite( true );
         assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
         this.abstractUnArchiver.setOverwrite( false );
-        assertFalse( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
+        assertTrue( this.abstractUnArchiver.shouldExtractEntry( temporaryFolder, file, entryname, entryDate ) );
         assertTrue( this.abstractUnArchiver.casingMessageEmitted.get() > 0 );
     }
 

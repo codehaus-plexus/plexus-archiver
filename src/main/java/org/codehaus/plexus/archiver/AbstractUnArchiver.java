@@ -401,16 +401,18 @@ public abstract class AbstractUnArchiver
     protected boolean shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) throws IOException
     {
         //     entryname  | entrydate | filename   | filedate | behavior
-        // (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite
-        // (2) readme.txt | 2020      | readme.txt | 1970     | only overwrite when isOverWrite()
-        // (3) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + never overwrite
+        // (1) readme.txt | 1970      | -          | -        | always extract if the file does not exist
+        // (2) readme.txt | 1970      | readme.txt | 2020     | do not overwrite unless isOverwrite() is true
+        // (3) readme.txt | 2020      | readme.txt | 1970     | always override when the file is older than the archive entry
+        // (4) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + do not overwrite unless isOverwrite()
         //                                                      case-sensitive filesystem: extract without warning
-        // (4) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + only overwrite when isOverWrite()
+        // (5) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + overwrite because entry is newer
         //                                                      case-sensitive filesystem: extract without warning
 
         // The canonical file name follows the name of the archive entry, but takes into account the case-
         // sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for
-        // scenario (3) and (4).
+        // scenario (4) and (5).
+        // No matter the case sensitivity of the file system, file.exists() returns false when there is no file with the same name (1).
         if ( !targetFileName.exists() )
         {
             return true;
@@ -423,33 +425,20 @@ public abstract class AbstractUnArchiver
                 targetDirectory.getCanonicalPath() + File.separatorChar,
                 "" )
                 + suffix;
-        boolean fileOnDiskIsNewerThanEntry = targetFileName.lastModified() >= entryDate.getTime();
+        boolean fileOnDiskIsOlderThanEntry = targetFileName.lastModified() < entryDate.getTime();
         boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
 
-        String casingMessage = String.format( Locale.ENGLISH, "Archive entry '%s' and existing file '%s' names differ only by case."
-                + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
-
-        // (1)
-        if ( fileOnDiskIsNewerThanEntry )
-        {
-            // (3)
-            if ( differentCasing )
-            {
-                getLogger().warn( casingMessage );
-                casingMessageEmitted.incrementAndGet();
-            }
-            return false;
-        }
-
-        // (4)
+        // Warn for case (4) and (5) if the file system is case-insensitive
         if ( differentCasing )
         {
+            String casingMessage = String.format( Locale.ENGLISH, "Archive entry '%s' and existing file '%s' names differ only by case."
+                + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
             getLogger().warn( casingMessage );
             casingMessageEmitted.incrementAndGet();
         }
 
-        // (2)
-        return isOverwrite();
+        // Override the existing file if isOverwrite() is true or if the file on disk is older than the one in the archive
+        return isOverwrite() || fileOnDiskIsOlderThanEntry;
     }
 
 }
