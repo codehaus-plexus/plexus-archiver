@@ -24,6 +24,7 @@ Plexus Archiver
 |                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarArchiver.html}<<<jar>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarToolModularJarArchiver.html}<<<mjar>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/snappy/SnappyArchiver.html}<<<snappy>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/zstandard/ZstdArchiver.html}<<<zst>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar/TarArchiver.html}<<<tar>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/war/WarArchiver.html}<<<war>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}}.
@@ -34,11 +35,13 @@ Plexus Archiver
 |                  | {{{./xref/org/codehaus/plexus/archiver/xz.XZUnArchiver.html}<<<xz>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/gzip.GZipUnArchiver.html}<<<gzip>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/snappy.SnappyUnArchiver.html}<<<snappy>>>}},
+|                  | {{{./xref/org/codehaus/plexus/archiver/zstandard.ZstdUnArchiver.html}<<<zst>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarUnArchiver.html}<<<tar>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/zip.ZipUnArchiver.html}<<<zip>>>}}
 |                  | (also available as <<<jar>>>, <<<war>>>, <<<ear>>>, <<<swc>>>, <<<nar>>>, <<<esb>>>, <<<sar>>>, <<<car>>>, <<<par>>>, <<<rar>>>),
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarGZipUnArchiver.html}<<<tgz>>>}} or <<<tar.gz>>>,
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarBZip2UnArchiver.html}<<<tbz2>>>}} or <<<tar.bz2>>>,
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarXZUnArchiver.html}<<<txz>>>}} or <<<tar.xz>>>,
+|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarZstdUnArchiver.html}<<<tar.zst>>>}},
 |                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarSnappyUnArchiver.html}<<<tar.snappy>>>}}.
 *------------------+-----------------+

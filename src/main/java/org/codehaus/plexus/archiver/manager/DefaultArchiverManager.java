@@ -110,6 +110,7 @@ public class DefaultArchiverManager
         if ( "gz".equals( archiveExt )
                  || "bz2".equals( archiveExt )
                  || "xz".equals( archiveExt )
+                 || "zst".equals( archiveExt )
                  || "snappy".equals( archiveExt ) )
         {
             String[] tokens = StringUtils.split( path, "." );
