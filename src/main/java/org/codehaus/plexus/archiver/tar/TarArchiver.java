@@ -31,6 +31,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
+import org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -484,7 +485,8 @@ public class TarArchiver
         gzip,
         bzip2,
         snappy,
-        xz
+        xz,
+        zstd
 
     }
 
@@ -506,6 +508,10 @@ public class TarArchiver
         else if ( TarCompressionMethod.xz.equals( tarCompressionMethod ) )
         {
             return new XZCompressorOutputStream( bufferedOutputStream( ostream ) );
+        }
+        else if ( TarCompressionMethod.zstd.equals( tarCompressionMethod ) )
+        {
+            return new ZstdCompressorOutputStream( bufferedOutputStream( ostream ) );
         }
 
         return ostream;

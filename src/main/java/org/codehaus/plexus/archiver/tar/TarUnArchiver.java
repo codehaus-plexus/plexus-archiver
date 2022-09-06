@@ -30,6 +30,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
+import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
@@ -159,6 +160,10 @@ public class TarUnArchiver
         {
             return new XZCompressorInputStream( istream );
         }
+        else if ( compression == UntarCompressionMethod.ZSTD )
+        {
+            return new ZstdCompressorInputStream( istream );
+        }
         return istream;
     }
 
@@ -172,7 +177,8 @@ public class TarUnArchiver
         GZIP( "gzip" ),
         BZIP2( "bzip2" ),
         SNAPPY( "snappy" ),
-        XZ( "xz" );
+        XZ( "xz" ),
+        ZSTD( "zstd" );
 
         final String value;
 
