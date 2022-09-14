@@ -30,47 +30,48 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertNull;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * from org.apache.ant.tools.tar.TarRoundTripTest v1.6</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TarRoundTripTest" href="../../../../../org/codehaus/plexus/archiver/tar/TarRoundTripTest.html#TarRoundTripTest">TarRoundTripTest</a>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  {
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String LONG_NAME =
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <span class="jxr_string">"this/path/name/contains/more/than/one/hundred/characters/in/order/"</span>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>              + <span class="jxr_string">"to/test/the/GNU/long/file/name/capability/round/tripped"</span>;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">     * test round-tripping long (GNU) entries</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      @Test
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testLongRoundTripping()
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">throws</strong> IOException
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>          TarArchiveEntry original = <strong class="jxr_keyword">new</strong> TarArchiveEntry( LONG_NAME );
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>          assertEquals( <span class="jxr_string">"over 100 chars"</span>, <strong class="jxr_keyword">true</strong>, LONG_NAME.length() &gt; 100 );
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>          assertEquals( <span class="jxr_string">"original name"</span>, LONG_NAME, original.getName() );
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          ByteArrayOutputStream buff = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          TarArchiveOutputStream tos = <strong class="jxr_keyword">new</strong> TarArchiveOutputStream( buff );
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          tos.setLongFileMode( TarArchiveOutputStream.LONGFILE_GNU );
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>          tos.putArchiveEntry( original );
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          tos.closeArchiveEntry();
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          tos.close();
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          TarArchiveInputStream tis = <strong class="jxr_keyword">new</strong> TarArchiveInputStream( <strong class="jxr_keyword">new</strong> ByteArrayInputStream( buff.toByteArray() ) );
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>          TarArchiveEntry tripped = tis.getNextTarEntry();
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          assertEquals( <span class="jxr_string">"round-tripped name"</span>, LONG_NAME, tripped.getName() );
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>          assertNull( <span class="jxr_string">"no more entries"</span>, tis.getNextEntry() );
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>          tis.close();
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  }
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertNull;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertTrue;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * from org.apache.ant.tools.tar.TarRoundTripTest v1.6</em>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TarRoundTripTest" href="../../../../../org/codehaus/plexus/archiver/tar/TarRoundTripTest.html#TarRoundTripTest">TarRoundTripTest</a>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String LONG_NAME =
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <span class="jxr_string">"this/path/name/contains/more/than/one/hundred/characters/in/order/"</span>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>              + <span class="jxr_string">"to/test/the/GNU/long/file/name/capability/round/tripped"</span>;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">     * test round-tripping long (GNU) entries</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      @Test
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testLongRoundTripping()
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">throws</strong> IOException
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          TarArchiveEntry original = <strong class="jxr_keyword">new</strong> TarArchiveEntry( LONG_NAME );
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          assertTrue( LONG_NAME.length() &gt; 100, <span class="jxr_string">"over 100 chars"</span> );
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          assertEquals( LONG_NAME, original.getName(), <span class="jxr_string">"original name"</span> );
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          ByteArrayOutputStream buff = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          TarArchiveOutputStream tos = <strong class="jxr_keyword">new</strong> TarArchiveOutputStream( buff );
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          tos.setLongFileMode( TarArchiveOutputStream.LONGFILE_GNU );
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          tos.putArchiveEntry( original );
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          tos.closeArchiveEntry();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          tos.close();
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          TarArchiveInputStream tis = <strong class="jxr_keyword">new</strong> TarArchiveInputStream( <strong class="jxr_keyword">new</strong> ByteArrayInputStream( buff.toByteArray() ) );
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          TarArchiveEntry tripped = tis.getNextTarEntry();
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          assertEquals( LONG_NAME, tripped.getName(), <span class="jxr_string">"round-tripped name"</span> );
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          assertNull( tis.getNextEntry(), <span class="jxr_string">"no more entries"</span> );
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          tis.close();
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>      }
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2022 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>

@@ -409,58 +409,47 @@
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) <strong class="jxr_keyword">throws</strong> IOException
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>     {
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>         <em class="jxr_comment">//     entryname  | entrydate | filename   | filedate | behavior</em>
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>         <em class="jxr_comment">// (1) readme.txt | 1970      | readme.txt | 2020     | never overwrite</em>
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <em class="jxr_comment">// (2) readme.txt | 2020      | readme.txt | 1970     | only overwrite when isOverWrite()</em>
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <em class="jxr_comment">// (3) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + never overwrite</em>
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         <em class="jxr_comment">//                                                      case-sensitive filesystem: extract without warning</em>
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         <em class="jxr_comment">// (4) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + only overwrite when isOverWrite()</em>
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <em class="jxr_comment">//                                                      case-sensitive filesystem: extract without warning</em>
-<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <em class="jxr_comment">// The canonical file name follows the name of the archive entry, but takes into account the case-</em>
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <em class="jxr_comment">// sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         <em class="jxr_comment">// scenario (3) and (4).</em>
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>         <strong class="jxr_keyword">if</strong> ( !targetFileName.exists() )
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         {
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         }
-<a class="jxr_linenumber" name="L418" href="#L418">418</a> 
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">boolean</strong> entryIsDirectory = entryName.endsWith( <span class="jxr_string">"/"</span> ); <em class="jxr_comment">// directory entries always end with '/', regardless of the OS.</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>         String canonicalDestPath = targetFileName.getCanonicalPath();
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>         String suffix = (entryIsDirectory ? <span class="jxr_string">"/"</span> : <span class="jxr_string">""</span>);
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         String relativeCanonicalDestPath = canonicalDestPath.replace(
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 targetDirectory.getCanonicalPath() + File.separatorChar,
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 <span class="jxr_string">""</span> )
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 + suffix;
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">boolean</strong> fileOnDiskIsNewerThanEntry = targetFileName.lastModified() &gt;= entryDate.getTime();
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">boolean</strong> differentCasing = !entryName.equals( relativeCanonicalDestPath );
-<a class="jxr_linenumber" name="L428" href="#L428">428</a> 
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>         String casingMessage = String.format( Locale.ENGLISH, <span class="jxr_string">"Archive entry '%s' and existing file '%s' names differ only by case."</span>
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>                 + <span class="jxr_string">" This may lead to an unexpected outcome on case-insensitive filesystems."</span>, entryName, canonicalDestPath );
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         <em class="jxr_comment">// (1)</em>
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <strong class="jxr_keyword">if</strong> ( fileOnDiskIsNewerThanEntry )
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         {
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>             <em class="jxr_comment">// (3)</em>
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>             <strong class="jxr_keyword">if</strong> ( differentCasing )
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>             {
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>                 getLogger().warn( casingMessage );
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>                 casingMessageEmitted.incrementAndGet();
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>             }
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         }
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>         <em class="jxr_comment">// (1) readme.txt | 1970      | -          | -        | always extract if the file does not exist</em>
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <em class="jxr_comment">// (2) readme.txt | 1970      | readme.txt | 2020     | do not overwrite unless isOverwrite() is true</em>
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         <em class="jxr_comment">// (3) readme.txt | 2020      | readme.txt | 1970     | always override when the file is older than the archive entry</em>
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         <em class="jxr_comment">// (4) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + do not overwrite unless isOverwrite()</em>
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         <em class="jxr_comment">//                                                      case-sensitive filesystem: extract without warning</em>
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         <em class="jxr_comment">// (5) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + overwrite because entry is newer</em>
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         <em class="jxr_comment">//                                                      case-sensitive filesystem: extract without warning</em>
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <em class="jxr_comment">// The canonical file name follows the name of the archive entry, but takes into account the case-</em>
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>         <em class="jxr_comment">// sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for</em>
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         <em class="jxr_comment">// scenario (4) and (5).</em>
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>         <em class="jxr_comment">// No matter the case sensitivity of the file system, file.exists() returns false when there is no file with the same name (1).</em>
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         <strong class="jxr_keyword">if</strong> ( !targetFileName.exists() )
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         {
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a> 
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         <strong class="jxr_keyword">boolean</strong> entryIsDirectory = entryName.endsWith( <span class="jxr_string">"/"</span> ); <em class="jxr_comment">// directory entries always end with '/', regardless of the OS.</em>
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         String canonicalDestPath = targetFileName.getCanonicalPath();
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>         String suffix = (entryIsDirectory ? <span class="jxr_string">"/"</span> : <span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>         String relativeCanonicalDestPath = canonicalDestPath.replace(
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 targetDirectory.getCanonicalPath() + File.separatorChar,
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>                 <span class="jxr_string">""</span> )
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>                 + suffix;
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>         <strong class="jxr_keyword">boolean</strong> fileOnDiskIsOlderThanEntry = targetFileName.lastModified() &lt; entryDate.getTime();
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <strong class="jxr_keyword">boolean</strong> differentCasing = !entryName.equals( relativeCanonicalDestPath );
+<a class="jxr_linenumber" name="L430" href="#L430">430</a> 
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         <em class="jxr_comment">// Warn for case (4) and (5) if the file system is case-insensitive</em>
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>         <strong class="jxr_keyword">if</strong> ( differentCasing )
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>         {
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>             String casingMessage = String.format( Locale.ENGLISH, <span class="jxr_string">"Archive entry '%s' and existing file '%s' names differ only by case."</span>
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>                 + <span class="jxr_string">" This may lead to an unexpected outcome on case-insensitive filesystems."</span>, entryName, canonicalDestPath );
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>             getLogger().warn( casingMessage );
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>             casingMessageEmitted.incrementAndGet();
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         }
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>         <em class="jxr_comment">// Override the existing file if isOverwrite() is true or if the file on disk is older than the one in the archive</em>
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <strong class="jxr_keyword">return</strong> isOverwrite() || fileOnDiskIsOlderThanEntry;
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     }
 <a class="jxr_linenumber" name="L443" href="#L443">443</a> 
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <em class="jxr_comment">// (4)</em>
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">if</strong> ( differentCasing )
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>         {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>             getLogger().warn( casingMessage );
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             casingMessageEmitted.incrementAndGet();
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         }
-<a class="jxr_linenumber" name="L450" href="#L450">450</a> 
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <em class="jxr_comment">// (2)</em>
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         <strong class="jxr_keyword">return</strong> isOverwrite();
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>     }
-<a class="jxr_linenumber" name="L454" href="#L454">454</a> 
-<a class="jxr_linenumber" name="L455" href="#L455">455</a> }
+<a class="jxr_linenumber" name="L444" href="#L444">444</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2022 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>

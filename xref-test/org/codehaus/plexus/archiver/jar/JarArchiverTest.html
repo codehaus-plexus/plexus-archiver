@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../testapidocs/org/codehaus/plexus/archiver/jar/JarArchiverTest.html">View Javadoc</a></div><pre>
 <a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> org.codehaus.plexus.archiver.jar;
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.io.IOException;
@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> java.util.zip.ZipFile;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ArchiverException;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="JarArchiverTest" href="../../../../../org/codehaus/plexus/archiver/jar/JarArchiverTest.html#JarArchiverTest">JarArchiverTest</a>
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">extends</strong> <a name="BaseJarArchiverTest" href="../../../../../org/codehaus/plexus/archiver/jar/BaseJarArchiverTest.html#BaseJarArchiverTest">BaseJarArchiverTest</a>
@@ -145,7 +145,7 @@
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>                 {
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>                     ZipEntry entry = entries.nextElement();
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>                     <strong class="jxr_keyword">long</strong> time = entry.getTime();
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>                     assertEquals( <span class="jxr_string">"last modification time does not match"</span>, expectedTime, time );
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>                     assertEquals( expectedTime, time, <span class="jxr_string">"last modification time does not match"</span> );
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>                 }
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>             }
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         }
