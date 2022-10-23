@@ -488,7 +488,6 @@ public interface Archiver
      * <ul>
      * <li>reproducible archive entries order,</li>
      * <li>defined entries timestamp</li>
-     * <li>and reproducible entries Unix mode.</li>
      * </ul>
      *
      * @param lastModifiedTime The last modification time of the entries

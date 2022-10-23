@@ -1283,12 +1283,7 @@ public abstract class AbstractArchiver
         // 2. sort filenames in each directory when scanning filesystem
         setFilenameComparator( String::compareTo );
 
-        // 3. ignore file/directory mode from filesystem, since they may vary based on local user umask
-        // notice: this overrides execute bit on Unix (that is already ignored on Windows)
-        setFileMode( Archiver.DEFAULT_FILE_MODE );
-        setDirectoryMode( Archiver.DEFAULT_DIR_MODE );
-
-        // 4. ignore uid/gid from filesystem (for tar)
+        // 3. ignore uid/gid from filesystem (for tar)
         setOverrideUid( 0 );
         setOverrideUserName( "root" ); // is it possible to avoid this, like "tar --numeric-owner"?
         setOverrideGid( 0 );
