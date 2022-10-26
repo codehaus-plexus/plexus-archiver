@@ -34,7 +34,7 @@
     <javaVersion>8</javaVersion>
     <sisuVersion>0.3.5</sisuVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <junitVersion>5.9.0</junitVersion>
+    <junitVersion>5.9.1</junitVersion>
     <project.build.outputTimestamp>2022-09-14T19:23:25Z</project.build.outputTimestamp>
   </properties>
 
