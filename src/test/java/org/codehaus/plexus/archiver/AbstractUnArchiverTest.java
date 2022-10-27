@@ -205,10 +205,10 @@ public class AbstractUnArchiverTest
     public void shouldExtractWhenCasingDifferOnlyInEntryNamePath() throws IOException
     {
         // given
-        File file = new File( temporaryFolder.getRoot() + File.separator + "folder", "whatever.txt" ); // does not create the file!
+        File file = new File( temporaryFolder.getRoot() + File.separator + "directory", "whatever.txt" ); // does not create the file!
         file.mkdirs();
         file.createNewFile();
-        String entryname = "folder/whatever.txt";
+        String entryname = "directory/whatever.txt";
         Date entryDate = new Date(System.currentTimeMillis()+5000);
 
         // when & then
