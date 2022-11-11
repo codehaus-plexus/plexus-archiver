@@ -1291,35 +1291,30 @@
 <a class="jxr_linenumber" name="L1283" href="#L1283">1283</a>         <em class="jxr_comment">// 2. sort filenames in each directory when scanning filesystem</em>
 <a class="jxr_linenumber" name="L1284" href="#L1284">1284</a>         setFilenameComparator( String::compareTo );
 <a class="jxr_linenumber" name="L1285" href="#L1285">1285</a> 
-<a class="jxr_linenumber" name="L1286" href="#L1286">1286</a>         <em class="jxr_comment">// 3. ignore file/directory mode from filesystem, since they may vary based on local user umask</em>
-<a class="jxr_linenumber" name="L1287" href="#L1287">1287</a>         <em class="jxr_comment">// notice: this overrides execute bit on Unix (that is already ignored on Windows)</em>
-<a class="jxr_linenumber" name="L1288" href="#L1288">1288</a>         setFileMode( Archiver.DEFAULT_FILE_MODE );
-<a class="jxr_linenumber" name="L1289" href="#L1289">1289</a>         setDirectoryMode( Archiver.DEFAULT_DIR_MODE );
-<a class="jxr_linenumber" name="L1290" href="#L1290">1290</a> 
-<a class="jxr_linenumber" name="L1291" href="#L1291">1291</a>         <em class="jxr_comment">// 4. ignore uid/gid from filesystem (for tar)</em>
-<a class="jxr_linenumber" name="L1292" href="#L1292">1292</a>         setOverrideUid( 0 );
-<a class="jxr_linenumber" name="L1293" href="#L1293">1293</a>         setOverrideUserName( <span class="jxr_string">"root"</span> ); <em class="jxr_comment">// is it possible to avoid this, like "tar --numeric-owner"?</em>
-<a class="jxr_linenumber" name="L1294" href="#L1294">1294</a>         setOverrideGid( 0 );
-<a class="jxr_linenumber" name="L1295" href="#L1295">1295</a>         setOverrideGroupName( <span class="jxr_string">"root"</span> );
-<a class="jxr_linenumber" name="L1296" href="#L1296">1296</a>     }
-<a class="jxr_linenumber" name="L1297" href="#L1297">1297</a> 
-<a class="jxr_linenumber" name="L1298" href="#L1298">1298</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L1299" href="#L1299">1299</a> <em class="jxr_javadoccomment">     * Normalize last modified time value to get reproducible archive entries, based on</em>
-<a class="jxr_linenumber" name="L1300" href="#L1300">1300</a> <em class="jxr_javadoccomment">     * archive binary format.</em>
-<a class="jxr_linenumber" name="L1301" href="#L1301">1301</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1302" href="#L1302">1302</a> <em class="jxr_javadoccomment">     * &lt;p&gt;tar uses UTC timestamp, but zip uses local time then requires</em>
-<a class="jxr_linenumber" name="L1303" href="#L1303">1303</a> <em class="jxr_javadoccomment">     * tweaks to make the value reproducible whatever the current timezone is.</em>
-<a class="jxr_linenumber" name="L1304" href="#L1304">1304</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1305" href="#L1305">1305</a> <em class="jxr_javadoccomment">     * @param lastModifiedTime The last modification time</em>
-<a class="jxr_linenumber" name="L1306" href="#L1306">1306</a> <em class="jxr_javadoccomment">     * @return The normalized last modification time</em>
-<a class="jxr_linenumber" name="L1307" href="#L1307">1307</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1308" href="#L1308">1308</a> <em class="jxr_javadoccomment">     * @see #configureReproducibleBuild(FileTime)</em>
-<a class="jxr_linenumber" name="L1309" href="#L1309">1309</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1310" href="#L1310">1310</a>     <strong class="jxr_keyword">protected</strong> FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
-<a class="jxr_linenumber" name="L1311" href="#L1311">1311</a>     {
-<a class="jxr_linenumber" name="L1312" href="#L1312">1312</a>         <strong class="jxr_keyword">return</strong> lastModifiedTime;
-<a class="jxr_linenumber" name="L1313" href="#L1313">1313</a>     }
-<a class="jxr_linenumber" name="L1314" href="#L1314">1314</a> }
+<a class="jxr_linenumber" name="L1286" href="#L1286">1286</a>         <em class="jxr_comment">// 3. ignore uid/gid from filesystem (for tar)</em>
+<a class="jxr_linenumber" name="L1287" href="#L1287">1287</a>         setOverrideUid( 0 );
+<a class="jxr_linenumber" name="L1288" href="#L1288">1288</a>         setOverrideUserName( <span class="jxr_string">"root"</span> ); <em class="jxr_comment">// is it possible to avoid this, like "tar --numeric-owner"?</em>
+<a class="jxr_linenumber" name="L1289" href="#L1289">1289</a>         setOverrideGid( 0 );
+<a class="jxr_linenumber" name="L1290" href="#L1290">1290</a>         setOverrideGroupName( <span class="jxr_string">"root"</span> );
+<a class="jxr_linenumber" name="L1291" href="#L1291">1291</a>     }
+<a class="jxr_linenumber" name="L1292" href="#L1292">1292</a> 
+<a class="jxr_linenumber" name="L1293" href="#L1293">1293</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L1294" href="#L1294">1294</a> <em class="jxr_javadoccomment">     * Normalize last modified time value to get reproducible archive entries, based on</em>
+<a class="jxr_linenumber" name="L1295" href="#L1295">1295</a> <em class="jxr_javadoccomment">     * archive binary format.</em>
+<a class="jxr_linenumber" name="L1296" href="#L1296">1296</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1297" href="#L1297">1297</a> <em class="jxr_javadoccomment">     * &lt;p&gt;tar uses UTC timestamp, but zip uses local time then requires</em>
+<a class="jxr_linenumber" name="L1298" href="#L1298">1298</a> <em class="jxr_javadoccomment">     * tweaks to make the value reproducible whatever the current timezone is.</em>
+<a class="jxr_linenumber" name="L1299" href="#L1299">1299</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1300" href="#L1300">1300</a> <em class="jxr_javadoccomment">     * @param lastModifiedTime The last modification time</em>
+<a class="jxr_linenumber" name="L1301" href="#L1301">1301</a> <em class="jxr_javadoccomment">     * @return The normalized last modification time</em>
+<a class="jxr_linenumber" name="L1302" href="#L1302">1302</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1303" href="#L1303">1303</a> <em class="jxr_javadoccomment">     * @see #configureReproducibleBuild(FileTime)</em>
+<a class="jxr_linenumber" name="L1304" href="#L1304">1304</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L1305" href="#L1305">1305</a>     <strong class="jxr_keyword">protected</strong> FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
+<a class="jxr_linenumber" name="L1306" href="#L1306">1306</a>     {
+<a class="jxr_linenumber" name="L1307" href="#L1307">1307</a>         <strong class="jxr_keyword">return</strong> lastModifiedTime;
+<a class="jxr_linenumber" name="L1308" href="#L1308">1308</a>     }
+<a class="jxr_linenumber" name="L1309" href="#L1309">1309</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2022 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
