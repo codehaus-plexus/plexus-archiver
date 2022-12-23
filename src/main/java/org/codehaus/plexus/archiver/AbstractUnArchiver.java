@@ -426,7 +426,7 @@ public abstract class AbstractUnArchiver
                 "" )
                 + suffix;
         boolean fileOnDiskIsOlderThanEntry = targetFileName.lastModified() < entryDate.getTime();
-        boolean differentCasing = !entryName.equals( relativeCanonicalDestPath );
+        boolean differentCasing = !normalizedFileSeparator( entryName ).equals( normalizedFileSeparator( relativeCanonicalDestPath ) );
 
         // Warn for case (4) and (5) if the file system is case-insensitive
         if ( differentCasing )
@@ -440,5 +440,8 @@ public abstract class AbstractUnArchiver
         // Override the existing file if isOverwrite() is true or if the file on disk is older than the one in the archive
         return isOverwrite() || fileOnDiskIsOlderThanEntry;
     }
-
+    
+    private String normalizedFileSeparator(String pathOrEntry) {
+    	return pathOrEntry.replace("/", File.separator);
+    }
 }
