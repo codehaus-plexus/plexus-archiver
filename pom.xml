@@ -169,7 +169,7 @@
         this mean the symlink is copied as a symlink and not anymore as a new file
         https://issues.apache.org/jira/browse/MRESOURCES-237
         -->
-        <version>2.7</version>
+        <version>3.3.0</version>
       </plugin>
       <plugin>
         <groupId>org.eclipse.sisu</groupId>
