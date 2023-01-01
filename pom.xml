@@ -10,14 +10,14 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.6.1-SNAPSHOT</version>
+  <version>4.6.1</version>
   <name>Plexus Archiver Component</name>
 
   <scm>
     <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
     <url>http://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
-    <tag>master</tag>
+    <tag>plexus-archiver-4.6.1</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -35,7 +35,7 @@
     <sisuVersion>0.3.5</sisuVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <junitVersion>5.9.1</junitVersion>
-    <project.build.outputTimestamp>2022-11-11T11:11:33Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-01-01T12:40:08Z</project.build.outputTimestamp>
   </properties>
 
   <contributors>
