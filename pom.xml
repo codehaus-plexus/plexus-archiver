@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.6.1</version>
+  <version>4.6.2-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
 
   <scm>
@@ -35,7 +35,7 @@
     <sisuVersion>0.3.5</sisuVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <junitVersion>5.9.1</junitVersion>
-    <project.build.outputTimestamp>2023-01-01T12:40:08Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-01-01T12:50:26Z</project.build.outputTimestamp>
   </properties>
 
   <contributors>
