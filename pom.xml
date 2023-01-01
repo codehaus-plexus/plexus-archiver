@@ -14,8 +14,8 @@
   <name>Plexus Archiver Component</name>
 
   <scm>
-    <connection>scm:git:git@github.com:codehaus-plexus/plexus-archiver.git</connection>
-    <developerConnection>scm:git:git@github.com:codehaus-plexus/plexus-archiver.git</developerConnection>
+    <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
+    <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
     <url>http://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
     <tag>master</tag>
   </scm>
