@@ -72,14 +72,19 @@ public class AbstractUnArchiverTest
         throws ArchiverException
     {
         // given
-        final FileMapper[] fileMappers = new FileMapper[] { pName -> "../PREFIX/" + pName, pName -> pName + ".SUFFIX"};
+
+        // The prefix includes the target directory name to make sure we catch cases when the paths
+        // are compared as strings. For example /opt/directory starts with /opt/dir but it is
+        // sibling and not inside /opt/dir.
+        String prefix = "../" + targetFolder.getName() + "PREFIX/";
+        final FileMapper[] fileMappers = new FileMapper[] { pName -> prefix + pName, pName -> pName + ".SUFFIX"};
 
         // when
         Exception exception = assertThrows( ArchiverException.class, () ->
             abstractUnArchiver.extractFile( null, targetFolder, null, "ENTRYNAME", null, false, null, null, fileMappers ) );
         // then
         // ArchiverException is thrown providing the rewritten path
-        assertEquals( "Entry is outside of the target directory (../PREFIX/ENTRYNAME.SUFFIX)", exception.getMessage() );
+        assertEquals( "Entry is outside of the target directory (" + prefix + "ENTRYNAME.SUFFIX)", exception.getMessage() );
     }
 
     @Test

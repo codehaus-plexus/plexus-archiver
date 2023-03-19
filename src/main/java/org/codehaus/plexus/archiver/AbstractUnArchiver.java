@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -341,8 +342,10 @@ public abstract class AbstractUnArchiver
         final File targetFileName = FileUtils.resolveFile( dir, entryName );
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
-        String canonicalDirPath = dir.getCanonicalPath();
-        String canonicalDestPath = targetFileName.getCanonicalPath();
+        // getCanonicalFile().toPath() is used instead of getCanonicalPath() (returns String),
+        // because "/opt/directory".startsWith("/opt/dir") would return false negative.
+        Path canonicalDirPath = dir.getCanonicalFile().toPath();
+        Path canonicalDestPath = targetFileName.getCanonicalFile().toPath();
 
         if ( !canonicalDestPath.startsWith( canonicalDirPath ) )
         {
