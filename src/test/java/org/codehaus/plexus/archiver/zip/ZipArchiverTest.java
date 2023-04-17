@@ -60,6 +60,7 @@ import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarFile;
+import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
@@ -809,6 +810,10 @@ public class ZipArchiverTest
     {
         final File tarFile = getTestFile( "target/output/zip-non-concurrent.tar" );
         TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
+        // Override uId and gId - in standard mode on OS where uId or gId can have long values creation of tar can fail
+        // We can not use posix mode because mTime can have nanoseconds in posix but zip doesn't so assertions can fail
+        tarArchiver.setOverrideUid(100);
+        tarArchiver.setOverrideGid(100);
         tarArchiver.setDestFile( tarFile );
         // We're testing concurrency issue so we need large amount of files
         for ( int i = 0; i < 100; i++ )
