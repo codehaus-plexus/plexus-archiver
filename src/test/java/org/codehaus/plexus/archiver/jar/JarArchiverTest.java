@@ -55,18 +55,18 @@ public class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    public void testVeryLargeJar() throws IOException, ManifestException, ArchiverException {
+    public void testVeryLargeJar() throws IOException, ArchiverException {
         // Generate some number of random files that is likely to be
         // two or three times the number of available file handles
         Random rand = new Random();
         for (int i = 0; i < 45000; i++) {
             Path path = tempDir.resolve("file" + i);
-            OutputStream out = Files.newOutputStream(path);
-            byte[] data = new byte[512]; // 512bytes per file
-            rand.nextBytes(data);
-            out.write(data);
-            out.flush();
-            out.close();
+            try (OutputStream out = Files.newOutputStream(path)) {
+                byte[] data = new byte[512]; // 512bytes per file
+                rand.nextBytes(data);
+                out.write(data);
+                out.flush();
+            }
         }
 
         File jarFile = new File("target/output/veryLargeJar.jar");
@@ -75,6 +75,8 @@ public class JarArchiverTest extends BaseJarArchiverTest {
         archiver.setDestFile(jarFile);
         archiver.addDirectory(tempDir.toFile());
         archiver.createArchive();
+        // Clean up
+        Files.delete(jarFile.toPath());
     }
 
     @Test
