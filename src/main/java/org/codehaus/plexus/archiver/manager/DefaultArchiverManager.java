@@ -17,6 +17,7 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
@@ -29,7 +30,6 @@ import javax.inject.Singleton;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 import static java.util.Objects.requireNonNull;
@@ -101,49 +101,67 @@ public class DefaultArchiverManager
     }
 
     private static @Nonnull
-    String getFileExtention( @Nonnull File file )
+    String getFileExtension( @Nonnull File file )
     {
-        String path = file.getAbsolutePath();
 
-        String archiveExt = FileUtils.getExtension( path ).toLowerCase( Locale.ENGLISH );
+        String fileName = file.getName().toLowerCase( Locale.ROOT );
+        String[] tokens = StringUtils.split( fileName, "." );
 
-        if ( "gz".equals( archiveExt )
-                 || "bz2".equals( archiveExt )
-                 || "xz".equals( archiveExt )
-                 || "zst".equals( archiveExt )
-                 || "snappy".equals( archiveExt ) )
+        String archiveExt = "";
+
+        if ( tokens.length == 2 ) {
+            archiveExt = tokens[1];
+        }
+        else if ( tokens.length > 2 && "tar".equals( tokens[tokens.length - 2] ) )
         {
-            String[] tokens = StringUtils.split( path, "." );
-
-            if ( tokens.length > 2 && "tar".equals( tokens[tokens.length - 2].toLowerCase( Locale.ENGLISH ) ) )
-            {
-                archiveExt = "tar." + archiveExt;
-            }
+            archiveExt = "tar." + tokens[tokens.length - 1];
+        }
+        else if ( tokens.length > 2 ) {
+            archiveExt = tokens[tokens.length-1];
         }
 
         return archiveExt;
-
     }
 
     @Override
     @Nonnull public Archiver getArchiver( @Nonnull File file )
         throws NoSuchArchiverException
     {
-        return getArchiver( getFileExtention( file ) );
+        return getArchiver( getFileExtension( file ) );
+    }
+
+    @Override
+    public Collection<String> getAvailableArchivers()
+    {
+        return archivers.keySet();
     }
 
     @Override
     @Nonnull public UnArchiver getUnArchiver( @Nonnull File file )
         throws NoSuchArchiverException
     {
-        return getUnArchiver( getFileExtention( file ) );
+        return getUnArchiver( getFileExtension( file ) );
+    }
+
+    @Nonnull
+    @Override
+    public Collection<String> getAvailableUnArchivers()
+    {
+        return unArchivers.keySet();
     }
 
     @Override
     @Nonnull public PlexusIoResourceCollection getResourceCollection( @Nonnull File file )
         throws NoSuchArchiverException
     {
-        return getResourceCollection( getFileExtention( file ) );
+        return getResourceCollection( getFileExtension( file ) );
+    }
+
+    @Nonnull
+    @Override
+    public Collection<String> getAvailableResourceCollections()
+    {
+        return plexusIoResourceCollections.keySet();
     }
 
 }

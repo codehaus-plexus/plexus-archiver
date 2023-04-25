@@ -16,32 +16,53 @@ Plexus Archiver
 || Interface       || Components for supported formats (as Plexus role hint)
 *------------------+-----------------+
 | {{{./apidocs/index.html?org/codehaus/plexus/archiver/Archiver.html}<<<Archiver>>>}} |
-|                  | {{{./xref/org/codehaus/plexus/archiver/bzip2/BZip2Archiver.html}<<<bzip2>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/xz/XZArchiver.html}<<<xz>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/dir/DirectoryArchiver.html}<<<dir>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/ear/EarArchiver.html}<<<ear>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/gzip/GZipArchiver.html}<<<gzip>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarArchiver.html}<<<jar>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/jar/JarToolModularJarArchiver.html}<<<mjar>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/snappy/SnappyArchiver.html}<<<snappy>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/zstandard/ZstdArchiver.html}<<<zst>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar/TarArchiver.html}<<<tar>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/war/WarArchiver.html}<<<war>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}}.
-|                  | Notice that <<<rar>>> component produces a <<<jar>>>
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/bzip2/BZip2Archiver.html}<<<bzip2>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/dir/DirectoryArchiver.html}<<<dir>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/ear/EarArchiver.html}<<<ear>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/gzip/GZipArchiver.html}<<<gzip>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/jar/JarArchiver.html}<<<jar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/jar/JarToolModularJarArchiver.html}<<<mjar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/rar/RarArchiver.html}<<<rar>>>}} (notice produces a <<<jar>>>),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/snappy/SnappyArchiver.html}<<<snappy>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarArchiver.html}<<<tar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarBZip2Archiver.html}<<<tar.bz2>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TBZ2Archiver.html}<<<tbz2>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarGZipArchiver.html}<<<tar.gz>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TGZArchiver.html}<<<tgz>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarSnappyArchiver.html}<<<tar.snappy>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarZstdArchiver.html}<<<tar.zst>>>}}
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarXZArchiver.html}<<<tar.xz>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TXZArchiver.html}<<<txz>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/war/WarArchiver.html}<<<war>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/xz/XZArchiver.html}<<<xz>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}}.
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zstd/ZstdArchiver.html}<<<zst>>>}}
+|                  |
 *------------------+-----------------+
 | {{{./apidocs/index.html?org/codehaus/plexus/archiver/UnArchiver.html}<<<UnArchiver>>>}} |
-|                  | {{{./xref/org/codehaus/plexus/archiver/bzip2.BZip2UnArchiver.html}<<<bzip2>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/xz.XZUnArchiver.html}<<<xz>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/gzip.GZipUnArchiver.html}<<<gzip>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/snappy.SnappyUnArchiver.html}<<<snappy>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/zstandard.ZstdUnArchiver.html}<<<zst>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarUnArchiver.html}<<<tar>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/zip.ZipUnArchiver.html}<<<zip>>>}}
-|                  | (also available as <<<jar>>>, <<<war>>>, <<<ear>>>, <<<swc>>>, <<<nar>>>, <<<esb>>>, <<<sar>>>, <<<car>>>, <<<par>>>, <<<rar>>>),
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarGZipUnArchiver.html}<<<tgz>>>}} or <<<tar.gz>>>,
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarBZip2UnArchiver.html}<<<tbz2>>>}} or <<<tar.bz2>>>,
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarXZUnArchiver.html}<<<txz>>>}} or <<<tar.xz>>>,
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarZstdUnArchiver.html}<<<tar.zst>>>}},
-|                  | {{{./xref/org/codehaus/plexus/archiver/tar.TarSnappyUnArchiver.html}<<<tar.snappy>>>}}.
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/bzip2/BZip2UnArchiver.html}<<<bzip2>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/gzip/GZipUnArchiver.html}<<<gzip>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/snappy/SnappyUnArchiver.html}<<<snappy>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarUnArchiver.html}<<<tar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarBZip2Archiver.html}<<<tar.bz2>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TBZ2Archiver.html}<<<tbz2>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarGZipUnArchiver.html}<<<tar.gz>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TGZUnArchiver.html}<<<tgz>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarSnappyUnArchiver.html}<<<tar.snappy>>>}}
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarZstdUnArchiver.html}<<<tar.zst>>>}}
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarXZUnArchiver.html}<<<tar.xz>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TXZUnArchiver.html}<<<txz>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/xz/XZUnArchiver.html}<<<xz>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zip/ZipUnArchiver.html}<<<zip>>>}}
+|                  | (also available as {{{./apidocs/index.html?org/codehaus/plexus/archiver/car/CarUnArchiver.html}<<<car>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/ear/EarUnArchiver.html}<<<ear>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/esb/EsbUnArchiver.html}<<<esb>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/jar/JarUnArchiver.html}<<<jar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/nar/NarUnArchiver.html}<<<nar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/par/ParUnArchiver.html}<<<par>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/rar/RarUnArchiver.html}<<<rar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/sar/SarUnArchiver.html}<<<sar>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/swc/SwcUnArchiver.html}<<<swc>>>}},
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/war/WarUnArchiver.html}<<<war>>>}}),
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zstd/ZstdUnArchiver.html}<<<zst>>>}}
 *------------------+-----------------+
