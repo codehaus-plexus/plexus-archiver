@@ -17,6 +17,8 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
+import java.util.Collection;
+
 import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -36,12 +38,18 @@ public interface ArchiverManager
         throws NoSuchArchiverException;
 
     @Nonnull
+    Collection<String> getAvailableArchivers();
+
+    @Nonnull
     UnArchiver getUnArchiver( @Nonnull String unArchiverName )
         throws NoSuchArchiverException;
 
     @Nonnull
     UnArchiver getUnArchiver( @Nonnull File file )
         throws NoSuchArchiverException;
+
+    @Nonnull
+    Collection<String> getAvailableUnArchivers();
 
     @Nonnull
     PlexusIoResourceCollection getResourceCollection( @Nonnull File file )
@@ -51,4 +59,6 @@ public interface ArchiverManager
     PlexusIoResourceCollection getResourceCollection( String unArchiverName )
         throws NoSuchArchiverException;
 
+    @Nonnull
+    Collection<String> getAvailableResourceCollections();
 }
