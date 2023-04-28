@@ -64,7 +64,10 @@ public class JarArchiver
 
     /**
      * The index file name.
+     *
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     private static final String INDEX_NAME = "META-INF/INDEX.LIST";
 
     /**
@@ -120,7 +123,10 @@ public class JarArchiver
 
     /**
      * jar index is JDK 1.3+ only
+     *
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     private boolean index = false;
 
     /**
@@ -140,7 +146,10 @@ public class JarArchiver
 
     /**
      * Path containing jars that shall be indexed in addition to this archive.
+     *
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     private List<String> indexJars;
 
     /**
@@ -164,7 +173,9 @@ public class JarArchiver
      * This may speed up classloading in some cases.
      *
      * @param flag true to create an index
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     public void setIndex( boolean flag )
     {
         index = flag;
@@ -291,7 +302,9 @@ public class JarArchiver
 
     /**
      * @param indexJar The indexjar
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     public void addConfiguredIndexJars( File indexJar )
     {
         if ( indexJars == null )
@@ -402,7 +415,9 @@ public class JarArchiver
      * @throws IOException thrown if there is an error while creating the
      * index and adding it to the zip stream.
      * @throws org.codehaus.plexus.archiver.ArchiverException
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     private void createIndexList( ConcurrentJarCreator zOut )
         throws IOException, ArchiverException
     {
@@ -657,7 +672,9 @@ public class JarArchiver
      * @param dirs The directories
      * @param files The files
      * @param writer The printwriter ;)
+     * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
+    @Deprecated
     protected final void writeIndexLikeList( List<String> dirs, List<String> files, PrintWriter writer )
     {
         // JarIndex is sorting the directories by ascending order.
