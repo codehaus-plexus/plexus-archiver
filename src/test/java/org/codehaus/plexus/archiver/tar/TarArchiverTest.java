@@ -60,6 +60,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  * @author Emmanuel Venisse
@@ -67,6 +68,8 @@ import org.junit.jupiter.api.condition.OS;
 public class TarArchiverTest
         extends TestSupport
 {
+    @TempDir
+    private File tempDir;
 
     @Test
     @DisabledOnOs( OS.WINDOWS )
@@ -93,138 +96,115 @@ public class TarArchiverTest
         int confMode = 0600;
         int logMode = 0640;
 
-        File tmpDir = null;
-        try
+        for ( String executablePath : executablePaths )
         {
-            tmpDir = File.createTempFile( "tbz2-with-chmod.", ".dir" );
-            tmpDir.delete();
+            writeFile( tempDir, executablePath, exeMode );
+        }
 
-            tmpDir.mkdirs();
+        for ( String confPath : confPaths )
+        {
+            writeFile( tempDir, confPath, confMode );
+        }
 
-            for ( String executablePath : executablePaths )
-            {
-                writeFile( tmpDir, executablePath, exeMode );
-            }
+        for ( String logPath : logPaths )
+        {
+            writeFile( tempDir, logPath, logMode );
+        }
 
-            for ( String confPath : confPaths )
-            {
-                writeFile( tmpDir, confPath, confMode );
-            }
-
-            for ( String logPath : logPaths )
-            {
-                writeFile( tmpDir, logPath, logMode );
-            }
-
-            {
-                Map attributesByPath = PlexusIoResourceAttributeUtils.getFileAttributesByPath( tmpDir );
-                for ( String path : executablePaths )
-                {
-                    PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = (PlexusIoResourceAttributes) attributesByPath.get(
-                            new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-
-                for ( String path : confPaths )
-                {
-                    PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = (PlexusIoResourceAttributes) attributesByPath.get(
-                            new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-
-                for ( String path : logPaths )
-                {
-                    PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = (PlexusIoResourceAttributes) attributesByPath.get(
-                            new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-            }
-
-            File tarFile = getTestFile( "target/output/tar-with-modes.tar" );
-
-            TarArchiver archiver = getPosixTarArchiver();
-            archiver.setDestFile( tarFile );
-
-            archiver.addDirectory( tmpDir );
-            archiver.createArchive();
-
-            assertTrue( tarFile.exists() );
-
-            File tarFile2 = getTestFile( "target/output/tar-with-modes-L2.tar" );
-
-            archiver = getPosixTarArchiver();
-            archiver.setDestFile( tarFile2 );
-
-            archiver.addArchivedFileSet( tarFile );
-            archiver.createArchive();
-
-            TarFile tf = new TarFile( tarFile2 );
-
-            Map<String, TarArchiveEntry> entriesByPath = new LinkedHashMap<String, TarArchiveEntry>();
-            for ( Enumeration e = tf.getEntries(); e.hasMoreElements(); )
-            {
-                TarArchiveEntry te = (TarArchiveEntry) e.nextElement();
-                entriesByPath.put( te.getName(), te );
-            }
-
+        {
+            Map attributesByPath = PlexusIoResourceAttributeUtils.getFileAttributesByPath( tempDir );
             for ( String path : executablePaths )
             {
-                TarArchiveEntry te = entriesByPath.get( path );
+                PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = (PlexusIoResourceAttributes) attributesByPath.get(
+                        new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = te.getMode() & UnixStat.PERM_MASK;
-
-                assertEquals( exeMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
 
             for ( String path : confPaths )
             {
-                TarArchiveEntry te = entriesByPath.get( path );
+                PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = (PlexusIoResourceAttributes) attributesByPath.get(
+                        new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = te.getMode() & UnixStat.PERM_MASK;
-
-                assertEquals( confMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
 
             for ( String path : logPaths )
             {
-                TarArchiveEntry te = entriesByPath.get( path );
+                PlexusIoResourceAttributes attrs = (PlexusIoResourceAttributes) attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = (PlexusIoResourceAttributes) attributesByPath.get(
+                        new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = te.getMode() & UnixStat.PERM_MASK;
-
-                assertEquals( logMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
         }
-        finally
+
+        File tarFile = getTestFile( "target/output/tar-with-modes.tar" );
+
+        TarArchiver archiver = getPosixTarArchiver();
+        archiver.setDestFile( tarFile );
+
+        archiver.addDirectory(tempDir );
+        archiver.createArchive();
+
+        assertTrue( tarFile.exists() );
+
+        File tarFile2 = getTestFile( "target/output/tar-with-modes-L2.tar" );
+
+        archiver = getPosixTarArchiver();
+        archiver.setDestFile( tarFile2 );
+
+        archiver.addArchivedFileSet( tarFile );
+        archiver.createArchive();
+
+        TarFile tf = new TarFile( tarFile2 );
+
+        Map<String, TarArchiveEntry> entriesByPath = new LinkedHashMap<String, TarArchiveEntry>();
+        for ( Enumeration e = tf.getEntries(); e.hasMoreElements(); )
         {
-            if ( tmpDir != null && tmpDir.exists() )
-            {
-                try
-                {
-                    FileUtils.forceDelete( tmpDir );
-                }
-                catch ( IOException e )
-                {
-                    e.printStackTrace();
-                }
-            }
+            TarArchiveEntry te = (TarArchiveEntry) e.nextElement();
+            entriesByPath.put( te.getName(), te );
+        }
+
+        for ( String path : executablePaths )
+        {
+            TarArchiveEntry te = entriesByPath.get( path );
+
+            int mode = te.getMode() & UnixStat.PERM_MASK;
+
+            assertEquals( exeMode, mode, "Wrong mode for: " + path );
+        }
+
+        for ( String path : confPaths )
+        {
+            TarArchiveEntry te = entriesByPath.get( path );
+
+            int mode = te.getMode() & UnixStat.PERM_MASK;
+
+            assertEquals( confMode, mode, "Wrong mode for: " + path );
+        }
+
+        for ( String path : logPaths )
+        {
+            TarArchiveEntry te = entriesByPath.get( path );
+
+            int mode = te.getMode() & UnixStat.PERM_MASK;
+
+            assertEquals( logMode, mode, "Wrong mode for: " + path );
         }
     }
 

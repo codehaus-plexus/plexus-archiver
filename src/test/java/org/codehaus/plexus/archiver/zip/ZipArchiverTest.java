@@ -60,7 +60,6 @@ import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarFile;
-import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
@@ -81,6 +80,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -95,6 +95,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ZipArchiverTest
     extends BasePlexusArchiverTest
 {
+
+    @TempDir
+    private File tempDir;
 
     @Test
     public void testImplicitPermissions()
@@ -174,128 +177,105 @@ public class ZipArchiverTest
         int confMode = 0600;
         int logMode = 0640;
 
-        File tmpDir = null;
-        try
+        for ( String executablePath : executablePaths )
         {
-            tmpDir = File.createTempFile( "zip-with-chmod.", ".dir" );
-            tmpDir.delete();
+            writeFile( tempDir, executablePath, exeMode );
+        }
 
-            tmpDir.mkdirs();
+        for ( String confPath : confPaths )
+        {
+            writeFile( tempDir, confPath, confMode );
+        }
 
-            for ( String executablePath : executablePaths )
-            {
-                writeFile( tmpDir, executablePath, exeMode );
-            }
+        for ( String logPath : logPaths )
+        {
+            writeFile( tempDir, logPath, logMode );
+        }
 
-            for ( String confPath : confPaths )
-            {
-                writeFile( tmpDir, confPath, confMode );
-            }
-
-            for ( String logPath : logPaths )
-            {
-                writeFile( tmpDir, logPath, logMode );
-            }
-
-            {
-                Map<String, PlexusIoResourceAttributes> attributesByPath =
-                    PlexusIoResourceAttributeUtils.getFileAttributesByPath( tmpDir );
-                for ( String path : executablePaths )
-                {
-                    PlexusIoResourceAttributes attrs = attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = attributesByPath.get( new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-
-                for ( String path : confPaths )
-                {
-                    PlexusIoResourceAttributes attrs = attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = attributesByPath.get( new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-
-                for ( String path : logPaths )
-                {
-                    PlexusIoResourceAttributes attrs = attributesByPath.get( path );
-                    if ( attrs == null )
-                    {
-                        attrs = attributesByPath.get( new File( tmpDir, path ).getAbsolutePath() );
-                    }
-
-                    assertNotNull( attrs );
-                    assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
-                }
-            }
-
-            File zipFile = getTestFile( "target/output/zip-with-modes.zip" );
-
-            ZipArchiver archiver = getZipArchiver( zipFile );
-
-            archiver.addDirectory( tmpDir );
-            archiver.createArchive();
-
-            assertTrue( zipFile.exists() );
-
-            File zipFile2 = getTestFile( "target/output/zip-with-modes-L2.zip" );
-
-            archiver = getZipArchiver();
-            archiver.setDestFile( zipFile2 );
-
-            archiver.addArchivedFileSet( zipFile );
-            archiver.createArchive();
-
-            ZipFile zf = new ZipFile( zipFile2 );
-
+        {
+            Map<String, PlexusIoResourceAttributes> attributesByPath =
+                PlexusIoResourceAttributeUtils.getFileAttributesByPath( tempDir );
             for ( String path : executablePaths )
             {
-                ZipArchiveEntry ze = zf.getEntry( path );
+                PlexusIoResourceAttributes attrs = attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = attributesByPath.get( new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
-
-                assertEquals( exeMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( exeMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
 
             for ( String path : confPaths )
             {
-                ZipArchiveEntry ze = zf.getEntry( path );
+                PlexusIoResourceAttributes attrs = attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = attributesByPath.get( new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
-
-                assertEquals( confMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( confMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
 
             for ( String path : logPaths )
             {
-                ZipArchiveEntry ze = zf.getEntry( path );
+                PlexusIoResourceAttributes attrs = attributesByPath.get( path );
+                if ( attrs == null )
+                {
+                    attrs = attributesByPath.get( new File( tempDir, path ).getAbsolutePath() );
+                }
 
-                int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
-
-                assertEquals( logMode, mode, "Wrong mode for: " + path );
+                assertNotNull( attrs );
+                assertEquals( logMode, attrs.getOctalMode(), "Wrong mode for: " + path );
             }
         }
-        finally
+
+        File zipFile = getTestFile( "target/output/zip-with-modes.zip" );
+
+        ZipArchiver archiver = getZipArchiver( zipFile );
+
+        archiver.addDirectory( tempDir );
+        archiver.createArchive();
+
+        assertTrue( zipFile.exists() );
+
+        File zipFile2 = getTestFile( "target/output/zip-with-modes-L2.zip" );
+
+        archiver = getZipArchiver();
+        archiver.setDestFile( zipFile2 );
+
+        archiver.addArchivedFileSet( zipFile );
+        archiver.createArchive();
+
+        ZipFile zf = new ZipFile( zipFile2 );
+
+        for ( String path : executablePaths )
         {
-            if ( tmpDir != null && tmpDir.exists() )
-            {
-                try
-                {
-                    FileUtils.forceDelete( tmpDir );
-                }
-                catch ( IOException e )
-                {
-                    e.printStackTrace();
-                }
-            }
+            ZipArchiveEntry ze = zf.getEntry( path );
+
+            int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
+
+            assertEquals( exeMode, mode, "Wrong mode for: " + path );
+        }
+
+        for ( String path : confPaths )
+        {
+            ZipArchiveEntry ze = zf.getEntry( path );
+
+            int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
+
+            assertEquals( confMode, mode, "Wrong mode for: " + path );
+        }
+
+        for ( String path : logPaths )
+        {
+            ZipArchiveEntry ze = zf.getEntry( path );
+
+            int mode = ze.getUnixMode() & UnixStat.PERM_MASK;
+
+            assertEquals( logMode, mode, "Wrong mode for: " + path );
         }
     }
 
@@ -643,12 +623,10 @@ public class ZipArchiverTest
     public void testLastModifiedTimeRounding()
         throws Exception
     {
-        Path oddSecondsTimestampFile = Files.createTempFile( "odd-seconds-timestamp", null );
-        oddSecondsTimestampFile.toFile().deleteOnExit();
+        Path oddSecondsTimestampFile = Files.createTempFile( tempDir.toPath(), "odd-seconds-timestamp", null );
         // The milliseconds part is set to zero as not all filesystem support timestamp more granular than second.
         Files.setLastModifiedTime( oddSecondsTimestampFile, FileTime.fromMillis( 1534189011_000L ) );
-        Path evenSecondsTimestampFile = Files.createTempFile( "even-seconds-timestamp", null );
-        evenSecondsTimestampFile.toFile().deleteOnExit();
+        Path evenSecondsTimestampFile = Files.createTempFile( tempDir.toPath(), "even-seconds-timestamp", null );
         Files.setLastModifiedTime( evenSecondsTimestampFile, FileTime.fromMillis( 1534189012_000L ) );
 
         File destFile = getTestFile( "target/output/last-modified-time.zip" );
