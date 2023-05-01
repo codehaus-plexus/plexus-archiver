@@ -18,17 +18,20 @@ import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 public class JarArchiverTest
     extends BaseJarArchiverTest
 {
 
+    @TempDir
+    private Path tempDir;
+
     @Test
     public void testCreateManifestOnlyJar()
         throws IOException, ManifestException, ArchiverException
     {
-        File jarFile = File.createTempFile( "JarArchiverTest.", ".jar" );
-        jarFile.deleteOnExit();
+        File jarFile = Files.createTempFile( tempDir, "JarArchiverTest.", ".jar" ).toFile();
 
         JarArchiver archiver = getJarArchiver();
         archiver.setDestFile( jarFile );
@@ -62,15 +65,11 @@ public class JarArchiverTest
     {
         // Generate some number of random files that is likely to be
         // two or three times the number of available file handles
-        File tmpDir = File.createTempFile( "veryLargeJar", null );
-        tmpDir.delete();
-        tmpDir.mkdirs();
         Random rand = new Random();
         for ( int i = 0; i < 45000; i++ )
         {
-            File f = new File( tmpDir, "file" + i );
-            f.deleteOnExit();
-            OutputStream out = Files.newOutputStream( f.toPath() );
+            Path path = tempDir.resolve( "file" + i );
+            OutputStream out = Files.newOutputStream( path );
             byte[] data = new byte[ 512 ]; // 512bytes per file
             rand.nextBytes( data );
             out.write( data );
@@ -82,7 +81,7 @@ public class JarArchiverTest
 
         JarArchiver archiver = getJarArchiver();
         archiver.setDestFile( jarFile );
-        archiver.addDirectory( tmpDir );
+        archiver.addDirectory( tempDir.toFile() );
         archiver.createArchive();
     }
 
@@ -109,8 +108,7 @@ public class JarArchiverTest
         try
         {
             String tzName = timeZoneId.substring( timeZoneId.lastIndexOf( '/' ) + 1 );
-            Path jarFile = Files.createTempFile( "JarArchiverTest-" + tzName + "-", ".jar" );
-            jarFile.toFile().deleteOnExit();
+            Path jarFile = Files.createTempFile( tempDir, "JarArchiverTest-" + tzName + "-", ".jar" );
 
             Manifest manifest = new Manifest();
             Manifest.Attribute attribute = new Manifest.Attribute( "Main-Class", "com.example.app.Main" );
