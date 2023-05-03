@@ -51,8 +51,8 @@ public abstract class BasePlexusArchiverTest extends TestSupport
         throws IOException
     {
         long startTime = System.currentTimeMillis();
-        File tmpFile = File.createTempFile(
-            "BasePlexusArchiverTest.waitUntilNewTimestamp", null );
+        File tmpFile = Files.createTempFile(
+            "BasePlexusArchiverTest.waitUntilNewTimestamp", null ).toFile();
         long newTimestamp;
 
         // We could easily just set the last modified time using

@@ -29,7 +29,7 @@ public class DeferredScatterOutputStream implements ScatterGatherBackingStore
 
     public DeferredScatterOutputStream( int threshold )
     {
-        dfos = new OffloadingOutputStream( threshold, "scatterzipfragment", "zip", null );
+        dfos = new OffloadingOutputStream( threshold, "scatterzipfragment", "zip" );
     }
 
     @Override
