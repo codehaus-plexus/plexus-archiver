@@ -420,6 +420,18 @@ public class DelgatingArchiver implements Archiver
         return target.getOverrideGroupName();
     }
 
+    @Override
+    public void setUmask( int umask )
+    {
+        target.setUmask( umask );
+    }
+
+    @Override
+    public int getUmask()
+    {
+        return target.getUmask();
+    }
+
     /**
      * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
      */

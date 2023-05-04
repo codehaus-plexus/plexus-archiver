@@ -471,6 +471,16 @@ public interface Archiver
     String getOverrideGroupName();
 
     /**
+     * @since 4.7.0
+     */
+    void setUmask( int umask );
+
+    /**
+     * @since 4.7.0
+     */
+    int getUmask();
+
+    /**
      * This method is obsolete and will just call {@link #configureReproducibleBuild(FileTime)}
      * with the Date transformed into FileTime.
      *

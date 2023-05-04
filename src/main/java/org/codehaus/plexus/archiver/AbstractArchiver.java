@@ -89,6 +89,8 @@ public abstract class AbstractArchiver
 
     private int defaultDirectoryMode = -1; // Optionally used if a value is needed
 
+    private int umask = -1;
+
     private boolean forced = true;
 
     private List<ArchiveFinalizer> finalizers;
@@ -440,12 +442,17 @@ public abstract class AbstractArchiver
     }
 
     protected ArchiveEntry asArchiveEntry( @Nonnull final PlexusIoResource resource, final String destFileName,
-                                           final int permissions, PlexusIoResourceCollection collection )
+                                           int permissions, PlexusIoResourceCollection collection )
         throws ArchiverException
     {
         if ( !resource.isExisting() )
         {
             throw new ArchiverException( resource.getName() + " not found." );
+        }
+
+        if ( umask > 0 )
+        {
+            permissions &= ~umask;
         }
 
         ArchiveEntry entry;
@@ -1264,6 +1271,18 @@ public abstract class AbstractArchiver
         return overrideGroupName;
     }
 
+    @Override
+    public void setUmask( int umask )
+    {
+        this.umask = umask;
+    }
+
+    @Override
+    public int getUmask()
+    {
+        return umask;
+    }
+
     /**
      * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
      */
@@ -1288,6 +1307,9 @@ public abstract class AbstractArchiver
         setOverrideUserName( "root" ); // is it possible to avoid this, like "tar --numeric-owner"?
         setOverrideGid( 0 );
         setOverrideGroupName( "root" );
+
+        // 4. set umask to 022 to avoid environment umask value particularly on group write
+        setUmask( 0_022 );
     }
 
     /**

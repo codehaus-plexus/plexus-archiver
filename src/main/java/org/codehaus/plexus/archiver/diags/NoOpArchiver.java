@@ -435,6 +435,18 @@ public class NoOpArchiver implements Archiver
         return null;
     }
 
+    @Override
+    public void setUmask( int umask )
+    {
+
+    }
+
+    @Override
+    public int getUmask()
+    {
+        return 0;
+    }
+
     /**
      * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
      */
