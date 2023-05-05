@@ -479,32 +479,42 @@
 <a class="jxr_linenumber" name="L471" href="#L471">471</a>     String getOverrideGroupName();
 <a class="jxr_linenumber" name="L472" href="#L472">472</a> 
 <a class="jxr_linenumber" name="L473" href="#L473">473</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L474" href="#L474">474</a> <em class="jxr_javadoccomment">     * This method is obsolete and will just call {@link #configureReproducibleBuild(FileTime)}</em>
-<a class="jxr_linenumber" name="L475" href="#L475">475</a> <em class="jxr_javadoccomment">     * with the Date transformed into FileTime.</em>
-<a class="jxr_linenumber" name="L476" href="#L476">476</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L477" href="#L477">477</a> <em class="jxr_javadoccomment">     * @param lastModifiedDate the date to use for archive entries last modified time</em>
-<a class="jxr_linenumber" name="L478" href="#L478">478</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
-<a class="jxr_linenumber" name="L479" href="#L479">479</a> <em class="jxr_javadoccomment">     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.</em>
+<a class="jxr_linenumber" name="L474" href="#L474">474</a> <em class="jxr_javadoccomment">     * @since 4.7.0</em>
+<a class="jxr_linenumber" name="L475" href="#L475">475</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>     <strong class="jxr_keyword">void</strong> setUmask( <strong class="jxr_keyword">int</strong> umask );
+<a class="jxr_linenumber" name="L477" href="#L477">477</a> 
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L479" href="#L479">479</a> <em class="jxr_javadoccomment">     * @since 4.7.0</em>
 <a class="jxr_linenumber" name="L480" href="#L480">480</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>     @Deprecated
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>     <strong class="jxr_keyword">void</strong> configureReproducible( Date lastModifiedDate );
-<a class="jxr_linenumber" name="L483" href="#L483">483</a> 
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     * Configure the archiver to create archives in a reproducible way (see</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="https://reproducible-builds.org/" target="alexandria_uri">https://reproducible-builds.org/</a>"&gt;Reproducible Builds&lt;/a&gt;).</em>
-<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     * &lt;p&gt;This will configure:</em>
-<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * &lt;li&gt;reproducible archive entries order,&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     * &lt;li&gt;defined entries timestamp&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L491" href="#L491">491</a> <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
-<a class="jxr_linenumber" name="L492" href="#L492">492</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L493" href="#L493">493</a> <em class="jxr_javadoccomment">     * @param lastModifiedTime The last modification time of the entries</em>
-<a class="jxr_linenumber" name="L494" href="#L494">494</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L495" href="#L495">495</a> <em class="jxr_javadoccomment">     * @see &lt;a href="<a href="https://reproducible-builds.org/" target="alexandria_uri">https://reproducible-builds.org/</a>"&gt;Reproducible Builds&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L496" href="#L496">496</a> <em class="jxr_javadoccomment">     * @since 4.3.0</em>
-<a class="jxr_linenumber" name="L497" href="#L497">497</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>     <strong class="jxr_keyword">void</strong> configureReproducibleBuild( FileTime lastModifiedTime );
-<a class="jxr_linenumber" name="L499" href="#L499">499</a> }
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>     <strong class="jxr_keyword">int</strong> getUmask();
+<a class="jxr_linenumber" name="L482" href="#L482">482</a> 
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L484" href="#L484">484</a> <em class="jxr_javadoccomment">     * This method is obsolete and will just call {@link #configureReproducibleBuild(FileTime)}</em>
+<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     * with the Date transformed into FileTime.</em>
+<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     * @param lastModifiedDate the date to use for archive entries last modified time</em>
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     * @since 4.2.0</em>
+<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.</em>
+<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>     @Deprecated
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     <strong class="jxr_keyword">void</strong> configureReproducible( Date lastModifiedDate );
+<a class="jxr_linenumber" name="L493" href="#L493">493</a> 
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L495" href="#L495">495</a> <em class="jxr_javadoccomment">     * Configure the archiver to create archives in a reproducible way (see</em>
+<a class="jxr_linenumber" name="L496" href="#L496">496</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="https://reproducible-builds.org/" target="alexandria_uri">https://reproducible-builds.org/</a>"&gt;Reproducible Builds&lt;/a&gt;).</em>
+<a class="jxr_linenumber" name="L497" href="#L497">497</a> <em class="jxr_javadoccomment">     * &lt;p&gt;This will configure:</em>
+<a class="jxr_linenumber" name="L498" href="#L498">498</a> <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
+<a class="jxr_linenumber" name="L499" href="#L499">499</a> <em class="jxr_javadoccomment">     * &lt;li&gt;reproducible archive entries order,&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L500" href="#L500">500</a> <em class="jxr_javadoccomment">     * &lt;li&gt;defined entries timestamp&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L501" href="#L501">501</a> <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
+<a class="jxr_linenumber" name="L502" href="#L502">502</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L503" href="#L503">503</a> <em class="jxr_javadoccomment">     * @param lastModifiedTime The last modification time of the entries</em>
+<a class="jxr_linenumber" name="L504" href="#L504">504</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L505" href="#L505">505</a> <em class="jxr_javadoccomment">     * @see &lt;a href="<a href="https://reproducible-builds.org/" target="alexandria_uri">https://reproducible-builds.org/</a>"&gt;Reproducible Builds&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="L506" href="#L506">506</a> <em class="jxr_javadoccomment">     * @since 4.3.0</em>
+<a class="jxr_linenumber" name="L507" href="#L507">507</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>     <strong class="jxr_keyword">void</strong> configureReproducibleBuild( FileTime lastModifiedTime );
+<a class="jxr_linenumber" name="L509" href="#L509">509</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2023 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
