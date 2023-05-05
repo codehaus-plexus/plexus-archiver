@@ -450,7 +450,7 @@ public abstract class AbstractArchiver
             throw new ArchiverException( resource.getName() + " not found." );
         }
 
-        if ( umask > 0 )
+        if ( umask > 0 && permissions != PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE )
         {
             permissions &= ~umask;
         }
