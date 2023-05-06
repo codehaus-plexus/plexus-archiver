@@ -31,11 +31,12 @@ Plexus Archiver
 |                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TGZArchiver.html}<<<tgz>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarSnappyArchiver.html}<<<tar.snappy>>>}},
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarZstdArchiver.html}<<<tar.zst>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TZstdArchiver.html}<<<tzst>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarXZArchiver.html}<<<tar.xz>>>}}
 |                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TXZArchiver.html}<<<txz>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/war/WarArchiver.html}<<<war>>>}},
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/xz/XZArchiver.html}<<<xz>>>}},
-|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}}.
+|                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zip/ZipArchiver.html}<<<zip>>>}},
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/zstd/ZstdArchiver.html}<<<zst>>>}}
 |                  |
 *------------------+-----------------+
@@ -50,6 +51,7 @@ Plexus Archiver
 |                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TGZUnArchiver.html}<<<tgz>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarSnappyUnArchiver.html}<<<tar.snappy>>>}}
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarZstdUnArchiver.html}<<<tar.zst>>>}}
+|                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TZstdUnArchiver.html}<<<tzst>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarXZUnArchiver.html}<<<tar.xz>>>}}
 |                  | ({{{./apidocs/index.html?org/codehaus/plexus/archiver/tar/TXZUnArchiver.html}<<<txz>>>}}),
 |                  | {{{./apidocs/index.html?org/codehaus/plexus/archiver/xz/XZUnArchiver.html}<<<xz>>>}},
