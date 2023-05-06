@@ -67,6 +67,7 @@ class ArchiverManagerTest
             "tbz2",
             "tgz",
             "txz",
+            "tzst",
             "war",
             "xz",
             "zip",

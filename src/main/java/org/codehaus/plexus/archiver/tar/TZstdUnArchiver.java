@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Codehaus.
+ * Copyright The Plexus developers.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,11 @@ package org.codehaus.plexus.archiver.tar;
 import javax.inject.Named;
 
 /**
- * Alias for {@link PlexusIoTarXZFileResourceCollection}
+ * Alias for {@link TarZstdUnArchiver}
+ *
+ * @since 4.7.2
  */
-@Named( "txz" )
-public class PlexusIoTXZFileResourceCollection extends PlexusIoTarXZFileResourceCollection
+@Named( "tzst" )
+public class TZstdUnArchiver extends TarZstdUnArchiver
 {
 }
