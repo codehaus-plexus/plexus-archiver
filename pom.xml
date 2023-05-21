@@ -13,6 +13,8 @@
   <version>4.7.2-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
 
+  <url>https://codehaus-plexus.github.io/plexus-archiver/</url>
+
   <scm>
     <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
