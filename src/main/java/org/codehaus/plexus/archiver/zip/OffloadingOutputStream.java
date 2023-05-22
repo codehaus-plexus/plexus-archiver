@@ -30,8 +30,7 @@ import org.apache.commons.io.output.ThresholdingOutputStream;
 /**
  * Offloads to disk when a given memory consumption has been reached
  */
-class OffloadingOutputStream extends ThresholdingOutputStream
-{
+class OffloadingOutputStream extends ThresholdingOutputStream {
 
     // ----------------------------------------------------------- Data members
 
@@ -74,16 +73,14 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @param suffix    Suffix to use for the temporary file.
      * @since 1.4
      */
-    public OffloadingOutputStream( int threshold, String prefix, String suffix )
-    {
-        super( threshold );
+    public OffloadingOutputStream(int threshold, String prefix, String suffix) {
+        super(threshold);
 
-        if ( prefix == null )
-        {
-            throw new IllegalArgumentException( "Temporary file prefix is missing" );
+        if (prefix == null) {
+            throw new IllegalArgumentException("Temporary file prefix is missing");
         }
 
-        memoryOutputStream = new ByteArrayOutputStream( threshold / 10 );
+        memoryOutputStream = new ByteArrayOutputStream(threshold / 10);
         currentOutputStream = memoryOutputStream;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -99,8 +96,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @throws java.io.IOException if an error occurs.
      */
     @Override
-    protected OutputStream getStream() throws IOException
-    {
+    protected OutputStream getStream() throws IOException {
         return currentOutputStream;
     }
 
@@ -113,21 +109,18 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @throws java.io.IOException if an error occurs.
      */
     @Override
-    protected void thresholdReached() throws IOException
-    {
-        outputPath = Files.createTempFile( prefix, suffix );
-        currentOutputStream = Files.newOutputStream( outputPath );
+    protected void thresholdReached() throws IOException {
+        outputPath = Files.createTempFile(prefix, suffix);
+        currentOutputStream = Files.newOutputStream(outputPath);
     }
 
-    public InputStream getInputStream() throws IOException
-    {
+    public InputStream getInputStream() throws IOException {
 
         InputStream memoryAsInput = memoryOutputStream.toInputStream();
-        if ( outputPath == null )
-        {
+        if (outputPath == null) {
             return memoryAsInput;
         }
-        return new SequenceInputStream( memoryAsInput, Files.newInputStream( outputPath ) );
+        return new SequenceInputStream(memoryAsInput, Files.newInputStream(outputPath));
     }
 
     // --------------------------------------------------------- Public methods
@@ -140,10 +133,8 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @return The data for this output stream, or <code>null</code> if no such
      * data is available.
      */
-    public byte[] getData()
-    {
-        if ( memoryOutputStream != null )
-        {
+    public byte[] getData() {
+        if (memoryOutputStream != null) {
             return memoryOutputStream.toByteArray();
         }
         return null;
@@ -163,8 +154,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @return The file for this output stream, or <code>null</code> if no such
      * file exists.
      */
-    public File getFile()
-    {
+    public File getFile() {
         return outputPath != null ? outputPath.toFile() : null;
     }
 
@@ -174,8 +164,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream
      * @throws java.io.IOException if an error occurs.
      */
     @Override
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
         super.close();
         currentOutputStream.close();
     }

@@ -11,9 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 /**
  * Test support class.
  */
-public abstract class TestSupport
-        extends InjectedTest
-{
+public abstract class TestSupport extends InjectedTest {
     @Override
     @BeforeEach
     public void setUp() throws Exception {
@@ -26,18 +24,15 @@ public abstract class TestSupport
         super.tearDown();
     }
 
-    private static Path basedir()
-    {
-        return Paths.get( System.getProperty( "basedir", ( new File( "" ) ).getAbsolutePath() ) );
+    private static Path basedir() {
+        return Paths.get(System.getProperty("basedir", (new File("")).getAbsolutePath()));
     }
 
-    protected static File getTestFile( final String path )
-    {
-        return basedir().resolve( path ).toFile();
+    protected static File getTestFile(final String path) {
+        return basedir().resolve(path).toFile();
     }
 
-    protected static File getTestFile( final String basedir, final String path )
-    {
-        return basedir().resolve( basedir ).resolve( path ).toFile();
+    protected static File getTestFile(final String basedir, final String path) {
+        return basedir().resolve(basedir).resolve(path).toFile();
     }
 }

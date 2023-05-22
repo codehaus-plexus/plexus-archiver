@@ -24,28 +24,19 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-class OffloadingOutputStreamTest
-{
+class OffloadingOutputStreamTest {
 
     @Test
-    void temporaryFileShouldBeCreated() throws IOException
-    {
+    void temporaryFileShouldBeCreated() throws IOException {
         File streamFile = null;
-        try ( OffloadingOutputStream stream = new OffloadingOutputStream( 100, "test", "test" ) )
-        {
-            stream.write( new byte[256] );
+        try (OffloadingOutputStream stream = new OffloadingOutputStream(100, "test", "test")) {
+            stream.write(new byte[256]);
             stream.close();
             streamFile = stream.getFile();
-            assertThat( streamFile )
-                .isFile()
-                .hasSize( 256 );
-        }
-        finally
-        {
-            if ( streamFile != null )
-            {
-                Files.delete( streamFile.toPath() );
+            assertThat(streamFile).isFile().hasSize(256);
+        } finally {
+            if (streamFile != null) {
+                Files.delete(streamFile.toPath());
             }
         }
     }

@@ -13,10 +13,11 @@
  */
 package org.codehaus.plexus.archiver.filters;
 
-import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.inject.Named;
 import javax.inject.Singleton;
+
+import java.io.IOException;
 
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -26,12 +27,9 @@ import org.codehaus.plexus.util.SelectorUtils;
  * @since 1.0-alpha-9
  */
 @Singleton
-@Named( "jar-security" )
-public class JarSecurityFileSelector
-    implements FileSelector
-{
-    public static final String[] SECURITY_FILE_PATTERNS =
-    {
+@Named("jar-security")
+public class JarSecurityFileSelector implements FileSelector {
+    public static final String[] SECURITY_FILE_PATTERNS = {
         "META-INF/*.RSA",
         "META-INF/*.DSA",
         "META-INF/*.SF",
@@ -43,20 +41,15 @@ public class JarSecurityFileSelector
     };
 
     @Override
-    public boolean isSelected( @Nonnull FileInfo fileInfo )
-        throws IOException
-    {
+    public boolean isSelected(@Nonnull FileInfo fileInfo) throws IOException {
         String name = fileInfo.getName();
 
-        for ( String pattern : SECURITY_FILE_PATTERNS )
-        {
-            if ( SelectorUtils.match( pattern, name ) )
-            {
+        for (String pattern : SECURITY_FILE_PATTERNS) {
+            if (SelectorUtils.match(pattern, name)) {
                 return false;
             }
         }
 
         return true;
     }
-
 }

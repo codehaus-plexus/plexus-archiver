@@ -22,8 +22,5 @@ import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
 /**
  * Alias for {@link PlexusIoZipFileResourceCollection}.
  */
-@Named( "esb" )
-public class PlexusIoEsbFileResourceCollection
-        extends PlexusIoZipFileResourceCollection
-{
-}
+@Named("esb")
+public class PlexusIoEsbFileResourceCollection extends PlexusIoZipFileResourceCollection {}

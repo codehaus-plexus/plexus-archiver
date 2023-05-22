@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -15,11 +14,24 @@
 
   <url>https://codehaus-plexus.github.io/plexus-archiver/</url>
 
+  <contributors>
+    <contributor>
+      <name>Dan Tran</name>
+    </contributor>
+    <contributor>
+      <name>Richard van der Hoff</name>
+    </contributor>
+    <contributor>
+      <name>Tomasz 'Trog' Welman</name>
+      <email>trog@swmud.pl</email>
+    </contributor>
+  </contributors>
+
   <scm>
     <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
-    <url>http://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
     <tag>plexus-archiver-4.6.1</tag>
+    <url>http://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
   </scm>
   <issueManagement>
     <system>jira</system>
@@ -37,19 +49,6 @@
     <slf4jVersion>1.7.36</slf4jVersion>
     <project.build.outputTimestamp>2023-05-05T22:34:21Z</project.build.outputTimestamp>
   </properties>
-
-  <contributors>
-    <contributor>
-      <name>Dan Tran</name>
-    </contributor>
-    <contributor>
-      <name>Richard van der Hoff</name>
-    </contributor>
-    <contributor>
-      <name>Tomasz 'Trog' Welman</name>
-      <email>trog@swmud.pl</email>
-    </contributor>
-  </contributors>
 
   <dependencies>
     <!-- JSR330 -->
@@ -182,15 +181,17 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-scm-publish-plugin</artifactId>
         <configuration>
-          <content>${project.reporting.outputDirectory}</content><!-- mono-module doesn't require site:stage -->
+          <content>${project.reporting.outputDirectory}</content>
+          <!-- mono-module doesn't require site:stage -->
         </configuration>
         <executions>
           <execution>
             <id>scm-publish</id>
-            <phase>site-deploy</phase><!-- deploy site with maven-scm-publish-plugin -->
+            <!-- deploy site with maven-scm-publish-plugin -->
             <goals>
               <goal>publish-scm</goal>
             </goals>
+            <phase>site-deploy</phase>
           </execution>
         </executions>
       </plugin>

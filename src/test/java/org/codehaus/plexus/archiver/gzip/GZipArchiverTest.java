@@ -46,67 +46,56 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Emmanuel Venisse
  */
-public class GZipArchiverTest
-    extends BasePlexusArchiverTest
-{
+public class GZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive()
-        throws Exception
-    {
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
-        zipArchiver.addDirectory( getTestFile( "src" ) );
-        zipArchiver.setDestFile( getTestFile( "target/output/archiveForGzip.zip" ) );
+    public void testCreateArchive() throws Exception {
+        ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
+        zipArchiver.addDirectory(getTestFile("src"));
+        zipArchiver.setDestFile(getTestFile("target/output/archiveForGzip.zip"));
         zipArchiver.createArchive();
-        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
-        String[] inputFiles = new String[ 1 ];
+        GZipArchiver archiver = (GZipArchiver) lookup(Archiver.class, "gzip");
+        String[] inputFiles = new String[1];
         inputFiles[0] = "archiveForGzip.zip";
-        archiver.addDirectory( getTestFile( "target/output" ), inputFiles, null );
-        archiver.setDestFile( getTestFile( "target/output/archive.gzip" ) );
+        archiver.addDirectory(getTestFile("target/output"), inputFiles, null);
+        archiver.setDestFile(getTestFile("target/output/archive.gzip"));
         archiver.createArchive();
     }
 
     @Test
-    public void testCreateEmptyArchive()
-        throws Exception
-    {
-        GZipArchiver archiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
-        archiver.setDestFile( getTestFile( "target/output/empty.gz" ) );
-        try
-        {
+    public void testCreateEmptyArchive() throws Exception {
+        GZipArchiver archiver = (GZipArchiver) lookup(Archiver.class, "gzip");
+        archiver.setDestFile(getTestFile("target/output/empty.gz"));
+        try {
             archiver.createArchive();
 
-            fail( "Creating empty archive should throw EmptyArchiveException" );
-        }
-        catch ( EmptyArchiveException ignore )
-        {
+            fail("Creating empty archive should throw EmptyArchiveException");
+        } catch (EmptyArchiveException ignore) {
         }
     }
 
     @Test
-    public void testCreateResourceCollection()
-        throws Exception
-    {
-        final File pomFile = new File( "pom.xml" );
-        final File gzFile = new File( "target/output/pom.xml.gz" );
-        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
-        gzipArchiver.setDestFile( gzFile );
-        gzipArchiver.addFile( pomFile, "pom.xml" );
-        FileUtils.removePath( gzFile.getPath() );
+    public void testCreateResourceCollection() throws Exception {
+        final File pomFile = new File("pom.xml");
+        final File gzFile = new File("target/output/pom.xml.gz");
+        GZipArchiver gzipArchiver = (GZipArchiver) lookup(Archiver.class, "gzip");
+        gzipArchiver.setDestFile(gzFile);
+        gzipArchiver.addFile(pomFile, "pom.xml");
+        FileUtils.removePath(gzFile.getPath());
         gzipArchiver.createArchive();
 
-        final File zipFile = new File( "target/output/pom.zip" );
-        ZipArchiver zipArchiver = (ZipArchiver) lookup( Archiver.class, "zip" );
-        zipArchiver.setDestFile( zipFile );
-        zipArchiver.addArchivedFileSet( gzFile, "prfx/" );
-        FileUtils.removePath( zipFile.getPath() );
+        final File zipFile = new File("target/output/pom.zip");
+        ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
+        zipArchiver.setDestFile(zipFile);
+        zipArchiver.addArchivedFileSet(gzFile, "prfx/");
+        FileUtils.removePath(zipFile.getPath());
         zipArchiver.createArchive();
 
-        final ZipFile juZipFile = new ZipFile( zipFile );
-        final ZipEntry zipEntry = juZipFile.getEntry( "prfx/target/output/pom.xml" );
-        final InputStream archivePom = juZipFile.getInputStream( zipEntry );
-        final InputStream pom = Files.newInputStream( pomFile.toPath() );
-        assertTrue( Arrays.equals( IOUtil.toByteArray( pom ), IOUtil.toByteArray( archivePom ) ) );
+        final ZipFile juZipFile = new ZipFile(zipFile);
+        final ZipEntry zipEntry = juZipFile.getEntry("prfx/target/output/pom.xml");
+        final InputStream archivePom = juZipFile.getInputStream(zipEntry);
+        final InputStream pom = Files.newInputStream(pomFile.toPath());
+        assertTrue(Arrays.equals(IOUtil.toByteArray(pom), IOUtil.toByteArray(archivePom)));
         archivePom.close();
         pom.close();
         juZipFile.close();
@@ -119,34 +108,32 @@ public class GZipArchiverTest
      * @throws Exception
      */
     @Test
-    public void testTarGzIsForcedBehaviour() throws Exception
-    {
-        GZipArchiver gZipArchiver = (GZipArchiver) createArchiver( "gzip" );
+    public void testTarGzIsForcedBehaviour() throws Exception {
+        GZipArchiver gZipArchiver = (GZipArchiver) createArchiver("gzip");
 
-        assertTrue( gZipArchiver.isSupportingForced() );
+        assertTrue(gZipArchiver.isSupportingForced());
         gZipArchiver.createArchive();
 
         final long creationTime = gZipArchiver.getDestFile().lastModified();
 
-        waitUntilNewTimestamp( gZipArchiver.getDestFile(), creationTime );
+        waitUntilNewTimestamp(gZipArchiver.getDestFile(), creationTime);
 
-        gZipArchiver = (GZipArchiver) createArchiver( "gzip" );
+        gZipArchiver = (GZipArchiver) createArchiver("gzip");
 
-        gZipArchiver.setForced( true );
+        gZipArchiver.setForced(true);
         gZipArchiver.createArchive();
 
         final long firstRunTime = gZipArchiver.getDestFile().lastModified();
 
-        assertNotEquals( creationTime, firstRunTime );
+        assertNotEquals(creationTime, firstRunTime);
 
-        gZipArchiver = (GZipArchiver) createArchiver( "gzip" );
+        gZipArchiver = (GZipArchiver) createArchiver("gzip");
 
-        gZipArchiver.setForced( false );
+        gZipArchiver.setForced(false);
         gZipArchiver.createArchive();
 
         final long secondRunTime = gZipArchiver.getDestFile().lastModified();
 
-        assertEquals( firstRunTime, secondRunTime );
+        assertEquals(firstRunTime, secondRunTime);
     }
-
 }

@@ -23,8 +23,7 @@ package org.codehaus.plexus.archiver.util;
  * @since 1.1
  *
  */
-public class FilePermission
-{
+public class FilePermission {
 
     private final boolean executable;
 
@@ -38,9 +37,13 @@ public class FilePermission
 
     private final boolean writable;
 
-    public FilePermission( boolean executable, boolean ownerOnlyExecutable, boolean ownerOnlyReadable,
-                           boolean readable, boolean ownerOnlyWritable, boolean writable )
-    {
+    public FilePermission(
+            boolean executable,
+            boolean ownerOnlyExecutable,
+            boolean ownerOnlyReadable,
+            boolean readable,
+            boolean ownerOnlyWritable,
+            boolean writable) {
         this.executable = executable;
         this.ownerOnlyExecutable = ownerOnlyExecutable;
         this.ownerOnlyReadable = ownerOnlyReadable;
@@ -49,43 +52,34 @@ public class FilePermission
         this.writable = writable;
     }
 
-    public boolean isExecutable()
-    {
+    public boolean isExecutable() {
         return executable;
     }
 
-    public boolean isOwnerOnlyExecutable()
-    {
+    public boolean isOwnerOnlyExecutable() {
         return ownerOnlyExecutable;
     }
 
-    public boolean isOwnerOnlyReadable()
-    {
+    public boolean isOwnerOnlyReadable() {
         return ownerOnlyReadable;
     }
 
-    public boolean isReadable()
-    {
+    public boolean isReadable() {
         return readable;
     }
 
-    public boolean isOwnerOnlyWritable()
-    {
+    public boolean isOwnerOnlyWritable() {
         return ownerOnlyWritable;
     }
 
-    public boolean isWritable()
-    {
+    public boolean isWritable() {
         return writable;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "FilePermission [executable=" + executable + ", ownerOnlyExecutable=" + ownerOnlyExecutable
-                   + ", ownerOnlyReadable=" + ownerOnlyReadable + ", readable=" + readable + ", ownerOnlyWritable="
-                   + ownerOnlyWritable + ", writable=" + writable + "]";
-
+                + ", ownerOnlyReadable=" + ownerOnlyReadable + ", readable=" + readable + ", ownerOnlyWritable="
+                + ownerOnlyWritable + ", writable=" + writable + "]";
     }
-
 }

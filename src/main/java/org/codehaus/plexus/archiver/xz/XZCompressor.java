@@ -16,9 +16,11 @@
 package org.codehaus.plexus.archiver.xz;
 
 import java.io.IOException;
+
 import org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
@@ -26,44 +28,31 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
  * @author philip.lourandos
  * @since 3.3
  */
-public class XZCompressor extends Compressor
-{
+public class XZCompressor extends Compressor {
 
     private XZCompressorOutputStream xzOut;
 
-    public XZCompressor()
-    {
-    }
+    public XZCompressor() {}
 
     @Override
-    public void compress() throws ArchiverException
-    {
-        try
-        {
-            xzOut = new XZCompressorOutputStream( bufferedOutputStream( fileOutputStream( getDestFile() ) ) );
-            compress( getSource(), xzOut );
-        }
-        catch ( IOException ioe )
-        {
-            throw new ArchiverException( "Problem creating xz " + ioe.getMessage(), ioe );
+    public void compress() throws ArchiverException {
+        try {
+            xzOut = new XZCompressorOutputStream(bufferedOutputStream(fileOutputStream(getDestFile())));
+            compress(getSource(), xzOut);
+        } catch (IOException ioe) {
+            throw new ArchiverException("Problem creating xz " + ioe.getMessage(), ioe);
         }
     }
 
     @Override
-    public void close()
-    {
-        try
-        {
-            if ( this.xzOut != null )
-            {
+    public void close() {
+        try {
+            if (this.xzOut != null) {
                 this.xzOut.close();
                 xzOut = null;
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( "Failure closing target.", e );
+        } catch (final IOException e) {
+            throw new ArchiverException("Failure closing target.", e);
         }
     }
-
 }

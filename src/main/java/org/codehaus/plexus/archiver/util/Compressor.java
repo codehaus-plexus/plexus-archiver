@@ -20,17 +20,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Compressor
-{
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+public abstract class Compressor {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected Logger getLogger()
-    {
+    protected Logger getLogger() {
         return logger;
     }
 
@@ -43,29 +42,25 @@ public abstract class Compressor
      *
      * @param compressFile
      */
-    public void setDestFile( File compressFile )
-    {
+    public void setDestFile(File compressFile) {
         this.destFile = compressFile;
     }
 
-    public File getDestFile()
-    {
+    public File getDestFile() {
         return destFile;
     }
 
     /**
      * The resource to compress; required.
      */
-    public void setSource( PlexusIoResource source )
-    {
+    public void setSource(PlexusIoResource source) {
         this.source = source;
     }
 
     /**
      * The resource to compress; required.
      */
-    public PlexusIoResource getSource()
-    {
+    public PlexusIoResource getSource() {
         return source;
     }
 
@@ -77,28 +72,21 @@ public abstract class Compressor
      *
      * @throws IOException
      */
-    private void compressFile( InputStream in, OutputStream zOut )
-        throws IOException
-    {
-        byte[] buffer = new byte[ 8 * 1024 ];
+    private void compressFile(InputStream in, OutputStream zOut) throws IOException {
+        byte[] buffer = new byte[8 * 1024];
         int count = 0;
-        do
-        {
-            zOut.write( buffer, 0, count );
-            count = in.read( buffer, 0, buffer.length );
-        }
-        while ( count != -1 );
+        do {
+            zOut.write(buffer, 0, count);
+            count = in.read(buffer, 0, buffer.length);
+        } while (count != -1);
     }
 
     /**
      * compress a resource to an output stream
      */
-    protected void compress( PlexusIoResource resource, OutputStream zOut )
-        throws IOException
-    {
-        try ( InputStream in = Streams.bufferedInputStream( resource.getContents() ) )
-        {
-            compressFile( in, zOut );
+    protected void compress(PlexusIoResource resource, OutputStream zOut) throws IOException {
+        try (InputStream in = Streams.bufferedInputStream(resource.getContents())) {
+            compressFile(in, zOut);
         }
     }
 
@@ -107,15 +95,12 @@ public abstract class Compressor
      *
      * this is public so the process of compression and closing can be dealt with separately.
      */
-    public abstract void compress()
-        throws ArchiverException;
+    public abstract void compress() throws ArchiverException;
 
     /**
      * subclasses must implement this method to cleanup after compression
      *
      * this is public so the process of compression and closing can be dealt with separately.
      */
-    public abstract void close()
-        throws ArchiverException;
-
+    public abstract void close() throws ArchiverException;
 }

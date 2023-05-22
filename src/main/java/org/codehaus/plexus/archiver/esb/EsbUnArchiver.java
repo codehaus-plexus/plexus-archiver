@@ -25,18 +25,12 @@ import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "esb" )
-public class EsbUnArchiver
-        extends ZipUnArchiver
-{
+@Named("esb")
+public class EsbUnArchiver extends ZipUnArchiver {
 
-    public EsbUnArchiver()
-    {
+    public EsbUnArchiver() {}
+
+    public EsbUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public EsbUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

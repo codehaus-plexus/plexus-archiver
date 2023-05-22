@@ -25,25 +25,19 @@ import java.io.File;
  *
  * @author <a href="mailto:dantran@gmail.com">Dan Tran</a>
  */
-@Named( "tar.gz" )
-public class TarGZipUnArchiver
-    extends TarUnArchiver
-{
+@Named("tar.gz")
+public class TarGZipUnArchiver extends TarUnArchiver {
 
-    public TarGZipUnArchiver()
-    {
+    public TarGZipUnArchiver() {
         this.setupCompressionMethod();
     }
 
-    public TarGZipUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public TarGZipUnArchiver(File sourceFile) {
+        super(sourceFile);
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( UntarCompressionMethod.GZIP );
+    private void setupCompressionMethod() {
+        this.setCompression(UntarCompressionMethod.GZIP);
     }
-
 }

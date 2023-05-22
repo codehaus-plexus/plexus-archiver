@@ -16,10 +16,11 @@
  */
 package org.codehaus.plexus.archiver.manager;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.util.Collection;
 
-import javax.annotation.Nonnull;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -27,37 +28,30 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 /**
  * @author dantran
  */
-public interface ArchiverManager
-{
+public interface ArchiverManager {
     @Nonnull
-    Archiver getArchiver( @Nonnull String archiverName )
-        throws NoSuchArchiverException;
+    Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException;
 
     @Nonnull
-    Archiver getArchiver( @Nonnull File file )
-        throws NoSuchArchiverException;
+    Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
     Collection<String> getAvailableArchivers();
 
     @Nonnull
-    UnArchiver getUnArchiver( @Nonnull String unArchiverName )
-        throws NoSuchArchiverException;
+    UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException;
 
     @Nonnull
-    UnArchiver getUnArchiver( @Nonnull File file )
-        throws NoSuchArchiverException;
+    UnArchiver getUnArchiver(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
     Collection<String> getAvailableUnArchivers();
 
     @Nonnull
-    PlexusIoResourceCollection getResourceCollection( @Nonnull File file )
-        throws NoSuchArchiverException;
+    PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
-    PlexusIoResourceCollection getResourceCollection( String unArchiverName )
-        throws NoSuchArchiverException;
+    PlexusIoResourceCollection getResourceCollection(String unArchiverName) throws NoSuchArchiverException;
 
     @Nonnull
     Collection<String> getAvailableResourceCollections();

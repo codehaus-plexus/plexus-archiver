@@ -16,9 +16,6 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
-import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -55,10 +52,11 @@ import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
 
-@SuppressWarnings( { "UnusedDeclaration" } )
-public abstract class AbstractZipArchiver
-    extends AbstractArchiver
-{
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
+@SuppressWarnings({"UnusedDeclaration"})
+public abstract class AbstractZipArchiver extends AbstractArchiver {
 
     private String comment;
 
@@ -114,54 +112,44 @@ public abstract class AbstractZipArchiver
 
     protected ZipArchiveOutputStream zipArchiveOutputStream;
 
-    public String getComment()
-    {
+    public String getComment() {
         return comment;
     }
 
-    public void setComment( String comment )
-    {
+    public void setComment(String comment) {
         this.comment = comment;
     }
 
-    public String getEncoding()
-    {
+    public String getEncoding() {
         return encoding;
     }
 
-    public void setEncoding( String encoding )
-    {
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
-    public void setCompress( boolean compress )
-    {
+    public void setCompress(boolean compress) {
         this.doCompress = compress;
     }
 
-    public boolean isCompress()
-    {
+    public boolean isCompress() {
         return doCompress;
     }
 
-    public boolean isRecompressAddedZips()
-    {
+    public boolean isRecompressAddedZips() {
         return recompressAddedZips;
     }
 
-    public void setRecompressAddedZips( boolean recompressAddedZips )
-    {
+    public void setRecompressAddedZips(boolean recompressAddedZips) {
         this.recompressAddedZips = recompressAddedZips;
     }
 
-    public void setUpdateMode( boolean update )
-    {
+    public void setUpdateMode(boolean update) {
         this.doUpdate = update;
         savedDoUpdate = doUpdate;
     }
 
-    public boolean isInUpdateMode()
-    {
+    public boolean isInUpdateMode() {
         return doUpdate;
     }
 
@@ -171,140 +159,112 @@ public abstract class AbstractZipArchiver
      *
      * @param f true to emilate sun jar utility
      */
-    public void setFilesonly( boolean f )
-    {
+    public void setFilesonly(boolean f) {
         doFilesonly = f;
     }
 
-    public boolean isFilesonly()
-    {
+    public boolean isFilesonly() {
         return doFilesonly;
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException, IOException
-    {
-        if ( !checkForced() )
-        {
+    protected void execute() throws ArchiverException, IOException {
+        if (!checkForced()) {
             return;
         }
 
-        if ( doubleFilePass )
-        {
+        if (doubleFilePass) {
             skipWriting = true;
             createArchiveMain();
             skipWriting = false;
             createArchiveMain();
-        }
-        else
-        {
+        } else {
             createArchiveMain();
         }
 
-        finalizeZipOutputStream( zOut );
+        finalizeZipOutputStream(zOut);
     }
 
-    protected void finalizeZipOutputStream( ConcurrentJarCreator zOut )
-        throws IOException, ArchiverException
-    {
-    }
+    protected void finalizeZipOutputStream(ConcurrentJarCreator zOut) throws IOException, ArchiverException {}
 
-    private void createArchiveMain()
-        throws ArchiverException, IOException
-    {
+    private void createArchiveMain() throws ArchiverException, IOException {
         //noinspection deprecation
-        if ( !Archiver.DUPLICATES_SKIP.equals( duplicate ) )
-        {
+        if (!Archiver.DUPLICATES_SKIP.equals(duplicate)) {
             //noinspection deprecation
-            setDuplicateBehavior( duplicate );
+            setDuplicateBehavior(duplicate);
         }
 
         ResourceIterator iter = getResources();
-        if ( !iter.hasNext() && !hasVirtualFiles() )
-        {
-            throw new EmptyArchiveException( "archive cannot be empty" );
+        if (!iter.hasNext() && !hasVirtualFiles()) {
+            throw new EmptyArchiveException("archive cannot be empty");
         }
 
         zipFile = getDestFile();
 
-        if ( zipFile == null )
-        {
-            throw new ArchiverException( "You must set the destination " + archiveType + "file." );
+        if (zipFile == null) {
+            throw new ArchiverException("You must set the destination " + archiveType + "file.");
         }
 
-        if ( zipFile.exists() && !zipFile.isFile() )
-        {
-            throw new ArchiverException( zipFile + " isn't a file." );
+        if (zipFile.exists() && !zipFile.isFile()) {
+            throw new ArchiverException(zipFile + " isn't a file.");
         }
 
-        if ( zipFile.exists() && !zipFile.canWrite() )
-        {
-            throw new ArchiverException( zipFile + " is read-only." );
+        if (zipFile.exists() && !zipFile.canWrite()) {
+            throw new ArchiverException(zipFile + " is read-only.");
         }
 
         // Whether or not an actual update is required -
         // we don't need to update if the original file doesn't exist
         addingNewFiles = true;
 
-        if ( doUpdate && !zipFile.exists() )
-        {
+        if (doUpdate && !zipFile.exists()) {
             doUpdate = false;
-            getLogger().debug( "ignoring update attribute as " + archiveType + " doesn't exist." );
+            getLogger().debug("ignoring update attribute as " + archiveType + " doesn't exist.");
         }
 
         success = false;
 
-        if ( doUpdate )
-        {
-            renamedFile = FileUtils.createTempFile( "zip", ".tmp", zipFile.getParentFile() );
+        if (doUpdate) {
+            renamedFile = FileUtils.createTempFile("zip", ".tmp", zipFile.getParentFile());
             renamedFile.deleteOnExit();
 
-            try
-            {
-                FileUtils.rename( zipFile, renamedFile );
-            }
-            catch ( SecurityException e )
-            {
-                getLogger().debug( e.toString() );
+            try {
+                FileUtils.rename(zipFile, renamedFile);
+            } catch (SecurityException e) {
+                getLogger().debug(e.toString());
                 throw new ArchiverException(
-                    "Not allowed to rename old file (" + zipFile.getAbsolutePath() + ") to temporary file", e );
-            }
-            catch ( IOException e )
-            {
-                getLogger().debug( e.toString() );
+                        "Not allowed to rename old file (" + zipFile.getAbsolutePath() + ") to temporary file", e);
+            } catch (IOException e) {
+                getLogger().debug(e.toString());
                 throw new ArchiverException(
-                    "Unable to rename old file (" + zipFile.getAbsolutePath() + ") to temporary file", e );
+                        "Unable to rename old file (" + zipFile.getAbsolutePath() + ") to temporary file", e);
             }
         }
 
         String action = doUpdate ? "Updating " : "Building ";
 
-        getLogger().info( action + archiveType + ": " + zipFile.getAbsolutePath() );
+        getLogger().info(action + archiveType + ": " + zipFile.getAbsolutePath());
 
-        if ( !skipWriting )
-        {
-            zipArchiveOutputStream =
-                new ZipArchiveOutputStream( bufferedOutputStream( fileOutputStream( zipFile, "zip" ) ) );
-            zipArchiveOutputStream.setEncoding( encoding );
-            zipArchiveOutputStream.setCreateUnicodeExtraFields( this.getUnicodeExtraFieldPolicy() );
+        if (!skipWriting) {
+            zipArchiveOutputStream = new ZipArchiveOutputStream(bufferedOutputStream(fileOutputStream(zipFile, "zip")));
+            zipArchiveOutputStream.setEncoding(encoding);
+            zipArchiveOutputStream.setCreateUnicodeExtraFields(this.getUnicodeExtraFieldPolicy());
             zipArchiveOutputStream.setMethod(
-                doCompress ? ZipArchiveOutputStream.DEFLATED : ZipArchiveOutputStream.STORED );
+                    doCompress ? ZipArchiveOutputStream.DEFLATED : ZipArchiveOutputStream.STORED);
 
-            zOut = new ConcurrentJarCreator( recompressAddedZips, Runtime.getRuntime().availableProcessors() );
+            zOut = new ConcurrentJarCreator(
+                    recompressAddedZips, Runtime.getRuntime().availableProcessors());
         }
-        initZipOutputStream( zOut );
+        initZipOutputStream(zOut);
 
         // Add the new files to the archive.
-        addResources( iter, zOut );
+        addResources(iter, zOut);
 
         // If we've been successful on an update, delete the
         // temporary file
-        if ( doUpdate )
-        {
-            if ( !renamedFile.delete() )
-            {
-                getLogger().warn( "Warning: unable to delete temporary file " + renamedFile.getName() );
+        if (doUpdate) {
+            if (!renamedFile.delete()) {
+                getLogger().warn("Warning: unable to delete temporary file " + renamedFile.getName());
             }
         }
         success = true;
@@ -319,24 +279,19 @@ public abstract class AbstractZipArchiver
      *
      * @see #getEncoding()
      */
-    private ZipArchiveOutputStream.UnicodeExtraFieldPolicy getUnicodeExtraFieldPolicy()
-    {
+    private ZipArchiveOutputStream.UnicodeExtraFieldPolicy getUnicodeExtraFieldPolicy() {
         // Copied from ZipEncodingHelper.isUTF8()
         String effectiveEncoding = this.getEncoding();
 
-        if ( effectiveEncoding == null )
-        {
+        if (effectiveEncoding == null) {
             effectiveEncoding = Charset.defaultCharset().name();
         }
 
-        boolean utf8 = StandardCharsets.UTF_8.name().equalsIgnoreCase( effectiveEncoding );
+        boolean utf8 = StandardCharsets.UTF_8.name().equalsIgnoreCase(effectiveEncoding);
 
-        if ( !utf8 )
-        {
-            for ( String alias : StandardCharsets.UTF_8.aliases() )
-            {
-                if ( alias.equalsIgnoreCase( effectiveEncoding ) )
-                {
+        if (!utf8) {
+            for (String alias : StandardCharsets.UTF_8.aliases()) {
+                if (alias.equalsIgnoreCase(effectiveEncoding)) {
                     utf8 = true;
                     break;
                 }
@@ -348,9 +303,8 @@ public abstract class AbstractZipArchiver
         // is not encodeable as well. If the effective encoding is not UTF-8, we always add the extra field. If it is
         // UTF-8, we never add the extra field.
         return utf8
-                   ? ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NEVER
-                   : ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS;
-
+                ? ZipArchiveOutputStream.UnicodeExtraFieldPolicy.NEVER
+                : ZipArchiveOutputStream.UnicodeExtraFieldPolicy.ALWAYS;
     }
 
     /**
@@ -359,38 +313,28 @@ public abstract class AbstractZipArchiver
      * @param resources the resources to add
      * @param zOut the stream to write to
      */
-    @SuppressWarnings(
-    {
-        "JavaDoc"
-    } )
-    protected final void addResources( ResourceIterator resources, ConcurrentJarCreator zOut )
-        throws IOException, ArchiverException
-    {
-        while ( resources.hasNext() )
-        {
+    @SuppressWarnings({"JavaDoc"})
+    protected final void addResources(ResourceIterator resources, ConcurrentJarCreator zOut)
+            throws IOException, ArchiverException {
+        while (resources.hasNext()) {
             ArchiveEntry entry = resources.next();
             String name = entry.getName();
-            name = name.replace( File.separatorChar, '/' );
+            name = name.replace(File.separatorChar, '/');
 
-            if ( "".equals( name ) )
-            {
+            if ("".equals(name)) {
                 continue;
             }
 
-            if ( entry.getResource().isDirectory() && !name.endsWith( "/" ) )
-            {
+            if (entry.getResource().isDirectory() && !name.endsWith("/")) {
                 name = name + "/";
             }
 
-            addParentDirs( entry, null, name, zOut );
+            addParentDirs(entry, null, name, zOut);
 
-            if ( entry.getResource().isFile() )
-            {
-                zipFile( entry, zOut, name );
-            }
-            else
-            {
-                zipDir( entry.getResource(), zOut, name, entry.getMode(), encoding );
+            if (entry.getResource().isFile()) {
+                zipFile(entry, zOut, name);
+            } else {
+                zipDir(entry.getResource(), zOut, name, entry.getMode(), encoding);
             }
         }
     }
@@ -402,33 +346,24 @@ public abstract class AbstractZipArchiver
      * we do not *relly* know the entry's connection to the file system so establishing the attributes of the parents can
      * be impossible and is not really supported.
      */
-    @SuppressWarnings(
-    {
-        "JavaDoc"
-    } )
-    private void addParentDirs( ArchiveEntry archiveEntry, File baseDir, String entry, ConcurrentJarCreator zOut )
-        throws IOException
-    {
-        if ( !doFilesonly && getIncludeEmptyDirs() )
-        {
-            Deque<String> directories = addedDirs.asStringDeque( entry );
+    @SuppressWarnings({"JavaDoc"})
+    private void addParentDirs(ArchiveEntry archiveEntry, File baseDir, String entry, ConcurrentJarCreator zOut)
+            throws IOException {
+        if (!doFilesonly && getIncludeEmptyDirs()) {
+            Deque<String> directories = addedDirs.asStringDeque(entry);
 
-            while ( !directories.isEmpty() )
-            {
+            while (!directories.isEmpty()) {
                 String dir = directories.pop();
                 File f;
-                if ( baseDir != null )
-                {
-                    f = new File( baseDir, dir );
-                }
-                else
-                {
-                    f = new File( dir );
+                if (baseDir != null) {
+                    f = new File(baseDir, dir);
+                } else {
+                    f = new File(dir);
                 }
                 // the
                 // At this point we could do something like read the atr
-                final PlexusIoResource res = new AnonymousResource( f );
-                zipDir( res, zOut, dir, archiveEntry.getDefaultDirMode(), encoding );
+                final PlexusIoResource res = new AnonymousResource(f);
+                zipDir(res, zOut, dir, archiveEntry.getDefaultDirMode(), encoding);
             }
         }
     }
@@ -446,36 +381,34 @@ public abstract class AbstractZipArchiver
      * If set to {@code false} it is added synchronously.
      * If the entry is symbolic link this parameter is ignored.
      */
-    @SuppressWarnings(
-    {
-        "JavaDoc"
-    } )
-    protected void zipFile( InputStreamSupplier in, ConcurrentJarCreator zOut, String vPath,
-                            long lastModified,
-                            File fromArchive, int mode, String symlinkDestination, boolean addInParallel )
-        throws IOException, ArchiverException
-    {
-        getLogger().debug( "adding entry " + vPath );
+    @SuppressWarnings({"JavaDoc"})
+    protected void zipFile(
+            InputStreamSupplier in,
+            ConcurrentJarCreator zOut,
+            String vPath,
+            long lastModified,
+            File fromArchive,
+            int mode,
+            String symlinkDestination,
+            boolean addInParallel)
+            throws IOException, ArchiverException {
+        getLogger().debug("adding entry " + vPath);
 
-        entries.put( vPath, vPath );
+        entries.put(vPath, vPath);
 
-        if ( !skipWriting )
-        {
-            ZipArchiveEntry ze = new ZipArchiveEntry( vPath );
-            setZipEntryTime( ze, lastModified );
+        if (!skipWriting) {
+            ZipArchiveEntry ze = new ZipArchiveEntry(vPath);
+            setZipEntryTime(ze, lastModified);
 
-            ze.setMethod( doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED );
-            ze.setUnixMode( UnixStat.FILE_FLAG | mode );
+            ze.setMethod(doCompress ? ZipArchiveEntry.DEFLATED : ZipArchiveEntry.STORED);
+            ze.setUnixMode(UnixStat.FILE_FLAG | mode);
 
-            if ( ze.isUnixSymlink() )
-            {
-                final byte[] bytes = encodeArchiveEntry( symlinkDestination, getEncoding() );
-                InputStreamSupplier payload = () -> new ByteArrayInputStream( bytes );
-                zOut.addArchiveEntry( ze, payload, true );
-            }
-            else
-            {
-                zOut.addArchiveEntry( ze, in, addInParallel );
+            if (ze.isUnixSymlink()) {
+                final byte[] bytes = encodeArchiveEntry(symlinkDestination, getEncoding());
+                InputStreamSupplier payload = () -> new ByteArrayInputStream(bytes);
+                zOut.addArchiveEntry(ze, payload, true);
+            } else {
+                zOut.addArchiveEntry(ze, in, addInParallel);
             }
         }
     }
@@ -489,39 +422,35 @@ public abstract class AbstractZipArchiver
      * @param zOut the stream to write to
      * @param vPath the name this entry shall have in the archive
      */
-    @SuppressWarnings(
-    {
-        "JavaDoc"
-    } )
-    protected void zipFile( final ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath )
-        throws IOException, ArchiverException
-    {
+    @SuppressWarnings({"JavaDoc"})
+    protected void zipFile(final ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath)
+            throws IOException, ArchiverException {
         final PlexusIoResource resource = entry.getResource();
-        if ( ResourceUtils.isSame( resource, getDestFile() ) )
-        {
-            throw new ArchiverException( "A zip file cannot include itself" );
+        if (ResourceUtils.isSame(resource, getDestFile())) {
+            throw new ArchiverException("A zip file cannot include itself");
         }
 
         final boolean b = entry.getResource() instanceof SymlinkDestinationSupplier;
-        String symlinkTarget = b ? ( (SymlinkDestinationSupplier) entry.getResource() ).getSymlinkDestination() : null;
+        String symlinkTarget = b ? ((SymlinkDestinationSupplier) entry.getResource()).getSymlinkDestination() : null;
         InputStreamSupplier in = () -> {
-            try
-            {
+            try {
                 return entry.getInputStream();
-            }
-            catch ( IOException e )
-            {
-                throw new UncheckedIOException( e );
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
             }
         };
-        try
-        {
-            zipFile( in, zOut, vPath, resource.getLastModified(), null, entry.getMode(), symlinkTarget,
-                     !entry.shouldAddSynchronously() );
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( "IOException when zipping r" + entry.getName() + ": " + e.getMessage(), e );
+        try {
+            zipFile(
+                    in,
+                    zOut,
+                    vPath,
+                    resource.getLastModified(),
+                    null,
+                    entry.getMode(),
+                    symlinkTarget,
+                    !entry.shouldAddSynchronously());
+        } catch (IOException e) {
+            throw new ArchiverException("IOException when zipping r" + entry.getName() + ": " + e.getMessage(), e);
         }
     }
 
@@ -537,37 +466,30 @@ public abstract class AbstractZipArchiver
      * @param zipEntry to set the last modified time
      * @param lastModifiedTime to set in the zip entry only if {@link #getLastModifiedTime()} returns null
      */
-    protected void setZipEntryTime( ZipArchiveEntry zipEntry, long lastModifiedTime )
-    {
-        if ( getLastModifiedTime() != null )
-        {
+    protected void setZipEntryTime(ZipArchiveEntry zipEntry, long lastModifiedTime) {
+        if (getLastModifiedTime() != null) {
             lastModifiedTime = getLastModifiedTime().toMillis();
         }
 
-        zipEntry.setTime( lastModifiedTime + 1999 );
+        zipEntry.setTime(lastModifiedTime + 1999);
     }
 
-    protected void zipDir( PlexusIoResource dir, ConcurrentJarCreator zOut, String vPath, int mode,
-                           String encodingToUse )
-        throws IOException
-    {
-        if ( addedDirs.update( vPath ) )
-        {
+    protected void zipDir(PlexusIoResource dir, ConcurrentJarCreator zOut, String vPath, int mode, String encodingToUse)
+            throws IOException {
+        if (addedDirs.update(vPath)) {
             return;
         }
 
-        getLogger().debug( "adding directory " + vPath );
+        getLogger().debug("adding directory " + vPath);
 
-        if ( !skipWriting )
-        {
+        if (!skipWriting) {
             final boolean isSymlink = dir instanceof SymlinkDestinationSupplier;
 
-            if ( isSymlink && vPath.endsWith( File.separator ) )
-            {
-                vPath = vPath.substring( 0, vPath.length() - 1 );
+            if (isSymlink && vPath.endsWith(File.separator)) {
+                vPath = vPath.substring(0, vPath.length() - 1);
             }
 
-            ZipArchiveEntry ze = new ZipArchiveEntry( vPath );
+            ZipArchiveEntry ze = new ZipArchiveEntry(vPath);
 
             /*
              * ZipOutputStream.putNextEntry expects the ZipEntry to
@@ -576,50 +498,40 @@ public abstract class AbstractZipArchiver
              *
              * This forces us to process the data twice.
              */
-            if ( isSymlink )
-            {
+            if (isSymlink) {
                 mode = UnixStat.LINK_FLAG | mode;
             }
 
-            if ( dir != null && dir.isExisting() )
-            {
-                setZipEntryTime( ze, dir.getLastModified() );
-            }
-            else
-            {
+            if (dir != null && dir.isExisting()) {
+                setZipEntryTime(ze, dir.getLastModified());
+            } else {
                 // ZIPs store time with a granularity of 2 seconds, round up
-                setZipEntryTime( ze, System.currentTimeMillis() );
+                setZipEntryTime(ze, System.currentTimeMillis());
             }
-            if ( !isSymlink )
-            {
-                ze.setSize( 0 );
-                ze.setMethod( ZipArchiveEntry.STORED );
+            if (!isSymlink) {
+                ze.setSize(0);
+                ze.setMethod(ZipArchiveEntry.STORED);
                 // This is faintly ridiculous:
-                ze.setCrc( EMPTY_CRC );
+                ze.setCrc(EMPTY_CRC);
             }
-            ze.setUnixMode( mode );
+            ze.setUnixMode(mode);
 
-            if ( !isSymlink )
-            {
-                zOut.addArchiveEntry( ze, () -> Streams.EMPTY_INPUTSTREAM, true );
-            }
-            else
-            {
-                String symlinkDestination = ( (SymlinkDestinationSupplier) dir ).getSymlinkDestination();
-                final byte[] bytes = encodeArchiveEntry( symlinkDestination, encodingToUse );
-                ze.setMethod( ZipArchiveEntry.DEFLATED );
-                zOut.addArchiveEntry( ze, () -> new ByteArrayInputStream( bytes ), true );
+            if (!isSymlink) {
+                zOut.addArchiveEntry(ze, () -> Streams.EMPTY_INPUTSTREAM, true);
+            } else {
+                String symlinkDestination = ((SymlinkDestinationSupplier) dir).getSymlinkDestination();
+                final byte[] bytes = encodeArchiveEntry(symlinkDestination, encodingToUse);
+                ze.setMethod(ZipArchiveEntry.DEFLATED);
+                zOut.addArchiveEntry(ze, () -> new ByteArrayInputStream(bytes), true);
             }
         }
     }
 
-    private byte[] encodeArchiveEntry( String payload, String encoding )
-        throws IOException
-    {
-        ZipEncoding enc = ZipEncodingHelper.getZipEncoding( encoding );
-        ByteBuffer encodedPayloadByteBuffer = enc.encode( payload );
+    private byte[] encodeArchiveEntry(String payload, String encoding) throws IOException {
+        ZipEncoding enc = ZipEncodingHelper.getZipEncoding(encoding);
+        ByteBuffer encodedPayloadByteBuffer = enc.encode(payload);
         byte[] encodedPayloadBytes = new byte[encodedPayloadByteBuffer.limit()];
-        encodedPayloadByteBuffer.get( encodedPayloadBytes );
+        encodedPayloadByteBuffer.get(encodedPayloadBytes);
 
         return encodedPayloadBytes;
     }
@@ -631,32 +543,24 @@ public abstract class AbstractZipArchiver
      *
      * @return true for historic reasons
      */
-    @SuppressWarnings(
-    {
-        "JavaDoc"
-    } )
-    protected boolean createEmptyZip( File zipFile )
-        throws ArchiverException
-    {
+    @SuppressWarnings({"JavaDoc"})
+    protected boolean createEmptyZip(File zipFile) throws ArchiverException {
         // In this case using java.util.zip will not work
         // because it does not permit a zero-entry archive.
         // Must create it manually.
-        getLogger().info( "Note: creating empty " + archiveType + " archive " + zipFile );
+        getLogger().info("Note: creating empty " + archiveType + " archive " + zipFile);
 
-        try ( OutputStream os = Files.newOutputStream( zipFile.toPath() ) )
-        {
+        try (OutputStream os = Files.newOutputStream(zipFile.toPath())) {
             // Cf. PKZIP specification.
-            byte[] empty = new byte[ 22 ];
+            byte[] empty = new byte[22];
             empty[0] = 80; // P
             empty[1] = 75; // K
             empty[2] = 5;
             empty[3] = 6;
             // remainder zeros
-            os.write( empty );
-        }
-        catch ( IOException ioe )
-        {
-            throw new ArchiverException( "Could not create empty ZIP archive " + "(" + ioe.getMessage() + ")", ioe );
+            os.write(empty);
+        } catch (IOException ioe) {
+            throw new ArchiverException("Could not create empty ZIP archive " + "(" + ioe.getMessage() + ")", ioe);
         }
         return true;
     }
@@ -676,9 +580,7 @@ public abstract class AbstractZipArchiver
      * @see #reset
      */
     @Override
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         super.cleanUp();
         addedDirs.clear();
         entries.clear();
@@ -696,10 +598,9 @@ public abstract class AbstractZipArchiver
      *
      * @see #cleanUp
      */
-    public void reset()
-    {
-        setDestFile( null );
-//        duplicate = "add";
+    public void reset() {
+        setDestFile(null);
+        //        duplicate = "add";
         archiveType = "zip";
         doCompress = true;
         doUpdate = false;
@@ -712,42 +613,32 @@ public abstract class AbstractZipArchiver
      *
      * @param zOut The output stream
      */
-    protected void initZipOutputStream( ConcurrentJarCreator zOut )
-        throws ArchiverException, IOException
-    {
-    }
+    protected void initZipOutputStream(ConcurrentJarCreator zOut) throws ArchiverException, IOException {}
 
     /**
      * method for subclasses to override
      */
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return true;
     }
 
     @Override
-    protected boolean revert( StringBuffer messageBuffer )
-    {
+    protected boolean revert(StringBuffer messageBuffer) {
         int initLength = messageBuffer.length();
 
         // delete a bogus ZIP file (but only if it's not the original one)
-        if ( ( !doUpdate || renamedFile != null ) && !zipFile.delete() )
-        {
-            messageBuffer.append( " (and the archive is probably corrupt but I could not delete it)" );
+        if ((!doUpdate || renamedFile != null) && !zipFile.delete()) {
+            messageBuffer.append(" (and the archive is probably corrupt but I could not delete it)");
         }
 
-        if ( doUpdate && renamedFile != null )
-        {
-            try
-            {
-                FileUtils.rename( renamedFile, zipFile );
-            }
-            catch ( IOException e )
-            {
-                messageBuffer.append( " (and I couldn't rename the temporary file " );
-                messageBuffer.append( renamedFile.getName() );
-                messageBuffer.append( " back)" );
+        if (doUpdate && renamedFile != null) {
+            try {
+                FileUtils.rename(renamedFile, zipFile);
+            } catch (IOException e) {
+                messageBuffer.append(" (and I couldn't rename the temporary file ");
+                messageBuffer.append(renamedFile.getName());
+                messageBuffer.append(" back)");
             }
         }
 
@@ -755,23 +646,16 @@ public abstract class AbstractZipArchiver
     }
 
     @Override
-    protected void close()
-        throws IOException
-    {
+    protected void close() throws IOException {
         // Close the output stream.
-        try
-        {
-            if ( zipArchiveOutputStream != null )
-            {
-                if ( zOut != null )
-                {
-                    zOut.writeTo( zipArchiveOutputStream );
+        try {
+            if (zipArchiveOutputStream != null) {
+                if (zOut != null) {
+                    zOut.writeTo(zipArchiveOutputStream);
                 }
                 zipArchiveOutputStream.close();
             }
-        }
-        catch ( IOException ex )
-        {
+        } catch (IOException ex) {
             // If we're in this finally clause because of an
             // exception, we don't really care if there's an
             // exception when closing the stream. E.g. if it
@@ -781,39 +665,32 @@ public abstract class AbstractZipArchiver
             // exception. Otherwise, the error that's reported
             // will be the close() error, which is not the
             // real cause of the problem.
-            if ( success )
-            {
+            if (success) {
                 throw ex;
             }
 
-        }
-        catch ( InterruptedException e )
-        {
-            IOException ex = new IOException( "InterruptedException exception" );
-            ex.initCause( e.getCause() );
+        } catch (InterruptedException e) {
+            IOException ex = new IOException("InterruptedException exception");
+            ex.initCause(e.getCause());
             throw ex;
-        }
-        catch ( ExecutionException e )
-        {
-            IOException ex = new IOException( "Execution exception" );
-            ex.initCause( e.getCause() );
+        } catch (ExecutionException e) {
+            IOException ex = new IOException("Execution exception");
+            ex.initCause(e.getCause());
             throw ex;
         }
     }
 
     @Override
-    protected String getArchiveType()
-    {
+    protected String getArchiveType() {
         return archiveType;
     }
 
     @Override
-    protected FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
-    {
+    protected FileTime normalizeLastModifiedTime(FileTime lastModifiedTime) {
         // timestamp of zip entries at zip storage level ignores timezone: managed in ZipEntry.setTime,
         // that turns javaToDosTime: need to revert the operation here to get reproducible
         // zip entry time
-        return FileTime.fromMillis( dosToJavaTime( lastModifiedTime.toMillis() ) );
+        return FileTime.fromMillis(dosToJavaTime(lastModifiedTime.toMillis()));
     }
 
     /**
@@ -822,10 +699,9 @@ public abstract class AbstractZipArchiver
      * @see java.util.zip.ZipEntry#setTime
      * @see java.util.zip.ZipUtils#dosToJavaTime
      */
-    private static long dosToJavaTime( long dosTime )
-    {
-        Calendar cal = Calendar.getInstance( TimeZone.getDefault(), Locale.ROOT );
-        cal.setTimeInMillis( dosTime );
-        return dosTime - ( cal.get( Calendar.ZONE_OFFSET ) + cal.get( Calendar.DST_OFFSET ) );
+    private static long dosToJavaTime(long dosTime) {
+        Calendar cal = Calendar.getInstance(TimeZone.getDefault(), Locale.ROOT);
+        cal.setTimeInMillis(dosTime);
+        return dosTime - (cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
     }
 }

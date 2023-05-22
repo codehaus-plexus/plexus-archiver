@@ -19,59 +19,49 @@ package org.codehaus.plexus.archiver.gzip;
 import javax.inject.Named;
 
 import java.io.IOException;
+
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 
-@Named( "gzip" )
-public class GZipArchiver
-    extends AbstractArchiver
-{
+@Named("gzip")
+public class GZipArchiver extends AbstractArchiver {
 
     final GZipCompressor compressor = new GZipCompressor();
 
     @Override
-    protected void execute()
-        throws ArchiverException, IOException
-    {
-        if ( !checkForced() )
-        {
+    protected void execute() throws ArchiverException, IOException {
+        if (!checkForced()) {
             return;
         }
 
         ResourceIterator iter = getResources();
-        if ( !iter.hasNext() )
-        {
-            throw new EmptyArchiveException( "archive cannot be empty" );
+        if (!iter.hasNext()) {
+            throw new EmptyArchiveException("archive cannot be empty");
         }
         ArchiveEntry entry = iter.next();
-        if ( iter.hasNext() )
-        {
-            throw new ArchiverException( "There is more than one file in input." );
+        if (iter.hasNext()) {
+            throw new ArchiverException("There is more than one file in input.");
         }
-        compressor.setSource( entry.getResource() );
-        compressor.setDestFile( getDestFile() );
+        compressor.setSource(entry.getResource());
+        compressor.setDestFile(getDestFile());
         compressor.compress();
     }
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return true;
     }
 
     @Override
-    protected void close()
-    {
+    protected void close() {
         compressor.close();
     }
 
     @Override
-    protected String getArchiveType()
-    {
+    protected String getArchiveType() {
         return "gzip";
     }
-
 }

@@ -21,8 +21,7 @@ package org.codehaus.plexus.archiver;
  *
  * from org.apache.ant.tools.zip.UnixStat v1.9
  */
-public interface UnixStat
-{
+public interface UnixStat {
 
     /**
      * Bits used for permissions (and sticky bit)
@@ -76,5 +75,4 @@ public interface UnixStat
      * @since 1.1
      */
     int DEFAULT_FILE_PERM = 0_644;
-
 }

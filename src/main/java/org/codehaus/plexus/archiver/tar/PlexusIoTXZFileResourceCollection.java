@@ -20,7 +20,5 @@ import javax.inject.Named;
 /**
  * Alias for {@link PlexusIoTarXZFileResourceCollection}
  */
-@Named( "txz" )
-public class PlexusIoTXZFileResourceCollection extends PlexusIoTarXZFileResourceCollection
-{
-}
+@Named("txz")
+public class PlexusIoTXZFileResourceCollection extends PlexusIoTarXZFileResourceCollection {}

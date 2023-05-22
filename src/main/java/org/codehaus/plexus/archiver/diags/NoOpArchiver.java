@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.diags;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -23,7 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
-import javax.annotation.Nonnull;
+
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
@@ -36,316 +38,196 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 /**
  * An archiver that does nothing. Really.
  */
-@SuppressWarnings( "UnusedDeclaration" )
-public class NoOpArchiver implements Archiver
-{
+@SuppressWarnings("UnusedDeclaration")
+public class NoOpArchiver implements Archiver {
 
     boolean useJvmChmod;
 
     private boolean ignorePermissions;
 
     @Override
-    public void createArchive()
-        throws ArchiverException, IOException
-    {
-
-    }
+    public void createArchive() throws ArchiverException, IOException {}
 
     @Override
-    public void addDirectory( @Nonnull File directory )
-        throws ArchiverException
-    {
-
-    }
+    public void addDirectory(@Nonnull File directory) throws ArchiverException {}
 
     @Override
-    public void addDirectory( @Nonnull File directory, String prefix )
-        throws ArchiverException
-    {
-
-    }
+    public void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException {}
 
     @Override
-    public void addDirectory( @Nonnull File directory, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-
-    }
+    public void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException {}
 
     @Override
-    public void addDirectory( @Nonnull File directory, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-
-    }
+    public void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException {}
 
     @Override
-    public void addFileSet( @Nonnull FileSet fileSet )
-        throws ArchiverException
-    {
-
-    }
+    public void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException {}
 
     @Override
-    public void addSymlink( String symlinkName, String symlinkDestination )
-        throws ArchiverException
-    {
-
-    }
+    public void addSymlink(String symlinkName, String symlinkDestination) throws ArchiverException {}
 
     @Override
-    public void addSymlink( String symlinkName, int permissions, String symlinkDestination )
-        throws ArchiverException
-    {
-
-    }
+    public void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException {}
 
     @Override
-    public void addFile( @Nonnull File inputFile, @Nonnull String destFileName )
-        throws ArchiverException
-    {
-
-    }
+    public void addFile(@Nonnull File inputFile, @Nonnull String destFileName) throws ArchiverException {}
 
     @Override
-    public void addFile( @Nonnull File inputFile, @Nonnull String destFileName, int permissions )
-        throws ArchiverException
-    {
-
-    }
+    public void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions)
+            throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile, String prefix )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( File archiveFile, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( ArchivedFileSet fileSet )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException {}
 
     @Override
-    public void addArchivedFileSet( ArchivedFileSet fileSet, Charset charset )
-        throws ArchiverException
-    {
-
-    }
+    public void addArchivedFileSet(ArchivedFileSet fileSet, Charset charset) throws ArchiverException {}
 
     @Override
-    public void addResource( PlexusIoResource resource, String destFileName, int permissions )
-        throws ArchiverException
-    {
-
-    }
+    public void addResource(PlexusIoResource resource, String destFileName, int permissions) throws ArchiverException {}
 
     @Override
-    public void addResources( PlexusIoResourceCollection resources )
-        throws ArchiverException
-    {
-
-    }
+    public void addResources(PlexusIoResourceCollection resources) throws ArchiverException {}
 
     @Override
-    public File getDestFile()
-    {
+    public File getDestFile() {
         return null;
     }
 
     @Override
-    public void setDestFile( File destFile )
-    {
-
-    }
+    public void setDestFile(File destFile) {}
 
     @Override
-    public void setFileMode( int mode )
-    {
-
-    }
+    public void setFileMode(int mode) {}
 
     @Override
-    public int getFileMode()
-    {
+    public int getFileMode() {
         return 0;
     }
 
     @Override
-    public int getOverrideFileMode()
-    {
+    public int getOverrideFileMode() {
         return 0;
     }
 
     @Override
-    public void setDefaultFileMode( int mode )
-    {
-
-    }
+    public void setDefaultFileMode(int mode) {}
 
     @Override
-    public int getDefaultFileMode()
-    {
+    public int getDefaultFileMode() {
         return 0;
     }
 
     @Override
-    public void setDirectoryMode( int mode )
-    {
-
-    }
+    public void setDirectoryMode(int mode) {}
 
     @Override
-    public int getDirectoryMode()
-    {
+    public int getDirectoryMode() {
         return 0;
     }
 
     @Override
-    public int getOverrideDirectoryMode()
-    {
+    public int getOverrideDirectoryMode() {
         return 0;
     }
 
     @Override
-    public void setDefaultDirectoryMode( int mode )
-    {
-
-    }
+    public void setDefaultDirectoryMode(int mode) {}
 
     @Override
-    public int getDefaultDirectoryMode()
-    {
+    public int getDefaultDirectoryMode() {
         return 0;
     }
 
     @Override
-    public boolean getIncludeEmptyDirs()
-    {
+    public boolean getIncludeEmptyDirs() {
         return false;
     }
 
     @Override
-    public void setIncludeEmptyDirs( boolean includeEmptyDirs )
-    {
-
-    }
+    public void setIncludeEmptyDirs(boolean includeEmptyDirs) {}
 
     @Override
-    public void setDotFileDirectory( File dotFileDirectory )
-    {
-
-    }
+    public void setDotFileDirectory(File dotFileDirectory) {}
 
     @Nonnull
     @Override
-    public ResourceIterator getResources()
-        throws ArchiverException
-    {
-        return new ResourceIterator()
-        {
+    public ResourceIterator getResources() throws ArchiverException {
+        return new ResourceIterator() {
 
             @Override
-            public boolean hasNext()
-            {
+            public boolean hasNext() {
                 return false;
             }
 
             @Override
-            public ArchiveEntry next()
-            {
+            public ArchiveEntry next() {
                 return null;
             }
 
             @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException( "remove" );
+            public void remove() {
+                throw new UnsupportedOperationException("remove");
             }
-
         };
     }
 
     @Override
-    public Map<String, ArchiveEntry> getFiles()
-    {
+    public Map<String, ArchiveEntry> getFiles() {
         return Collections.emptyMap();
     }
 
     @Override
-    public boolean isForced()
-    {
+    public boolean isForced() {
         return false;
     }
 
     @Override
-    public void setForced( boolean forced )
-    {
-
-    }
+    public void setForced(boolean forced) {}
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return false;
     }
 
     @Override
-    public String getDuplicateBehavior()
-    {
+    public String getDuplicateBehavior() {
         return null;
     }
 
     @Override
-    public void setDuplicateBehavior( String duplicate )
-    {
-
-    }
+    public void setDuplicateBehavior(String duplicate) {}
 
     @Override
-    public void setUseJvmChmod( boolean useJvmChmod )
-    {
+    public void setUseJvmChmod(boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }
 
     @Override
-    public boolean isUseJvmChmod()
-    {
+    public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
 
     @Override
-    public boolean isIgnorePermissions()
-    {
+    public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
 
     @Override
-    public void setIgnorePermissions( boolean ignorePermissions )
-    {
+    public void setIgnorePermissions(boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
     }
 
@@ -354,96 +236,65 @@ public class NoOpArchiver implements Archiver
      */
     @Override
     @Deprecated
-    public void setLastModifiedDate( final Date lastModifiedDate )
-    {
-
-    }
+    public void setLastModifiedDate(final Date lastModifiedDate) {}
 
     /**
      * @deprecated Use {@link #getLastModifiedTime()} instead.
      */
     @Override
     @Deprecated
-    public Date getLastModifiedDate()
-    {
+    public Date getLastModifiedDate() {
         return null;
     }
 
     @Override
-    public void setLastModifiedTime( final FileTime lastModifiedTime )
-    {
-
-    }
+    public void setLastModifiedTime(final FileTime lastModifiedTime) {}
 
     @Override
-    public FileTime getLastModifiedTime()
-    {
+    public FileTime getLastModifiedTime() {
         return null;
     }
 
     @Override
-    public void setFilenameComparator( final Comparator<String> filenameComparator )
-    {
-
-    }
+    public void setFilenameComparator(final Comparator<String> filenameComparator) {}
 
     @Override
-    public void setOverrideUid( int uid )
-    {
-
-    }
+    public void setOverrideUid(int uid) {}
 
     @Override
-    public void setOverrideUserName( String userName )
-    {
-
-    }
+    public void setOverrideUserName(String userName) {}
 
     @Override
-    public int getOverrideUid()
-    {
+    public int getOverrideUid() {
         return 0;
     }
 
     @Override
-    public String getOverrideUserName()
-    {
+    public String getOverrideUserName() {
         return null;
     }
 
     @Override
-    public void setOverrideGid( int gid )
-    {
-
-    }
+    public void setOverrideGid(int gid) {}
 
     @Override
-    public void setOverrideGroupName( String groupName )
-    {
-
-    }
+    public void setOverrideGroupName(String groupName) {}
 
     @Override
-    public int getOverrideGid()
-    {
+    public int getOverrideGid() {
         return 0;
     }
 
     @Override
-    public String getOverrideGroupName()
-    {
+    public String getOverrideGroupName() {
         return null;
     }
 
     @Override
-    public void setUmask( int umask )
-    {
-
-    }
+    public void setUmask(int umask) {}
 
     @Override
-    public int getUmask()
-    {
+    public int getUmask() {
         return 0;
     }
 
@@ -452,15 +303,8 @@ public class NoOpArchiver implements Archiver
      */
     @Override
     @Deprecated
-    public void configureReproducible( Date lastModifiedDate )
-    {
-
-    }
+    public void configureReproducible(Date lastModifiedDate) {}
 
     @Override
-    public void configureReproducibleBuild( FileTime lastModifiedTime )
-    {
-
-    }
-
+    public void configureReproducibleBuild(FileTime lastModifiedTime) {}
 }

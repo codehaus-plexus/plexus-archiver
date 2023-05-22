@@ -25,18 +25,12 @@ import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "swc" )
-public class SwcUnArchiver
-        extends ZipUnArchiver
-{
+@Named("swc")
+public class SwcUnArchiver extends ZipUnArchiver {
 
-    public SwcUnArchiver()
-    {
+    public SwcUnArchiver() {}
+
+    public SwcUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public SwcUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

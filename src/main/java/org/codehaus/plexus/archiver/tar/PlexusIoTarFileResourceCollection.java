@@ -28,73 +28,56 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 
-@Named( "tar" )
-public class PlexusIoTarFileResourceCollection
-    extends AbstractPlexusIoArchiveResourceCollection implements Closeable
-{
+@Named("tar")
+public class PlexusIoTarFileResourceCollection extends AbstractPlexusIoArchiveResourceCollection implements Closeable {
 
-    protected TarFile newTarFile( File file )
-    {
-        return new TarFile( file );
+    protected TarFile newTarFile(File file) {
+        return new TarFile(file);
     }
 
     TarFile tarFile = null;
 
     @Override
-    public void close()
-        throws IOException
-    {
-        if ( tarFile != null )
-        {
+    public void close() throws IOException {
+        if (tarFile != null) {
             tarFile.close();
         }
     }
 
     @Override
-    public boolean isConcurrentAccessSupported()
-    {
+    public boolean isConcurrentAccessSupported() {
         return false;
     }
 
     @Override
-    protected Iterator<PlexusIoResource> getEntries()
-        throws IOException
-    {
+    protected Iterator<PlexusIoResource> getEntries() throws IOException {
         final File f = getFile();
-        if ( f == null )
-        {
-            throw new IOException( "The tar archive file has not been set." );
+        if (f == null) {
+            throw new IOException("The tar archive file has not been set.");
         }
-        if ( tarFile == null )
-        {
-            tarFile = newTarFile( f );
+        if (tarFile == null) {
+            tarFile = newTarFile(f);
         }
         final Enumeration<ArchiveEntry> en = tarFile.getEntries();
-        return new Iterator<PlexusIoResource>()
-        {
+        return new Iterator<PlexusIoResource>() {
 
             @Override
-            public boolean hasNext()
-            {
+            public boolean hasNext() {
                 return en.hasMoreElements();
             }
 
             @Override
-            public PlexusIoResource next()
-            {
+            public PlexusIoResource next() {
                 final TarArchiveEntry entry = (TarArchiveEntry) en.nextElement();
                 return entry.isSymbolicLink()
-                           ? new TarSymlinkResource( tarFile, entry )
-                           : new TarResource( tarFile, entry );
+                        ? new TarSymlinkResource(tarFile, entry)
+                        : new TarResource(tarFile, entry);
             }
 
             @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException( "Removing isn't implemented." );
+            public void remove() {
+                throw new UnsupportedOperationException("Removing isn't implemented.");
             }
-
         };
     }
-
 }

@@ -23,19 +23,14 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tar.bz2" )
-public class TarBZip2Archiver
-    extends TarArchiver
-{
+@Named("tar.bz2")
+public class TarBZip2Archiver extends TarArchiver {
 
-    public TarBZip2Archiver()
-    {
+    public TarBZip2Archiver() {
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( TarCompressionMethod.bzip2 );
+    private void setupCompressionMethod() {
+        this.setCompression(TarCompressionMethod.bzip2);
     }
-
 }

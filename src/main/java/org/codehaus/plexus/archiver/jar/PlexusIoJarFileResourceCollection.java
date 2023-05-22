@@ -17,32 +17,10 @@ package org.codehaus.plexus.archiver.jar;
 
 import javax.inject.Named;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.jar.JarFile;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
-import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
-import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
-import org.codehaus.plexus.components.io.resources.EncodingSupported;
-import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
 
 /**
  * Alias for {@link PlexusIoZipFileResourceCollection}.
  */
-@Named( "jar" )
-public class PlexusIoJarFileResourceCollection
-        extends PlexusIoZipFileResourceCollection
-{
-}
+@Named("jar")
+public class PlexusIoJarFileResourceCollection extends PlexusIoZipFileResourceCollection {}

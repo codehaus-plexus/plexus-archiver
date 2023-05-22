@@ -24,6 +24,7 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
+
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.junit.jupiter.api.Test;
@@ -33,73 +34,60 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Daniel Krisher
  */
-public class EmptyDirectoryTest
-    extends TestSupport
-{
+public class EmptyDirectoryTest extends TestSupport {
 
     @Test
-    public void testZipArchiver()
-        throws Exception
-    {
-        testEmptyDirectory( "zip", lookup( Archiver.class, "zip" ) );
+    public void testZipArchiver() throws Exception {
+        testEmptyDirectory("zip", lookup(Archiver.class, "zip"));
     }
 
     @Test
-    public void testJarArchiver()
-        throws Exception
-    {
+    public void testJarArchiver() throws Exception {
         // No JAR UnArchiver implementation :(
-//        testEmptyDirectory( "jar" );
+        //        testEmptyDirectory( "jar" );
     }
 
     @Test
-    public void testTarArchiver()
-        throws Exception
-    {
-        final TarArchiver tar = (TarArchiver) lookup( Archiver.class, "tar" );
-        tar.setLongfile( TarLongFileMode.posix );
-        testEmptyDirectory( "tar", tar );
+    public void testTarArchiver() throws Exception {
+        final TarArchiver tar = (TarArchiver) lookup(Archiver.class, "tar");
+        tar.setLongfile(TarLongFileMode.posix);
+        testEmptyDirectory("tar", tar);
     }
 
-    private void testEmptyDirectory( String role, Archiver archiver )
-        throws Exception
-    {
+    private void testEmptyDirectory(String role, Archiver archiver) throws Exception {
 
         // Should default to true...
-        assertTrue( archiver.getIncludeEmptyDirs() );
+        assertTrue(archiver.getIncludeEmptyDirs());
 
         // create an empty directory to store in the zip archive
-        File emptyDir = getTestFile( "target/output/emptyTest/TmpEmptyDir" );
+        File emptyDir = getTestFile("target/output/emptyTest/TmpEmptyDir");
 
         // delete it if it exists to ensure it is actually empty
-        if ( emptyDir.exists() )
-        {
+        if (emptyDir.exists()) {
             emptyDir.delete();
         }
         emptyDir.mkdirs();
-        archiver.addDirectory( emptyDir.getParentFile() );
+        archiver.addDirectory(emptyDir.getParentFile());
 
-        File archive = getTestFile( "target/output/emptyDirArchive.zip" );
-        if ( archive.exists() )
-        {
+        File archive = getTestFile("target/output/emptyDirArchive.zip");
+        if (archive.exists()) {
             archive.delete();
         }
 
-        archiver.setDestFile( archive );
+        archiver.setDestFile(archive);
         archiver.createArchive();
 
         // delete the empty dir, we will extract it from the archive
         emptyDir.delete();
 
         // Check the content of the archive by extracting it
-        UnArchiver unArchiver = lookup( UnArchiver.class, role );
-        unArchiver.setSourceFile( archive );
+        UnArchiver unArchiver = lookup(UnArchiver.class, role);
+        unArchiver.setSourceFile(archive);
 
-        unArchiver.setDestDirectory( getTestFile( "target/output/emptyTest" ) );
+        unArchiver.setDestDirectory(getTestFile("target/output/emptyTest"));
         unArchiver.extract();
 
-        assertTrue( emptyDir.exists() );
-        assertTrue( emptyDir.isDirectory() );
+        assertTrue(emptyDir.exists());
+        assertTrue(emptyDir.isDirectory());
     }
-
 }

@@ -31,26 +31,21 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
  * @author lore
  * @since 3.3
  */
-@Named( "xz" )
-public class PlexusIoXZResourceCollection extends PlexusIoCompressedFileResourceCollection
-{
+@Named("xz")
+public class PlexusIoXZResourceCollection extends PlexusIoCompressedFileResourceCollection {
 
     @Override
-    protected PlexusIoResourceAttributes getAttributes( File file ) throws IOException
-    {
-        return new FileAttributes( file, new HashMap<Integer, String>(), new HashMap<Integer, String>() );
+    protected PlexusIoResourceAttributes getAttributes(File file) throws IOException {
+        return new FileAttributes(file, new HashMap<Integer, String>(), new HashMap<Integer, String>());
     }
 
     @Override
-    protected String getDefaultExtension()
-    {
+    protected String getDefaultExtension() {
         return ".xz";
     }
 
     @Override
-    protected InputStream getInputStream( File file ) throws IOException
-    {
-        return XZUnArchiver.getXZInputStream( Streams.fileInputStream( file ) );
+    protected InputStream getInputStream(File file) throws IOException {
+        return XZUnArchiver.getXZInputStream(Streams.fileInputStream(file));
     }
-
 }

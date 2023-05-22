@@ -18,22 +18,12 @@ package org.codehaus.plexus.archiver.rar;
 
 import javax.inject.Named;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.codehaus.plexus.archiver.ArchiveEntry;
-import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
-import org.codehaus.plexus.archiver.util.ResourceUtils;
-import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 
 /**
  * Rar archiver.
  *
  * @see JarArchiver
  */
-@Named( "rar" )
-public class RarArchiver
-    extends JarArchiver
-{
-}
+@Named("rar")
+public class RarArchiver extends JarArchiver {}

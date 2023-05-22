@@ -24,6 +24,7 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
+
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -36,54 +37,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Dan Tran
  */
-public class TarGZipUnArchiverTest
-        extends TestSupport
-{
+public class TarGZipUnArchiverTest extends TestSupport {
 
     @Test
-    public void testExtract()
-        throws Exception
-    {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
-        tarArchiver.setLongfile( TarLongFileMode.posix );
+    public void testExtract() throws Exception {
+        TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
+        tarArchiver.setLongfile(TarLongFileMode.posix);
 
         String fileName1 = "TarGZipUnArchiverTest1.txt";
         String fileName2 = "TarGZipUnArchiverTest2.txt";
-        File file1InTar = getTestFile( "target/output/" + fileName1 );
-        File file2InTar = getTestFile( "target/output/" + fileName2 );
+        File file1InTar = getTestFile("target/output/" + fileName1);
+        File file2InTar = getTestFile("target/output/" + fileName2);
         file1InTar.delete();
         file2InTar.delete();
 
-        tarArchiver.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), fileName1 );
-        tarArchiver.addFile( getTestFile( "src/test/resources/manifests/manifest2.mf" ), fileName2, 0664 );
-        tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
+        tarArchiver.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), fileName1);
+        tarArchiver.addFile(getTestFile("src/test/resources/manifests/manifest2.mf"), fileName2, 0664);
+        tarArchiver.setDestFile(getTestFile("target/output/archive.tar"));
         tarArchiver.createArchive();
 
-        GZipArchiver gzipArchiver = (GZipArchiver) lookup( Archiver.class, "gzip" );
+        GZipArchiver gzipArchiver = (GZipArchiver) lookup(Archiver.class, "gzip");
 
-        File testGZipFile = getTestFile( "target/output/archive.tar.gz" );
-        gzipArchiver.setDestFile( testGZipFile );
-        gzipArchiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
+        File testGZipFile = getTestFile("target/output/archive.tar.gz");
+        gzipArchiver.setDestFile(testGZipFile);
+        gzipArchiver.addFile(getTestFile("target/output/archive.tar"), "dontcare");
         gzipArchiver.createArchive();
 
-        TarGZipUnArchiver tarGZipUnArchiver = (TarGZipUnArchiver) lookup( UnArchiver.class, "tgz" );
-        tarGZipUnArchiver.setDestDirectory( getTestFile( "target/output" ) );
-        tarGZipUnArchiver.setSourceFile( testGZipFile );
+        TarGZipUnArchiver tarGZipUnArchiver = (TarGZipUnArchiver) lookup(UnArchiver.class, "tgz");
+        tarGZipUnArchiver.setDestDirectory(getTestFile("target/output"));
+        tarGZipUnArchiver.setSourceFile(testGZipFile);
         tarGZipUnArchiver.extract();
 
-        assertTrue( file1InTar.exists() );
-        assertTrue( file2InTar.exists() );
+        assertTrue(file1InTar.exists());
+        assertTrue(file2InTar.exists());
 
-        //make sure we place the source file back
-        assertEquals( testGZipFile, tarGZipUnArchiver.getSourceFile() );
-
+        // make sure we place the source file back
+        assertEquals(testGZipFile, tarGZipUnArchiver.getSourceFile());
     }
 
     @Test
-    public void testLookup()
-        throws Exception
-    {
-        lookup( UnArchiver.class, "tar.gz" );
+    public void testLookup() throws Exception {
+        lookup(UnArchiver.class, "tar.gz");
     }
-
 }

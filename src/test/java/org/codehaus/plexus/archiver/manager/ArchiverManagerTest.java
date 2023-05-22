@@ -45,234 +45,205 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Dan T. Tran
  */
-class ArchiverManagerTest
-    extends TestSupport
-{
+class ArchiverManagerTest extends TestSupport {
 
     // list of items which support Archiver and UnArchiver
-    private static Stream<String> getArchiversAndUnArchiverForTests()
-    {
+    private static Stream<String> getArchiversAndUnArchiverForTests() {
         return Stream.of(
-            "bzip2",
-            "ear",
-            "gzip",
-            "jar",
-            "rar",
-            "tar",
-            "tar.bz2",
-            "tar.gz",
-            "tar.snappy",
-            "tar.xz",
-            "tar.zst",
-            "tbz2",
-            "tgz",
-            "txz",
-            "tzst",
-            "war",
-            "xz",
-            "zip",
-            "snappy",
-            "zst"
-        );
+                "bzip2",
+                "ear",
+                "gzip",
+                "jar",
+                "rar",
+                "tar",
+                "tar.bz2",
+                "tar.gz",
+                "tar.snappy",
+                "tar.xz",
+                "tar.zst",
+                "tbz2",
+                "tgz",
+                "txz",
+                "tzst",
+                "war",
+                "xz",
+                "zip",
+                "snappy",
+                "zst");
     }
 
     // list of items which support UnArchiver
-    private static Stream<String> getUnArchiversForTests()
-    {
-        return Stream.concat( getArchiversAndUnArchiverForTests(), Stream.of(
-            // only UnArchivers
-            "car",
-            "esb",
-            "nar",
-            "par",
-            "sar",
-            "swc" ) );
+    private static Stream<String> getUnArchiversForTests() {
+        return Stream.concat(
+                getArchiversAndUnArchiverForTests(),
+                Stream.of(
+                        // only UnArchivers
+                        "car", "esb", "nar", "par", "sar", "swc"));
     }
 
     // list of Archiver
-    private static Stream<String> getArchiversForTests()
-    {
-        return Stream.concat( getArchiversAndUnArchiverForTests(), Stream.of(
-            // only Archivers
-            "dir",
-            "mjar" ) );
-    }
-
-    private static Stream<String> getResourceCollectionsForTests()
-    {
+    private static Stream<String> getArchiversForTests() {
         return Stream.concat(
-            getUnArchiversForTests(),
-            Stream.of( "default", "files", /* defined in plexus-io */
-                       "gz", "bz2" /* additional alias only for it */
-            ) );
+                getArchiversAndUnArchiverForTests(),
+                Stream.of(
+                        // only Archivers
+                        "dir", "mjar"));
+    }
+
+    private static Stream<String> getResourceCollectionsForTests() {
+        return Stream.concat(
+                getUnArchiversForTests(),
+                Stream.of(
+                        "default", "files", /* defined in plexus-io */
+                        "gz", "bz2" /* additional alias only for it */));
     }
 
     @Test
-    void testReuseArchiver()
-        throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void testReuseArchiver() throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        Archiver archiver = manager.getArchiver( "jar" );
-        assertNotNull( archiver );
+        Archiver archiver = manager.getArchiver("jar");
+        assertNotNull(archiver);
 
-        archiver.addDirectory( new File( getBasedir() ) );
+        archiver.addDirectory(new File(getBasedir()));
 
-        Archiver newArchiver = manager.getArchiver( "jar" );
-        assertNotNull( newArchiver );
-        assertFalse( newArchiver.equals( archiver ) );
+        Archiver newArchiver = manager.getArchiver("jar");
+        assertNotNull(newArchiver);
+        assertFalse(newArchiver.equals(archiver));
 
-        assertTrue( !newArchiver.getResources().hasNext() );
+        assertTrue(!newArchiver.getResources().hasNext());
     }
 
     @Test
-    void allArchiversShouldBeUnderTest()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void allArchiversShouldBeUnderTest() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThat( manager.getAvailableArchivers() )
-            .containsExactlyInAnyOrderElementsOf( getArchiversForTests().collect( Collectors.toList() ) );
+        assertThat(manager.getAvailableArchivers())
+                .containsExactlyInAnyOrderElementsOf(getArchiversForTests().collect(Collectors.toList()));
     }
 
     @Test
-    void allUnArchiversShouldBeUnderTest()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void allUnArchiversShouldBeUnderTest() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThat( manager.getAvailableUnArchivers() )
-            .containsExactlyInAnyOrderElementsOf( getUnArchiversForTests().collect( Collectors.toList() ) );
+        assertThat(manager.getAvailableUnArchivers())
+                .containsExactlyInAnyOrderElementsOf(getUnArchiversForTests().collect(Collectors.toList()));
     }
 
     @Test
-    void allResourceCollectionsShouldBeUnderTest()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void allResourceCollectionsShouldBeUnderTest() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThat( manager.getAvailableResourceCollections() )
-            .containsExactlyInAnyOrderElementsOf( getResourceCollectionsForTests().collect( Collectors.toList() ) );
+        assertThat(manager.getAvailableResourceCollections())
+                .containsExactlyInAnyOrderElementsOf(
+                        getResourceCollectionsForTests().collect(Collectors.toList()));
     }
 
     @ParameterizedTest
-    @MethodSource( "getArchiversForTests" )
-    void testLookupArchiver( String archiveName ) throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
-        Archiver archiver = manager.getArchiver( archiveName );
+    @MethodSource("getArchiversForTests")
+    void testLookupArchiver(String archiveName) throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
+        Archiver archiver = manager.getArchiver(archiveName);
 
-        assertThat( archiver ).isNotNull();
+        assertThat(archiver).isNotNull();
     }
 
     @ParameterizedTest
-    @MethodSource( "getUnArchiversForTests" )
-    void testLookupUnArchiver( String archiveName ) throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
-        UnArchiver archiver = manager.getUnArchiver( archiveName );
+    @MethodSource("getUnArchiversForTests")
+    void testLookupUnArchiver(String archiveName) throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
+        UnArchiver archiver = manager.getUnArchiver(archiveName);
 
-        assertThat( archiver ).isNotNull();
+        assertThat(archiver).isNotNull();
     }
 
     @ParameterizedTest
-    @MethodSource( "getResourceCollectionsForTests" )
-    void testLookupResourceCollection( String resourceName ) throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
-        PlexusIoResourceCollection resourceCollection = manager.getResourceCollection( resourceName );
+    @MethodSource("getResourceCollectionsForTests")
+    void testLookupResourceCollection(String resourceName) throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
+        PlexusIoResourceCollection resourceCollection = manager.getResourceCollection(resourceName);
 
-        assertThat( resourceCollection ).isNotNull();
+        assertThat(resourceCollection).isNotNull();
     }
 
     @Test
-    void testLookupUnknownArchiver()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void testLookupUnknownArchiver() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThrowsExactly( NoSuchArchiverException.class, () -> manager.getArchiver( "Unknown" ) );
+        assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getArchiver("Unknown"));
     }
 
     @Test
-    void testLookupUnknownUnArchiver()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void testLookupUnknownUnArchiver() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThrowsExactly( NoSuchArchiverException.class, () -> manager.getUnArchiver( "Unknown" ) );
+        assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getUnArchiver("Unknown"));
     }
 
     @Test
-    void testLookupUnknownResourceCollection()
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    void testLookupUnknownResourceCollection() {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        assertThrowsExactly( NoSuchArchiverException.class, () -> manager.getResourceCollection( "Unknown" ) );
+        assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getResourceCollection("Unknown"));
     }
 
     @ParameterizedTest
-    @MethodSource( "getUnArchiversForTests" )
-    void testLookupUnArchiverUsingFile( String archiveName )
-        throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    @MethodSource("getUnArchiversForTests")
+    void testLookupUnArchiverUsingFile(String archiveName) throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        UnArchiver archiver = manager.getUnArchiver( new File( "test", "test." + archiveName ) );
-        assertThat( archiver ).isNotNull();
+        UnArchiver archiver = manager.getUnArchiver(new File("test", "test." + archiveName));
+        assertThat(archiver).isNotNull();
     }
 
     @ParameterizedTest
-    @MethodSource( "getArchiversForTests" )
-    void testLookupArchiverUsingFile( String archiveName )
-        throws Exception
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    @MethodSource("getArchiversForTests")
+    void testLookupArchiverUsingFile(String archiveName) throws Exception {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        Archiver archiver = manager.getArchiver( new File( "test." + archiveName ) );
-        assertThat( archiver ).isNotNull();
+        Archiver archiver = manager.getArchiver(new File("test." + archiveName));
+        assertThat(archiver).isNotNull();
     }
 
-    private static Stream<Arguments> getUnsupportedFiles()
-    {
+    private static Stream<Arguments> getUnsupportedFiles() {
         return Stream.of(
-            Arguments.of( "", "" ),
-            Arguments.of( "test", "" ),
-            Arguments.of( "test.xxx", "xxx" ),
-            Arguments.of( "test.tar.xxx", "tar.xxx" ),
-            Arguments.of( "tar.gz.xxx", "xxx" )
-        );
+                Arguments.of("", ""),
+                Arguments.of("test", ""),
+                Arguments.of("test.xxx", "xxx"),
+                Arguments.of("test.tar.xxx", "tar.xxx"),
+                Arguments.of("tar.gz.xxx", "xxx"));
     }
 
     @ParameterizedTest
-    @MethodSource( "getUnsupportedFiles" )
-    void testUnsupportedLookupArchiverUsingFile( String fileName, String fileExtension )
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    @MethodSource("getUnsupportedFiles")
+    void testUnsupportedLookupArchiverUsingFile(String fileName, String fileExtension) {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
         NoSuchArchiverException exception = assertThrowsExactly(
-            NoSuchArchiverException.class, () -> manager.getArchiver( new File( "test", fileName ) ) );
+                NoSuchArchiverException.class, () -> manager.getArchiver(new File("test", fileName)));
 
-        assertThat( exception.getArchiver() ).isEqualTo( fileExtension );
+        assertThat(exception.getArchiver()).isEqualTo(fileExtension);
     }
 
     @ParameterizedTest
-    @MethodSource( "getUnsupportedFiles" )
-    void testUnsupportedLookupUnArchiverUsingFile( String fileName, String fileExtension )
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    @MethodSource("getUnsupportedFiles")
+    void testUnsupportedLookupUnArchiverUsingFile(String fileName, String fileExtension) {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
-        NoSuchArchiverException exception = assertThrowsExactly(
-            NoSuchArchiverException.class, () -> manager.getUnArchiver( new File( fileName ) ) );
+        NoSuchArchiverException exception =
+                assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getUnArchiver(new File(fileName)));
 
-        assertThat( exception.getArchiver() ).isEqualTo( fileExtension );
+        assertThat(exception.getArchiver()).isEqualTo(fileExtension);
     }
 
     @ParameterizedTest
-    @MethodSource( "getUnsupportedFiles" )
-    void testUnsupportedLookupResourceCollectionUsingFile( String fileName, String fileExtension )
-    {
-        ArchiverManager manager = lookup( ArchiverManager.class );
+    @MethodSource("getUnsupportedFiles")
+    void testUnsupportedLookupResourceCollectionUsingFile(String fileName, String fileExtension) {
+        ArchiverManager manager = lookup(ArchiverManager.class);
 
         NoSuchArchiverException exception = assertThrowsExactly(
-            NoSuchArchiverException.class, () -> manager.getResourceCollection( new File( fileName ) ) );
+                NoSuchArchiverException.class, () -> manager.getResourceCollection(new File(fileName)));
 
-        assertThat( exception.getArchiver() ).isEqualTo( fileExtension );
+        assertThat(exception.getArchiver()).isEqualTo(fileExtension);
     }
-
 }

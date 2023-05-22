@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.zstd;
 import javax.inject.Named;
 
 import java.io.IOException;
+
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -27,64 +28,51 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 /**
  * Zstd archiver.
  */
-@Named( "zst" )
-public class ZstdArchiver extends AbstractArchiver
-{
+@Named("zst")
+public class ZstdArchiver extends AbstractArchiver {
 
     private final ZstdCompressor compressor = new ZstdCompressor();
 
-    public ZstdArchiver()
-    {
-    }
+    public ZstdArchiver() {}
 
     /**
      * Set compression level
      */
-    public void setLevel( Integer level )
-        throws ArchiverException
-    {
-        compressor.setLevel( level );
+    public void setLevel(Integer level) throws ArchiverException {
+        compressor.setLevel(level);
     }
 
     @Override
-    protected void execute() throws ArchiverException, IOException
-    {
-        if ( !checkForced() )
-        {
+    protected void execute() throws ArchiverException, IOException {
+        if (!checkForced()) {
             return;
         }
 
         ResourceIterator iter = getResources();
-        if ( !iter.hasNext() )
-        {
-            throw new EmptyArchiveException( "archive cannot be empty" );
+        if (!iter.hasNext()) {
+            throw new EmptyArchiveException("archive cannot be empty");
         }
         ArchiveEntry entry = iter.next();
-        if ( iter.hasNext() )
-        {
-            throw new ArchiverException( "There is more than one file in input." );
+        if (iter.hasNext()) {
+            throw new ArchiverException("There is more than one file in input.");
         }
-        compressor.setSource( entry.getResource() );
-        compressor.setDestFile( getDestFile() );
+        compressor.setSource(entry.getResource());
+        compressor.setDestFile(getDestFile());
         compressor.compress();
     }
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return true;
     }
 
     @Override
-    protected void close() throws IOException
-    {
+    protected void close() throws IOException {
         compressor.close();
     }
 
     @Override
-    protected String getArchiveType()
-    {
+    protected String getArchiveType() {
         return "zstd";
     }
-
 }

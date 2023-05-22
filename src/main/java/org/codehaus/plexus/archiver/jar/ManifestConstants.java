@@ -20,8 +20,7 @@ package org.codehaus.plexus.archiver.jar;
  * Manifest constants
  * Not part of any public API
  */
-class ManifestConstants
-{
+class ManifestConstants {
 
     /**
      * The standard manifest version header
@@ -52,5 +51,4 @@ class ManifestConstants
      * Default Manifest version if one is not specified
      */
     public static final String DEFAULT_MANIFEST_VERSION = "1.0";
-
 }

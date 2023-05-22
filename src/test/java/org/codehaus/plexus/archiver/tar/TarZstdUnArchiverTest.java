@@ -16,6 +16,7 @@
 package org.codehaus.plexus.archiver.tar;
 
 import java.io.File;
+
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -28,62 +29,56 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TarZstdUnArchiverTest extends TestSupport
-{
+public class TarZstdUnArchiverTest extends TestSupport {
 
     @Test
-    public void testExtract()
-        throws Exception
-    {
-        TarArchiver tarArchiver = (TarArchiver) lookup( Archiver.class, "tar" );
-        tarArchiver.setLongfile( TarLongFileMode.posix );
+    public void testExtract() throws Exception {
+        TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
+        tarArchiver.setLongfile(TarLongFileMode.posix);
 
         String fileName1 = "TarBZip2UnArchiverTest1.txt";
         String fileName2 = "TarBZip2UnArchiverTest2.txt";
-        File file1InTar = getTestFile( "target/output/" + fileName1 );
-        File file2InTar = getTestFile( "target/output/" + fileName2 );
+        File file1InTar = getTestFile("target/output/" + fileName1);
+        File file2InTar = getTestFile("target/output/" + fileName2);
         file1InTar.delete();
         file2InTar.delete();
 
-        assertFalse( file1InTar.exists() );
-        assertFalse( file2InTar.exists() );
+        assertFalse(file1InTar.exists());
+        assertFalse(file2InTar.exists());
 
-        File testZstdFile = getTestFile( "target/output/archive.tar.zst" );
-        if ( testZstdFile.exists() )
-        {
-            FileUtils.fileDelete( testZstdFile.getPath() );
+        File testZstdFile = getTestFile("target/output/archive.tar.zst");
+        if (testZstdFile.exists()) {
+            FileUtils.fileDelete(testZstdFile.getPath());
         }
-        assertFalse( testZstdFile.exists() );
+        assertFalse(testZstdFile.exists());
 
-        tarArchiver.addFile( getTestFile( "src/test/resources/manifests/manifest1.mf" ), fileName1 );
-        tarArchiver.addFile( getTestFile( "src/test/resources/manifests/manifest2.mf" ), fileName2, 0664 );
-        tarArchiver.setDestFile( getTestFile( "target/output/archive.tar" ) );
+        tarArchiver.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), fileName1);
+        tarArchiver.addFile(getTestFile("src/test/resources/manifests/manifest2.mf"), fileName2, 0664);
+        tarArchiver.setDestFile(getTestFile("target/output/archive.tar"));
         tarArchiver.createArchive();
 
-        ZstdArchiver zstdArchiver = (ZstdArchiver) lookup( Archiver.class, "zst" );
+        ZstdArchiver zstdArchiver = (ZstdArchiver) lookup(Archiver.class, "zst");
 
-        zstdArchiver.setDestFile( testZstdFile );
-        zstdArchiver.addFile( getTestFile( "target/output/archive.tar" ), "dontcare" );
+        zstdArchiver.setDestFile(testZstdFile);
+        zstdArchiver.addFile(getTestFile("target/output/archive.tar"), "dontcare");
         zstdArchiver.createArchive();
 
-        assertTrue( testZstdFile.exists() );
+        assertTrue(testZstdFile.exists());
 
-        TarZstdUnArchiver tarZstdUnArchiver = (TarZstdUnArchiver) lookup( UnArchiver.class, "tar.zst" );
+        TarZstdUnArchiver tarZstdUnArchiver = (TarZstdUnArchiver) lookup(UnArchiver.class, "tar.zst");
 
-        tarZstdUnArchiver.setDestDirectory( getTestFile( "target/output" ) );
-        tarZstdUnArchiver.setSourceFile( testZstdFile );
+        tarZstdUnArchiver.setDestDirectory(getTestFile("target/output"));
+        tarZstdUnArchiver.setSourceFile(testZstdFile);
         tarZstdUnArchiver.extract();
 
-        assertTrue( file1InTar.exists() );
-        assertTrue( file2InTar.exists() );
+        assertTrue(file1InTar.exists());
+        assertTrue(file2InTar.exists());
 
-        assertEquals( testZstdFile, tarZstdUnArchiver.getSourceFile() );
+        assertEquals(testZstdFile, tarZstdUnArchiver.getSourceFile());
     }
 
     @Test
-    public void testLookup() throws Exception
-    {
-        assertNotNull( lookup( UnArchiver.class, "tar.zst" ) );
+    public void testLookup() throws Exception {
+        assertNotNull(lookup(UnArchiver.class, "tar.zst"));
     }
-
 }

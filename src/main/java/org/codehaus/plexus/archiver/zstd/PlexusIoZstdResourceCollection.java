@@ -31,26 +31,21 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
  * Implementation of {@link org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection} for
  * zstd compressed files.
  */
-@Named( "zst" )
-public class PlexusIoZstdResourceCollection extends PlexusIoCompressedFileResourceCollection
-{
+@Named("zst")
+public class PlexusIoZstdResourceCollection extends PlexusIoCompressedFileResourceCollection {
 
     @Override
-    protected PlexusIoResourceAttributes getAttributes( File file ) throws IOException
-    {
-        return new FileAttributes( file, new HashMap<Integer, String>(), new HashMap<Integer, String>() );
+    protected PlexusIoResourceAttributes getAttributes(File file) throws IOException {
+        return new FileAttributes(file, new HashMap<Integer, String>(), new HashMap<Integer, String>());
     }
 
     @Override
-    protected String getDefaultExtension()
-    {
+    protected String getDefaultExtension() {
         return ".zst";
     }
 
     @Override
-    protected InputStream getInputStream( File file ) throws IOException
-    {
-        return ZstdUnArchiver.getZstdInputStream( Streams.fileInputStream( file ) );
+    protected InputStream getInputStream(File file) throws IOException {
+        return ZstdUnArchiver.getZstdInputStream(Streams.fileInputStream(file));
     }
-
 }

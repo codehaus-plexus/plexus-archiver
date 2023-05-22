@@ -16,15 +16,17 @@
  */
 package org.codehaus.plexus.archiver.snappy;
 
+import javax.annotation.Nonnull;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.annotation.Nonnull;
-import javax.inject.Named;
 
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.iq80.snappy.SnappyFramedInputStream;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.copyFully;
@@ -34,56 +36,41 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 /**
  * Unarchiver for snappy-compressed files.
  */
-@Named( "snappy" )
-public class SnappyUnArchiver
-    extends AbstractUnArchiver
-{
+@Named("snappy")
+public class SnappyUnArchiver extends AbstractUnArchiver {
 
-    private final static String OPERATION_SNAPPY = "snappy";
+    private static final String OPERATION_SNAPPY = "snappy";
 
-    public SnappyUnArchiver()
-    {
-    }
+    public SnappyUnArchiver() {}
 
-    public SnappyUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public SnappyUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException
-    {
-        if ( getSourceFile().lastModified() > getDestFile().lastModified() )
-        {
-            getLogger().info(
-                "Expanding " + getSourceFile().getAbsolutePath() + " to " + getDestFile().getAbsolutePath() );
+    protected void execute() throws ArchiverException {
+        if (getSourceFile().lastModified() > getDestFile().lastModified()) {
+            getLogger()
+                    .info("Expanding " + getSourceFile().getAbsolutePath() + " to "
+                            + getDestFile().getAbsolutePath());
 
             copyFully(
-                getSnappyInputStream( bufferedInputStream( fileInputStream( getSourceFile(), OPERATION_SNAPPY ) ) ),
-                bufferedOutputStream( fileOutputStream( getDestFile(), OPERATION_SNAPPY ) ), OPERATION_SNAPPY );
-
+                    getSnappyInputStream(bufferedInputStream(fileInputStream(getSourceFile(), OPERATION_SNAPPY))),
+                    bufferedOutputStream(fileOutputStream(getDestFile(), OPERATION_SNAPPY)),
+                    OPERATION_SNAPPY);
         }
     }
 
-    public static @Nonnull
-    SnappyFramedInputStream getSnappyInputStream( InputStream bis )
-        throws ArchiverException
-    {
-        try
-        {
-            return new SnappyFramedInputStream( bis, true );
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( "Trouble creating Snappy compressor, invalid file ?", e );
+    public static @Nonnull SnappyFramedInputStream getSnappyInputStream(InputStream bis) throws ArchiverException {
+        try {
+            return new SnappyFramedInputStream(bis, true);
+        } catch (IOException e) {
+            throw new ArchiverException("Trouble creating Snappy compressor, invalid file ?", e);
         }
     }
 
     @Override
-    protected void execute( String path, File outputDirectory )
-    {
-        throw new UnsupportedOperationException( "Targeted extraction not supported in Snappy format." );
+    protected void execute(String path, File outputDirectory) {
+        throw new UnsupportedOperationException("Targeted extraction not supported in Snappy format.");
     }
-
 }

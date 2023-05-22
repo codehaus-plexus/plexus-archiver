@@ -20,6 +20,7 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -29,10 +30,8 @@ import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 /**
  * Creates a EAR archive. Based on WAR task
  */
-@Named( "ear" )
-public class EarArchiver
-    extends JarArchiver
-{
+@Named("ear")
+public class EarArchiver extends JarArchiver {
 
     private File deploymentDescriptor;
 
@@ -41,8 +40,7 @@ public class EarArchiver
     /**
      * Create an Ear.
      */
-    public EarArchiver()
-    {
+    public EarArchiver() {
         super();
         archiveType = "ear";
     }
@@ -50,84 +48,63 @@ public class EarArchiver
     /**
      * File to incorporate as application.xml.
      */
-    public void setAppxml( File descr )
-        throws ArchiverException
-    {
+    public void setAppxml(File descr) throws ArchiverException {
         deploymentDescriptor = descr;
-        if ( !deploymentDescriptor.exists() )
-        {
-            throw new ArchiverException( "Deployment descriptor: " + deploymentDescriptor + " does not exist." );
+        if (!deploymentDescriptor.exists()) {
+            throw new ArchiverException("Deployment descriptor: " + deploymentDescriptor + " does not exist.");
         }
 
-        addFile( descr, "META-INF/application.xml" );
+        addFile(descr, "META-INF/application.xml");
     }
 
     /**
      * Adds archive.
      */
-    public void addArchive( File fileName )
-        throws ArchiverException
-    {
-        addDirectory( fileName.getParentFile(), "/",
-                      new String[]
-                      {
-                          fileName.getName()
-                      }, null );
-
+    public void addArchive(File fileName) throws ArchiverException {
+        addDirectory(fileName.getParentFile(), "/", new String[] {fileName.getName()}, null);
     }
 
     /**
      * Adds archives.
      */
-    public void addArchives( File directoryName, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        addDirectory( directoryName, "/", includes, excludes );
+    public void addArchives(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
+        addDirectory(directoryName, "/", includes, excludes);
     }
 
     @Override
-    protected void initZipOutputStream( ConcurrentJarCreator zOut )
-        throws ArchiverException, IOException
-    {
+    protected void initZipOutputStream(ConcurrentJarCreator zOut) throws ArchiverException, IOException {
         // If no webxml file is specified, it's an error.
-        if ( deploymentDescriptor == null && !isInUpdateMode() )
-        {
-            throw new ArchiverException( "appxml attribute is required" );
+        if (deploymentDescriptor == null && !isInUpdateMode()) {
+            throw new ArchiverException("appxml attribute is required");
         }
 
-        super.initZipOutputStream( zOut );
+        super.initZipOutputStream(zOut);
     }
 
     /**
      * Overridden from ZipArchiver class to deal with application.xml
      */
-    protected void zipFile( ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath, int mode )
-        throws IOException, ArchiverException
-    {
+    protected void zipFile(ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath, int mode)
+            throws IOException, ArchiverException {
         // If the file being added is META-INF/application.xml, we
         // warn if it's not the one specified in the "appxml"
         // attribute - or if it's being added twice, meaning the same
         // file is specified by the "appxml" attribute and in a
         // <fileset> element.
-        if ( vPath.equalsIgnoreCase( "META-INF/application.xml" ) )
-        {
-            if ( deploymentDescriptor == null
-                     || !ResourceUtils.isCanonicalizedSame( entry.getResource(), deploymentDescriptor )
-                     || descriptorAdded )
-            {
-                getLogger().warn( "Warning: selected " + archiveType
-                                      + " files include a META-INF/application.xml which will be ignored "
-                                      + "(please use appxml attribute to " + archiveType + " task)" );
-            }
-            else
-            {
-                super.zipFile( entry, zOut, vPath );
+        if (vPath.equalsIgnoreCase("META-INF/application.xml")) {
+            if (deploymentDescriptor == null
+                    || !ResourceUtils.isCanonicalizedSame(entry.getResource(), deploymentDescriptor)
+                    || descriptorAdded) {
+                getLogger()
+                        .warn("Warning: selected " + archiveType
+                                + " files include a META-INF/application.xml which will be ignored "
+                                + "(please use appxml attribute to " + archiveType + " task)");
+            } else {
+                super.zipFile(entry, zOut, vPath);
                 descriptorAdded = true;
             }
-        }
-        else
-        {
-            super.zipFile( entry, zOut, vPath );
+        } else {
+            super.zipFile(entry, zOut, vPath);
         }
     }
 
@@ -136,11 +113,8 @@ public class EarArchiver
      * time this task gets executed.
      */
     @Override
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         descriptorAdded = false;
         super.cleanUp();
     }
-
 }

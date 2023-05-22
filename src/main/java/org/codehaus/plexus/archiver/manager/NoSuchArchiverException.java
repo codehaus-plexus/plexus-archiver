@@ -19,22 +19,17 @@ package org.codehaus.plexus.archiver.manager;
 /**
  * @author dantran
  */
-public class NoSuchArchiverException
-    extends Exception
-{
+public class NoSuchArchiverException extends Exception {
 
     private final String archiverName;
 
-    public NoSuchArchiverException( String archiverName )
-    {
-        super( "No such archiver: '" + archiverName + "'." );
+    public NoSuchArchiverException(String archiverName) {
+        super("No such archiver: '" + archiverName + "'.");
 
         this.archiverName = archiverName;
     }
 
-    public String getArchiver()
-    {
+    public String getArchiver() {
         return archiverName;
     }
-
 }

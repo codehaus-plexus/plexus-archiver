@@ -25,25 +25,19 @@ import java.io.File;
  *
  * @author <a href="mailto:dantran@gmail.com">Dan Tran</a>
  */
-@Named( "tar.bz2" )
-public class TarBZip2UnArchiver
-    extends TarUnArchiver
-{
+@Named("tar.bz2")
+public class TarBZip2UnArchiver extends TarUnArchiver {
 
-    public TarBZip2UnArchiver()
-    {
+    public TarBZip2UnArchiver() {
         this.setupCompressionMethod();
     }
 
-    public TarBZip2UnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public TarBZip2UnArchiver(File sourceFile) {
+        super(sourceFile);
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( UntarCompressionMethod.BZIP2 );
+    private void setupCompressionMethod() {
+        this.setCompression(UntarCompressionMethod.BZIP2);
     }
-
 }

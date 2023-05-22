@@ -16,23 +16,19 @@
 package org.codehaus.plexus.archiver.tar;
 
 import javax.inject.Named;
+
 import java.io.File;
 
 /**
  * Alias for {@link PlexusIoTarFileResourceCollection}
  */
-@Named( "tar.zst" )
-public class PlexusIoTarZstdFileResourceCollection extends PlexusIoTarFileResourceCollection
-{
+@Named("tar.zst")
+public class PlexusIoTarZstdFileResourceCollection extends PlexusIoTarFileResourceCollection {
 
-    public PlexusIoTarZstdFileResourceCollection()
-    {
-    }
+    public PlexusIoTarZstdFileResourceCollection() {}
 
     @Override
-    protected TarFile newTarFile( File file )
-    {
-        return new ZstdTarFile( file );
+    protected TarFile newTarFile(File file) {
+        return new ZstdTarFile(file);
     }
-
 }

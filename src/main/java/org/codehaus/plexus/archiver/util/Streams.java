@@ -15,6 +15,9 @@
  */
 package org.codehaus.plexus.archiver.util;
 
+import javax.annotation.WillClose;
+import javax.annotation.WillNotClose;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -24,137 +27,87 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 
-import javax.annotation.WillClose;
-import javax.annotation.WillNotClose;
-
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.IOUtil;
 
-public class Streams
-{
+public class Streams {
 
-    public static final InputStream EMPTY_INPUTSTREAM = new ByteArrayInputStream( new byte[0] );
+    public static final InputStream EMPTY_INPUTSTREAM = new ByteArrayInputStream(new byte[0]);
 
-    public static BufferedInputStream bufferedInputStream( InputStream is )
-    {
-        return is instanceof BufferedInputStream
-                   ? (BufferedInputStream) is
-                   : new BufferedInputStream( is, 65536 );
-
+    public static BufferedInputStream bufferedInputStream(InputStream is) {
+        return is instanceof BufferedInputStream ? (BufferedInputStream) is : new BufferedInputStream(is, 65536);
     }
 
-    public static BufferedOutputStream bufferedOutputStream( OutputStream os )
-    {
-        return os instanceof BufferedOutputStream
-                   ? (BufferedOutputStream) os
-                   : new BufferedOutputStream( os, 65536 );
-
+    public static BufferedOutputStream bufferedOutputStream(OutputStream os) {
+        return os instanceof BufferedOutputStream ? (BufferedOutputStream) os : new BufferedOutputStream(os, 65536);
     }
 
-    public static byte[] cacheBuffer()
-    {
-        return new byte[ 8 * 1024 ];
+    public static byte[] cacheBuffer() {
+        return new byte[8 * 1024];
     }
 
-    public static InputStream fileInputStream( File file )
-        throws IOException
-    {
-        return Files.newInputStream( file.toPath() );
+    public static InputStream fileInputStream(File file) throws IOException {
+        return Files.newInputStream(file.toPath());
     }
 
-    public static InputStream fileInputStream( File file, String operation )
-        throws ArchiverException
-    {
-        try
-        {
-            return Files.newInputStream( file.toPath() );
-        }
-        catch ( IOException e )
-        {
+    public static InputStream fileInputStream(File file, String operation) throws ArchiverException {
+        try {
+            return Files.newInputStream(file.toPath());
+        } catch (IOException e) {
             throw new ArchiverException(
-                "Problem reading input file for " + operation + " " + file.getParent() + ", " + e.getMessage() );
-
+                    "Problem reading input file for " + operation + " " + file.getParent() + ", " + e.getMessage());
         }
     }
 
-    public static OutputStream fileOutputStream( File file )
-        throws IOException
-    {
-        return Files.newOutputStream( file.toPath() );
+    public static OutputStream fileOutputStream(File file) throws IOException {
+        return Files.newOutputStream(file.toPath());
     }
 
-    public static OutputStream fileOutputStream( File file, String operation )
-        throws ArchiverException
-    {
-        try
-        {
-            return Files.newOutputStream( file.toPath() );
-        }
-        catch ( IOException e )
-        {
+    public static OutputStream fileOutputStream(File file, String operation) throws ArchiverException {
+        try {
+            return Files.newOutputStream(file.toPath());
+        } catch (IOException e) {
             throw new ArchiverException(
-                "Problem creating output file for " + operation + " " + file.getParent() + ", " + e.getMessage() );
-
+                    "Problem creating output file for " + operation + " " + file.getParent() + ", " + e.getMessage());
         }
     }
 
-    public static void copyFully( @WillClose InputStream zIn, @WillClose OutputStream out, String gzip )
-        throws ArchiverException
-    {
+    public static void copyFully(@WillClose InputStream zIn, @WillClose OutputStream out, String gzip)
+            throws ArchiverException {
         // There must be 1 million libs out there that do this
-        try
-        {
-            copyFullyDontCloseOutput( zIn, out, gzip );
+        try {
+            copyFullyDontCloseOutput(zIn, out, gzip);
             out.close();
             out = null;
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( "Failure copying.", e );
-        }
-        finally
-        {
-            IOUtil.close( out );
+        } catch (final IOException e) {
+            throw new ArchiverException("Failure copying.", e);
+        } finally {
+            IOUtil.close(out);
         }
     }
 
-    public static void copyFullyDontCloseOutput( @WillClose InputStream zIn, @WillNotClose OutputStream out,
-                                                 String gzip )
-        throws ArchiverException
-    {
+    public static void copyFullyDontCloseOutput(@WillClose InputStream zIn, @WillNotClose OutputStream out, String gzip)
+            throws ArchiverException {
         // There must be 1 million libs out there that do this
-        try
-        {
+        try {
             byte[] buffer = cacheBuffer();
             int count = 0;
-            do
-            {
-                try
-                {
-                    out.write( buffer, 0, count );
-                }
-                catch ( IOException e )
-                {
+            do {
+                try {
+                    out.write(buffer, 0, count);
+                } catch (IOException e) {
                     throw new ArchiverException(
-                        "Problem writing to output in " + gzip + " operation " + e.getMessage() );
-
+                            "Problem writing to output in " + gzip + " operation " + e.getMessage());
                 }
-                count = zIn.read( buffer, 0, buffer.length );
-            }
-            while ( count != -1 );
+                count = zIn.read(buffer, 0, buffer.length);
+            } while (count != -1);
             zIn.close();
             zIn = null;
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException(
-                "Problem reading from source file in " + gzip + " operation " + e.getMessage() );
+        } catch (IOException e) {
+            throw new ArchiverException("Problem reading from source file in " + gzip + " operation " + e.getMessage());
 
-        }
-        finally
-        {
-            IOUtil.close( zIn );
+        } finally {
+            IOUtil.close(zIn);
         }
     }
-
 }

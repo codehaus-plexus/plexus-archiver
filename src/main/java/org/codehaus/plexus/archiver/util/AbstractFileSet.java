@@ -16,6 +16,7 @@
 package org.codehaus.plexus.archiver.util;
 
 import javax.annotation.Nonnull;
+
 import org.codehaus.plexus.archiver.BaseFileSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -26,9 +27,7 @@ import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
  *
  * @since 1.0-alpha-9
  */
-public abstract class AbstractFileSet<T extends AbstractFileSet>
-    implements BaseFileSet
-{
+public abstract class AbstractFileSet<T extends AbstractFileSet> implements BaseFileSet {
 
     private String prefix;
 
@@ -52,14 +51,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets a string of patterns, which excluded files
      * should match.
      */
-    public void setExcludes( String[] excludes )
-    {
+    public void setExcludes(String[] excludes) {
         this.excludes = excludes;
     }
 
     @Override
-    public String[] getExcludes()
-    {
+    public String[] getExcludes() {
         return excludes;
     }
 
@@ -67,14 +64,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets a set of file selectors, which should be used
      * to select the included files.
      */
-    public void setFileSelectors( FileSelector[] fileSelectors )
-    {
+    public void setFileSelectors(FileSelector[] fileSelectors) {
         this.fileSelectors = fileSelectors;
     }
 
     @Override
-    public FileSelector[] getFileSelectors()
-    {
+    public FileSelector[] getFileSelectors() {
         return fileSelectors;
     }
 
@@ -82,14 +77,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets a string of patterns, which included files
      * should match.
      */
-    public void setIncludes( String[] includes )
-    {
+    public void setIncludes(String[] includes) {
         this.includes = includes;
     }
 
     @Override
-    public String[] getIncludes()
-    {
+    public String[] getIncludes() {
         return includes;
     }
 
@@ -97,14 +90,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets the prefix, which the file sets contents shall
      * have.
      */
-    public void setPrefix( String prefix )
-    {
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 
     @Override
-    public String getPrefix()
-    {
+    public String getPrefix() {
         return prefix;
     }
 
@@ -112,14 +103,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets, whether the include/exclude patterns are
      * case sensitive. Defaults to true.
      */
-    public void setCaseSensitive( boolean caseSensitive )
-    {
+    public void setCaseSensitive(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }
 
     @Override
-    public boolean isCaseSensitive()
-    {
+    public boolean isCaseSensitive() {
         return caseSensitive;
     }
 
@@ -127,14 +116,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets, whether the default excludes are being
      * applied. Defaults to true.
      */
-    public void setUsingDefaultExcludes( boolean usingDefaultExcludes )
-    {
+    public void setUsingDefaultExcludes(boolean usingDefaultExcludes) {
         this.usingDefaultExcludes = usingDefaultExcludes;
     }
 
     @Override
-    public boolean isUsingDefaultExcludes()
-    {
+    public boolean isUsingDefaultExcludes() {
         return usingDefaultExcludes;
     }
 
@@ -142,54 +129,45 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets, whether empty directories are being included. Defaults
      * to true.
      */
-    public void setIncludingEmptyDirectories( boolean includingEmptyDirectories )
-    {
+    public void setIncludingEmptyDirectories(boolean includingEmptyDirectories) {
         this.includingEmptyDirectories = includingEmptyDirectories;
     }
 
     @Override
-    public boolean isIncludingEmptyDirectories()
-    {
+    public boolean isIncludingEmptyDirectories() {
         return includingEmptyDirectories;
     }
 
-    public T prefixed( String prefix )
-    {
-        setPrefix( prefix );
+    public T prefixed(String prefix) {
+        setPrefix(prefix);
         return (T) this;
     }
 
-    public T include( String[] includes )
-    {
-        setIncludes( includes );
+    public T include(String[] includes) {
+        setIncludes(includes);
         return (T) this;
     }
 
-    public T exclude( String[] excludes )
-    {
-        setExcludes( excludes );
+    public T exclude(String[] excludes) {
+        setExcludes(excludes);
         return (T) this;
     }
 
-    public T includeExclude( String[] includes, String[] excludes )
-    {
-        return (T) include( includes ).exclude( excludes );
+    public T includeExclude(String[] includes, String[] excludes) {
+        return (T) include(includes).exclude(excludes);
     }
 
-    public T includeEmptyDirs( boolean includeEmptyDirectories )
-    {
-        setIncludingEmptyDirectories( includeEmptyDirectories );
+    public T includeEmptyDirs(boolean includeEmptyDirectories) {
+        setIncludingEmptyDirectories(includeEmptyDirectories);
         return (T) this;
     }
 
-    public void setStreamTransformer( @Nonnull InputStreamTransformer streamTransformer )
-    {
+    public void setStreamTransformer(@Nonnull InputStreamTransformer streamTransformer) {
         this.streamTransformer = streamTransformer;
     }
 
     @Override
-    public InputStreamTransformer getStreamTransformer()
-    {
+    public InputStreamTransformer getStreamTransformer() {
         return streamTransformer;
     }
 
@@ -197,15 +175,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet>
      * Sets a set of file mappers, which should be used
      * to change the filename of the included files.
      */
-    public void setFileMappers( FileMapper[] fileMappers )
-    {
+    public void setFileMappers(FileMapper[] fileMappers) {
         this.fileMappers = fileMappers;
     }
 
     @Override
-    public FileMapper[] getFileMappers()
-    {
+    public FileMapper[] getFileMappers() {
         return fileMappers;
     }
-
 }

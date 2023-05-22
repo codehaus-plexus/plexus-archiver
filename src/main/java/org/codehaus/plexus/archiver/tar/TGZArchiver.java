@@ -23,8 +23,5 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tgz" )
-public class TGZArchiver
-    extends TarGZipArchiver
-{
-}
+@Named("tgz")
+public class TGZArchiver extends TarGZipArchiver {}

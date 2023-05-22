@@ -34,8 +34,7 @@ import org.codehaus.plexus.util.FileUtils;
  * Base abstract class that all the test-cases for different archivers
  * extend so that they can use its helpful methods.
  */
-public abstract class BasePlexusArchiverTest extends TestSupport
-{
+public abstract class BasePlexusArchiverTest extends TestSupport {
 
     /**
      * Ensure that the last modified timestamp of a file will be greater
@@ -47,12 +46,10 @@ public abstract class BasePlexusArchiverTest extends TestSupport
      *
      * @throws IOException if the timestamp could not be modified
      */
-    protected void waitUntilNewTimestamp( File outputFile, long timestampReference )
-        throws IOException
-    {
+    protected void waitUntilNewTimestamp(File outputFile, long timestampReference) throws IOException {
         long startTime = System.currentTimeMillis();
-        File tmpFile = Files.createTempFile(
-            "BasePlexusArchiverTest.waitUntilNewTimestamp", null ).toFile();
+        File tmpFile = Files.createTempFile("BasePlexusArchiverTest.waitUntilNewTimestamp", null)
+                .toFile();
         long newTimestamp;
 
         // We could easily just set the last modified time using
@@ -64,28 +61,24 @@ public abstract class BasePlexusArchiverTest extends TestSupport
         // Otherwise the build may fail because when the test overrides
         // `outputFile` it will have timestamp that is equal
         // to `timestampReference`.
-        do
-        {
-            FileUtils.fileWrite( tmpFile, "waitUntilNewTimestamp" );
+        do {
+            FileUtils.fileWrite(tmpFile, "waitUntilNewTimestamp");
             newTimestamp = tmpFile.lastModified();
             Thread.yield();
-        }
-        while ( timestampReference >= newTimestamp
+        } while (timestampReference >= newTimestamp
                 // A simple guard to ensure that we'll not do this forever.
                 // If the last modified timestamp is not changed to
                 // a newer value after 10 seconds, probably it never will.
-                && System.currentTimeMillis() - startTime < 10_000 );
+                && System.currentTimeMillis() - startTime < 10_000);
 
         tmpFile.delete();
 
-        if ( timestampReference >= newTimestamp )
-        {
-            throw new IOException("Could not modify the last modified timestamp "
-                + "to newer than the refence value." );
+        if (timestampReference >= newTimestamp) {
+            throw new IOException("Could not modify the last modified timestamp " + "to newer than the refence value.");
         }
 
-        FileTime newTimestampTime = FileTime.fromMillis( newTimestamp );
-        Files.setLastModifiedTime( outputFile.toPath(), newTimestampTime );
+        FileTime newTimestampTime = FileTime.fromMillis(newTimestamp);
+        Files.setLastModifiedTime(outputFile.toPath(), newTimestampTime);
     }
 
     /**
@@ -97,17 +90,15 @@ public abstract class BasePlexusArchiverTest extends TestSupport
      *
      * @throws Exception
      */
-    protected Archiver createArchiver( String format ) throws Exception
-    {
+    protected Archiver createArchiver(String format) throws Exception {
 
-        final File pomFile = new File( "pom.xml" );
-        final File rarFile = new File( "target/output/pom.xml." + format );
+        final File pomFile = new File("pom.xml");
+        final File rarFile = new File("target/output/pom.xml." + format);
 
-        Archiver archiver = (Archiver) lookup( Archiver.class, format );
-        archiver.setDestFile( rarFile );
-        archiver.addFile( pomFile, "pom.xml" );
+        Archiver archiver = (Archiver) lookup(Archiver.class, format);
+        archiver.setDestFile(rarFile);
+        archiver.addFile(pomFile, "pom.xml");
 
         return archiver;
     }
-
 }

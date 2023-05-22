@@ -16,13 +16,15 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
 import java.util.Enumeration;
-import javax.annotation.Nonnull;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.input.BoundedInputStream;
@@ -34,9 +36,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-public abstract class AbstractZipUnArchiver
-    extends AbstractUnArchiver
-{
+public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
 
     private static final String NATIVE_ENCODING = "native-encoding";
 
@@ -44,13 +44,10 @@ public abstract class AbstractZipUnArchiver
 
     private long maxOutputSize = Long.MAX_VALUE;
 
-    public AbstractZipUnArchiver()
-    {
-    }
+    public AbstractZipUnArchiver() {}
 
-    public AbstractZipUnArchiver( final File sourceFile )
-    {
-        super( sourceFile );
+    public AbstractZipUnArchiver(final File sourceFile) {
+        super(sourceFile);
     }
 
     /**
@@ -59,10 +56,8 @@ public abstract class AbstractZipUnArchiver
      * Set to <code>native-encoding</code> if you want your platform's native encoding, defaults to UTF8.
      * </p>
      */
-    public void setEncoding( String encoding )
-    {
-        if ( NATIVE_ENCODING.equals( encoding ) )
-        {
+    public void setEncoding(String encoding) {
+        if (NATIVE_ENCODING.equals(encoding)) {
             encoding = null;
         }
         this.encoding = encoding;
@@ -76,152 +71,126 @@ public abstract class AbstractZipUnArchiver
      * @param maxOutputSize max size of the produced output, in bytes. Must be greater than 0
      * @throws IllegalArgumentException if specified output size is less or equal to 0
      */
-    public void setMaxOutputSize( long maxOutputSize ) {
-        if ( maxOutputSize <= 0 ) {
-            throw new IllegalArgumentException( "Invalid max output size specified: " + maxOutputSize );
+    public void setMaxOutputSize(long maxOutputSize) {
+        if (maxOutputSize <= 0) {
+            throw new IllegalArgumentException("Invalid max output size specified: " + maxOutputSize);
         }
         this.maxOutputSize = maxOutputSize;
     }
 
-    private static class ZipEntryFileInfo
-        implements PlexusIoResource
-    {
+    private static class ZipEntryFileInfo implements PlexusIoResource {
 
         private final org.apache.commons.compress.archivers.zip.ZipFile zipFile;
 
         private final ZipArchiveEntry zipEntry;
 
-        ZipEntryFileInfo( final org.apache.commons.compress.archivers.zip.ZipFile zipFile,
-                          final ZipArchiveEntry zipEntry )
-        {
+        ZipEntryFileInfo(
+                final org.apache.commons.compress.archivers.zip.ZipFile zipFile, final ZipArchiveEntry zipEntry) {
             this.zipFile = zipFile;
             this.zipEntry = zipEntry;
         }
 
-        public String getName()
-        {
+        public String getName() {
             return zipEntry.getName();
         }
 
         @Override
-        public boolean isDirectory()
-        {
+        public boolean isDirectory() {
             return zipEntry.isDirectory();
         }
 
         @Override
-        public boolean isFile()
-        {
+        public boolean isFile() {
             return !zipEntry.isDirectory() && !zipEntry.isUnixSymlink();
         }
 
         @Override
-        public boolean isSymbolicLink()
-        {
+        public boolean isSymbolicLink() {
             return zipEntry.isUnixSymlink();
         }
 
         @Nonnull
         @Override
-        public InputStream getContents()
-            throws IOException
-        {
-            return zipFile.getInputStream( zipEntry );
+        public InputStream getContents() throws IOException {
+            return zipFile.getInputStream(zipEntry);
         }
 
         @Override
-        public long getLastModified()
-        {
+        public long getLastModified() {
             final long l = zipEntry.getTime();
             return l == 0 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;
         }
 
         @Override
-        public long getSize()
-        {
+        public long getSize() {
             final long l = zipEntry.getSize();
             return l == -1 ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : l;
         }
 
         @Override
-        public URL getURL()
-            throws IOException
-        {
+        public URL getURL() throws IOException {
             return null;
         }
 
         @Override
-        public boolean isExisting()
-        {
+        public boolean isExisting() {
             return true;
         }
-
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException
-    {
-        execute( "", getDestDirectory() );
+    protected void execute() throws ArchiverException {
+        execute("", getDestDirectory());
     }
 
-    private String resolveSymlink( ZipFile zf, ZipArchiveEntry ze )
-        throws IOException
-    {
-        if ( ze.isUnixSymlink() )
-        {
-            return zf.getUnixSymlink( ze );
-        }
-        else
-        {
+    private String resolveSymlink(ZipFile zf, ZipArchiveEntry ze) throws IOException {
+        if (ze.isUnixSymlink()) {
+            return zf.getUnixSymlink(ze);
+        } else {
             return null;
         }
     }
 
     @Override
-    protected void execute( final String path, final File outputDirectory )
-        throws ArchiverException
-    {
-        getLogger().debug( "Expanding: " + getSourceFile() + " into " + outputDirectory );
-        try ( ZipFile zipFile = new ZipFile( getSourceFile(), encoding, true ) )
-        {
+    protected void execute(final String path, final File outputDirectory) throws ArchiverException {
+        getLogger().debug("Expanding: " + getSourceFile() + " into " + outputDirectory);
+        try (ZipFile zipFile = new ZipFile(getSourceFile(), encoding, true)) {
             long remainingSpace = maxOutputSize;
             final Enumeration<ZipArchiveEntry> e = zipFile.getEntriesInPhysicalOrder();
 
-            while ( e.hasMoreElements() )
-            {
+            while (e.hasMoreElements()) {
                 final ZipArchiveEntry ze = e.nextElement();
-                final ZipEntryFileInfo fileInfo = new ZipEntryFileInfo( zipFile, ze );
-                if ( !isSelected( ze.getName(), fileInfo ) )
-                {
+                final ZipEntryFileInfo fileInfo = new ZipEntryFileInfo(zipFile, ze);
+                if (!isSelected(ze.getName(), fileInfo)) {
                     continue;
                 }
 
-                if ( ze.getName().startsWith( path ) )
-                {
-                    try ( InputStream in = zipFile.getInputStream( ze ) )
-                    {
-                        BoundedInputStream bis = new BoundedInputStream( in, remainingSpace + 1 );
-                        CountingInputStream cis = new CountingInputStream( bis );
-                        extractFile( getSourceFile(), outputDirectory, cis,
-                                     ze.getName(), new Date( ze.getTime() ), ze.isDirectory(),
-                                     ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
-                                     resolveSymlink( zipFile, ze ), getFileMappers() );
+                if (ze.getName().startsWith(path)) {
+                    try (InputStream in = zipFile.getInputStream(ze)) {
+                        BoundedInputStream bis = new BoundedInputStream(in, remainingSpace + 1);
+                        CountingInputStream cis = new CountingInputStream(bis);
+                        extractFile(
+                                getSourceFile(),
+                                outputDirectory,
+                                cis,
+                                ze.getName(),
+                                new Date(ze.getTime()),
+                                ze.isDirectory(),
+                                ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
+                                resolveSymlink(zipFile, ze),
+                                getFileMappers());
 
                         remainingSpace -= cis.getByteCount();
-                        if ( remainingSpace < 0 )
-                        {
-                            throw new ArchiverException( "Maximum output size limit reached" );
+                        if (remainingSpace < 0) {
+                            throw new ArchiverException("Maximum output size limit reached");
                         }
                     }
                 }
             }
-            getLogger().debug( "expand complete" );
-        }
-        catch ( final IOException ioe )
-        {
-            throw new ArchiverException( "Error while expanding " + getSourceFile().getAbsolutePath(), ioe );
+            getLogger().debug("expand complete");
+        } catch (final IOException ioe) {
+            throw new ArchiverException(
+                    "Error while expanding " + getSourceFile().getAbsolutePath(), ioe);
         }
     }
-
 }

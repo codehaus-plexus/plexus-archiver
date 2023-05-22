@@ -1,6 +1,7 @@
 package org.codehaus.plexus.archiver;
 
 import javax.annotation.CheckForNull;
+
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
@@ -11,8 +12,7 @@ import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
  *
  * @since 1.0-alpha-9
  */
-public interface BaseFileSet
-{
+public interface BaseFileSet {
 
     /**
      * Returns the prefix, which the file sets contents shall
@@ -72,5 +72,4 @@ public interface BaseFileSet
      */
     @CheckForNull
     FileMapper[] getFileMappers();
-
 }

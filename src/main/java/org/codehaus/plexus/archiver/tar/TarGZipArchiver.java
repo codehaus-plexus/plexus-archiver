@@ -23,19 +23,14 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tar.gz" )
-public class TarGZipArchiver
-    extends TarArchiver
-{
+@Named("tar.gz")
+public class TarGZipArchiver extends TarArchiver {
 
-    public TarGZipArchiver()
-    {
+    public TarGZipArchiver() {
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( TarCompressionMethod.gzip );
+    private void setupCompressionMethod() {
+        this.setCompression(TarCompressionMethod.gzip);
     }
-
 }

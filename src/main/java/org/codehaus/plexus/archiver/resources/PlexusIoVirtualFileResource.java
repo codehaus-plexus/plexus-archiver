@@ -15,12 +15,13 @@
  */
 package org.codehaus.plexus.archiver.resources;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.annotation.Nonnull;
 import org.codehaus.plexus.components.io.attributes.AttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
@@ -29,93 +30,73 @@ import org.codehaus.plexus.components.io.resources.AbstractPlexusIoResource;
 /**
  * A file resource that does not necessarily exist (anywhere).
  */
-public class PlexusIoVirtualFileResource
-    extends AbstractPlexusIoResource
-    implements ResourceAttributeSupplier
-{
+public class PlexusIoVirtualFileResource extends AbstractPlexusIoResource implements ResourceAttributeSupplier {
 
     private final File file;
 
-    protected PlexusIoVirtualFileResource( File file, String name )
-    {
-        super( name, file.lastModified(), file.length(), file.isFile(), file.isDirectory(), file.exists() );
+    protected PlexusIoVirtualFileResource(File file, String name) {
+        super(name, file.lastModified(), file.length(), file.isFile(), file.isDirectory(), file.exists());
         this.file = file;
     }
 
-    protected static String getName( File file )
-    {
-        return file.getPath().replace( '\\', '/' );
+    protected static String getName(File file) {
+        return file.getPath().replace('\\', '/');
     }
 
     /**
      * Returns the resources file.
      */
-    public File getFile()
-    {
+    public File getFile() {
         return file;
     }
 
     @Nonnull
     @Override
-    public InputStream getContents()
-        throws IOException
-    {
-        throw new UnsupportedOperationException( "We're not really sure we can do this" );
+    public InputStream getContents() throws IOException {
+        throw new UnsupportedOperationException("We're not really sure we can do this");
     }
 
     @Override
-    public URL getURL()
-        throws IOException
-    {
+    public URL getURL() throws IOException {
         return getFile().toURI().toURL();
     }
 
     @Override
-    public long getSize()
-    {
+    public long getSize() {
         return getFile().length();
     }
 
     @Override
-    public boolean isDirectory()
-    {
+    public boolean isDirectory() {
         return getFile().isDirectory();
     }
 
     @Override
-    public boolean isExisting()
-    {
+    public boolean isExisting() {
         return getFile().exists();
     }
 
     @Override
-    public boolean isFile()
-    {
+    public boolean isFile() {
         return getFile().isFile();
     }
 
     @Override
-    public PlexusIoResourceAttributes getAttributes()
-    {
+    public PlexusIoResourceAttributes getAttributes() {
         return null;
     }
 
     @Override
-    public long getLastModified()
-    {
-        if ( file.exists() )
-        {
-            return AttributeUtils.getLastModified( getFile() );
-        }
-        else
-        {
+    public long getLastModified() {
+        if (file.exists()) {
+            return AttributeUtils.getLastModified(getFile());
+        } else {
             return System.currentTimeMillis();
         }
     }
 
-    @Override public boolean isSymbolicLink()
-    {
+    @Override
+    public boolean isSymbolicLink() {
         return getAttributes().isSymbolicLink();
     }
-
 }

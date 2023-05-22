@@ -36,17 +36,14 @@ package org.codehaus.plexus.archiver.jar;
  *
  * @since 3.6
  */
-public abstract class ModularJarArchiver
-    extends JarArchiver
-{
+public abstract class ModularJarArchiver extends JarArchiver {
     private String moduleMainClass;
 
     private String manifestMainClass;
 
     private String moduleVersion;
 
-    public String getModuleMainClass()
-    {
+    public String getModuleMainClass() {
         return moduleMainClass;
     }
 
@@ -60,13 +57,11 @@ public abstract class ModularJarArchiver
      *
      * @param moduleMainClass the module main class.
      */
-    public void setModuleMainClass( String moduleMainClass )
-    {
+    public void setModuleMainClass(String moduleMainClass) {
         this.moduleMainClass = moduleMainClass;
     }
 
-    public String getModuleVersion()
-    {
+    public String getModuleVersion() {
         return moduleVersion;
     }
 
@@ -77,8 +72,7 @@ public abstract class ModularJarArchiver
      *
      * @param moduleVersion the module version.
      */
-    public void setModuleVersion( String moduleVersion )
-    {
+    public void setModuleVersion(String moduleVersion) {
         this.moduleVersion = moduleVersion;
     }
 
@@ -91,28 +85,23 @@ public abstract class ModularJarArchiver
      *
      * @return the "Main-Class" attribute of the manifest
      */
-    protected String getManifestMainClass()
-    {
+    protected String getManifestMainClass() {
         return manifestMainClass;
     }
 
     @Override
-    protected Manifest createManifest()
-    {
+    protected Manifest createManifest() {
         Manifest manifest = super.createManifest();
 
-        if ( manifest != null )
-        {
-            manifestMainClass = manifest.getMainAttributes()
-                .getValue( "Main-Class" );
+        if (manifest != null) {
+            manifestMainClass = manifest.getMainAttributes().getValue("Main-Class");
         }
 
         return manifest;
     }
 
     @Override
-    public void reset()
-    {
+    public void reset() {
         // We want to be sure that on multiple run
         // the latest manifest is used, so lets
         // reset it to null

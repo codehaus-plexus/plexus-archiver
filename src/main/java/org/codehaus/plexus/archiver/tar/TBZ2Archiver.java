@@ -23,8 +23,5 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tbz2" )
-public class TBZ2Archiver
-    extends TarBZip2Archiver
-{
-}
+@Named("tbz2")
+public class TBZ2Archiver extends TarBZip2Archiver {}
