@@ -22,8 +22,5 @@ import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
 /**
  * Alias for {@link PlexusIoZipFileResourceCollection}.
  */
-@Named( "car" )
-public class PlexusIoCarFileResourceCollection
-        extends PlexusIoZipFileResourceCollection
-{
-}
+@Named("car")
+public class PlexusIoCarFileResourceCollection extends PlexusIoZipFileResourceCollection {}

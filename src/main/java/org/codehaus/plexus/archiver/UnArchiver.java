@@ -17,18 +17,17 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
+
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
-public interface UnArchiver
-{
+public interface UnArchiver {
     /**
      * Extract the archive.
      *
      * @throws ArchiverException
      */
-    void extract()
-        throws ArchiverException;
+    void extract() throws ArchiverException;
 
     /**
      * Take a path into the archive and extract it to the specified directory.
@@ -38,22 +37,21 @@ public interface UnArchiver
      *
      * @throws ArchiverException
      */
-    void extract( String path, File outputDirectory )
-        throws ArchiverException;
+    void extract(String path, File outputDirectory) throws ArchiverException;
 
     File getDestDirectory();
 
-    void setDestDirectory( File destDirectory );
+    void setDestDirectory(File destDirectory);
 
     // todo What is this? If you're extracting isn't it always to a directory. I think it would be cool to extract an
     // archive to another archive but I don't think we support this right now.
     File getDestFile();
 
-    void setDestFile( File destFile );
+    void setDestFile(File destFile);
 
     File getSourceFile();
 
-    void setSourceFile( File sourceFile );
+    void setSourceFile(File sourceFile);
 
     /**
      * Gets a flag indicating destination files are always overwritten.
@@ -68,7 +66,7 @@ public interface UnArchiver
     /**
      * Should we overwrite files in dest, even if they are newer than the corresponding entries in the archive?
      */
-    void setOverwrite( boolean b );
+    void setOverwrite(boolean b);
 
     /**
      * Get chain of components which rewrite the target path of each unpacked file.
@@ -87,13 +85,13 @@ public interface UnArchiver
      *
      * @since 3.7.0
      */
-    void setFileMappers( FileMapper[] fileMappers );
+    void setFileMappers(FileMapper[] fileMappers);
 
     /**
      * Sets a set of {@link FileSelector} instances, which may be used to select the files to extract from the archive.
      * If file selectors are present, then a file is only extracted, if it is confirmed by all file selectors.
      */
-    void setFileSelectors( FileSelector[] selectors );
+    void setFileSelectors(FileSelector[] selectors);
 
     /**
      * Returns a set of {@link FileSelector} instances, which may be used to select the files to extract from the
@@ -109,7 +107,7 @@ public interface UnArchiver
      * @deprecated this setting is now ignored. The jvm is always used.
      */
     @Deprecated
-    void setUseJvmChmod( boolean useJvmChmod );
+    void setUseJvmChmod(boolean useJvmChmod);
 
     /**
      * @since 1.1
@@ -127,6 +125,5 @@ public interface UnArchiver
     /**
      * @since 1.1
      */
-    void setIgnorePermissions( final boolean ignorePermissions );
-
+    void setIgnorePermissions(final boolean ignorePermissions);
 }

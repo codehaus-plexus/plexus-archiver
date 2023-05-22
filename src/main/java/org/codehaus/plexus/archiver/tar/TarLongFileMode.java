@@ -19,9 +19,7 @@ package org.codehaus.plexus.archiver.tar;
 /**
  * Set of options for long file handling in the task.
  */
-public enum TarLongFileMode
-{
-
+public enum TarLongFileMode {
     warn,
     fail,
     truncate,
@@ -33,57 +31,49 @@ public enum TarLongFileMode
     /**
      * @return true if value is "truncate".
      */
-    public boolean isTruncateMode()
-    {
-        return truncate.equals( this );
+    public boolean isTruncateMode() {
+        return truncate.equals(this);
     }
 
     /**
      * @return true if value is "warn".
      */
-    public boolean isWarnMode()
-    {
-        return warn.equals( this );
+    public boolean isWarnMode() {
+        return warn.equals(this);
     }
 
     /**
      * @return true if value is "gnu".
      */
-    public boolean isGnuMode()
-    {
-        return gnu.equals( this );
+    public boolean isGnuMode() {
+        return gnu.equals(this);
     }
 
     /**
      * @return true if value is "fail".
      */
-    public boolean isFailMode()
-    {
-        return fail.equals( this );
+    public boolean isFailMode() {
+        return fail.equals(this);
     }
 
     /**
      * @return true if value is "omit".
      */
-    public boolean isOmitMode()
-    {
-        return omit.equals( this );
+    public boolean isOmitMode() {
+        return omit.equals(this);
     }
 
     /**
      * @return true if value is "posix".
      */
-    public boolean isPosixMode()
-    {
-        return posix.equals( this );
+    public boolean isPosixMode() {
+        return posix.equals(this);
     }
 
     /**
      * @return true if value is "posix_warn".
      */
-    public boolean isPosixWarnMode()
-    {
-        return posix_warn.equals( this );
+    public boolean isPosixWarnMode() {
+        return posix_warn.equals(this);
     }
-
 }

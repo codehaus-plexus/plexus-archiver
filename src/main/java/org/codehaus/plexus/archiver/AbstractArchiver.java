@@ -16,6 +16,10 @@
  */
 package org.codehaus.plexus.archiver;
 
+import javax.annotation.Nonnull;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -33,9 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import javax.annotation.Nonnull;
-import javax.inject.Inject;
-import javax.inject.Provider;
 
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
@@ -55,14 +56,11 @@ import org.slf4j.LoggerFactory;
 import static org.codehaus.plexus.archiver.util.DefaultArchivedFileSet.archivedFileSet;
 import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
 
-public abstract class AbstractArchiver
-    implements Archiver, FinalizerEnabled
-{
+public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected Logger getLogger()
-    {
+    protected Logger getLogger() {
         return logger;
     }
 
@@ -145,8 +143,7 @@ public abstract class AbstractArchiver
     @Inject
     private Provider<ArchiverManager> archiverManagerProvider;
 
-    private static class AddedResourceCollection
-    {
+    private static class AddedResourceCollection {
 
         private final PlexusIoResourceCollection resources;
 
@@ -154,26 +151,19 @@ public abstract class AbstractArchiver
 
         private final int forcedDirectoryMode;
 
-        public AddedResourceCollection( PlexusIoResourceCollection resources, int forcedFileMode, int forcedDirMode )
-        {
+        public AddedResourceCollection(PlexusIoResourceCollection resources, int forcedFileMode, int forcedDirMode) {
             this.resources = resources;
             this.forcedFileMode = forcedFileMode;
             this.forcedDirectoryMode = forcedDirMode;
         }
 
-        private int maybeOverridden( int suggestedMode, boolean isDir )
-        {
-            if ( isDir )
-            {
+        private int maybeOverridden(int suggestedMode, boolean isDir) {
+            if (isDir) {
                 return forcedDirectoryMode >= 0 ? forcedDirectoryMode : suggestedMode;
-            }
-            else
-            {
+            } else {
                 return forcedFileMode >= 0 ? forcedFileMode : suggestedMode;
-
             }
         }
-
     }
 
     /**
@@ -182,56 +172,43 @@ public abstract class AbstractArchiver
     private boolean ignorePermissions = false;
 
     @Override
-    public String getDuplicateBehavior()
-    {
+    public String getDuplicateBehavior() {
         return duplicateBehavior;
     }
 
     @Override
-    public void setDuplicateBehavior( final String duplicate )
-    {
-        if ( !Archiver.DUPLICATES_VALID_BEHAVIORS.contains( duplicate ) )
-        {
-            throw new IllegalArgumentException(
-                    "Invalid duplicate-file behavior: '" + duplicate + "'. Please specify one of: "
-                    + Archiver.DUPLICATES_VALID_BEHAVIORS );
+    public void setDuplicateBehavior(final String duplicate) {
+        if (!Archiver.DUPLICATES_VALID_BEHAVIORS.contains(duplicate)) {
+            throw new IllegalArgumentException("Invalid duplicate-file behavior: '" + duplicate
+                    + "'. Please specify one of: " + Archiver.DUPLICATES_VALID_BEHAVIORS);
         }
 
         duplicateBehavior = duplicate;
     }
 
     @Override
-    public final void setFileMode( final int mode )
-    {
-        if ( mode >= 0 )
-        {
-            forcedFileMode = ( mode & UnixStat.PERM_MASK ) | UnixStat.FILE_FLAG;
-        }
-        else
-        {
+    public final void setFileMode(final int mode) {
+        if (mode >= 0) {
+            forcedFileMode = (mode & UnixStat.PERM_MASK) | UnixStat.FILE_FLAG;
+        } else {
             forcedFileMode = -1;
         }
     }
 
     @Override
-    public final void setDefaultFileMode( final int mode )
-    {
-        defaultFileMode = ( mode & UnixStat.PERM_MASK ) | UnixStat.FILE_FLAG;
+    public final void setDefaultFileMode(final int mode) {
+        defaultFileMode = (mode & UnixStat.PERM_MASK) | UnixStat.FILE_FLAG;
     }
 
     @Override
-    public final int getOverrideFileMode()
-    {
+    public final int getOverrideFileMode() {
         return forcedFileMode;
     }
 
     @Override
-    public final int getFileMode()
-    {
-        if ( forcedFileMode < 0 )
-        {
-            if ( defaultFileMode < 0 )
-            {
+    public final int getFileMode() {
+        if (forcedFileMode < 0) {
+            if (defaultFileMode < 0) {
                 return DEFAULT_FILE_MODE;
             }
 
@@ -242,8 +219,7 @@ public abstract class AbstractArchiver
     }
 
     @Override
-    public final int getDefaultFileMode()
-    {
+    public final int getDefaultFileMode() {
         return defaultFileMode;
     }
 
@@ -251,43 +227,33 @@ public abstract class AbstractArchiver
      * @deprecated Use {@link Archiver#getDefaultFileMode()}.
      */
     @Deprecated
-    public final int getRawDefaultFileMode()
-    {
+    public final int getRawDefaultFileMode() {
         return getDefaultFileMode();
     }
 
     @Override
-    public final void setDirectoryMode( final int mode )
-    {
-        if ( mode >= 0 )
-        {
-            forcedDirectoryMode = ( mode & UnixStat.PERM_MASK ) | UnixStat.DIR_FLAG;
-        }
-        else
-        {
+    public final void setDirectoryMode(final int mode) {
+        if (mode >= 0) {
+            forcedDirectoryMode = (mode & UnixStat.PERM_MASK) | UnixStat.DIR_FLAG;
+        } else {
             forcedDirectoryMode = -1;
         }
     }
 
     @Override
-    public final void setDefaultDirectoryMode( final int mode )
-    {
-        defaultDirectoryMode = ( mode & UnixStat.PERM_MASK ) | UnixStat.DIR_FLAG;
+    public final void setDefaultDirectoryMode(final int mode) {
+        defaultDirectoryMode = (mode & UnixStat.PERM_MASK) | UnixStat.DIR_FLAG;
     }
 
     @Override
-    public final int getOverrideDirectoryMode()
-    {
+    public final int getOverrideDirectoryMode() {
         return forcedDirectoryMode;
     }
 
     @Override
-    public final int getDirectoryMode()
-    {
-        if ( forcedDirectoryMode < 0 )
-        {
-            if ( defaultDirectoryMode < 0 )
-            {
+    public final int getDirectoryMode() {
+        if (forcedDirectoryMode < 0) {
+            if (defaultDirectoryMode < 0) {
                 return DEFAULT_DIR_MODE;
             }
 
@@ -298,243 +264,217 @@ public abstract class AbstractArchiver
     }
 
     @Override
-    public final int getDefaultDirectoryMode()
-    {
-        if ( defaultDirectoryMode < 0 )
-        {
+    public final int getDefaultDirectoryMode() {
+        if (defaultDirectoryMode < 0) {
             return DEFAULT_DIR_MODE;
-        }
-        else
-        {
+        } else {
             return defaultDirectoryMode;
         }
     }
 
     @Override
-    public boolean getIncludeEmptyDirs()
-    {
+    public boolean getIncludeEmptyDirs() {
         return includeEmptyDirs;
     }
 
     @Override
-    public void setIncludeEmptyDirs( final boolean includeEmptyDirs )
-    {
+    public void setIncludeEmptyDirs(final boolean includeEmptyDirs) {
         this.includeEmptyDirs = includeEmptyDirs;
     }
 
     @Override
-    public void addDirectory( @Nonnull final File directory )
-        throws ArchiverException
-    {
+    public void addDirectory(@Nonnull final File directory) throws ArchiverException {
+        addFileSet(fileSet(directory).prefixed("").includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
+    }
+
+    @Override
+    public void addDirectory(@Nonnull final File directory, final String prefix) throws ArchiverException {
         addFileSet(
-            fileSet( directory ).prefixed( "" ).includeExclude( null, null ).includeEmptyDirs( includeEmptyDirs ) );
+                fileSet(directory).prefixed(prefix).includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
-    public void addDirectory( @Nonnull final File directory, final String prefix )
-        throws ArchiverException
-    {
-        addFileSet(
-            fileSet( directory ).prefixed( prefix ).includeExclude( null, null ).includeEmptyDirs( includeEmptyDirs ) );
+    public void addDirectory(@Nonnull final File directory, final String[] includes, final String[] excludes)
+            throws ArchiverException {
+        addFileSet(fileSet(directory)
+                .prefixed("")
+                .includeExclude(includes, excludes)
+                .includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
-    public void addDirectory( @Nonnull final File directory, final String[] includes, final String[] excludes )
-        throws ArchiverException
-    {
-        addFileSet( fileSet( directory ).prefixed( "" ).includeExclude( includes, excludes ).includeEmptyDirs(
-            includeEmptyDirs ) );
+    public void addDirectory(
+            @Nonnull final File directory, final String prefix, final String[] includes, final String[] excludes)
+            throws ArchiverException {
+        addFileSet(fileSet(directory)
+                .prefixed(prefix)
+                .includeExclude(includes, excludes)
+                .includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
-    public void addDirectory( @Nonnull final File directory, final String prefix, final String[] includes,
-                              final String[] excludes )
-        throws ArchiverException
-    {
-        addFileSet( fileSet( directory ).prefixed( prefix ).includeExclude( includes, excludes ).includeEmptyDirs(
-            includeEmptyDirs ) );
-    }
-
-    @Override
-    public void addFileSet( @Nonnull final FileSet fileSet )
-        throws ArchiverException
-    {
+    public void addFileSet(@Nonnull final FileSet fileSet) throws ArchiverException {
         final File directory = fileSet.getDirectory();
-        if ( directory == null )
-        {
-            throw new ArchiverException( "The file sets base directory is null." );
+        if (directory == null) {
+            throw new ArchiverException("The file sets base directory is null.");
         }
 
-        if ( !directory.isDirectory() )
-        {
-            throw new ArchiverException( directory.getAbsolutePath() + " isn't a directory." );
+        if (!directory.isDirectory()) {
+            throw new ArchiverException(directory.getAbsolutePath() + " isn't a directory.");
         }
 
         // The PlexusIoFileResourceCollection contains platform-specific File.separatorChar which
         // is an interesting cause of grief, see PLXCOMP-192
         final PlexusIoFileResourceCollection collection = new PlexusIoFileResourceCollection();
-        collection.setFollowingSymLinks( false );
+        collection.setFollowingSymLinks(false);
 
-        collection.setIncludes( fileSet.getIncludes() );
-        collection.setExcludes( fileSet.getExcludes() );
-        collection.setBaseDir( directory );
-        collection.setFileSelectors( fileSet.getFileSelectors() );
-        collection.setIncludingEmptyDirectories( fileSet.isIncludingEmptyDirectories() );
-        collection.setPrefix( fileSet.getPrefix() );
-        collection.setCaseSensitive( fileSet.isCaseSensitive() );
-        collection.setUsingDefaultExcludes( fileSet.isUsingDefaultExcludes() );
-        collection.setStreamTransformer( fileSet.getStreamTransformer() );
-        collection.setFileMappers( fileSet.getFileMappers() );
-        collection.setFilenameComparator( getFilenameComparator() );
+        collection.setIncludes(fileSet.getIncludes());
+        collection.setExcludes(fileSet.getExcludes());
+        collection.setBaseDir(directory);
+        collection.setFileSelectors(fileSet.getFileSelectors());
+        collection.setIncludingEmptyDirectories(fileSet.isIncludingEmptyDirectories());
+        collection.setPrefix(fileSet.getPrefix());
+        collection.setCaseSensitive(fileSet.isCaseSensitive());
+        collection.setUsingDefaultExcludes(fileSet.isUsingDefaultExcludes());
+        collection.setStreamTransformer(fileSet.getStreamTransformer());
+        collection.setFileMappers(fileSet.getFileMappers());
+        collection.setFilenameComparator(getFilenameComparator());
 
-        if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 || getOverrideUid() > -1
-            || getOverrideGid() > -1 || getOverrideUserName() != null || getOverrideGroupName() != null )
-        {
-            collection.setOverrideAttributes( getOverrideUid(), getOverrideUserName(), getOverrideGid(),
-                                              getOverrideGroupName(), getOverrideFileMode(),
-                                              getOverrideDirectoryMode() );
+        if (getOverrideDirectoryMode() > -1
+                || getOverrideFileMode() > -1
+                || getOverrideUid() > -1
+                || getOverrideGid() > -1
+                || getOverrideUserName() != null
+                || getOverrideGroupName() != null) {
+            collection.setOverrideAttributes(
+                    getOverrideUid(),
+                    getOverrideUserName(),
+                    getOverrideGid(),
+                    getOverrideGroupName(),
+                    getOverrideFileMode(),
+                    getOverrideDirectoryMode());
         }
 
-        if ( getDefaultDirectoryMode() > -1 || getDefaultFileMode() > -1 )
-        {
-            collection.setDefaultAttributes( -1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode() );
+        if (getDefaultDirectoryMode() > -1 || getDefaultFileMode() > -1) {
+            collection.setDefaultAttributes(-1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode());
         }
 
-        addResources( collection );
+        addResources(collection);
     }
 
     @Override
-    public void addFile( @Nonnull final File inputFile, @Nonnull final String destFileName )
-        throws ArchiverException
-    {
+    public void addFile(@Nonnull final File inputFile, @Nonnull final String destFileName) throws ArchiverException {
         final int fileMode = getOverrideFileMode();
 
-        addFile( inputFile, destFileName, fileMode );
+        addFile(inputFile, destFileName, fileMode);
     }
 
     @Override
-    public void addSymlink( String symlinkName, String symlinkDestination )
-        throws ArchiverException
-    {
+    public void addSymlink(String symlinkName, String symlinkDestination) throws ArchiverException {
         final int fileMode = getOverrideFileMode();
 
-        addSymlink( symlinkName, fileMode, symlinkDestination );
+        addSymlink(symlinkName, fileMode, symlinkDestination);
     }
 
     @Override
-    public void addSymlink( String symlinkName, int permissions, String symlinkDestination )
-        throws ArchiverException
-    {
+    public void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException {
         doAddResource(
-            ArchiveEntry.createSymlinkEntry( symlinkName, permissions, symlinkDestination, getDirectoryMode() ) );
+                ArchiveEntry.createSymlinkEntry(symlinkName, permissions, symlinkDestination, getDirectoryMode()));
     }
 
-    private ArchiveEntry updateArchiveEntryAttributes( ArchiveEntry entry )
-    {
-        if ( getOverrideUid() > -1 || getOverrideGid() > -1 || getOverrideUserName() != null
-            || getOverrideGroupName() != null )
-        {
-            entry.setResourceAttributes( new SimpleResourceAttributes( getOverrideUid(), getOverrideUserName(),
-                                                                       getOverrideGid(), getOverrideGroupName(),
-                                                                       entry.getMode() ) );
+    private ArchiveEntry updateArchiveEntryAttributes(ArchiveEntry entry) {
+        if (getOverrideUid() > -1
+                || getOverrideGid() > -1
+                || getOverrideUserName() != null
+                || getOverrideGroupName() != null) {
+            entry.setResourceAttributes(new SimpleResourceAttributes(
+                    getOverrideUid(),
+                    getOverrideUserName(),
+                    getOverrideGid(),
+                    getOverrideGroupName(),
+                    entry.getMode()));
         }
         return entry;
     }
 
-    protected ArchiveEntry asArchiveEntry( @Nonnull final PlexusIoResource resource, final String destFileName,
-                                           int permissions, PlexusIoResourceCollection collection )
-        throws ArchiverException
-    {
-        if ( !resource.isExisting() )
-        {
-            throw new ArchiverException( resource.getName() + " not found." );
+    protected ArchiveEntry asArchiveEntry(
+            @Nonnull final PlexusIoResource resource,
+            final String destFileName,
+            int permissions,
+            PlexusIoResourceCollection collection)
+            throws ArchiverException {
+        if (!resource.isExisting()) {
+            throw new ArchiverException(resource.getName() + " not found.");
         }
 
-        if ( umask > 0 && permissions != PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE )
-        {
+        if (umask > 0 && permissions != PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE) {
             permissions &= ~umask;
         }
 
         ArchiveEntry entry;
-        if ( resource.isFile() )
-        {
-            entry = ArchiveEntry.createFileEntry( destFileName, resource, permissions, collection, getDirectoryMode() );
-        }
-        else
-        {
-            entry = ArchiveEntry.createDirectoryEntry( destFileName, resource, permissions, getDirectoryMode() );
+        if (resource.isFile()) {
+            entry = ArchiveEntry.createFileEntry(destFileName, resource, permissions, collection, getDirectoryMode());
+        } else {
+            entry = ArchiveEntry.createDirectoryEntry(destFileName, resource, permissions, getDirectoryMode());
         }
 
-        return updateArchiveEntryAttributes( entry );
+        return updateArchiveEntryAttributes(entry);
     }
 
-    private ArchiveEntry asArchiveEntry( final AddedResourceCollection collection, final PlexusIoResource resource )
-        throws ArchiverException
-    {
-        final String destFileName = collection.resources.getName( resource );
+    private ArchiveEntry asArchiveEntry(final AddedResourceCollection collection, final PlexusIoResource resource)
+            throws ArchiverException {
+        final String destFileName = collection.resources.getName(resource);
 
         int fromResource = PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE;
-        if ( resource instanceof ResourceAttributeSupplier )
-        {
-            final PlexusIoResourceAttributes attrs = ( (ResourceAttributeSupplier) resource ).getAttributes();
+        if (resource instanceof ResourceAttributeSupplier) {
+            final PlexusIoResourceAttributes attrs = ((ResourceAttributeSupplier) resource).getAttributes();
 
-            if ( attrs != null )
-            {
+            if (attrs != null) {
                 fromResource = attrs.getOctalMode();
             }
         }
 
-        return asArchiveEntry( resource, destFileName,
-                               collection.maybeOverridden( fromResource, resource.isDirectory() ),
-                               collection.resources );
+        return asArchiveEntry(
+                resource,
+                destFileName,
+                collection.maybeOverridden(fromResource, resource.isDirectory()),
+                collection.resources);
     }
 
     @Override
-    public void addResource( final PlexusIoResource resource, final String destFileName, final int permissions )
-        throws ArchiverException
-    {
-        doAddResource( asArchiveEntry( resource, destFileName, permissions, null ) );
+    public void addResource(final PlexusIoResource resource, final String destFileName, final int permissions)
+            throws ArchiverException {
+        doAddResource(asArchiveEntry(resource, destFileName, permissions, null));
     }
 
     @Override
-    public void addFile( @Nonnull final File inputFile, @Nonnull String destFileName, int permissions )
-        throws ArchiverException
-    {
-        if ( !inputFile.isFile() || !inputFile.exists() )
-        {
-            throw new ArchiverException( inputFile.getAbsolutePath() + " isn't a file." );
+    public void addFile(@Nonnull final File inputFile, @Nonnull String destFileName, int permissions)
+            throws ArchiverException {
+        if (!inputFile.isFile() || !inputFile.exists()) {
+            throw new ArchiverException(inputFile.getAbsolutePath() + " isn't a file.");
         }
 
-        if ( replacePathSlashesToJavaPaths )
-        {
-            destFileName = destFileName.replace( '\\', '/' );
+        if (replacePathSlashesToJavaPaths) {
+            destFileName = destFileName.replace('\\', '/');
         }
 
-        if ( permissions < 0 )
-        {
+        if (permissions < 0) {
             permissions = getOverrideFileMode();
         }
 
-        try
-        {
+        try {
             // do a null check here, to avoid creating a file stream if there are no filters...
-            ArchiveEntry entry =
-                ArchiveEntry.createFileEntry( destFileName, inputFile, permissions, getDirectoryMode() );
-            doAddResource( updateArchiveEntryAttributes( entry ) );
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( "Failed to determine inclusion status for: " + inputFile, e );
+            ArchiveEntry entry = ArchiveEntry.createFileEntry(destFileName, inputFile, permissions, getDirectoryMode());
+            doAddResource(updateArchiveEntryAttributes(entry));
+        } catch (final IOException e) {
+            throw new ArchiverException("Failed to determine inclusion status for: " + inputFile, e);
         }
     }
 
     @Nonnull
     @Override
-    public ResourceIterator getResources()
-        throws ArchiverException
-    {
-        return new ResourceIterator()
-        {
+    public ResourceIterator getResources() throws ArchiverException {
+        return new ResourceIterator() {
 
             private final Iterator<Object> addedResourceIter = resources.iterator();
 
@@ -547,253 +487,189 @@ public abstract class AbstractArchiver
             private final Set<String> seenEntries = new HashSet<>();
 
             @Override
-            public boolean hasNext()
-            {
-                do
-                {
-                    if ( nextEntry == null )
-                    {
-                        if ( ioResourceIter == null )
-                        {
-                            if ( addedResourceIter.hasNext() )
-                            {
+            public boolean hasNext() {
+                do {
+                    if (nextEntry == null) {
+                        if (ioResourceIter == null) {
+                            if (addedResourceIter.hasNext()) {
                                 final Object o = addedResourceIter.next();
-                                if ( o instanceof ArchiveEntry )
-                                {
+                                if (o instanceof ArchiveEntry) {
                                     nextEntry = (ArchiveEntry) o;
-                                }
-                                else if ( o instanceof AddedResourceCollection )
-                                {
+                                } else if (o instanceof AddedResourceCollection) {
                                     currentResourceCollection = (AddedResourceCollection) o;
 
-                                    try
-                                    {
+                                    try {
                                         ioResourceIter = currentResourceCollection.resources.getResources();
+                                    } catch (final IOException e) {
+                                        throw new ArchiverException(e.getMessage(), e);
                                     }
-                                    catch ( final IOException e )
-                                    {
-                                        throw new ArchiverException( e.getMessage(), e );
-                                    }
+                                } else {
+                                    return throwIllegalResourceType(o);
                                 }
-                                else
-                                {
-                                    return throwIllegalResourceType( o );
-                                }
-                            }
-                            else
-                            {
+                            } else {
                                 nextEntry = null;
                             }
-                        }
-                        else
-                        {
-                            if ( ioResourceIter.hasNext() )
-                            {
+                        } else {
+                            if (ioResourceIter.hasNext()) {
                                 final PlexusIoResource resource = (PlexusIoResource) ioResourceIter.next();
-                                nextEntry = asArchiveEntry( currentResourceCollection, resource );
-                            }
-                            else
-                            {
+                                nextEntry = asArchiveEntry(currentResourceCollection, resource);
+                            } else {
                                 // this will leak handles in the IO iterator if the iterator is not fully consumed.
                                 // alternately we'd have to make this method return a Closeable iterator back
                                 // to the client and ditch the whole issue onto the client.
                                 // this does not really make any sense either, might equally well change the
                                 // api into something that is not broken by design.
-                                addCloseable( ioResourceIter );
+                                addCloseable(ioResourceIter);
                                 ioResourceIter = null;
                             }
                         }
                     }
 
-                    if ( nextEntry != null && seenEntries.contains( normalizedForDuplicateCheck( nextEntry ) ) )
-                    {
+                    if (nextEntry != null && seenEntries.contains(normalizedForDuplicateCheck(nextEntry))) {
                         final String path = nextEntry.getName();
 
-                        if ( Archiver.DUPLICATES_PRESERVE.equals( duplicateBehavior )
-                                 || Archiver.DUPLICATES_SKIP.equals( duplicateBehavior ) )
-                        {
-                            if ( nextEntry.getType() == ArchiveEntry.FILE )
-                            {
-                                getLogger().debug( path + " already added, skipping" );
+                        if (Archiver.DUPLICATES_PRESERVE.equals(duplicateBehavior)
+                                || Archiver.DUPLICATES_SKIP.equals(duplicateBehavior)) {
+                            if (nextEntry.getType() == ArchiveEntry.FILE) {
+                                getLogger().debug(path + " already added, skipping");
                             }
 
                             nextEntry = null;
-                        }
-                        else if ( Archiver.DUPLICATES_FAIL.equals( duplicateBehavior ) )
-                        {
-                            throw new ArchiverException(
-                                "Duplicate file " + path + " was found and the duplicate " + "attribute is 'fail'." );
-                        }
-                        else
-                        {
+                        } else if (Archiver.DUPLICATES_FAIL.equals(duplicateBehavior)) {
+                            throw new ArchiverException("Duplicate file " + path + " was found and the duplicate "
+                                    + "attribute is 'fail'.");
+                        } else {
                             // duplicate equal to add, so we continue
-                            getLogger().debug( "duplicate file " + path + " found, adding." );
+                            getLogger().debug("duplicate file " + path + " found, adding.");
                         }
                     }
-                }
-                while ( nextEntry == null && !( ioResourceIter == null && !addedResourceIter.hasNext() ) );
+                } while (nextEntry == null && !(ioResourceIter == null && !addedResourceIter.hasNext()));
 
                 return nextEntry != null;
             }
 
-            private boolean throwIllegalResourceType( Object o )
-            {
+            private boolean throwIllegalResourceType(Object o) {
                 throw new IllegalStateException(
-                    "An invalid resource of type: " + o.getClass().getName() + " was added to archiver: "
-                        + getClass().getName() );
+                        "An invalid resource of type: " + o.getClass().getName() + " was added to archiver: "
+                                + getClass().getName());
             }
 
             @Override
-            public ArchiveEntry next()
-            {
-                if ( !hasNext() )
-                {
+            public ArchiveEntry next() {
+                if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
 
                 final ArchiveEntry next = nextEntry;
                 nextEntry = null;
 
-                seenEntries.add( normalizedForDuplicateCheck( next ) );
+                seenEntries.add(normalizedForDuplicateCheck(next));
 
                 return next;
             }
 
             @Override
-            public void remove()
-            {
-                throw new UnsupportedOperationException( "Does not support iterator" );
+            public void remove() {
+                throw new UnsupportedOperationException("Does not support iterator");
             }
 
-            private String normalizedForDuplicateCheck( ArchiveEntry entry )
-            {
-                return entry.getName().replace( '\\', '/' );
+            private String normalizedForDuplicateCheck(ArchiveEntry entry) {
+                return entry.getName().replace('\\', '/');
             }
-
         };
-
     }
 
-    private static void closeIfCloseable( Object resource )
-        throws IOException
-    {
-        if ( resource == null )
-        {
+    private static void closeIfCloseable(Object resource) throws IOException {
+        if (resource == null) {
             return;
         }
-        if ( resource instanceof Closeable )
-        {
-            ( (Closeable) resource ).close();
+        if (resource instanceof Closeable) {
+            ((Closeable) resource).close();
         }
-
     }
 
-    private static void closeQuietlyIfCloseable( Object resource )
-    {
-        try
-        {
-            closeIfCloseable( resource );
-        }
-        catch ( IOException e )
-        {
-            throw new RuntimeException( e );
+    private static void closeQuietlyIfCloseable(Object resource) {
+        try {
+            closeIfCloseable(resource);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Map<String, ArchiveEntry> getFiles()
-    {
-        try
-        {
+    public Map<String, ArchiveEntry> getFiles() {
+        try {
             final Map<String, ArchiveEntry> map = new HashMap<>();
-            for ( final ResourceIterator iter = getResources(); iter.hasNext(); )
-            {
+            for (final ResourceIterator iter = getResources(); iter.hasNext(); ) {
                 final ArchiveEntry entry = iter.next();
-                if ( includeEmptyDirs || entry.getType() == ArchiveEntry.FILE )
-                {
-                    map.put( entry.getName(), entry );
+                if (includeEmptyDirs || entry.getType() == ArchiveEntry.FILE) {
+                    map.put(entry.getName(), entry);
                 }
             }
             return map;
-        }
-        catch ( final ArchiverException e )
-        {
-            throw new UndeclaredThrowableException( e );
+        } catch (final ArchiverException e) {
+            throw new UndeclaredThrowableException(e);
         }
     }
 
     @Override
-    public File getDestFile()
-    {
+    public File getDestFile() {
         return destFile;
     }
 
     @Override
-    public void setDestFile( final File destFile )
-    {
+    public void setDestFile(final File destFile) {
         this.destFile = destFile;
 
-        if ( destFile != null && destFile.getParentFile() != null )
-        {
+        if (destFile != null && destFile.getParentFile() != null) {
             destFile.getParentFile().mkdirs();
         }
     }
 
-    protected PlexusIoResourceCollection asResourceCollection( final ArchivedFileSet fileSet, Charset charset )
-        throws ArchiverException
-    {
+    protected PlexusIoResourceCollection asResourceCollection(final ArchivedFileSet fileSet, Charset charset)
+            throws ArchiverException {
         final File archiveFile = fileSet.getArchive();
 
         final PlexusIoResourceCollection resources;
-        try
-        {
-            resources = archiverManagerProvider.get().getResourceCollection( archiveFile );
-        }
-        catch ( final NoSuchArchiverException e )
-        {
+        try {
+            resources = archiverManagerProvider.get().getResourceCollection(archiveFile);
+        } catch (final NoSuchArchiverException e) {
             throw new ArchiverException(
-                "Error adding archived file-set. PlexusIoResourceCollection not found for: " + archiveFile, e );
+                    "Error adding archived file-set. PlexusIoResourceCollection not found for: " + archiveFile, e);
         }
 
-        if ( resources instanceof EncodingSupported )
-        {
-            ( (EncodingSupported) resources ).setEncoding( charset );
+        if (resources instanceof EncodingSupported) {
+            ((EncodingSupported) resources).setEncoding(charset);
         }
 
-        if ( resources instanceof PlexusIoArchivedResourceCollection )
-        {
-            ( (PlexusIoArchivedResourceCollection) resources ).setFile( fileSet.getArchive() );
-        }
-        else
-        {
-            throw new ArchiverException( "Expected " + PlexusIoArchivedResourceCollection.class.getName() + ", got "
-                                             + resources.getClass().getName() );
+        if (resources instanceof PlexusIoArchivedResourceCollection) {
+            ((PlexusIoArchivedResourceCollection) resources).setFile(fileSet.getArchive());
+        } else {
+            throw new ArchiverException("Expected " + PlexusIoArchivedResourceCollection.class.getName() + ", got "
+                    + resources.getClass().getName());
         }
 
-        if ( resources instanceof AbstractPlexusIoResourceCollection )
-        {
-            ( (AbstractPlexusIoResourceCollection) resources ).setStreamTransformer( fileSet.getStreamTransformer() );
+        if (resources instanceof AbstractPlexusIoResourceCollection) {
+            ((AbstractPlexusIoResourceCollection) resources).setStreamTransformer(fileSet.getStreamTransformer());
         }
-        final PlexusIoProxyResourceCollection proxy = new PlexusIoProxyResourceCollection( resources );
+        final PlexusIoProxyResourceCollection proxy = new PlexusIoProxyResourceCollection(resources);
 
-        proxy.setExcludes( fileSet.getExcludes() );
-        proxy.setIncludes( fileSet.getIncludes() );
-        proxy.setIncludingEmptyDirectories( fileSet.isIncludingEmptyDirectories() );
-        proxy.setCaseSensitive( fileSet.isCaseSensitive() );
-        proxy.setPrefix( fileSet.getPrefix() );
-        proxy.setUsingDefaultExcludes( fileSet.isUsingDefaultExcludes() );
-        proxy.setFileSelectors( fileSet.getFileSelectors() );
-        proxy.setStreamTransformer( fileSet.getStreamTransformer() );
-        proxy.setFileMappers( fileSet.getFileMappers() );
+        proxy.setExcludes(fileSet.getExcludes());
+        proxy.setIncludes(fileSet.getIncludes());
+        proxy.setIncludingEmptyDirectories(fileSet.isIncludingEmptyDirectories());
+        proxy.setCaseSensitive(fileSet.isCaseSensitive());
+        proxy.setPrefix(fileSet.getPrefix());
+        proxy.setUsingDefaultExcludes(fileSet.isUsingDefaultExcludes());
+        proxy.setFileSelectors(fileSet.getFileSelectors());
+        proxy.setStreamTransformer(fileSet.getStreamTransformer());
+        proxy.setFileMappers(fileSet.getFileMappers());
 
-        if ( getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1 )
-        {
-            proxy.setOverrideAttributes( -1, null, -1, null, getOverrideFileMode(), getOverrideDirectoryMode() );
+        if (getOverrideDirectoryMode() > -1 || getOverrideFileMode() > -1) {
+            proxy.setOverrideAttributes(-1, null, -1, null, getOverrideFileMode(), getOverrideDirectoryMode());
         }
 
-        if ( getDefaultDirectoryMode() > -1 || getDefaultFileMode() > -1 )
-        {
-            proxy.setDefaultAttributes( -1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode() );
+        if (getDefaultDirectoryMode() > -1 || getDefaultFileMode() > -1) {
+            proxy.setDefaultAttributes(-1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode());
         }
 
         return proxy;
@@ -803,167 +679,135 @@ public abstract class AbstractArchiver
      * Adds a resource collection to the archive.
      */
     @Override
-    public void addResources( final PlexusIoResourceCollection collection )
-        throws ArchiverException
-    {
-        doAddResource( new AddedResourceCollection( collection, forcedFileMode, forcedDirectoryMode ) );
+    public void addResources(final PlexusIoResourceCollection collection) throws ArchiverException {
+        doAddResource(new AddedResourceCollection(collection, forcedFileMode, forcedDirectoryMode));
     }
 
-    private void doAddResource( Object item )
-    {
-        resources.add( item );
+    private void doAddResource(Object item) {
+        resources.add(item);
     }
 
     @Override
-    public void addArchivedFileSet( final ArchivedFileSet fileSet )
-        throws ArchiverException
-    {
-        final PlexusIoResourceCollection resourceCollection = asResourceCollection( fileSet, null );
-        addResources( resourceCollection );
+    public void addArchivedFileSet(final ArchivedFileSet fileSet) throws ArchiverException {
+        final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, null);
+        addResources(resourceCollection);
     }
 
     @Override
-    public void addArchivedFileSet( final ArchivedFileSet fileSet, Charset charset )
-        throws ArchiverException
-    {
-        final PlexusIoResourceCollection resourceCollection = asResourceCollection( fileSet, charset );
-        addResources( resourceCollection );
+    public void addArchivedFileSet(final ArchivedFileSet fileSet, Charset charset) throws ArchiverException {
+        final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, charset);
+        addResources(resourceCollection);
     }
 
     /**
      * @since 1.0-alpha-7
      */
     @Override
-    public void addArchivedFileSet( @Nonnull final File archiveFile, final String prefix, final String[] includes,
-                                    final String[] excludes )
-        throws ArchiverException
-    {
+    public void addArchivedFileSet(
+            @Nonnull final File archiveFile, final String prefix, final String[] includes, final String[] excludes)
+            throws ArchiverException {
+        addArchivedFileSet(archivedFileSet(archiveFile)
+                .prefixed(prefix)
+                .includeExclude(includes, excludes)
+                .includeEmptyDirs(includeEmptyDirs));
+    }
+
+    /**
+     * @since 1.0-alpha-7
+     */
+    @Override
+    public void addArchivedFileSet(@Nonnull final File archiveFile, final String prefix) throws ArchiverException {
+        addArchivedFileSet(archivedFileSet(archiveFile).prefixed(prefix).includeEmptyDirs(includeEmptyDirs));
+    }
+
+    /**
+     * @since 1.0-alpha-7
+     */
+    @Override
+    public void addArchivedFileSet(@Nonnull final File archiveFile, final String[] includes, final String[] excludes)
+            throws ArchiverException {
         addArchivedFileSet(
-            archivedFileSet( archiveFile ).prefixed( prefix ).includeExclude( includes, excludes ).includeEmptyDirs(
-                includeEmptyDirs ) );
+                archivedFileSet(archiveFile).includeExclude(includes, excludes).includeEmptyDirs(includeEmptyDirs));
     }
 
     /**
      * @since 1.0-alpha-7
      */
     @Override
-    public void addArchivedFileSet( @Nonnull final File archiveFile, final String prefix )
-        throws ArchiverException
-    {
-        addArchivedFileSet( archivedFileSet( archiveFile ).prefixed( prefix ).includeEmptyDirs( includeEmptyDirs ) );
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    public void addArchivedFileSet( @Nonnull final File archiveFile, final String[] includes, final String[] excludes )
-        throws ArchiverException
-    {
-        addArchivedFileSet(
-            archivedFileSet( archiveFile ).includeExclude( includes, excludes ).includeEmptyDirs( includeEmptyDirs ) );
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    public void addArchivedFileSet( @Nonnull final File archiveFile )
-        throws ArchiverException
-    {
-        addArchivedFileSet( archivedFileSet( archiveFile ).includeEmptyDirs( includeEmptyDirs ) );
+    public void addArchivedFileSet(@Nonnull final File archiveFile) throws ArchiverException {
+        addArchivedFileSet(archivedFileSet(archiveFile).includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
-    public boolean isForced()
-    {
+    public boolean isForced() {
         return forced;
     }
 
     @Override
-    public void setForced( final boolean forced )
-    {
+    public void setForced(final boolean forced) {
         this.forced = forced;
     }
 
     @Override
-    public void addArchiveFinalizer( final ArchiveFinalizer finalizer )
-    {
-        if ( finalizers == null )
-        {
+    public void addArchiveFinalizer(final ArchiveFinalizer finalizer) {
+        if (finalizers == null) {
             finalizers = new ArrayList<>();
         }
 
-        finalizers.add( finalizer );
+        finalizers.add(finalizer);
     }
 
     @Override
-    public void setArchiveFinalizers( final List<ArchiveFinalizer> archiveFinalizers )
-    {
+    public void setArchiveFinalizers(final List<ArchiveFinalizer> archiveFinalizers) {
         finalizers = archiveFinalizers;
     }
 
     @Override
-    public void setDotFileDirectory( final File dotFileDirectory )
-    {
+    public void setDotFileDirectory(final File dotFileDirectory) {
         this.dotFileDirectory = dotFileDirectory;
     }
 
-    protected boolean isUptodate()
-        throws ArchiverException
-    {
+    protected boolean isUptodate() throws ArchiverException {
         final File zipFile = getDestFile();
-        if ( !zipFile.exists() )
-        {
-            getLogger().debug( "isUp2date: false (Destination " + zipFile.getPath() + " not found.)" );
+        if (!zipFile.exists()) {
+            getLogger().debug("isUp2date: false (Destination " + zipFile.getPath() + " not found.)");
             return false; // File doesn't yet exist
         }
         final long destTimestamp = getFileLastModifiedTime(zipFile);
 
         final Iterator<Object> it = resources.iterator();
-        if ( !it.hasNext() )
-        {
-            getLogger().debug( "isUp2date: false (No input files.)" );
+        if (!it.hasNext()) {
+            getLogger().debug("isUp2date: false (No input files.)");
             return false; // No timestamp to compare
         }
 
-        while ( it.hasNext() )
-        {
+        while (it.hasNext()) {
             final Object o = it.next();
             final long l;
-            if ( o instanceof ArchiveEntry )
-            {
-                l = ( (ArchiveEntry) o ).getResource().getLastModified();
-            }
-            else if ( o instanceof AddedResourceCollection )
-            {
-                try
-                {
-                    l = ( (AddedResourceCollection) o ).resources.getLastModified();
+            if (o instanceof ArchiveEntry) {
+                l = ((ArchiveEntry) o).getResource().getLastModified();
+            } else if (o instanceof AddedResourceCollection) {
+                try {
+                    l = ((AddedResourceCollection) o).resources.getLastModified();
+                } catch (final IOException e) {
+                    throw new ArchiverException(e.getMessage(), e);
                 }
-                catch ( final IOException e )
-                {
-                    throw new ArchiverException( e.getMessage(), e );
-                }
+            } else {
+                throw new IllegalStateException(
+                        "Invalid object type: " + o.getClass().getName());
             }
-            else
-            {
-                throw new IllegalStateException( "Invalid object type: " + o.getClass().getName() );
-            }
-            if ( l == PlexusIoResource.UNKNOWN_MODIFICATION_DATE )
-            {
+            if (l == PlexusIoResource.UNKNOWN_MODIFICATION_DATE) {
                 // Don't know what to do. Safe thing is to assume not up2date.
-                getLogger().debug( "isUp2date: false (Resource with unknown modification date found.)" );
+                getLogger().debug("isUp2date: false (Resource with unknown modification date found.)");
                 return false;
             }
-            if ( l > destTimestamp )
-            {
-                getLogger().debug( "isUp2date: false (Resource with newer modification date found.)" );
+            if (l > destTimestamp) {
+                getLogger().debug("isUp2date: false (Resource with newer modification date found.)");
                 return false;
             }
         }
 
-        getLogger().debug( "isUp2date: true" );
+        getLogger().debug("isUp2date: true");
         return true;
     }
 
@@ -974,101 +818,72 @@ public abstract class AbstractArchiver
      * @return The last modified time in milliseconds of the file.
      * @throws ArchiverException In the case of an IOException, for example when the file does not exists.
      */
-    private long getFileLastModifiedTime( File file )
-            throws ArchiverException
-    {
-        try
-        {
-            return Files.getLastModifiedTime( file.toPath() ).toMillis();
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( e.getMessage(), e );
+    private long getFileLastModifiedTime(File file) throws ArchiverException {
+        try {
+            return Files.getLastModifiedTime(file.toPath()).toMillis();
+        } catch (IOException e) {
+            throw new ArchiverException(e.getMessage(), e);
         }
     }
 
-    protected boolean checkForced()
-        throws ArchiverException
-    {
-        if ( !isForced() && isSupportingForced() && isUptodate() )
-        {
-            getLogger().debug( "Archive " + getDestFile() + " is uptodate." );
+    protected boolean checkForced() throws ArchiverException {
+        if (!isForced() && isSupportingForced() && isUptodate()) {
+            getLogger().debug("Archive " + getDestFile() + " is uptodate.");
             return false;
         }
         return true;
     }
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return false;
     }
 
-    protected void runArchiveFinalizers()
-        throws ArchiverException
-    {
-        if ( finalizers != null )
-        {
-            for ( final ArchiveFinalizer finalizer : finalizers )
-            {
-                finalizer.finalizeArchiveCreation( this );
+    protected void runArchiveFinalizers() throws ArchiverException {
+        if (finalizers != null) {
+            for (final ArchiveFinalizer finalizer : finalizers) {
+                finalizer.finalizeArchiveCreation(this);
             }
         }
     }
 
     @Override
-    public final void createArchive()
-        throws ArchiverException, IOException
-    {
+    public final void createArchive() throws ArchiverException, IOException {
         validate();
-        try
-        {
-            try
-            {
-                if ( dotFileDirectory != null )
-                {
-                    addArchiveFinalizer( new DotDirectiveArchiveFinalizer( dotFileDirectory ) );
+        try {
+            try {
+                if (dotFileDirectory != null) {
+                    addArchiveFinalizer(new DotDirectiveArchiveFinalizer(dotFileDirectory));
                 }
 
                 runArchiveFinalizers();
 
                 execute();
-            }
-            finally
-            {
+            } finally {
                 close();
             }
-        }
-        catch ( final IOException e )
-        {
+        } catch (final IOException e) {
             String msg = "Problem creating " + getArchiveType() + ": " + e.getMessage();
 
             final StringBuffer revertBuffer = new StringBuffer();
-            if ( !revert( revertBuffer ) )
-            {
+            if (!revert(revertBuffer)) {
                 msg += revertBuffer.toString();
             }
 
-            throw new ArchiverException( msg, e );
-        }
-        finally
-        {
+            throw new ArchiverException(msg, e);
+        } finally {
             cleanUp();
         }
 
         postCreateArchive();
     }
 
-    protected boolean hasVirtualFiles()
-    {
-        if ( finalizers != null )
-        {
-            for ( final ArchiveFinalizer finalizer : finalizers )
-            {
+    protected boolean hasVirtualFiles() {
+        if (finalizers != null) {
+            for (final ArchiveFinalizer finalizer : finalizers) {
                 final List virtualFiles = finalizer.getVirtualFiles();
 
-                if ( ( virtualFiles != null ) && !virtualFiles.isEmpty() )
-                {
+                if ((virtualFiles != null) && !virtualFiles.isEmpty()) {
                     return true;
                 }
             }
@@ -1076,15 +891,11 @@ public abstract class AbstractArchiver
         return false;
     }
 
-    protected boolean revert( final StringBuffer messageBuffer )
-    {
+    protected boolean revert(final StringBuffer messageBuffer) {
         return true;
     }
 
-    protected void validate()
-        throws ArchiverException, IOException
-    {
-    }
+    protected void validate() throws ArchiverException, IOException {}
 
     /**
      * This method is called after the archive creation
@@ -1096,60 +907,44 @@ public abstract class AbstractArchiver
      *
      * @since 3.6
      */
-    protected void postCreateArchive()
-        throws ArchiverException, IOException
-    {
-    }
+    protected void postCreateArchive() throws ArchiverException, IOException {}
 
     protected abstract String getArchiveType();
 
-    private void addCloseable( Object maybeCloseable )
-    {
-        if ( maybeCloseable instanceof Closeable )
-        {
-            closeables.add( (Closeable) maybeCloseable );
+    private void addCloseable(Object maybeCloseable) {
+        if (maybeCloseable instanceof Closeable) {
+            closeables.add((Closeable) maybeCloseable);
         }
-
     }
 
-    private void closeIterators()
-    {
-        for ( Closeable closeable : closeables )
-        {
-            closeQuietlyIfCloseable( closeable );
+    private void closeIterators() {
+        for (Closeable closeable : closeables) {
+            closeQuietlyIfCloseable(closeable);
         }
-
     }
 
-    protected abstract void close()
-        throws IOException;
+    protected abstract void close() throws IOException;
 
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         closeIterators();
 
-        for ( Object resource : resources )
-        {
-            if ( resource instanceof PlexusIoProxyResourceCollection )
-            {
-                resource = ( (PlexusIoProxyResourceCollection) resource ).getSrc();
+        for (Object resource : resources) {
+            if (resource instanceof PlexusIoProxyResourceCollection) {
+                resource = ((PlexusIoProxyResourceCollection) resource).getSrc();
             }
 
-            closeIfCloseable( resource );
+            closeIfCloseable(resource);
         }
         resources.clear();
     }
 
-    protected abstract void execute()
-        throws ArchiverException, IOException;
+    protected abstract void execute() throws ArchiverException, IOException;
 
     /**
      * @since 1.1
      */
     @Override
-    public boolean isUseJvmChmod()
-    {
+    public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
 
@@ -1157,8 +952,7 @@ public abstract class AbstractArchiver
      * @since 1.1
      */
     @Override
-    public void setUseJvmChmod( final boolean useJvmChmod )
-    {
+    public void setUseJvmChmod(final boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }
 
@@ -1166,8 +960,7 @@ public abstract class AbstractArchiver
      * @since 1.1
      */
     @Override
-    public boolean isIgnorePermissions()
-    {
+    public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
 
@@ -1175,8 +968,7 @@ public abstract class AbstractArchiver
      * @since 1.1
      */
     @Override
-    public void setIgnorePermissions( final boolean ignorePermissions )
-    {
+    public void setIgnorePermissions(final boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
     }
 
@@ -1185,9 +977,8 @@ public abstract class AbstractArchiver
      */
     @Override
     @Deprecated
-    public void setLastModifiedDate( Date lastModifiedDate )
-    {
-        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis( lastModifiedDate.getTime() ) : null;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis(lastModifiedDate.getTime()) : null;
     }
 
     /**
@@ -1195,91 +986,76 @@ public abstract class AbstractArchiver
      */
     @Override
     @Deprecated
-    public Date getLastModifiedDate()
-    {
-        return lastModifiedTime != null ? new Date( lastModifiedTime.toMillis() ) : null;
+    public Date getLastModifiedDate() {
+        return lastModifiedTime != null ? new Date(lastModifiedTime.toMillis()) : null;
     }
 
     @Override
-    public void setLastModifiedTime( FileTime lastModifiedTime )
-    {
+    public void setLastModifiedTime(FileTime lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 
     @Override
-    public FileTime getLastModifiedTime()
-    {
+    public FileTime getLastModifiedTime() {
         return lastModifiedTime;
     }
 
     @Override
-    public void setFilenameComparator( Comparator<String> filenameComparator )
-    {
+    public void setFilenameComparator(Comparator<String> filenameComparator) {
         this.filenameComparator = filenameComparator;
     }
 
-    public Comparator<String> getFilenameComparator()
-    {
+    public Comparator<String> getFilenameComparator() {
         return filenameComparator;
     }
 
     @Override
-    public void setOverrideUid( int uid )
-    {
+    public void setOverrideUid(int uid) {
         overrideUid = uid;
     }
 
     @Override
-    public void setOverrideUserName( String userName )
-    {
+    public void setOverrideUserName(String userName) {
         overrideUserName = userName;
     }
 
     @Override
-    public int getOverrideUid()
-    {
+    public int getOverrideUid() {
         return overrideUid;
     }
 
     @Override
-    public String getOverrideUserName()
-    {
+    public String getOverrideUserName() {
         return overrideUserName;
     }
 
     @Override
-    public void setOverrideGid( int gid )
-    {
+    public void setOverrideGid(int gid) {
         overrideGid = gid;
     }
 
     @Override
-    public void setOverrideGroupName( String groupName )
-    {
+    public void setOverrideGroupName(String groupName) {
         overrideGroupName = groupName;
     }
 
     @Override
-    public int getOverrideGid()
-    {
+    public int getOverrideGid() {
         return overrideGid;
     }
 
     @Override
-    public String getOverrideGroupName()
-    {
+    public String getOverrideGroupName() {
         return overrideGroupName;
     }
 
     @Override
-    public void setUmask( int umask )
-    {
+    public void setUmask(int umask) {
         this.umask = umask;
     }
 
     @Override
-    public int getUmask()
-    {
+    public int getUmask() {
         return umask;
     }
 
@@ -1288,28 +1064,26 @@ public abstract class AbstractArchiver
      */
     @Override
     @Deprecated
-    public void configureReproducible( Date lastModifiedDate )
-    {
-        configureReproducibleBuild( FileTime.fromMillis( lastModifiedDate.getTime() ) );
+    public void configureReproducible(Date lastModifiedDate) {
+        configureReproducibleBuild(FileTime.fromMillis(lastModifiedDate.getTime()));
     }
 
     @Override
-    public void configureReproducibleBuild( FileTime lastModifiedTime )
-    {
+    public void configureReproducibleBuild(FileTime lastModifiedTime) {
         // 1. force last modified date
-        setLastModifiedTime( normalizeLastModifiedTime ( lastModifiedTime ) );
+        setLastModifiedTime(normalizeLastModifiedTime(lastModifiedTime));
 
         // 2. sort filenames in each directory when scanning filesystem
-        setFilenameComparator( String::compareTo );
+        setFilenameComparator(String::compareTo);
 
         // 3. ignore uid/gid from filesystem (for tar)
-        setOverrideUid( 0 );
-        setOverrideUserName( "root" ); // is it possible to avoid this, like "tar --numeric-owner"?
-        setOverrideGid( 0 );
-        setOverrideGroupName( "root" );
+        setOverrideUid(0);
+        setOverrideUserName("root"); // is it possible to avoid this, like "tar --numeric-owner"?
+        setOverrideGid(0);
+        setOverrideGroupName("root");
 
         // 4. set umask to 022 to avoid environment umask value particularly on group write
-        setUmask( 0_022 );
+        setUmask(0_022);
     }
 
     /**
@@ -1324,8 +1098,7 @@ public abstract class AbstractArchiver
      *
      * @see #configureReproducibleBuild(FileTime)
      */
-    protected FileTime normalizeLastModifiedTime( FileTime lastModifiedTime )
-    {
+    protected FileTime normalizeLastModifiedTime(FileTime lastModifiedTime) {
         return lastModifiedTime;
     }
 }

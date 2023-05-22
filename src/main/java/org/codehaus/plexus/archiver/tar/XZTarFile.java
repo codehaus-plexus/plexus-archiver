@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.tar;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.codehaus.plexus.archiver.xz.XZUnArchiver;
 
 /**
@@ -25,18 +26,14 @@ import org.codehaus.plexus.archiver.xz.XZUnArchiver;
  * @author philip.lourandos
  * @since 3.3
  */
-public class XZTarFile extends TarFile
-{
+public class XZTarFile extends TarFile {
 
-    public XZTarFile( File file )
-    {
-        super( file );
+    public XZTarFile(File file) {
+        super(file);
     }
 
     @Override
-    protected InputStream getInputStream( File file ) throws IOException
-    {
-        return XZUnArchiver.getXZInputStream( super.getInputStream( file ) );
+    protected InputStream getInputStream(File file) throws IOException {
+        return XZUnArchiver.getXZInputStream(super.getInputStream(file));
     }
-
 }

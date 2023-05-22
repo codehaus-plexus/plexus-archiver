@@ -5,8 +5,5 @@ import javax.inject.Named;
 /**
  * Alias for {@link PlexusIoTarGZipFileResourceCollection}
  */
-@Named( "tgz" )
-public class PlexusIoTGZFileResourceCollection
-    extends PlexusIoTarGZipFileResourceCollection
-{
-}
+@Named("tgz")
+public class PlexusIoTGZFileResourceCollection extends PlexusIoTarGZipFileResourceCollection {}

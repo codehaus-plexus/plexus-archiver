@@ -22,7 +22,5 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "txz" )
-public class TXZArchiver extends TarXZArchiver
-{
-}
+@Named("txz")
+public class TXZArchiver extends TarXZArchiver {}

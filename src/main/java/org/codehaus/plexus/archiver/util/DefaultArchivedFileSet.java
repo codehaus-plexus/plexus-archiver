@@ -1,7 +1,9 @@
 package org.codehaus.plexus.archiver.util;
 
-import java.io.File;
 import javax.annotation.Nonnull;
+
+import java.io.File;
+
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 
 /**
@@ -9,31 +11,23 @@ import org.codehaus.plexus.archiver.ArchivedFileSet;
  *
  * @since 1.0-alpha-9
  */
-public class DefaultArchivedFileSet
-    extends AbstractFileSet<DefaultArchivedFileSet>
-    implements ArchivedFileSet
-{
+public class DefaultArchivedFileSet extends AbstractFileSet<DefaultArchivedFileSet> implements ArchivedFileSet {
 
     private final File archive;
 
-    public DefaultArchivedFileSet( @Nonnull File archive )
-    {
+    public DefaultArchivedFileSet(@Nonnull File archive) {
         this.archive = archive;
     }
 
     @Override
-    public File getArchive()
-    {
+    public File getArchive() {
         return archive;
     }
 
-    public static DefaultArchivedFileSet archivedFileSet( File archiveFile )
-    {
-        if ( archiveFile == null )
-        {
-            throw new IllegalArgumentException( "Archive File cannot be null" );
+    public static DefaultArchivedFileSet archivedFileSet(File archiveFile) {
+        if (archiveFile == null) {
+            throw new IllegalArgumentException("Archive File cannot be null");
         }
-        return new DefaultArchivedFileSet( archiveFile );
+        return new DefaultArchivedFileSet(archiveFile);
     }
-
 }

@@ -19,9 +19,7 @@ import org.codehaus.plexus.util.StringUtils;
  *
  * @author Jason van Zyl
  */
-public class DotDirectiveArchiveFinalizer
-    extends AbstractArchiveFinalizer
-{
+public class DotDirectiveArchiveFinalizer extends AbstractArchiveFinalizer {
 
     private static final String DEFAULT_DOT_FILE_PREFIX = ".plxarc";
 
@@ -29,73 +27,55 @@ public class DotDirectiveArchiveFinalizer
 
     private final String dotFilePrefix;
 
-    public DotDirectiveArchiveFinalizer( File dotFileDirectory )
-    {
-        this( dotFileDirectory, DEFAULT_DOT_FILE_PREFIX );
+    public DotDirectiveArchiveFinalizer(File dotFileDirectory) {
+        this(dotFileDirectory, DEFAULT_DOT_FILE_PREFIX);
     }
 
-    public DotDirectiveArchiveFinalizer( File dotFileDirectory, String dotFilePrefix )
-    {
+    public DotDirectiveArchiveFinalizer(File dotFileDirectory, String dotFilePrefix) {
         this.dotFileDirectory = dotFileDirectory;
 
         this.dotFilePrefix = dotFilePrefix;
     }
 
     @Override
-    public void finalizeArchiveCreation( Archiver archiver )
-        throws ArchiverException
-    {
-        try
-        {
-            List<File> dotFiles = FileUtils.getFiles( dotFileDirectory, dotFilePrefix + "*", null );
+    public void finalizeArchiveCreation(Archiver archiver) throws ArchiverException {
+        try {
+            List<File> dotFiles = FileUtils.getFiles(dotFileDirectory, dotFilePrefix + "*", null);
 
-            for ( File dotFile : dotFiles )
-            {
-                try ( BufferedReader in = Files.newBufferedReader( dotFile.toPath(), StandardCharsets.UTF_8 ) )
-                {
+            for (File dotFile : dotFiles) {
+                try (BufferedReader in = Files.newBufferedReader(dotFile.toPath(), StandardCharsets.UTF_8)) {
 
-                    for ( String line = in.readLine(); line != null; line = in.readLine() )
-                    {
-                        String[] s = StringUtils.split( line, ":" );
+                    for (String line = in.readLine(); line != null; line = in.readLine()) {
+                        String[] s = StringUtils.split(line, ":");
 
-                        if ( s.length == 1 )
-                        {
-                            File directory = new File( dotFileDirectory, s[0] );
+                        if (s.length == 1) {
+                            File directory = new File(dotFileDirectory, s[0]);
 
-                            System.out.println( "adding directory = " + directory );
+                            System.out.println("adding directory = " + directory);
 
-                            archiver.addFileSet( new DefaultFileSet( directory ) );
-                        }
-                        else
-                        {
-                            File directory = new File( dotFileDirectory, s[0] );
+                            archiver.addFileSet(new DefaultFileSet(directory));
+                        } else {
+                            File directory = new File(dotFileDirectory, s[0]);
 
-                            System.out.println( "adding directory = " + directory + " to: " + s[1] );
+                            System.out.println("adding directory = " + directory + " to: " + s[1]);
 
-                            if ( s[1].endsWith( "/" ) )
-                            {
+                            if (s[1].endsWith("/")) {
 
-                                archiver.addFileSet( new DefaultFileSet( directory ).prefixed( s[1] ) );
-                            }
-                            else
-                            {
-                                archiver.addFileSet( new DefaultFileSet( directory ).prefixed( s[1] + "/" ) );
+                                archiver.addFileSet(new DefaultFileSet(directory).prefixed(s[1]));
+                            } else {
+                                archiver.addFileSet(new DefaultFileSet(directory).prefixed(s[1] + "/"));
                             }
                         }
                     }
                 }
             }
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( "Error processing dot files.", e );
+        } catch (IOException e) {
+            throw new ArchiverException("Error processing dot files.", e);
         }
     }
 
     @Override
-    public List getVirtualFiles()
-    {
+    public List getVirtualFiles() {
         return Collections.EMPTY_LIST;
     }
-
 }

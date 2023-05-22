@@ -25,18 +25,12 @@ import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "car" )
-public class CarUnArchiver
-        extends ZipUnArchiver
-{
+@Named("car")
+public class CarUnArchiver extends ZipUnArchiver {
 
-    public CarUnArchiver()
-    {
+    public CarUnArchiver() {}
+
+    public CarUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public CarUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

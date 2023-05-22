@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver.tar;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -31,36 +32,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * from org.apache.ant.tools.tar.TarRoundTripTest v1.6
  */
-public class TarRoundTripTest
-{
+public class TarRoundTripTest {
 
-    private static final String LONG_NAME =
-        "this/path/name/contains/more/than/one/hundred/characters/in/order/"
+    private static final String LONG_NAME = "this/path/name/contains/more/than/one/hundred/characters/in/order/"
             + "to/test/the/GNU/long/file/name/capability/round/tripped";
 
     /**
      * test round-tripping long (GNU) entries
      */
     @Test
-    public void testLongRoundTripping()
-        throws IOException
-    {
-        TarArchiveEntry original = new TarArchiveEntry( LONG_NAME );
-        assertTrue( LONG_NAME.length() > 100, "over 100 chars" );
-        assertEquals( LONG_NAME, original.getName(), "original name" );
+    public void testLongRoundTripping() throws IOException {
+        TarArchiveEntry original = new TarArchiveEntry(LONG_NAME);
+        assertTrue(LONG_NAME.length() > 100, "over 100 chars");
+        assertEquals(LONG_NAME, original.getName(), "original name");
 
         ByteArrayOutputStream buff = new ByteArrayOutputStream();
-        TarArchiveOutputStream tos = new TarArchiveOutputStream( buff );
-        tos.setLongFileMode( TarArchiveOutputStream.LONGFILE_GNU );
-        tos.putArchiveEntry( original );
+        TarArchiveOutputStream tos = new TarArchiveOutputStream(buff);
+        tos.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+        tos.putArchiveEntry(original);
         tos.closeArchiveEntry();
         tos.close();
 
-        TarArchiveInputStream tis = new TarArchiveInputStream( new ByteArrayInputStream( buff.toByteArray() ) );
+        TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(buff.toByteArray()));
         TarArchiveEntry tripped = tis.getNextTarEntry();
-        assertEquals( LONG_NAME, tripped.getName(), "round-tripped name" );
-        assertNull( tis.getNextEntry(), "no more entries" );
+        assertEquals(LONG_NAME, tripped.getName(), "round-tripped name");
+        assertNull(tis.getNextEntry(), "no more entries");
         tis.close();
     }
-
 }

@@ -16,15 +16,17 @@
  */
 package org.codehaus.plexus.archiver.bzip2;
 
+import javax.annotation.Nonnull;
+import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.annotation.Nonnull;
-import javax.inject.Named;
 
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.copyFully;
@@ -34,55 +36,42 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-@Named( "bzip2" )
-public class BZip2UnArchiver
-    extends AbstractUnArchiver
-{
+@Named("bzip2")
+public class BZip2UnArchiver extends AbstractUnArchiver {
 
-    private final static String OPERATION_BZIP2 = "bzip2";
+    private static final String OPERATION_BZIP2 = "bzip2";
 
-    public BZip2UnArchiver()
-    {
-    }
+    public BZip2UnArchiver() {}
 
-    public BZip2UnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public BZip2UnArchiver(File sourceFile) {
+        super(sourceFile);
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException
-    {
-        if ( getSourceFile().lastModified() > getDestFile().lastModified() )
-        {
-            getLogger().info(
-                "Expanding " + getSourceFile().getAbsolutePath() + " to " + getDestFile().getAbsolutePath() );
+    protected void execute() throws ArchiverException {
+        if (getSourceFile().lastModified() > getDestFile().lastModified()) {
+            getLogger()
+                    .info("Expanding " + getSourceFile().getAbsolutePath() + " to "
+                            + getDestFile().getAbsolutePath());
 
-            copyFully( getBZip2InputStream( bufferedInputStream( fileInputStream( getSourceFile(), OPERATION_BZIP2 ) ) ),
-                       bufferedOutputStream( fileOutputStream( getDestFile(), OPERATION_BZIP2 ) ), OPERATION_BZIP2 );
+            copyFully(
+                    getBZip2InputStream(bufferedInputStream(fileInputStream(getSourceFile(), OPERATION_BZIP2))),
+                    bufferedOutputStream(fileOutputStream(getDestFile(), OPERATION_BZIP2)),
+                    OPERATION_BZIP2);
         }
     }
 
-    public static @Nonnull
-    BZip2CompressorInputStream getBZip2InputStream( InputStream bis )
-        throws ArchiverException
-    {
-        try
-        {
+    public static @Nonnull BZip2CompressorInputStream getBZip2InputStream(InputStream bis) throws ArchiverException {
+        try {
             // Note that bis must be buffered for performance. Does not need buffering around BZip2CompressorInputStream
-            return new BZip2CompressorInputStream( bis );
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( "Trouble creating BZIP2 compressor, invalid file ?", e );
+            return new BZip2CompressorInputStream(bis);
+        } catch (IOException e) {
+            throw new ArchiverException("Trouble creating BZIP2 compressor, invalid file ?", e);
         }
     }
 
     @Override
-    protected void execute( String path, File outputDirectory )
-    {
-        throw new UnsupportedOperationException( "Targeted extraction not supported in BZIP2 format." );
+    protected void execute(String path, File outputDirectory) {
+        throw new UnsupportedOperationException("Targeted extraction not supported in BZIP2 format.");
     }
-
 }

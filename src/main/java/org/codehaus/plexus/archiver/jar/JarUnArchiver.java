@@ -20,24 +20,17 @@ import javax.inject.Named;
 
 import java.io.File;
 
-import org.codehaus.plexus.archiver.zip.AbstractZipUnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "jar" )
-public class JarUnArchiver
-        extends ZipUnArchiver
-{
+@Named("jar")
+public class JarUnArchiver extends ZipUnArchiver {
 
-    public JarUnArchiver()
-    {
+    public JarUnArchiver() {}
+
+    public JarUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public JarUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

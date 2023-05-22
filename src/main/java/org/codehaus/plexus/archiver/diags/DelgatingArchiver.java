@@ -15,6 +15,8 @@
  */
 package org.codehaus.plexus.archiver.diags;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -22,7 +24,7 @@ import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Map;
-import javax.annotation.Nonnull;
+
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
@@ -32,306 +34,241 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-@SuppressWarnings(
-{
-    "UnusedDeclaration", "deprecation"
-} )
-public class DelgatingArchiver implements Archiver
-{
+@SuppressWarnings({"UnusedDeclaration", "deprecation"})
+public class DelgatingArchiver implements Archiver {
 
     private final Archiver target;
 
-    public DelgatingArchiver( Archiver target )
-    {
+    public DelgatingArchiver(Archiver target) {
         this.target = target;
     }
 
     @Override
-    public void createArchive()
-        throws ArchiverException, IOException
-    {
+    public void createArchive() throws ArchiverException, IOException {
         target.createArchive();
     }
 
     @Deprecated
     @Override
-    public void addDirectory( @Nonnull File directory )
-        throws ArchiverException
-    {
-        target.addDirectory( directory );
+    public void addDirectory(@Nonnull File directory) throws ArchiverException {
+        target.addDirectory(directory);
     }
 
     @Deprecated
     @Override
-    public void addDirectory( @Nonnull File directory, String prefix )
-        throws ArchiverException
-    {
-        target.addDirectory( directory, prefix );
+    public void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException {
+        target.addDirectory(directory, prefix);
     }
 
     @Deprecated
     @Override
-    public void addDirectory( @Nonnull File directory, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        target.addDirectory( directory, includes, excludes );
+    public void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException {
+        target.addDirectory(directory, includes, excludes);
     }
 
     @Override
-    public void addDirectory( @Nonnull File directory, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        target.addDirectory( directory, prefix, includes, excludes );
+    public void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException {
+        target.addDirectory(directory, prefix, includes, excludes);
     }
 
     @Override
-    public void addFileSet( @Nonnull FileSet fileSet )
-        throws ArchiverException
-    {
-        target.addFileSet( fileSet );
+    public void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException {
+        target.addFileSet(fileSet);
     }
 
     @Override
-    public void addSymlink( String symlinkName, String symlinkDestination )
-        throws ArchiverException
-    {
-        target.addSymlink( symlinkName, symlinkDestination );
+    public void addSymlink(String symlinkName, String symlinkDestination) throws ArchiverException {
+        target.addSymlink(symlinkName, symlinkDestination);
     }
 
     @Override
-    public void addSymlink( String symlinkName, int permissions, String symlinkDestination )
-        throws ArchiverException
-    {
-        target.addSymlink( symlinkName, permissions, symlinkDestination );
+    public void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException {
+        target.addSymlink(symlinkName, permissions, symlinkDestination);
     }
 
     @Override
-    public void addFile( @Nonnull File inputFile, @Nonnull String destFileName )
-        throws ArchiverException
-    {
-        target.addFile( inputFile, destFileName );
+    public void addFile(@Nonnull File inputFile, @Nonnull String destFileName) throws ArchiverException {
+        target.addFile(inputFile, destFileName);
     }
 
     @Override
-    public void addFile( @Nonnull File inputFile, @Nonnull String destFileName, int permissions )
-        throws ArchiverException
-    {
-        target.addFile( inputFile, destFileName, permissions );
+    public void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions)
+            throws ArchiverException {
+        target.addFile(inputFile, destFileName, permissions);
     }
 
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( archiveFile );
+    public void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException {
+        target.addArchivedFileSet(archiveFile);
     }
 
     @Deprecated
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile, String prefix )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( archiveFile, prefix );
+    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException {
+        target.addArchivedFileSet(archiveFile, prefix);
     }
 
     @Override
-    public void addArchivedFileSet( File archiveFile, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( archiveFile, includes, excludes );
+    public void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException {
+        target.addArchivedFileSet(archiveFile, includes, excludes);
     }
 
     @Override
-    public void addArchivedFileSet( @Nonnull File archiveFile, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( archiveFile, prefix, includes, excludes );
+    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException {
+        target.addArchivedFileSet(archiveFile, prefix, includes, excludes);
     }
 
     @Override
-    public void addArchivedFileSet( ArchivedFileSet fileSet )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( fileSet );
+    public void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException {
+        target.addArchivedFileSet(fileSet);
     }
 
     @Override
-    public void addArchivedFileSet( ArchivedFileSet fileSet, Charset charset )
-        throws ArchiverException
-    {
-        target.addArchivedFileSet( fileSet, charset );
+    public void addArchivedFileSet(ArchivedFileSet fileSet, Charset charset) throws ArchiverException {
+        target.addArchivedFileSet(fileSet, charset);
     }
 
     @Override
-    public void addResource( PlexusIoResource resource, String destFileName, int permissions )
-        throws ArchiverException
-    {
-        target.addResource( resource, destFileName, permissions );
+    public void addResource(PlexusIoResource resource, String destFileName, int permissions) throws ArchiverException {
+        target.addResource(resource, destFileName, permissions);
     }
 
     @Override
-    public void addResources( PlexusIoResourceCollection resources )
-        throws ArchiverException
-    {
-        target.addResources( resources );
+    public void addResources(PlexusIoResourceCollection resources) throws ArchiverException {
+        target.addResources(resources);
     }
 
     @Override
-    public File getDestFile()
-    {
+    public File getDestFile() {
         return target.getDestFile();
     }
 
     @Override
-    public void setDestFile( File destFile )
-    {
-        target.setDestFile( destFile );
+    public void setDestFile(File destFile) {
+        target.setDestFile(destFile);
     }
 
     @Override
-    public void setFileMode( int mode )
-    {
-        target.setFileMode( mode );
+    public void setFileMode(int mode) {
+        target.setFileMode(mode);
     }
 
     @Override
-    public int getFileMode()
-    {
+    public int getFileMode() {
         return target.getFileMode();
     }
 
     @Override
-    public int getOverrideFileMode()
-    {
+    public int getOverrideFileMode() {
         return target.getOverrideFileMode();
     }
 
     @Override
-    public void setDefaultFileMode( int mode )
-    {
-        target.setDefaultFileMode( mode );
+    public void setDefaultFileMode(int mode) {
+        target.setDefaultFileMode(mode);
     }
 
     @Override
-    public int getDefaultFileMode()
-    {
+    public int getDefaultFileMode() {
         return target.getDefaultFileMode();
     }
 
     @Override
-    public void setDirectoryMode( int mode )
-    {
-        target.setDirectoryMode( mode );
+    public void setDirectoryMode(int mode) {
+        target.setDirectoryMode(mode);
     }
 
     @Override
-    public int getDirectoryMode()
-    {
+    public int getDirectoryMode() {
         return target.getDirectoryMode();
     }
 
     @Override
-    public int getOverrideDirectoryMode()
-    {
+    public int getOverrideDirectoryMode() {
         return target.getOverrideDirectoryMode();
     }
 
     @Override
-    public void setDefaultDirectoryMode( int mode )
-    {
-        target.setDefaultDirectoryMode( mode );
+    public void setDefaultDirectoryMode(int mode) {
+        target.setDefaultDirectoryMode(mode);
     }
 
     @Override
-    public int getDefaultDirectoryMode()
-    {
+    public int getDefaultDirectoryMode() {
         return target.getDefaultDirectoryMode();
     }
 
     @Override
-    public boolean getIncludeEmptyDirs()
-    {
+    public boolean getIncludeEmptyDirs() {
         return target.getIncludeEmptyDirs();
     }
 
     @Override
-    public void setIncludeEmptyDirs( boolean includeEmptyDirs )
-    {
-        target.setIncludeEmptyDirs( includeEmptyDirs );
+    public void setIncludeEmptyDirs(boolean includeEmptyDirs) {
+        target.setIncludeEmptyDirs(includeEmptyDirs);
     }
 
     @Override
-    public void setDotFileDirectory( File dotFileDirectory )
-    {
-        target.setDotFileDirectory( dotFileDirectory );
+    public void setDotFileDirectory(File dotFileDirectory) {
+        target.setDotFileDirectory(dotFileDirectory);
     }
 
     @Nonnull
     @Override
-    public ResourceIterator getResources()
-        throws ArchiverException
-    {
+    public ResourceIterator getResources() throws ArchiverException {
         return target.getResources();
     }
 
     @Override
-    public Map<String, ArchiveEntry> getFiles()
-    {
+    public Map<String, ArchiveEntry> getFiles() {
         return target.getFiles();
     }
 
     @Override
-    public boolean isForced()
-    {
+    public boolean isForced() {
         return target.isForced();
     }
 
     @Override
-    public void setForced( boolean forced )
-    {
-        target.setForced( forced );
+    public void setForced(boolean forced) {
+        target.setForced(forced);
     }
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return target.isSupportingForced();
     }
 
     @Override
-    public String getDuplicateBehavior()
-    {
+    public String getDuplicateBehavior() {
         return target.getDuplicateBehavior();
     }
 
     @Override
-    public void setDuplicateBehavior( String duplicate )
-    {
-        target.setDuplicateBehavior( duplicate );
+    public void setDuplicateBehavior(String duplicate) {
+        target.setDuplicateBehavior(duplicate);
     }
 
     @Override
-    public void setUseJvmChmod( boolean useJvmChmod )
-    {
-        target.setUseJvmChmod( useJvmChmod );
+    public void setUseJvmChmod(boolean useJvmChmod) {
+        target.setUseJvmChmod(useJvmChmod);
     }
 
     @Override
-    public boolean isUseJvmChmod()
-    {
+    public boolean isUseJvmChmod() {
         return target.isUseJvmChmod();
     }
 
     @Override
-    public boolean isIgnorePermissions()
-    {
+    public boolean isIgnorePermissions() {
         return target.isIgnorePermissions();
     }
 
     @Override
-    public void setIgnorePermissions( boolean ignorePermissions )
-    {
-        target.setIgnorePermissions( ignorePermissions );
+    public void setIgnorePermissions(boolean ignorePermissions) {
+        target.setIgnorePermissions(ignorePermissions);
     }
 
     /**
@@ -339,9 +276,8 @@ public class DelgatingArchiver implements Archiver
      */
     @Override
     @Deprecated
-    public void setLastModifiedDate( final Date lastModifiedDate )
-    {
-        target.setLastModifiedDate( lastModifiedDate );
+    public void setLastModifiedDate(final Date lastModifiedDate) {
+        target.setLastModifiedDate(lastModifiedDate);
     }
 
     /**
@@ -349,86 +285,72 @@ public class DelgatingArchiver implements Archiver
      */
     @Override
     @Deprecated
-    public Date getLastModifiedDate()
-    {
+    public Date getLastModifiedDate() {
         return target.getLastModifiedDate();
     }
 
     @Override
-    public void setLastModifiedTime( final FileTime lastModifiedTime )
-    {
-        target.setLastModifiedTime( lastModifiedTime );
+    public void setLastModifiedTime(final FileTime lastModifiedTime) {
+        target.setLastModifiedTime(lastModifiedTime);
     }
 
     @Override
-    public FileTime getLastModifiedTime()
-    {
+    public FileTime getLastModifiedTime() {
         return target.getLastModifiedTime();
     }
 
     @Override
-    public void setFilenameComparator( final Comparator<String> filenameComparator )
-    {
-        target.setFilenameComparator( filenameComparator );
+    public void setFilenameComparator(final Comparator<String> filenameComparator) {
+        target.setFilenameComparator(filenameComparator);
     }
 
     @Override
-    public void setOverrideUid( int uid )
-    {
-        target.setOverrideUid( uid );
+    public void setOverrideUid(int uid) {
+        target.setOverrideUid(uid);
     }
 
     @Override
-    public void setOverrideUserName( String userName )
-    {
-        target.setOverrideUserName( userName );
+    public void setOverrideUserName(String userName) {
+        target.setOverrideUserName(userName);
     }
 
     @Override
-    public int getOverrideUid()
-    {
+    public int getOverrideUid() {
         return target.getOverrideUid();
     }
 
     @Override
-    public String getOverrideUserName()
-    {
+    public String getOverrideUserName() {
         return target.getOverrideUserName();
     }
 
     @Override
-    public void setOverrideGid( int gid )
-    {
-        target.setOverrideGid( gid );
+    public void setOverrideGid(int gid) {
+        target.setOverrideGid(gid);
     }
 
     @Override
-    public void setOverrideGroupName( String groupName )
-    {
-        target.setOverrideGroupName( groupName );
+    public void setOverrideGroupName(String groupName) {
+        target.setOverrideGroupName(groupName);
     }
 
     @Override
-    public int getOverrideGid()
-    {
+    public int getOverrideGid() {
         return target.getOverrideGid();
     }
 
     @Override
-    public String getOverrideGroupName()
-    {
+    public String getOverrideGroupName() {
         return target.getOverrideGroupName();
     }
 
     @Override
-    public void setUmask( int umask )
-    {
-        target.setUmask( umask );
+    public void setUmask(int umask) {
+        target.setUmask(umask);
     }
 
     @Override
-    public int getUmask()
-    {
+    public int getUmask() {
         return target.getUmask();
     }
 
@@ -437,15 +359,12 @@ public class DelgatingArchiver implements Archiver
      */
     @Override
     @Deprecated
-    public void configureReproducible( Date lastModifiedDate )
-    {
-        target.configureReproducible( lastModifiedDate );
+    public void configureReproducible(Date lastModifiedDate) {
+        target.configureReproducible(lastModifiedDate);
     }
 
     @Override
-    public void configureReproducibleBuild( FileTime lastModifiedTime )
-    {
-        target.configureReproducibleBuild( lastModifiedTime );
+    public void configureReproducibleBuild(FileTime lastModifiedTime) {
+        target.configureReproducibleBuild(lastModifiedTime);
     }
-
 }

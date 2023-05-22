@@ -18,10 +18,6 @@ package org.codehaus.plexus.archiver.gzip;
 
 import javax.inject.Named;
 
-import static org.codehaus.plexus.archiver.util.Streams.copyFully;
-import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
-import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,56 +27,48 @@ import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
 
+import static org.codehaus.plexus.archiver.util.Streams.copyFully;
+import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
+import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
+
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-@Named( "gzip" )
-public class GZipUnArchiver
-    extends AbstractUnArchiver
-{
+@Named("gzip")
+public class GZipUnArchiver extends AbstractUnArchiver {
 
     private static final String OPERATION_GZIP = "gzip";
 
-    public GZipUnArchiver()
-    {
-    }
+    public GZipUnArchiver() {}
 
-    public GZipUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public GZipUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException
-    {
-        if ( getSourceFile().lastModified() > getDestFile().lastModified() )
-        {
-            getLogger().info( "Expanding " + getSourceFile().getAbsolutePath() + " to "
-                                  + getDestFile().getAbsolutePath() );
+    protected void execute() throws ArchiverException {
+        if (getSourceFile().lastModified() > getDestFile().lastModified()) {
+            getLogger()
+                    .info("Expanding " + getSourceFile().getAbsolutePath() + " to "
+                            + getDestFile().getAbsolutePath());
 
-            copyFully( getGzipInputStream( fileInputStream( getSourceFile(), OPERATION_GZIP ) ),
-                       fileOutputStream( getDestFile(), OPERATION_GZIP ), OPERATION_GZIP );
+            copyFully(
+                    getGzipInputStream(fileInputStream(getSourceFile(), OPERATION_GZIP)),
+                    fileOutputStream(getDestFile(), OPERATION_GZIP),
+                    OPERATION_GZIP);
         }
     }
 
-    private InputStream getGzipInputStream( InputStream in )
-        throws ArchiverException
-    {
-        try
-        {
-            return Streams.bufferedInputStream( new GZIPInputStream( in ) );
-        }
-        catch ( IOException e )
-        {
-            throw new ArchiverException( "Problem creating GZIP input stream", e );
+    private InputStream getGzipInputStream(InputStream in) throws ArchiverException {
+        try {
+            return Streams.bufferedInputStream(new GZIPInputStream(in));
+        } catch (IOException e) {
+            throw new ArchiverException("Problem creating GZIP input stream", e);
         }
     }
 
     @Override
-    protected void execute( String path, File outputDirectory )
-    {
-        throw new UnsupportedOperationException( "Targeted extraction not supported in GZIP format." );
+    protected void execute(String path, File outputDirectory) {
+        throw new UnsupportedOperationException("Targeted extraction not supported in GZIP format.");
     }
-
 }

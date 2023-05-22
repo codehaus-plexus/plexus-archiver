@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.jar.Attributes;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.PropertyUtils;
 
@@ -28,75 +29,55 @@ import org.codehaus.plexus.util.PropertyUtils;
  *
  * @author Kristian Rosenvold
  */
-class JdkManifestFactory
-{
+class JdkManifestFactory {
 
-    public static java.util.jar.Manifest getDefaultManifest()
-        throws ArchiverException
-    {
+    public static java.util.jar.Manifest getDefaultManifest() throws ArchiverException {
         final java.util.jar.Manifest defaultManifest = new java.util.jar.Manifest();
-        defaultManifest.getMainAttributes().putValue( "Manifest-Version", "1.0" );
+        defaultManifest.getMainAttributes().putValue("Manifest-Version", "1.0");
 
         String createdBy = "Plexus Archiver";
 
         final String plexusArchiverVersion = getArchiverVersion();
 
-        if ( plexusArchiverVersion != null )
-        {
+        if (plexusArchiverVersion != null) {
             createdBy += " " + plexusArchiverVersion;
         }
 
-        defaultManifest.getMainAttributes().putValue( "Created-By", createdBy );
+        defaultManifest.getMainAttributes().putValue("Created-By", createdBy);
         return defaultManifest;
     }
 
-    static String getArchiverVersion()
-    {
-        try
-        {
-            final Properties properties = PropertyUtils.loadProperties( JdkManifestFactory.class.getResourceAsStream(
-                "/META-INF/maven/org.codehaus.plexus/plexus-archiver/pom.properties" ) );
+    static String getArchiverVersion() {
+        try {
+            final Properties properties = PropertyUtils.loadProperties(JdkManifestFactory.class.getResourceAsStream(
+                    "/META-INF/maven/org.codehaus.plexus/plexus-archiver/pom.properties"));
 
-            return properties != null
-                       ? properties.getProperty( "version" )
-                       : null;
+            return properties != null ? properties.getProperty("version") : null;
 
-        }
-        catch ( final IOException e )
-        {
-            throw new AssertionError( e );
+        } catch (final IOException e) {
+            throw new AssertionError(e);
         }
     }
 
-    public static void merge( java.util.jar.Manifest target, java.util.jar.Manifest other, boolean overwriteMain )
-    {
-        if ( other != null )
-        {
+    public static void merge(java.util.jar.Manifest target, java.util.jar.Manifest other, boolean overwriteMain) {
+        if (other != null) {
             final Attributes mainAttributes = target.getMainAttributes();
-            if ( overwriteMain )
-            {
+            if (overwriteMain) {
                 mainAttributes.clear();
-                mainAttributes.putAll( other.getMainAttributes() );
-            }
-            else
-            {
-                mergeAttributes( mainAttributes, other.getMainAttributes() );
+                mainAttributes.putAll(other.getMainAttributes());
+            } else {
+                mergeAttributes(mainAttributes, other.getMainAttributes());
             }
 
-            for ( Map.Entry<String, Attributes> o : other.getEntries().entrySet() )
-            {
-                Attributes ourSection = target.getAttributes( o.getKey() );
+            for (Map.Entry<String, Attributes> o : other.getEntries().entrySet()) {
+                Attributes ourSection = target.getAttributes(o.getKey());
                 Attributes otherSection = o.getValue();
-                if ( ourSection == null )
-                {
-                    if ( otherSection != null )
-                    {
-                        target.getEntries().put( o.getKey(), (Attributes) otherSection.clone() );
+                if (ourSection == null) {
+                    if (otherSection != null) {
+                        target.getEntries().put(o.getKey(), (Attributes) otherSection.clone());
                     }
-                }
-                else
-                {
-                    mergeAttributes( ourSection, otherSection );
+                } else {
+                    mergeAttributes(ourSection, otherSection);
                 }
             }
         }
@@ -108,15 +89,12 @@ class JdkManifestFactory
      * @param target The target manifest of the merge
      * @param section the section to be merged with this one.
      */
-    public static void mergeAttributes( java.util.jar.Attributes target, java.util.jar.Attributes section )
-    {
-        for ( Object o : section.keySet() )
-        {
+    public static void mergeAttributes(java.util.jar.Attributes target, java.util.jar.Attributes section) {
+        for (Object o : section.keySet()) {
             java.util.jar.Attributes.Name key = (Attributes.Name) o;
-            final Object value = section.get( o );
+            final Object value = section.get(o);
             // the merge file always wins
-            target.put( key, value );
+            target.put(key, value);
         }
     }
-
 }

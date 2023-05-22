@@ -8,13 +8,10 @@ import java.io.File;
  *
  * @since 1.0-alpha-9
  */
-public interface FileSet
-    extends BaseFileSet
-{
+public interface FileSet extends BaseFileSet {
 
     /**
      * Returns the file sets base directory.
      */
     File getDirectory();
-
 }

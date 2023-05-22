@@ -1,7 +1,5 @@
 package org.codehaus.plexus.archiver.tar;
 
-import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
-
 import java.io.File;
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -14,6 +12,8 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.codehaus.plexus.archiver.ArchiveFile;
 import org.codehaus.plexus.archiver.util.Streams;
+
+import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 
 /**
  * <p>
@@ -36,9 +36,7 @@ import org.codehaus.plexus.archiver.util.Streams;
  * The advantage of this class is that you may write code for the
  * {@link ArchiveFile}, which is valid for both tar files and zip files.</p>
  */
-public class TarFile
-    implements ArchiveFile
-{
+public class TarFile implements ArchiveFile {
 
     private final java.io.File file;
 
@@ -49,8 +47,7 @@ public class TarFile
     /**
      * Creates a new instance with the given file.
      */
-    public TarFile( File file )
-    {
+    public TarFile(File file) {
         this.file = file;
     }
 
@@ -62,65 +59,48 @@ public class TarFile
      * current entry, then entries may be skipped.
      */
     @Override
-    public Enumeration<org.apache.commons.compress.archivers.ArchiveEntry> getEntries()
-        throws IOException
-    {
-        if ( inputStream != null )
-        {
+    public Enumeration<org.apache.commons.compress.archivers.ArchiveEntry> getEntries() throws IOException {
+        if (inputStream != null) {
             close();
         }
         open();
-        return new Enumeration<org.apache.commons.compress.archivers.ArchiveEntry>()
-        {
+        return new Enumeration<org.apache.commons.compress.archivers.ArchiveEntry>() {
 
             boolean currentEntryValid;
 
             @Override
-            public boolean hasMoreElements()
-            {
-                if ( !currentEntryValid )
-                {
-                    try
-                    {
+            public boolean hasMoreElements() {
+                if (!currentEntryValid) {
+                    try {
                         currentEntry = inputStream.getNextTarEntry();
-                    }
-                    catch ( IOException e )
-                    {
-                        throw new UndeclaredThrowableException( e );
+                    } catch (IOException e) {
+                        throw new UndeclaredThrowableException(e);
                     }
                 }
                 return currentEntry != null;
             }
 
             @Override
-            public org.apache.commons.compress.archivers.ArchiveEntry nextElement()
-            {
-                if ( currentEntry == null )
-                {
+            public org.apache.commons.compress.archivers.ArchiveEntry nextElement() {
+                if (currentEntry == null) {
                     throw new NoSuchElementException();
                 }
                 currentEntryValid = false;
                 return currentEntry;
             }
-
         };
     }
 
-    public void close()
-        throws IOException
-    {
-        if ( inputStream != null )
-        {
+    public void close() throws IOException {
+        if (inputStream != null) {
             inputStream.close();
             inputStream = null;
         }
     }
 
     @Override
-    public InputStream getInputStream( org.apache.commons.compress.archivers.ArchiveEntry entry )
-        throws IOException
-    {
-        return getInputStream( new TarArchiveEntry( entry.getName() ) );
+    public InputStream getInputStream(org.apache.commons.compress.archivers.ArchiveEntry entry) throws IOException {
+        return getInputStream(new TarArchiveEntry(entry.getName()));
     }
 
     /**
@@ -129,86 +109,59 @@ public class TarFile
      * happens in that case, because an actual close would invalidate
      * the underlying {@link TarArchiveInputStream}.
      */
-    public InputStream getInputStream( TarArchiveEntry entry )
-        throws IOException
-    {
-        if ( entry.equals( (Object) currentEntry ) && inputStream != null )
-        {
-            return new FilterInputStream( inputStream )
-            {
+    public InputStream getInputStream(TarArchiveEntry entry) throws IOException {
+        if (entry.equals((Object) currentEntry) && inputStream != null) {
+            return new FilterInputStream(inputStream) {
 
-                public void close()
-                    throws IOException
-                {
+                public void close() throws IOException {
                     // Does nothing.
                 }
-
             };
         }
-        return getInputStream( entry, currentEntry );
+        return getInputStream(entry, currentEntry);
     }
 
-    protected InputStream getInputStream( File file )
-        throws IOException
-    {
-        return Streams.fileInputStream( file );
+    protected InputStream getInputStream(File file) throws IOException {
+        return Streams.fileInputStream(file);
     }
 
-    private InputStream getInputStream( TarArchiveEntry entry, TarArchiveEntry currentEntry )
-        throws IOException
-    {
-        if ( currentEntry == null || inputStream == null )
-        {
+    private InputStream getInputStream(TarArchiveEntry entry, TarArchiveEntry currentEntry) throws IOException {
+        if (currentEntry == null || inputStream == null) {
             // Search for the entry from the beginning of the file to the end.
-            if ( inputStream != null )
-            {
+            if (inputStream != null) {
                 close();
             }
             open();
-            if ( !findEntry( entry, null ) )
-            {
-                throw new IOException( "Unknown entry: " + entry.getName() );
+            if (!findEntry(entry, null)) {
+                throw new IOException("Unknown entry: " + entry.getName());
             }
-        }
-        else
-        {
+        } else {
             // Search for the entry from the current position to the end of the file.
-            if ( findEntry( entry, null ) )
-            {
-                return getInputStream( entry );
+            if (findEntry(entry, null)) {
+                return getInputStream(entry);
             }
             close();
             open();
-            if ( !findEntry( entry, currentEntry ) )
-            {
-                throw new IOException( "No such entry: " + entry.getName() );
+            if (!findEntry(entry, currentEntry)) {
+                throw new IOException("No such entry: " + entry.getName());
             }
         }
-        return getInputStream( entry );
+        return getInputStream(entry);
     }
 
-    private void open()
-        throws IOException
-    {
-        inputStream = new TarArchiveInputStream( bufferedInputStream( getInputStream( file ) ), "UTF8" );
+    private void open() throws IOException {
+        inputStream = new TarArchiveInputStream(bufferedInputStream(getInputStream(file)), "UTF8");
     }
 
-    private boolean findEntry( TarArchiveEntry entry, TarArchiveEntry currentEntry )
-        throws IOException
-    {
-        for ( ;; )
-        {
+    private boolean findEntry(TarArchiveEntry entry, TarArchiveEntry currentEntry) throws IOException {
+        for (; ; ) {
             this.currentEntry = inputStream.getNextTarEntry();
-            if ( this.currentEntry == null
-                     || ( currentEntry != null && this.currentEntry.equals( currentEntry ) ) )
-            {
+            if (this.currentEntry == null || (currentEntry != null && this.currentEntry.equals(currentEntry))) {
                 return false;
             }
-            if ( this.currentEntry.equals( entry ) )
-            {
+            if (this.currentEntry.equals(entry)) {
                 return true;
             }
         }
     }
-
 }

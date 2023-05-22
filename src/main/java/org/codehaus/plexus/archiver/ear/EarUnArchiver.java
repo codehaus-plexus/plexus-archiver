@@ -25,18 +25,12 @@ import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "ear" )
-public class EarUnArchiver
-        extends ZipUnArchiver
-{
+@Named("ear")
+public class EarUnArchiver extends ZipUnArchiver {
 
-    public EarUnArchiver()
-    {
+    public EarUnArchiver() {}
+
+    public EarUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public EarUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

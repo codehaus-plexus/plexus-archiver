@@ -18,13 +18,8 @@ package org.codehaus.plexus.archiver.tar;
 
 import javax.inject.Named;
 
-import java.io.File;
-
 /**
  * Alias for {@link TarGZipUnArchiver}.
  */
-@Named( "tgz" )
-public class TGZUnArchiver
-    extends TarGZipUnArchiver
-{
-}
+@Named("tgz")
+public class TGZUnArchiver extends TarGZipUnArchiver {}

@@ -15,8 +15,6 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
-import javax.inject.Named;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.jar.JarFile;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
@@ -38,70 +37,54 @@ import org.codehaus.plexus.components.io.resources.PlexusIoURLResource;
 
 // TODO: there were two components for same name!
 // @Named( "zip" )
-public class PlexusIoZipFileResourceCollection
-    extends AbstractPlexusIoArchiveResourceCollection
-    implements EncodingSupported
-{
+public class PlexusIoZipFileResourceCollection extends AbstractPlexusIoArchiveResourceCollection
+        implements EncodingSupported {
 
     private Charset charset = StandardCharsets.UTF_8;
 
-    public PlexusIoZipFileResourceCollection()
-    {
-
-    }
+    public PlexusIoZipFileResourceCollection() {}
 
     @Override
-    public boolean isConcurrentAccessSupported()
-    {
+    public boolean isConcurrentAccessSupported() {
         // Maybe we could support concurrent some time in the future
         return false;
     }
 
     @Override
-    protected Iterator<PlexusIoResource> getEntries()
-        throws IOException
-    {
+    protected Iterator<PlexusIoResource> getEntries() throws IOException {
         final File f = getFile();
-        if ( f == null )
-        {
-            throw new IOException( "The zip file has not been set." );
+        if (f == null) {
+            throw new IOException("The zip file has not been set.");
         }
-        final URLClassLoader urlClassLoader = new URLClassLoader( new URL[]
-        {
-            f.toURI().toURL()
-        }, null )
-        {
+        final URLClassLoader urlClassLoader =
+                new URLClassLoader(new URL[] {f.toURI().toURL()}, null) {
 
-            @Override
-            public URL getResource( String name )
-            {
-                return findResource( name );
-            }
+                    @Override
+                    public URL getResource(String name) {
+                        return findResource(name);
+                    }
+                };
 
-        };
-
-        final URL url = new URL( "jar:" + f.toURI().toURL() + "!/" );
-        final JarFile jarFile = new JarFile( f );
-        final ZipFile zipFile = new ZipFile( f, charset != null ? charset.name() : "UTF8" );
+        final URL url = new URL("jar:" + f.toURI().toURL() + "!/");
+        final JarFile jarFile = new JarFile(f);
+        final ZipFile zipFile = new ZipFile(f, charset != null ? charset.name() : "UTF8");
         final Enumeration<ZipArchiveEntry> en = zipFile.getEntriesInPhysicalOrder();
-        return new ZipFileResourceIterator( en, url, jarFile, zipFile, urlClassLoader );
+        return new ZipFileResourceIterator(en, url, jarFile, zipFile, urlClassLoader);
     }
 
-    private static class ZipFileResourceIterator
-        implements Iterator<PlexusIoResource>, Closeable
-    {
+    private static class ZipFileResourceIterator implements Iterator<PlexusIoResource>, Closeable {
 
-        private class ZipFileResource
-            extends PlexusIoURLResource
-        {
+        private class ZipFileResource extends PlexusIoURLResource {
             private final JarFile jarFile;
 
-            private ZipFileResource( JarFile jarFile, ZipArchiveEntry entry )
-            {
-                super( entry.getName(),
-                       entry.getTime() == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : entry.getTime(),
-                       entry.isDirectory() ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : entry.getSize(),
-                       !entry.isDirectory(), entry.isDirectory(), true );
+            private ZipFileResource(JarFile jarFile, ZipArchiveEntry entry) {
+                super(
+                        entry.getName(),
+                        entry.getTime() == -1 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : entry.getTime(),
+                        entry.isDirectory() ? PlexusIoResource.UNKNOWN_RESOURCE_SIZE : entry.getSize(),
+                        !entry.isDirectory(),
+                        entry.isDirectory(),
+                        true);
 
                 this.jarFile = jarFile;
             }
@@ -122,54 +105,42 @@ public class PlexusIoZipFileResourceCollection
                 // would not be a problem.
                 // And we know the URL returned by getURL is part of the JAR
                 // because that is how we constructed it.
-                return jarFile.getInputStream( jarFile.getEntry( getName() ) );
+                return jarFile.getInputStream(jarFile.getEntry(getName()));
             }
 
             @Override
-            public URL getURL()
-                throws IOException
-            {
+            public URL getURL() throws IOException {
                 String spec = getName();
-                if ( spec.startsWith( "/" ) )
-                {
+                if (spec.startsWith("/")) {
                     // Code path for PLXCOMP-170. Note that urlClassloader does not seem to produce correct
                     // urls for this. Which again means files loaded via this path cannot have file names
                     // requiring url encoding
                     spec = "./" + spec;
-                    return new URL( url, spec );
+                    return new URL(url, spec);
                 }
-                return urlClassLoader.getResource( spec );
+                return urlClassLoader.getResource(spec);
             }
-
         }
 
-        private class ZipFileSymlinkResource
-            extends ZipFileResource
-            implements SymlinkDestinationSupplier
-        {
+        private class ZipFileSymlinkResource extends ZipFileResource implements SymlinkDestinationSupplier {
 
             private final ZipArchiveEntry entry;
 
-            private ZipFileSymlinkResource( JarFile jarFile, ZipArchiveEntry entry )
-            {
-                super( jarFile, entry );
+            private ZipFileSymlinkResource(JarFile jarFile, ZipArchiveEntry entry) {
+                super(jarFile, entry);
 
                 this.entry = entry;
             }
 
             @Override
-            public String getSymlinkDestination()
-                throws IOException
-            {
-                return zipFile.getUnixSymlink( entry );
+            public String getSymlinkDestination() throws IOException {
+                return zipFile.getUnixSymlink(entry);
             }
 
             @Override
-            public boolean isSymbolicLink()
-            {
+            public boolean isSymbolicLink() {
                 return true;
             }
-
         }
 
         private final Enumeration<ZipArchiveEntry> en;
@@ -182,9 +153,12 @@ public class PlexusIoZipFileResourceCollection
 
         private final URLClassLoader urlClassLoader;
 
-        public ZipFileResourceIterator( Enumeration<ZipArchiveEntry> en, URL url, JarFile jarFile, ZipFile zipFile,
-                                        URLClassLoader urlClassLoader )
-        {
+        public ZipFileResourceIterator(
+                Enumeration<ZipArchiveEntry> en,
+                URL url,
+                JarFile jarFile,
+                ZipFile zipFile,
+                URLClassLoader urlClassLoader) {
             this.en = en;
             this.url = url;
             this.jarFile = jarFile;
@@ -193,54 +167,39 @@ public class PlexusIoZipFileResourceCollection
         }
 
         @Override
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return en.hasMoreElements();
         }
 
         @Override
-        public PlexusIoResource next()
-        {
+        public PlexusIoResource next() {
             final ZipArchiveEntry entry = en.nextElement();
             return entry.isUnixSymlink()
-                       ? new ZipFileSymlinkResource( jarFile, entry )
-                       : new ZipFileResource( jarFile, entry );
-
+                    ? new ZipFileSymlinkResource(jarFile, entry)
+                    : new ZipFileResource(jarFile, entry);
         }
 
         @Override
-        public void remove()
-        {
-            throw new UnsupportedOperationException( "Removing isn't implemented." );
+        public void remove() {
+            throw new UnsupportedOperationException("Removing isn't implemented.");
         }
 
         @Override
-        public void close()
-            throws IOException
-        {
-            try
-            {
+        public void close() throws IOException {
+            try {
                 urlClassLoader.close();
-            }
-            finally
-            {
-                try
-                {
+            } finally {
+                try {
                     zipFile.close();
-                } finally
-                {
+                } finally {
                     jarFile.close();
                 }
-
             }
         }
-
     }
 
     @Override
-    public void setEncoding( Charset charset )
-    {
+    public void setEncoding(Charset charset) {
         this.charset = charset;
     }
-
 }

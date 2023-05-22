@@ -23,18 +23,12 @@ import java.io.File;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-@Named( "zip" )
-public class ZipUnArchiver
-    extends AbstractZipUnArchiver
-{
+@Named("zip")
+public class ZipUnArchiver extends AbstractZipUnArchiver {
 
-    public ZipUnArchiver()
-    {
+    public ZipUnArchiver() {}
+
+    public ZipUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public ZipUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

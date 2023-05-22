@@ -24,25 +24,19 @@ import java.io.File;
  * Extract files in tar with snappy compression
  *
  */
-@Named( "tar.snappy" )
-public class TarSnappyUnArchiver
-    extends TarUnArchiver
-{
+@Named("tar.snappy")
+public class TarSnappyUnArchiver extends TarUnArchiver {
 
-    public TarSnappyUnArchiver()
-    {
+    public TarSnappyUnArchiver() {
         this.setupCompressionMethod();
     }
 
-    public TarSnappyUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public TarSnappyUnArchiver(File sourceFile) {
+        super(sourceFile);
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( UntarCompressionMethod.SNAPPY );
+    private void setupCompressionMethod() {
+        this.setCompression(UntarCompressionMethod.SNAPPY);
     }
-
 }

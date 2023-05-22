@@ -22,8 +22,5 @@ import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
 /**
  * Alias for {@link PlexusIoZipFileResourceCollection}.
  */
-@Named( "rar" )
-public class PlexusIoRarFileResourceCollection
-        extends PlexusIoZipFileResourceCollection
-{
-}
+@Named("rar")
+public class PlexusIoRarFileResourceCollection extends PlexusIoZipFileResourceCollection {}

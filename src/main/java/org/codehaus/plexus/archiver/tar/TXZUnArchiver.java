@@ -17,12 +17,8 @@ package org.codehaus.plexus.archiver.tar;
 
 import javax.inject.Named;
 
-import java.io.File;
-
 /**
  * Alias for {@link TarXZUnArchiver}.
  */
-@Named( "txz" )
-public class TXZUnArchiver extends TarXZUnArchiver
-{
-}
+@Named("txz")
+public class TXZUnArchiver extends TarXZUnArchiver {}

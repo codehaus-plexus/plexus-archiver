@@ -15,15 +15,16 @@
  */
 package org.codehaus.plexus.archiver.zstd;
 
-import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
-import org.codehaus.plexus.archiver.AbstractUnArchiver;
-import org.codehaus.plexus.archiver.ArchiverException;
-
 import javax.annotation.Nonnull;
 import javax.inject.Named;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
+import org.codehaus.plexus.archiver.AbstractUnArchiver;
+import org.codehaus.plexus.archiver.ArchiverException;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
@@ -34,53 +35,41 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 /**
  * Unarchiver for zstd-compressed files.
  */
-@Named( "zst" )
-public class ZstdUnArchiver extends AbstractUnArchiver
-{
+@Named("zst")
+public class ZstdUnArchiver extends AbstractUnArchiver {
 
     private static final String OPERATION_ZSTD = "zstd";
 
-    public ZstdUnArchiver()
-    {
-    }
+    public ZstdUnArchiver() {}
 
-    public ZstdUnArchiver( File source )
-    {
-        super( source );
+    public ZstdUnArchiver(File source) {
+        super(source);
     }
 
     @Override
-    protected void execute() throws ArchiverException
-    {
-        if ( getSourceFile().lastModified() > getDestFile().lastModified() )
-        {
-            getLogger().info( "Expanding " + getSourceFile().getAbsolutePath() + " to "
-                                  + getDestFile().getAbsolutePath() );
+    protected void execute() throws ArchiverException {
+        if (getSourceFile().lastModified() > getDestFile().lastModified()) {
+            getLogger()
+                    .info("Expanding " + getSourceFile().getAbsolutePath() + " to "
+                            + getDestFile().getAbsolutePath());
 
-            copyFully( getZstdInputStream( bufferedInputStream( fileInputStream( getSourceFile(), OPERATION_ZSTD) ) ),
-                       bufferedOutputStream( fileOutputStream( getDestFile(), OPERATION_ZSTD) ), OPERATION_ZSTD);
-
+            copyFully(
+                    getZstdInputStream(bufferedInputStream(fileInputStream(getSourceFile(), OPERATION_ZSTD))),
+                    bufferedOutputStream(fileOutputStream(getDestFile(), OPERATION_ZSTD)),
+                    OPERATION_ZSTD);
         }
     }
 
-    public static @Nonnull
-    ZstdCompressorInputStream getZstdInputStream( InputStream in )
-        throws ArchiverException
-    {
-        try
-        {
-            return new ZstdCompressorInputStream( in );
-        }
-        catch ( IOException ioe )
-        {
-            throw new ArchiverException( "Trouble creating Zstd compressor, invalid file ?", ioe );
+    public static @Nonnull ZstdCompressorInputStream getZstdInputStream(InputStream in) throws ArchiverException {
+        try {
+            return new ZstdCompressorInputStream(in);
+        } catch (IOException ioe) {
+            throw new ArchiverException("Trouble creating Zstd compressor, invalid file ?", ioe);
         }
     }
 
     @Override
-    protected void execute( String path, File outputDirectory ) throws ArchiverException
-    {
-        throw new UnsupportedOperationException( "Targeted execution not supported in zstd format" );
+    protected void execute(String path, File outputDirectory) throws ArchiverException {
+        throw new UnsupportedOperationException("Targeted execution not supported in zstd format");
     }
-
 }

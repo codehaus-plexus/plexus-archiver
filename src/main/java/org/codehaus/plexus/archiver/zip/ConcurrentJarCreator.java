@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
+
 import org.apache.commons.compress.archivers.zip.ParallelScatterZipCreator;
 import org.apache.commons.compress.archivers.zip.ScatterZipOutputStream;
 import org.apache.commons.compress.archivers.zip.StreamCompressor;
@@ -40,8 +41,7 @@ import org.codehaus.plexus.archiver.util.Streams;
 
 import static org.apache.commons.compress.archivers.zip.ZipArchiveEntryRequest.createZipArchiveEntryRequest;
 
-public class ConcurrentJarCreator
-{
+public class ConcurrentJarCreator {
 
     private final boolean compressAddedZips;
 
@@ -57,33 +57,25 @@ public class ConcurrentJarCreator
 
     private long zipCloseElapsed;
 
-    private static class DeferredSupplier
-        implements ScatterGatherBackingStoreSupplier
-    {
+    private static class DeferredSupplier implements ScatterGatherBackingStoreSupplier {
 
         private int threshold;
 
-        DeferredSupplier( int threshold )
-        {
+        DeferredSupplier(int threshold) {
             this.threshold = threshold;
         }
 
         @Override
-        public ScatterGatherBackingStore get()
-            throws IOException
-        {
-            return new DeferredScatterOutputStream( threshold );
+        public ScatterGatherBackingStore get() throws IOException {
+            return new DeferredScatterOutputStream(threshold);
         }
-
     }
 
     public static ScatterZipOutputStream createDeferred(
-        ScatterGatherBackingStoreSupplier scatterGatherBackingStoreSupplier )
-        throws IOException
-    {
+            ScatterGatherBackingStoreSupplier scatterGatherBackingStoreSupplier) throws IOException {
         ScatterGatherBackingStore bs = scatterGatherBackingStoreSupplier.get();
-        StreamCompressor sc = StreamCompressor.create( Deflater.DEFAULT_COMPRESSION, bs );
-        return new ScatterZipOutputStream( bs, sc );
+        StreamCompressor sc = StreamCompressor.create(Deflater.DEFAULT_COMPRESSION, bs);
+        return new ScatterZipOutputStream(bs, sc);
     }
 
     /**
@@ -98,9 +90,8 @@ public class ConcurrentJarCreator
      *
      * @throws IOException
      */
-    public ConcurrentJarCreator( int nThreads ) throws IOException
-    {
-        this( true, nThreads );
+    public ConcurrentJarCreator(int nThreads) throws IOException {
+        this(true, nThreads);
     }
 
     /**
@@ -121,17 +112,15 @@ public class ConcurrentJarCreator
      *
      * @throws IOException
      */
-    public ConcurrentJarCreator( boolean compressAddedZips, int nThreads ) throws IOException
-    {
+    public ConcurrentJarCreator(boolean compressAddedZips, int nThreads) throws IOException {
         this.compressAddedZips = compressAddedZips;
-        ScatterGatherBackingStoreSupplier defaultSupplier = new DeferredSupplier( 100000000 / nThreads );
-        metaInfDir = createDeferred( defaultSupplier );
-        manifest = createDeferred( defaultSupplier );
-        directories = createDeferred( defaultSupplier );
-        synchronousEntries = createDeferred( defaultSupplier );
-        parallelScatterZipCreator = new ParallelScatterZipCreator( Executors.newFixedThreadPool( nThreads ),
-                                                                   defaultSupplier );
-
+        ScatterGatherBackingStoreSupplier defaultSupplier = new DeferredSupplier(100000000 / nThreads);
+        metaInfDir = createDeferred(defaultSupplier);
+        manifest = createDeferred(defaultSupplier);
+        directories = createDeferred(defaultSupplier);
+        synchronousEntries = createDeferred(defaultSupplier);
+        parallelScatterZipCreator =
+                new ParallelScatterZipCreator(Executors.newFixedThreadPool(nThreads), defaultSupplier);
     }
 
     /**
@@ -146,51 +135,38 @@ public class ConcurrentJarCreator
      *
      * @throws java.io.IOException
      */
-    public void addArchiveEntry( final ZipArchiveEntry zipArchiveEntry, final InputStreamSupplier source,
-                                 final boolean addInParallel ) throws IOException
-    {
+    public void addArchiveEntry(
+            final ZipArchiveEntry zipArchiveEntry, final InputStreamSupplier source, final boolean addInParallel)
+            throws IOException {
         final int method = zipArchiveEntry.getMethod();
-        if ( method == -1 )
-        {
-            throw new IllegalArgumentException( "Method must be set on the supplied zipArchiveEntry" );
+        if (method == -1) {
+            throw new IllegalArgumentException("Method must be set on the supplied zipArchiveEntry");
         }
         final String zipEntryName = zipArchiveEntry.getName();
-        if ( "META-INF".equals( zipEntryName ) || "META-INF/".equals( zipEntryName ) )
-        {
+        if ("META-INF".equals(zipEntryName) || "META-INF/".equals(zipEntryName)) {
             // TODO This should be enforced because META-INF non-directory does not make any sense?!
-            if ( zipArchiveEntry.isDirectory() )
-            {
-                zipArchiveEntry.setMethod( ZipEntry.STORED );
+            if (zipArchiveEntry.isDirectory()) {
+                zipArchiveEntry.setMethod(ZipEntry.STORED);
             }
-            metaInfDir.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry, source ) );
-        }
-        else if ( "META-INF/MANIFEST.MF".equals( zipEntryName ) )
-        {
-            manifest.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry, source ) );
-        }
-        else if ( zipArchiveEntry.isDirectory() && !zipArchiveEntry.isUnixSymlink() )
-        {
-            directories.addArchiveEntry( createZipArchiveEntryRequest( zipArchiveEntry,
-                                                                       () -> Streams.EMPTY_INPUTSTREAM ) );
-        }
-        else if ( addInParallel )
-        {
-            parallelScatterZipCreator.addArchiveEntry( () -> createEntry( zipArchiveEntry, source ) );
-        }
-        else
-        {
-            synchronousEntries.addArchiveEntry( createEntry( zipArchiveEntry, source ) );
+            metaInfDir.addArchiveEntry(createZipArchiveEntryRequest(zipArchiveEntry, source));
+        } else if ("META-INF/MANIFEST.MF".equals(zipEntryName)) {
+            manifest.addArchiveEntry(createZipArchiveEntryRequest(zipArchiveEntry, source));
+        } else if (zipArchiveEntry.isDirectory() && !zipArchiveEntry.isUnixSymlink()) {
+            directories.addArchiveEntry(createZipArchiveEntryRequest(zipArchiveEntry, () -> Streams.EMPTY_INPUTSTREAM));
+        } else if (addInParallel) {
+            parallelScatterZipCreator.addArchiveEntry(() -> createEntry(zipArchiveEntry, source));
+        } else {
+            synchronousEntries.addArchiveEntry(createEntry(zipArchiveEntry, source));
         }
     }
 
-    public void writeTo( ZipArchiveOutputStream targetStream ) throws IOException, ExecutionException,
-                                                                      InterruptedException
-    {
-        metaInfDir.writeTo( targetStream );
-        manifest.writeTo( targetStream );
-        directories.writeTo( targetStream );
-        synchronousEntries.writeTo( targetStream );
-        parallelScatterZipCreator.writeTo( targetStream );
+    public void writeTo(ZipArchiveOutputStream targetStream)
+            throws IOException, ExecutionException, InterruptedException {
+        metaInfDir.writeTo(targetStream);
+        manifest.writeTo(targetStream);
+        directories.writeTo(targetStream);
+        synchronousEntries.writeTo(targetStream);
+        parallelScatterZipCreator.writeTo(targetStream);
         long startAt = System.currentTimeMillis();
         targetStream.close();
         zipCloseElapsed = System.currentTimeMillis() - startAt;
@@ -205,51 +181,41 @@ public class ConcurrentJarCreator
      *
      * @return A string
      */
-    public String getStatisticsMessage()
-    {
+    public String getStatisticsMessage() {
         return parallelScatterZipCreator.getStatisticsMessage() + " Zip Close: " + zipCloseElapsed + "ms";
     }
 
-    private ZipArchiveEntryRequest createEntry( final ZipArchiveEntry zipArchiveEntry,
-                                                final InputStreamSupplier inputStreamSupplier )
-    {
+    private ZipArchiveEntryRequest createEntry(
+            final ZipArchiveEntry zipArchiveEntry, final InputStreamSupplier inputStreamSupplier) {
         // if we re-compress the zip files there is no need to look at the input stream
-        if ( compressAddedZips )
-        {
-            return createZipArchiveEntryRequest( zipArchiveEntry, inputStreamSupplier );
+        if (compressAddedZips) {
+            return createZipArchiveEntryRequest(zipArchiveEntry, inputStreamSupplier);
         }
 
         InputStream is = inputStreamSupplier.get();
         // otherwise we should inspect the first four bytes to see if the input stream is zip file or not
         byte[] header = new byte[4];
-        try
-        {
-            int read = is.read( header );
+        try {
+            int read = is.read(header);
             int compressionMethod = zipArchiveEntry.getMethod();
-            if ( isZipHeader( header ) )
-            {
+            if (isZipHeader(header)) {
                 compressionMethod = ZipEntry.STORED;
             }
 
-            zipArchiveEntry.setMethod( compressionMethod );
+            zipArchiveEntry.setMethod(compressionMethod);
 
-            return createZipArchiveEntryRequest( zipArchiveEntry, prependBytesToStream( header, read, is ) );
-        }
-        catch ( IOException e )
-        {
-            IOUtils.closeQuietly( is );
-            throw new UncheckedIOException( e );
+            return createZipArchiveEntryRequest(zipArchiveEntry, prependBytesToStream(header, read, is));
+        } catch (IOException e) {
+            IOUtils.closeQuietly(is);
+            throw new UncheckedIOException(e);
         }
     }
 
-    private boolean isZipHeader( byte[] header )
-    {
+    private boolean isZipHeader(byte[] header) {
         return header[0] == 0x50 && header[1] == 0x4b && header[2] == 3 && header[3] == 4;
     }
 
-    private InputStreamSupplier prependBytesToStream( final byte[] bytes, final int len, final InputStream stream )
-    {
-        return () -> len > 0 ? new SequenceInputStream( new ByteArrayInputStream( bytes, 0, len ), stream ) : stream;
+    private InputStreamSupplier prependBytesToStream(final byte[] bytes, final int len, final InputStream stream) {
+        return () -> len > 0 ? new SequenceInputStream(new ByteArrayInputStream(bytes, 0, len), stream) : stream;
     }
-
 }

@@ -20,6 +20,7 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
@@ -42,10 +43,8 @@ import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
  *
  * @see JarArchiver
  */
-@Named( "war" )
-public class WarArchiver
-    extends JarArchiver
-{
+@Named("war")
+public class WarArchiver extends JarArchiver {
 
     /**
      * our web.xml deployment descriptor
@@ -67,8 +66,7 @@ public class WarArchiver
      * @param excpectWebXml true if web xml is *expected* from the client
      */
     @Deprecated
-    public void setIgnoreWebxml( boolean excpectWebXml )
-    {
+    public void setIgnoreWebxml(boolean excpectWebXml) {
         expectWebXml = excpectWebXml;
     }
 
@@ -77,13 +75,11 @@ public class WarArchiver
      *
      * @param expectWebXml true if web xml is *expected* from the client
      */
-    public void setExpectWebXml( boolean expectWebXml )
-    {
+    public void setExpectWebXml(boolean expectWebXml) {
         this.expectWebXml = expectWebXml;
     }
 
-    public WarArchiver()
-    {
+    public WarArchiver() {
         super();
         archiveType = "war";
     }
@@ -92,71 +88,48 @@ public class WarArchiver
      * set the deployment descriptor to use (WEB-INF/web.xml);
      * required unless <code>update=true</code>
      */
-    public void setWebxml( File descr )
-        throws ArchiverException
-    {
+    public void setWebxml(File descr) throws ArchiverException {
         deploymentDescriptor = descr;
-        if ( !deploymentDescriptor.exists() )
-        {
-            throw new ArchiverException( "Deployment descriptor: " + deploymentDescriptor + " does not exist." );
+        if (!deploymentDescriptor.exists()) {
+            throw new ArchiverException("Deployment descriptor: " + deploymentDescriptor + " does not exist.");
         }
 
-        addFile( descr, "WEB-INF" + File.separatorChar + "web.xml" );
+        addFile(descr, "WEB-INF" + File.separatorChar + "web.xml");
     }
 
     /**
      * add a file under WEB-INF/lib/
      */
-    public void addLib( File fileName )
-        throws ArchiverException
-    {
-        addDirectory( fileName.getParentFile(), "WEB-INF/lib/",
-                      new String[]
-                      {
-                          fileName.getName()
-                      }, null );
-
+    public void addLib(File fileName) throws ArchiverException {
+        addDirectory(fileName.getParentFile(), "WEB-INF/lib/", new String[] {fileName.getName()}, null);
     }
 
     /**
      * add files under WEB-INF/lib/
      */
-    public void addLibs( File directoryName, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        addDirectory( directoryName, "WEB-INF/lib/", includes, excludes );
+    public void addLibs(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
+        addDirectory(directoryName, "WEB-INF/lib/", includes, excludes);
     }
 
     /**
      * add a file under WEB-INF/lib/
      */
-    public void addClass( File fileName )
-        throws ArchiverException
-    {
-        addDirectory( fileName.getParentFile(), "WEB-INF/classes/",
-                      new String[]
-                      {
-                          fileName.getName()
-                      }, null );
-
+    public void addClass(File fileName) throws ArchiverException {
+        addDirectory(fileName.getParentFile(), "WEB-INF/classes/", new String[] {fileName.getName()}, null);
     }
 
     /**
      * add files under WEB-INF/classes
      */
-    public void addClasses( File directoryName, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        addDirectory( directoryName, "WEB-INF/classes/", includes, excludes );
+    public void addClasses(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
+        addDirectory(directoryName, "WEB-INF/classes/", includes, excludes);
     }
 
     /**
      * files to add under WEB-INF;
      */
-    public void addWebinf( File directoryName, String[] includes, String[] excludes )
-        throws ArchiverException
-    {
-        addDirectory( directoryName, "WEB-INF/", includes, excludes );
+    public void addWebinf(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
+        addDirectory(directoryName, "WEB-INF/", includes, excludes);
     }
 
     /**
@@ -166,52 +139,43 @@ public class WarArchiver
      * @param zOut
      */
     @Override
-    protected void initZipOutputStream( ConcurrentJarCreator zOut )
-        throws ArchiverException, IOException
-    {
+    protected void initZipOutputStream(ConcurrentJarCreator zOut) throws ArchiverException, IOException {
         // If no webxml file is specified, it's an error.
-        if ( expectWebXml && deploymentDescriptor == null && !isInUpdateMode() )
-        {
+        if (expectWebXml && deploymentDescriptor == null && !isInUpdateMode()) {
             throw new ArchiverException(
-                "webxml attribute is required (or pre-existing WEB-INF/web.xml if executing in update mode)" );
-
+                    "webxml attribute is required (or pre-existing WEB-INF/web.xml if executing in update mode)");
         }
 
-        super.initZipOutputStream( zOut );
+        super.initZipOutputStream(zOut);
     }
 
     /**
      * Overridden from ZipArchiver class to deal with web.xml
      */
     @Override
-    protected void zipFile( ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath )
-        throws IOException, ArchiverException
-    {
+    protected void zipFile(ArchiveEntry entry, ConcurrentJarCreator zOut, String vPath)
+            throws IOException, ArchiverException {
         // If the file being added is WEB-INF/web.xml, we warn if it's
         // not the one specified in the "webxml" attribute - or if
         // it's being added twice, meaning the same file is specified
         // by the "webxml" attribute and in a <fileset> element.
-        if ( vPath.equalsIgnoreCase( "WEB-INF/web.xml" ) )
-        {
-            if ( descriptorAdded || ( expectWebXml
-                                      && ( deploymentDescriptor == null
-                                           || !ResourceUtils.isCanonicalizedSame( entry.getResource(),
-                                                                                  deploymentDescriptor ) ) ) )
-            {
-                getLogger().warn( "Warning: selected " + archiveType
-                                      + " files include a WEB-INF/web.xml which will be ignored "
-                                      + "\n(webxml attribute is missing from "
-                                      + archiveType + " task, or ignoreWebxml attribute is specified as 'true')" );
-            }
-            else
-            {
-                super.zipFile( entry, zOut, vPath );
+        if (vPath.equalsIgnoreCase("WEB-INF/web.xml")) {
+            if (descriptorAdded
+                    || (expectWebXml
+                            && (deploymentDescriptor == null
+                                    || !ResourceUtils.isCanonicalizedSame(
+                                            entry.getResource(), deploymentDescriptor)))) {
+                getLogger()
+                        .warn("Warning: selected " + archiveType
+                                + " files include a WEB-INF/web.xml which will be ignored "
+                                + "\n(webxml attribute is missing from "
+                                + archiveType + " task, or ignoreWebxml attribute is specified as 'true')");
+            } else {
+                super.zipFile(entry, zOut, vPath);
                 descriptorAdded = true;
             }
-        }
-        else
-        {
-            super.zipFile( entry, zOut, vPath );
+        } else {
+            super.zipFile(entry, zOut, vPath);
         }
     }
 
@@ -220,12 +184,9 @@ public class WarArchiver
      * gets executed.
      */
     @Override
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         descriptorAdded = false;
         expectWebXml = true;
         super.cleanUp();
     }
-
 }

@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.LongAdder;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
@@ -46,13 +45,10 @@ import org.slf4j.LoggerFactory;
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-public abstract class AbstractUnArchiver
-    implements UnArchiver, FinalizerEnabled
-{
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    protected Logger getLogger()
-    {
+    protected Logger getLogger() {
         return logger;
     }
 
@@ -82,217 +78,170 @@ public abstract class AbstractUnArchiver
      */
     private boolean ignorePermissions = false;
 
-    public AbstractUnArchiver()
-    {
+    public AbstractUnArchiver() {
         // no op
     }
 
-    public AbstractUnArchiver( final File sourceFile )
-    {
+    public AbstractUnArchiver(final File sourceFile) {
         this.sourceFile = sourceFile;
     }
 
     @Override
-    public File getDestDirectory()
-    {
+    public File getDestDirectory() {
         return destDirectory;
     }
 
     @Override
-    public void setDestDirectory( final File destDirectory )
-    {
+    public void setDestDirectory(final File destDirectory) {
         this.destDirectory = destDirectory;
     }
 
     @Override
-    public File getDestFile()
-    {
+    public File getDestFile() {
         return destFile;
     }
 
     @Override
-    public void setDestFile( final File destFile )
-    {
+    public void setDestFile(final File destFile) {
         this.destFile = destFile;
     }
 
     @Override
-    public File getSourceFile()
-    {
+    public File getSourceFile() {
         return sourceFile;
     }
 
     @Override
-    public void setSourceFile( final File sourceFile )
-    {
+    public void setSourceFile(final File sourceFile) {
         this.sourceFile = sourceFile;
     }
 
     @Override
-    public boolean isOverwrite()
-    {
+    public boolean isOverwrite() {
         return overwrite;
     }
 
     @Override
-    public void setOverwrite( final boolean b )
-    {
+    public void setOverwrite(final boolean b) {
         overwrite = b;
     }
 
     @Override
-    public FileMapper[] getFileMappers()
-    {
+    public FileMapper[] getFileMappers() {
         return fileMappers;
     }
 
     @Override
-    public void setFileMappers( final FileMapper[] fileMappers )
-    {
+    public void setFileMappers(final FileMapper[] fileMappers) {
         this.fileMappers = fileMappers;
     }
 
     @Override
-    public final void extract()
-        throws ArchiverException
-    {
+    public final void extract() throws ArchiverException {
         validate();
         execute();
         runArchiveFinalizers();
     }
 
     @Override
-    public final void extract( final String path, final File outputDirectory )
-        throws ArchiverException
-    {
-        validate( path, outputDirectory );
-        execute( path, outputDirectory );
+    public final void extract(final String path, final File outputDirectory) throws ArchiverException {
+        validate(path, outputDirectory);
+        execute(path, outputDirectory);
         runArchiveFinalizers();
     }
 
     @Override
-    public void addArchiveFinalizer( final ArchiveFinalizer finalizer )
-    {
-        if ( finalizers == null )
-        {
+    public void addArchiveFinalizer(final ArchiveFinalizer finalizer) {
+        if (finalizers == null) {
             finalizers = new ArrayList<>();
         }
 
-        finalizers.add( finalizer );
+        finalizers.add(finalizer);
     }
 
     @Override
-    public void setArchiveFinalizers( final List<ArchiveFinalizer> archiveFinalizers )
-    {
+    public void setArchiveFinalizers(final List<ArchiveFinalizer> archiveFinalizers) {
         finalizers = archiveFinalizers;
     }
 
-    private void runArchiveFinalizers()
-        throws ArchiverException
-    {
-        if ( finalizers != null )
-        {
-            for ( ArchiveFinalizer finalizer : finalizers )
-            {
-                finalizer.finalizeArchiveExtraction( this );
+    private void runArchiveFinalizers() throws ArchiverException {
+        if (finalizers != null) {
+            for (ArchiveFinalizer finalizer : finalizers) {
+                finalizer.finalizeArchiveExtraction(this);
             }
         }
     }
 
-    protected void validate( final String path, final File outputDirectory )
-    {
-    }
+    protected void validate(final String path, final File outputDirectory) {}
 
-    protected void validate()
-        throws ArchiverException
-    {
-        if ( sourceFile == null )
-        {
-            throw new ArchiverException( "The source file isn't defined." );
+    protected void validate() throws ArchiverException {
+        if (sourceFile == null) {
+            throw new ArchiverException("The source file isn't defined.");
         }
 
-        if ( sourceFile.isDirectory() )
-        {
-            throw new ArchiverException( "The source must not be a directory." );
+        if (sourceFile.isDirectory()) {
+            throw new ArchiverException("The source must not be a directory.");
         }
 
-        if ( !sourceFile.exists() )
-        {
-            throw new ArchiverException( "The source file " + sourceFile + " doesn't exist." );
+        if (!sourceFile.exists()) {
+            throw new ArchiverException("The source file " + sourceFile + " doesn't exist.");
         }
 
-        if ( destDirectory == null && destFile == null )
-        {
-            throw new ArchiverException( "The destination isn't defined." );
+        if (destDirectory == null && destFile == null) {
+            throw new ArchiverException("The destination isn't defined.");
         }
 
-        if ( destDirectory != null && destFile != null )
-        {
-            throw new ArchiverException( "You must choose between a destination directory and a destination file." );
+        if (destDirectory != null && destFile != null) {
+            throw new ArchiverException("You must choose between a destination directory and a destination file.");
         }
 
-        if ( destDirectory != null && !destDirectory.isDirectory() )
-        {
+        if (destDirectory != null && !destDirectory.isDirectory()) {
             destFile = destDirectory;
             destDirectory = null;
         }
 
-        if ( destFile != null && destFile.isDirectory() )
-        {
+        if (destFile != null && destFile.isDirectory()) {
             destDirectory = destFile;
             destFile = null;
         }
     }
 
     @Override
-    public void setFileSelectors( final FileSelector[] fileSelectors )
-    {
+    public void setFileSelectors(final FileSelector[] fileSelectors) {
         this.fileSelectors = fileSelectors;
     }
 
     @Override
-    public FileSelector[] getFileSelectors()
-    {
+    public FileSelector[] getFileSelectors() {
         return fileSelectors;
     }
 
-    protected boolean isSelected( final String fileName, final PlexusIoResource fileInfo )
-        throws ArchiverException
-    {
-        if ( fileSelectors != null )
-        {
-            for ( FileSelector fileSelector : fileSelectors )
-            {
-                try
-                {
+    protected boolean isSelected(final String fileName, final PlexusIoResource fileInfo) throws ArchiverException {
+        if (fileSelectors != null) {
+            for (FileSelector fileSelector : fileSelectors) {
+                try {
 
-                    if ( !fileSelector.isSelected( fileInfo ) )
-                    {
+                    if (!fileSelector.isSelected(fileInfo)) {
                         return false;
                     }
-                }
-                catch ( final IOException e )
-                {
+                } catch (final IOException e) {
                     throw new ArchiverException(
-                        "Failed to check, whether " + fileInfo.getName() + " is selected: " + e.getMessage(), e );
+                            "Failed to check, whether " + fileInfo.getName() + " is selected: " + e.getMessage(), e);
                 }
             }
         }
         return true;
     }
 
-    protected abstract void execute()
-        throws ArchiverException;
+    protected abstract void execute() throws ArchiverException;
 
-    protected abstract void execute( String path, File outputDirectory )
-        throws ArchiverException;
+    protected abstract void execute(String path, File outputDirectory) throws ArchiverException;
 
     /**
      * @since 1.1
      */
     @Override
-    public boolean isUseJvmChmod()
-    {
+    public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
 
@@ -302,8 +251,7 @@ public abstract class AbstractUnArchiver
      * @since 1.1
      */
     @Override
-    public void setUseJvmChmod( final boolean useJvmChmod )
-    {
+    public void setUseJvmChmod(final boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }
 
@@ -311,8 +259,7 @@ public abstract class AbstractUnArchiver
      * @since 1.1
      */
     @Override
-    public boolean isIgnorePermissions()
-    {
+    public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
 
@@ -320,26 +267,29 @@ public abstract class AbstractUnArchiver
      * @since 1.1
      */
     @Override
-    public void setIgnorePermissions( final boolean ignorePermissions )
-    {
+    public void setIgnorePermissions(final boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
     }
 
-    protected void extractFile( final File srcF, final File dir, final InputStream compressedInputStream,
-                                String entryName, final Date entryDate, final boolean isDirectory,
-                                final Integer mode, String symlinkDestination, final FileMapper[] fileMappers )
-        throws IOException, ArchiverException
-    {
-        if ( fileMappers != null )
-        {
-            for ( final FileMapper fileMapper : fileMappers )
-            {
-                entryName = fileMapper.getMappedFileName( entryName );
+    protected void extractFile(
+            final File srcF,
+            final File dir,
+            final InputStream compressedInputStream,
+            String entryName,
+            final Date entryDate,
+            final boolean isDirectory,
+            final Integer mode,
+            String symlinkDestination,
+            final FileMapper[] fileMappers)
+            throws IOException, ArchiverException {
+        if (fileMappers != null) {
+            for (final FileMapper fileMapper : fileMappers) {
+                entryName = fileMapper.getMappedFileName(entryName);
             }
         }
 
         // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File targetFileName = FileUtils.resolveFile( dir, entryName );
+        final File targetFileName = FileUtils.resolveFile(dir, entryName);
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
         // getCanonicalFile().toPath() is used instead of getCanonicalPath() (returns String),
@@ -347,104 +297,98 @@ public abstract class AbstractUnArchiver
         Path canonicalDirPath = dir.getCanonicalFile().toPath();
         Path canonicalDestPath = targetFileName.getCanonicalFile().toPath();
 
-        if ( !canonicalDestPath.startsWith( canonicalDirPath ) )
-        {
-            throw new ArchiverException( "Entry is outside of the target directory (" + entryName + ")" );
+        if (!canonicalDestPath.startsWith(canonicalDirPath)) {
+            throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
         }
 
-        try
-        {
-            if ( !shouldExtractEntry( dir, targetFileName, entryName, entryDate ) )
-            {
+        try {
+            if (!shouldExtractEntry(dir, targetFileName, entryName, entryDate)) {
                 return;
             }
 
             // create intermediary directories - sometimes zip don't add them
             final File dirF = targetFileName.getParentFile();
-            if ( dirF != null )
-            {
+            if (dirF != null) {
                 dirF.mkdirs();
             }
 
-            if ( !StringUtils.isEmpty( symlinkDestination ) )
-            {
-                SymlinkUtils.createSymbolicLink( targetFileName, new File( symlinkDestination ) );
-            }
-            else if ( isDirectory )
-            {
+            if (!StringUtils.isEmpty(symlinkDestination)) {
+                SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
+            } else if (isDirectory) {
                 targetFileName.mkdirs();
-            }
-            else
-            {
-                try ( OutputStream out = Files.newOutputStream( targetFileName.toPath() ) )
-                {
-                    IOUtil.copy( compressedInputStream, out );
+            } else {
+                try (OutputStream out = Files.newOutputStream(targetFileName.toPath())) {
+                    IOUtil.copy(compressedInputStream, out);
                 }
             }
 
-            targetFileName.setLastModified( entryDate.getTime() );
+            targetFileName.setLastModified(entryDate.getTime());
 
-            if ( !isIgnorePermissions() && mode != null && !isDirectory )
-            {
-                ArchiveEntryUtils.chmod( targetFileName, mode );
+            if (!isIgnorePermissions() && mode != null && !isDirectory) {
+                ArchiveEntryUtils.chmod(targetFileName, mode);
             }
-        }
-        catch ( final FileNotFoundException ex )
-        {
-            getLogger().warn( "Unable to expand to file " + targetFileName.getPath() );
+        } catch (final FileNotFoundException ex) {
+            getLogger().warn("Unable to expand to file " + targetFileName.getPath());
         }
     }
 
     /**
      * Counter for casing message emitted, visible for testing.
      */
-    final AtomicInteger casingMessageEmitted = new AtomicInteger( 0 );
+    final AtomicInteger casingMessageEmitted = new AtomicInteger(0);
 
     // Visible for testing
-    protected boolean shouldExtractEntry( File targetDirectory, File targetFileName, String entryName, Date entryDate ) throws IOException
-    {
+    protected boolean shouldExtractEntry(File targetDirectory, File targetFileName, String entryName, Date entryDate)
+            throws IOException {
         //     entryname  | entrydate | filename   | filedate | behavior
         // (1) readme.txt | 1970      | -          | -        | always extract if the file does not exist
         // (2) readme.txt | 1970      | readme.txt | 2020     | do not overwrite unless isOverwrite() is true
-        // (3) readme.txt | 2020      | readme.txt | 1970     | always override when the file is older than the archive entry
-        // (4) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + do not overwrite unless isOverwrite()
+        // (3) readme.txt | 2020      | readme.txt | 1970     | always override when the file is older than the archive
+        // entry
+        // (4) README.txt | 1970      | readme.txt | 2020     | case-insensitive filesystem: warn + do not overwrite
+        // unless isOverwrite()
         //                                                      case-sensitive filesystem: extract without warning
-        // (5) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + overwrite because entry is newer
+        // (5) README.txt | 2020      | readme.txt | 1970     | case-insensitive filesystem: warn + overwrite because
+        // entry is newer
         //                                                      case-sensitive filesystem: extract without warning
 
         // The canonical file name follows the name of the archive entry, but takes into account the case-
         // sensitivity of the filesystem. So on a case-sensitive file system, file.exists() returns false for
         // scenario (4) and (5).
-        // No matter the case sensitivity of the file system, file.exists() returns false when there is no file with the same name (1).
-        if ( !targetFileName.exists() )
-        {
+        // No matter the case sensitivity of the file system, file.exists() returns false when there is no file with the
+        // same name (1).
+        if (!targetFileName.exists()) {
             return true;
         }
 
-        boolean entryIsDirectory = entryName.endsWith( "/" ); // directory entries always end with '/', regardless of the OS.
+        boolean entryIsDirectory =
+                entryName.endsWith("/"); // directory entries always end with '/', regardless of the OS.
         String canonicalDestPath = targetFileName.getCanonicalPath();
         String suffix = (entryIsDirectory ? "/" : "");
-        String relativeCanonicalDestPath = canonicalDestPath.replace(
-                targetDirectory.getCanonicalPath() + File.separatorChar,
-                "" )
-                + suffix;
+        String relativeCanonicalDestPath =
+                canonicalDestPath.replace(targetDirectory.getCanonicalPath() + File.separatorChar, "") + suffix;
         boolean fileOnDiskIsOlderThanEntry = targetFileName.lastModified() < entryDate.getTime();
-        boolean differentCasing = !normalizedFileSeparator( entryName ).equals( normalizedFileSeparator( relativeCanonicalDestPath ) );
+        boolean differentCasing =
+                !normalizedFileSeparator(entryName).equals(normalizedFileSeparator(relativeCanonicalDestPath));
 
         // Warn for case (4) and (5) if the file system is case-insensitive
-        if ( differentCasing )
-        {
-            String casingMessage = String.format( Locale.ENGLISH, "Archive entry '%s' and existing file '%s' names differ only by case."
-                + " This may lead to an unexpected outcome on case-insensitive filesystems.", entryName, canonicalDestPath );
-            getLogger().warn( casingMessage );
+        if (differentCasing) {
+            String casingMessage = String.format(
+                    Locale.ENGLISH,
+                    "Archive entry '%s' and existing file '%s' names differ only by case."
+                            + " This may lead to an unexpected outcome on case-insensitive filesystems.",
+                    entryName,
+                    canonicalDestPath);
+            getLogger().warn(casingMessage);
             casingMessageEmitted.incrementAndGet();
         }
 
-        // Override the existing file if isOverwrite() is true or if the file on disk is older than the one in the archive
+        // Override the existing file if isOverwrite() is true or if the file on disk is older than the one in the
+        // archive
         return isOverwrite() || fileOnDiskIsOlderThanEntry;
     }
-    
+
     private String normalizedFileSeparator(String pathOrEntry) {
-    	return pathOrEntry.replace("/", File.separator);
+        return pathOrEntry.replace("/", File.separator);
     }
 }

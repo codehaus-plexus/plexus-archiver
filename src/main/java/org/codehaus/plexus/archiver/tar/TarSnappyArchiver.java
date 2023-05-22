@@ -23,19 +23,14 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tar.snappy" )
-public class TarSnappyArchiver
-    extends TarArchiver
-{
+@Named("tar.snappy")
+public class TarSnappyArchiver extends TarArchiver {
 
-    public TarSnappyArchiver()
-    {
+    public TarSnappyArchiver() {
         this.setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        this.setCompression( TarCompressionMethod.snappy );
+    private void setupCompressionMethod() {
+        this.setCompression(TarCompressionMethod.snappy);
     }
-
 }

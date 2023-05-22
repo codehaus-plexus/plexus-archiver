@@ -18,8 +18,6 @@ package org.codehaus.plexus.archiver.tar;
 
 import javax.inject.Named;
 
-import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,13 +44,13 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.iq80.snappy.SnappyOutputStream;
 
+import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
+
 /**
  * @author <a href="mailto:evenisse@codehaus.org">Emmanuel Venisse</a>
  */
-@Named( "tar" )
-public class TarArchiver
-    extends AbstractArchiver
-{
+@Named("tar")
+public class TarArchiver extends AbstractArchiver {
 
     /**
      * Indicates whether the user has been warned about long files already.
@@ -84,8 +82,7 @@ public class TarArchiver
      *
      * @param mode the mode to handle long file names.
      */
-    public void setLongfile( TarLongFileMode mode )
-    {
+    public void setLongfile(TarLongFileMode mode) {
         this.longFileMode = mode;
     }
 
@@ -100,86 +97,66 @@ public class TarArchiver
      *
      * @param mode the compression method.
      */
-    public void setCompression( TarCompressionMethod mode )
-    {
+    public void setCompression(TarCompressionMethod mode) {
         this.compression = mode;
     }
 
     @Override
-    protected void execute()
-        throws ArchiverException, IOException
-    {
-        if ( !checkForced() )
-        {
+    protected void execute() throws ArchiverException, IOException {
+        if (!checkForced()) {
             return;
         }
 
         ResourceIterator iter = getResources();
-        if ( !iter.hasNext() )
-        {
-            throw new EmptyArchiveException( "archive cannot be empty" );
+        if (!iter.hasNext()) {
+            throw new EmptyArchiveException("archive cannot be empty");
         }
 
         File tarFile = getDestFile();
 
-        if ( tarFile == null )
-        {
-            throw new ArchiverException( "You must set the destination tar file." );
+        if (tarFile == null) {
+            throw new ArchiverException("You must set the destination tar file.");
         }
-        if ( tarFile.exists() && !tarFile.isFile() )
-        {
-            throw new ArchiverException( tarFile + " isn't a file." );
+        if (tarFile.exists() && !tarFile.isFile()) {
+            throw new ArchiverException(tarFile + " isn't a file.");
         }
-        if ( tarFile.exists() && !tarFile.canWrite() )
-        {
-            throw new ArchiverException( tarFile + " is read-only." );
+        if (tarFile.exists() && !tarFile.canWrite()) {
+            throw new ArchiverException(tarFile + " is read-only.");
         }
 
-        getLogger().info( "Building tar: " + tarFile.getAbsolutePath() );
+        getLogger().info("Building tar: " + tarFile.getAbsolutePath());
 
-        try
-        {
-            tOut = new TarArchiveOutputStream( compress( compression, Files.newOutputStream( tarFile.toPath() ) ), "UTF8" );
-            if ( longFileMode.isTruncateMode() )
-            {
-                tOut.setLongFileMode( TarArchiveOutputStream.LONGFILE_TRUNCATE );
-            }
-            else if ( longFileMode.isPosixMode() || longFileMode.isPosixWarnMode() )
-            {
-                tOut.setLongFileMode( TarArchiveOutputStream.LONGFILE_POSIX );
+        try {
+            tOut = new TarArchiveOutputStream(compress(compression, Files.newOutputStream(tarFile.toPath())), "UTF8");
+            if (longFileMode.isTruncateMode()) {
+                tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_TRUNCATE);
+            } else if (longFileMode.isPosixMode() || longFileMode.isPosixWarnMode()) {
+                tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
                 // Todo: Patch 2.5.1   for this fix. Also make closeable fix on 2.5.1
-                tOut.setBigNumberMode( TarArchiveOutputStream.BIGNUMBER_POSIX );
-            }
-            else if ( longFileMode.isFailMode() || longFileMode.isOmitMode() )
-            {
-                tOut.setLongFileMode( TarArchiveOutputStream.LONGFILE_ERROR );
-            }
-            else
-            {
+                tOut.setBigNumberMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+            } else if (longFileMode.isFailMode() || longFileMode.isOmitMode()) {
+                tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_ERROR);
+            } else {
                 // warn or GNU
-                tOut.setLongFileMode( TarArchiveOutputStream.LONGFILE_GNU );
+                tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
             }
 
             longWarningGiven = false;
-            while ( iter.hasNext() )
-            {
+            while (iter.hasNext()) {
                 ArchiveEntry entry = iter.next();
                 // Check if we don't add tar file in itself
-                if ( ResourceUtils.isSame( entry.getResource(), tarFile ) )
-                {
-                    throw new ArchiverException( "A tar file cannot include itself." );
+                if (ResourceUtils.isSame(entry.getResource(), tarFile)) {
+                    throw new ArchiverException("A tar file cannot include itself.");
                 }
                 String fileName = entry.getName();
-                String name = StringUtils.replace( fileName, File.separatorChar, '/' );
+                String name = StringUtils.replace(fileName, File.separatorChar, '/');
 
-                tarFile( entry, tOut, name );
+                tarFile(entry, tOut, name);
             }
 
             tOut.close();
-        }
-        finally
-        {
-            IOUtil.close( tOut );
+        } finally {
+            IOUtil.close(tOut);
         }
     }
 
@@ -192,180 +169,146 @@ public class TarArchiver
      *
      * @throws IOException on error
      */
-    protected void tarFile( ArchiveEntry entry, TarArchiveOutputStream tOut, String vPath )
-        throws ArchiverException, IOException
-    {
+    protected void tarFile(ArchiveEntry entry, TarArchiveOutputStream tOut, String vPath)
+            throws ArchiverException, IOException {
 
         // don't add "" to the archive
-        if ( vPath.length() <= 0 )
-        {
+        if (vPath.length() <= 0) {
             return;
         }
 
-        if ( entry.getResource().isDirectory() && !vPath.endsWith( "/" ) )
-        {
+        if (entry.getResource().isDirectory() && !vPath.endsWith("/")) {
             vPath += "/";
         }
 
-        if ( vPath.startsWith( "/" ) && !options.getPreserveLeadingSlashes() )
-        {
+        if (vPath.startsWith("/") && !options.getPreserveLeadingSlashes()) {
             int l = vPath.length();
-            if ( l <= 1 )
-            {
+            if (l <= 1) {
                 // we would end up adding "" to the archive
                 return;
             }
-            vPath = vPath.substring( 1, l );
+            vPath = vPath.substring(1, l);
         }
 
         int pathLength = vPath.length();
         InputStream fIn = null;
 
-        try
-        {
+        try {
             TarArchiveEntry te;
-            if ( !longFileMode.isGnuMode()
-                     && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN )
-            {
+            if (!longFileMode.isGnuMode()
+                    && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN) {
                 int maxPosixPathLen = org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                                          + org.apache.commons.compress.archivers.tar.TarConstants.PREFIXLEN;
-                if ( longFileMode.isPosixMode() )
-                {
-                }
-                else if ( longFileMode.isPosixWarnMode() )
-                {
-                    if ( pathLength > maxPosixPathLen )
-                    {
-                        getLogger().warn( "Entry: " + vPath + " longer than " + maxPosixPathLen + " characters." );
-                        if ( !longWarningGiven )
-                        {
-                            getLogger().warn( "Resulting tar file can only be processed "
-                                                  + "successfully by GNU compatible tar commands" );
+                        + org.apache.commons.compress.archivers.tar.TarConstants.PREFIXLEN;
+                if (longFileMode.isPosixMode()) {
+                } else if (longFileMode.isPosixWarnMode()) {
+                    if (pathLength > maxPosixPathLen) {
+                        getLogger().warn("Entry: " + vPath + " longer than " + maxPosixPathLen + " characters.");
+                        if (!longWarningGiven) {
+                            getLogger()
+                                    .warn("Resulting tar file can only be processed "
+                                            + "successfully by GNU compatible tar commands");
                             longWarningGiven = true;
                         }
                     }
-                }
-                else if ( longFileMode.isOmitMode() )
-                {
-                    getLogger().info( "Omitting: " + vPath );
+                } else if (longFileMode.isOmitMode()) {
+                    getLogger().info("Omitting: " + vPath);
                     return;
-                }
-                else if ( longFileMode.isWarnMode() )
-                {
-                    getLogger().warn( "Entry: " + vPath + " longer than "
-                                          + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                                          + " characters." );
-                    if ( !longWarningGiven )
-                    {
-                        getLogger().warn( "Resulting tar file can only be processed "
-                                              + "successfully by GNU compatible tar commands" );
+                } else if (longFileMode.isWarnMode()) {
+                    getLogger()
+                            .warn("Entry: " + vPath + " longer than "
+                                    + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
+                                    + " characters.");
+                    if (!longWarningGiven) {
+                        getLogger()
+                                .warn("Resulting tar file can only be processed "
+                                        + "successfully by GNU compatible tar commands");
                         longWarningGiven = true;
                     }
-                }
-                else if ( longFileMode.isFailMode() )
-                {
-                    throw new ArchiverException( "Entry: " + vPath + " longer than "
-                                                     + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                                                     + " characters." );
-                }
-                else
-                {
-                    throw new IllegalStateException( "Non gnu mode should never get here?" );
+                } else if (longFileMode.isFailMode()) {
+                    throw new ArchiverException("Entry: " + vPath + " longer than "
+                            + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
+                            + " characters.");
+                } else {
+                    throw new IllegalStateException("Non gnu mode should never get here?");
                 }
             }
 
-            if ( entry.getType() == ArchiveEntry.SYMLINK )
-            {
+            if (entry.getType() == ArchiveEntry.SYMLINK) {
                 final SymlinkDestinationSupplier plexusIoSymlinkResource =
-                    (SymlinkDestinationSupplier) entry.getResource();
+                        (SymlinkDestinationSupplier) entry.getResource();
 
-                te = new TarArchiveEntry( vPath, TarArchiveEntry.LF_SYMLINK );
-                te.setLinkName( plexusIoSymlinkResource.getSymlinkDestination() );
-            }
-            else
-            {
-                te = new TarArchiveEntry( vPath );
+                te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
+                te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
+            } else {
+                te = new TarArchiveEntry(vPath);
             }
 
-            if ( getLastModifiedTime() == null )
-            {
+            if (getLastModifiedTime() == null) {
                 long teLastModified = entry.getResource().getLastModified();
-                te.setModTime( teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                                   ? System.currentTimeMillis()
-                                   : teLastModified );
-            }
-            else
-            {
-                te.setModTime( getLastModifiedTime().toMillis() );
+                te.setModTime(
+                        teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+                                ? System.currentTimeMillis()
+                                : teLastModified);
+            } else {
+                te.setModTime(getLastModifiedTime().toMillis());
             }
 
-            if ( entry.getType() == ArchiveEntry.SYMLINK )
-            {
-                te.setSize( 0 );
+            if (entry.getType() == ArchiveEntry.SYMLINK) {
+                te.setSize(0);
 
-            }
-            else if ( !entry.getResource().isDirectory() )
-            {
+            } else if (!entry.getResource().isDirectory()) {
                 final long size = entry.getResource().getSize();
-                te.setSize( size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size );
+                te.setSize(size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size);
             }
-            te.setMode( entry.getMode() );
+            te.setMode(entry.getMode());
 
             PlexusIoResourceAttributes attributes = entry.getResourceAttributes();
 
-            te.setUserName( ( attributes != null && attributes.getUserName() != null )
-                                ? attributes.getUserName()
-                                : options.getUserName() );
-            te.setGroupName( ( attributes != null && attributes.getGroupName() != null )
-                                 ? attributes.getGroupName()
-                                 : options.getGroup() );
+            te.setUserName(
+                    (attributes != null && attributes.getUserName() != null)
+                            ? attributes.getUserName()
+                            : options.getUserName());
+            te.setGroupName(
+                    (attributes != null && attributes.getGroupName() != null)
+                            ? attributes.getGroupName()
+                            : options.getGroup());
 
             final int userId =
-                ( attributes != null && attributes.getUserId() != null ) ? attributes.getUserId() : options.getUid();
-            if ( userId >= 0 )
-            {
-                te.setUserId( userId );
+                    (attributes != null && attributes.getUserId() != null) ? attributes.getUserId() : options.getUid();
+            if (userId >= 0) {
+                te.setUserId(userId);
             }
 
-            final int groupId =
-                ( attributes != null && attributes.getGroupId() != null ) ? attributes.getGroupId() : options.getGid();
-            if ( groupId >= 0 )
-            {
-                te.setGroupId( groupId );
+            final int groupId = (attributes != null && attributes.getGroupId() != null)
+                    ? attributes.getGroupId()
+                    : options.getGid();
+            if (groupId >= 0) {
+                te.setGroupId(groupId);
             }
 
-            tOut.putArchiveEntry( te );
+            tOut.putArchiveEntry(te);
 
-            try
-            {
-                if ( entry.getResource().isFile() && !( entry.getType() == ArchiveEntry.SYMLINK ) )
-                {
+            try {
+                if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
                     fIn = entry.getInputStream();
 
-                    Streams.copyFullyDontCloseOutput( fIn, tOut, "xAR" );
+                    Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
 
-            }
-            catch ( Throwable e )
-            {
-                getLogger().warn( "When creating tar entry", e );
-            }
-            finally
-            {
+            } catch (Throwable e) {
+                getLogger().warn("When creating tar entry", e);
+            } finally {
                 tOut.closeArchiveEntry();
             }
-        }
-        finally
-        {
-            IOUtil.close( fIn );
+        } finally {
+            IOUtil.close(fIn);
         }
     }
 
     /**
      * Valid Modes for Compression attribute to Tar Task
      */
-    public class TarOptions
-    {
+    public class TarOptions {
 
         private String userName = "";
 
@@ -383,16 +326,14 @@ public class TarArchiver
          *
          * @param userName the user name for the tar entry.
          */
-        public void setUserName( String userName )
-        {
+        public void setUserName(String userName) {
             this.userName = userName;
         }
 
         /**
          * @return the user name for the tar entry
          */
-        public String getUserName()
-        {
+        public String getUserName() {
             return userName;
         }
 
@@ -402,16 +343,14 @@ public class TarArchiver
          *
          * @param uid the id of the user for the tar entry.
          */
-        public void setUid( int uid )
-        {
+        public void setUid(int uid) {
             this.uid = uid;
         }
 
         /**
          * @return the uid for the tar entry
          */
-        public int getUid()
-        {
+        public int getUid() {
             return uid;
         }
 
@@ -421,16 +360,14 @@ public class TarArchiver
          *
          * @param groupName the group name string.
          */
-        public void setGroup( String groupName )
-        {
+        public void setGroup(String groupName) {
             this.groupName = groupName;
         }
 
         /**
          * @return the group name string.
          */
-        public String getGroup()
-        {
+        public String getGroup() {
             return groupName;
         }
 
@@ -440,24 +377,21 @@ public class TarArchiver
          *
          * @param gid the group id.
          */
-        public void setGid( int gid )
-        {
+        public void setGid(int gid) {
             this.gid = gid;
         }
 
         /**
          * @return the group identifier.
          */
-        public int getGid()
-        {
+        public int getGid() {
             return gid;
         }
 
         /**
          * @return the leading slashes flag.
          */
-        public boolean getPreserveLeadingSlashes()
-        {
+        public boolean getPreserveLeadingSlashes() {
             return preserveLeadingSlashes;
         }
 
@@ -468,86 +402,62 @@ public class TarArchiver
          *
          * @param preserveLeadingSlashes the leading slashes flag.
          */
-        public void setPreserveLeadingSlashes( boolean preserveLeadingSlashes )
-        {
+        public void setPreserveLeadingSlashes(boolean preserveLeadingSlashes) {
             this.preserveLeadingSlashes = preserveLeadingSlashes;
         }
-
     }
 
     /**
      * Valid Modes for Compression attribute to Tar Task
      */
-    public enum TarCompressionMethod
-    {
-
+    public enum TarCompressionMethod {
         none,
         gzip,
         bzip2,
         snappy,
         xz,
         zstd
-
     }
 
-    private OutputStream compress( TarCompressionMethod tarCompressionMethod, final OutputStream ostream )
-        throws IOException
-    {
-        if ( TarCompressionMethod.gzip.equals( tarCompressionMethod ) )
-        {
-            return bufferedOutputStream( new GZIPOutputStream( ostream ) );
-        }
-        else if ( TarCompressionMethod.bzip2.equals( tarCompressionMethod ) )
-        {
-            return new BZip2CompressorOutputStream( bufferedOutputStream( ostream ) );
-        }
-        else if ( TarCompressionMethod.snappy.equals( tarCompressionMethod ) )
-        {
-            return new SnappyOutputStream( bufferedOutputStream( ostream ) );
-        }
-        else if ( TarCompressionMethod.xz.equals( tarCompressionMethod ) )
-        {
-            return new XZCompressorOutputStream( bufferedOutputStream( ostream ) );
-        }
-        else if ( TarCompressionMethod.zstd.equals( tarCompressionMethod ) )
-        {
-            return new ZstdCompressorOutputStream( bufferedOutputStream( ostream ) );
+    private OutputStream compress(TarCompressionMethod tarCompressionMethod, final OutputStream ostream)
+            throws IOException {
+        if (TarCompressionMethod.gzip.equals(tarCompressionMethod)) {
+            return bufferedOutputStream(new GZIPOutputStream(ostream));
+        } else if (TarCompressionMethod.bzip2.equals(tarCompressionMethod)) {
+            return new BZip2CompressorOutputStream(bufferedOutputStream(ostream));
+        } else if (TarCompressionMethod.snappy.equals(tarCompressionMethod)) {
+            return new SnappyOutputStream(bufferedOutputStream(ostream));
+        } else if (TarCompressionMethod.xz.equals(tarCompressionMethod)) {
+            return new XZCompressorOutputStream(bufferedOutputStream(ostream));
+        } else if (TarCompressionMethod.zstd.equals(tarCompressionMethod)) {
+            return new ZstdCompressorOutputStream(bufferedOutputStream(ostream));
         }
 
         return ostream;
     }
 
     @Override
-    public boolean isSupportingForced()
-    {
+    public boolean isSupportingForced() {
         return true;
     }
 
     @Override
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         super.cleanUp();
-        if ( this.tOut != null )
-        {
+        if (this.tOut != null) {
             this.tOut.close();
         }
     }
 
     @Override
-    protected void close()
-        throws IOException
-    {
-        if ( this.tOut != null )
-        {
+    protected void close() throws IOException {
+        if (this.tOut != null) {
             this.tOut.close();
         }
     }
 
     @Override
-    protected String getArchiveType()
-    {
+    protected String getArchiveType() {
         return "TAR";
     }
-
 }

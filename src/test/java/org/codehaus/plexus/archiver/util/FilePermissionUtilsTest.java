@@ -28,57 +28,50 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Olivier Lamy
  */
-public class FilePermissionUtilsTest
-{
+public class FilePermissionUtilsTest {
 
-    Logger getLogger()
-    {
-        return LoggerFactory.getLogger( "foo" );
+    Logger getLogger() {
+        return LoggerFactory.getLogger("foo");
     }
 
     @Test
-    public void testOnlyWritableOnlyUser() throws Exception
-    {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "200", getLogger() );
-        assertTrue( fp.isWritable() );
-        assertTrue( fp.isOwnerOnlyWritable() );
-        assertFalse( fp.isExecutable() );
-        assertTrue( fp.isOwnerOnlyExecutable() );
-        assertFalse( fp.isReadable() );
+    public void testOnlyWritableOnlyUser() throws Exception {
+        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("200", getLogger());
+        assertTrue(fp.isWritable());
+        assertTrue(fp.isOwnerOnlyWritable());
+        assertFalse(fp.isExecutable());
+        assertTrue(fp.isOwnerOnlyExecutable());
+        assertFalse(fp.isReadable());
     }
 
     @Test
-    public void testExecAndRead()
-    {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "500", getLogger() );
-        assertFalse( fp.isWritable() );
-        assertTrue( fp.isOwnerOnlyWritable() );
-        assertTrue( fp.isExecutable() );
-        assertTrue( fp.isOwnerOnlyExecutable() );
-        assertTrue( fp.isReadable() );
+    public void testExecAndRead() {
+        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("500", getLogger());
+        assertFalse(fp.isWritable());
+        assertTrue(fp.isOwnerOnlyWritable());
+        assertTrue(fp.isExecutable());
+        assertTrue(fp.isOwnerOnlyExecutable());
+        assertTrue(fp.isReadable());
     }
 
     @Test
-    public void testAllUser()
-    {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "700", getLogger() );
-        assertTrue( fp.isWritable() );
-        assertTrue( fp.isOwnerOnlyWritable() );
-        assertTrue( fp.isExecutable() );
-        assertTrue( fp.isOwnerOnlyExecutable() );
-        assertTrue( fp.isReadable() );
+    public void testAllUser() {
+        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("700", getLogger());
+        assertTrue(fp.isWritable());
+        assertTrue(fp.isOwnerOnlyWritable());
+        assertTrue(fp.isExecutable());
+        assertTrue(fp.isOwnerOnlyExecutable());
+        assertTrue(fp.isReadable());
     }
 
     @Test
-    public void testAllAllUser()
-    {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode( "707", getLogger() );
-        assertTrue( fp.isWritable() );
-        assertFalse( fp.isOwnerOnlyWritable() );
-        assertTrue( fp.isExecutable() );
-        assertFalse( fp.isOwnerOnlyExecutable() );
-        assertTrue( fp.isReadable() );
-        assertFalse( fp.isOwnerOnlyReadable() );
+    public void testAllAllUser() {
+        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("707", getLogger());
+        assertTrue(fp.isWritable());
+        assertFalse(fp.isOwnerOnlyWritable());
+        assertTrue(fp.isExecutable());
+        assertFalse(fp.isOwnerOnlyExecutable());
+        assertTrue(fp.isReadable());
+        assertFalse(fp.isOwnerOnlyReadable());
     }
-
 }

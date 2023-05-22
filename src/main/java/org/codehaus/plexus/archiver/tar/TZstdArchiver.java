@@ -22,7 +22,5 @@ import javax.inject.Named;
  *
  * @since 4.7.2
  */
-@Named( "tzst" )
-public class TZstdArchiver extends TarZstdArchiver
-{
-}
+@Named("tzst")
+public class TZstdArchiver extends TarZstdArchiver {}

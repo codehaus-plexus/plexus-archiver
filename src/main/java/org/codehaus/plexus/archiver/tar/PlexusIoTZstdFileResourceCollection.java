@@ -22,7 +22,5 @@ import javax.inject.Named;
  *
  * @since 4.7.2
  */
-@Named( "tzst" )
-public class PlexusIoTZstdFileResourceCollection extends PlexusIoTarZstdFileResourceCollection
-{
-}
+@Named("tzst")
+public class PlexusIoTZstdFileResourceCollection extends PlexusIoTarZstdFileResourceCollection {}

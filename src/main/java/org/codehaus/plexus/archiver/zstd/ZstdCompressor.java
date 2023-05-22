@@ -15,12 +15,12 @@
  */
 package org.codehaus.plexus.archiver.zstd;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+
 import org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
-
-import java.io.BufferedOutputStream;
-import java.io.IOException;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
@@ -28,59 +28,42 @@ import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 /**
  * Zstd compression
  */
-public class ZstdCompressor extends Compressor
-{
+public class ZstdCompressor extends Compressor {
 
     private Integer level;
 
     private ZstdCompressorOutputStream zstdOut;
 
-    public ZstdCompressor()
-    {
-    }
+    public ZstdCompressor() {}
 
-    public void setLevel( Integer level )
-    {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
     @Override
-    public void compress() throws ArchiverException
-    {
-        try
-        {
-            BufferedOutputStream outStream = bufferedOutputStream( fileOutputStream( getDestFile() ) );
-            if (level == null)
-            {
-                zstdOut = new ZstdCompressorOutputStream( outStream );
+    public void compress() throws ArchiverException {
+        try {
+            BufferedOutputStream outStream = bufferedOutputStream(fileOutputStream(getDestFile()));
+            if (level == null) {
+                zstdOut = new ZstdCompressorOutputStream(outStream);
+            } else {
+                zstdOut = new ZstdCompressorOutputStream(outStream, level);
             }
-            else
-            {
-                zstdOut = new ZstdCompressorOutputStream( outStream, level );
-            }
-            compress( getSource(), zstdOut);
-        }
-        catch ( IOException ioe )
-        {
-            throw new ArchiverException( "Problem creating zstd " + ioe.getMessage(), ioe );
+            compress(getSource(), zstdOut);
+        } catch (IOException ioe) {
+            throw new ArchiverException("Problem creating zstd " + ioe.getMessage(), ioe);
         }
     }
 
     @Override
-    public void close()
-    {
-        try
-        {
-            if ( this.zstdOut != null )
-            {
+    public void close() {
+        try {
+            if (this.zstdOut != null) {
                 this.zstdOut.close();
                 zstdOut = null;
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( "Failure closing target.", e );
+        } catch (final IOException e) {
+            throw new ArchiverException("Failure closing target.", e);
         }
     }
-
 }

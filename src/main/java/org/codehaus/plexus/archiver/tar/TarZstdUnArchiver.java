@@ -16,30 +16,26 @@
 package org.codehaus.plexus.archiver.tar;
 
 import javax.inject.Named;
+
 import java.io.File;
 
 /**
  * Extract files in tar with zstd compression
  */
-@Named( "tar.zst" )
-public class TarZstdUnArchiver extends TarUnArchiver
-{
+@Named("tar.zst")
+public class TarZstdUnArchiver extends TarUnArchiver {
 
-    public TarZstdUnArchiver()
-    {
+    public TarZstdUnArchiver() {
         setupCompressionMethod();
     }
 
-    public TarZstdUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
+    public TarZstdUnArchiver(File sourceFile) {
+        super(sourceFile);
 
         setupCompressionMethod();
     }
 
-    private final void setupCompressionMethod()
-    {
-        setCompression( UntarCompressionMethod.ZSTD );
+    private final void setupCompressionMethod() {
+        setCompression(UntarCompressionMethod.ZSTD);
     }
-
 }

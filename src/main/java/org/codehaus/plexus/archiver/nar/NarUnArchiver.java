@@ -25,18 +25,12 @@ import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 /**
  * Alias for {@link ZipUnArchiver}.
  */
-@Named( "nar" )
-public class NarUnArchiver
-        extends ZipUnArchiver
-{
+@Named("nar")
+public class NarUnArchiver extends ZipUnArchiver {
 
-    public NarUnArchiver()
-    {
+    public NarUnArchiver() {}
+
+    public NarUnArchiver(File sourceFile) {
+        super(sourceFile);
     }
-
-    public NarUnArchiver( File sourceFile )
-    {
-        super( sourceFile );
-    }
-
 }

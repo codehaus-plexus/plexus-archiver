@@ -22,8 +22,5 @@ import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
 /**
  * Alias for {@link PlexusIoZipFileResourceCollection}.
  */
-@Named( "ear" )
-public class PlexusIoEarFileResourceCollection
-        extends PlexusIoZipFileResourceCollection
-{
-}
+@Named("ear")
+public class PlexusIoEarFileResourceCollection extends PlexusIoZipFileResourceCollection {}

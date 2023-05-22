@@ -16,6 +16,8 @@
  */
 package org.codehaus.plexus.archiver;
 
+import javax.annotation.Nonnull;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -26,12 +28,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public interface Archiver
-{
+public interface Archiver {
 
     /**
      * Default value for the dirmode attribute.
@@ -56,23 +56,19 @@ public interface Archiver
 
     String DUPLICATES_FAIL = "fail";
 
-    Set<String> DUPLICATES_VALID_BEHAVIORS = new HashSet<String>()
-    {
+    Set<String> DUPLICATES_VALID_BEHAVIORS = new HashSet<String>() {
 
         private static final long serialVersionUID = 1L;
 
-
         {
-            add( DUPLICATES_ADD );
-            add( DUPLICATES_PRESERVE );
-            add( DUPLICATES_SKIP );
-            add( DUPLICATES_FAIL );
+            add(DUPLICATES_ADD);
+            add(DUPLICATES_PRESERVE);
+            add(DUPLICATES_SKIP);
+            add(DUPLICATES_FAIL);
         }
-
     };
 
-    void createArchive()
-        throws ArchiverException, IOException;
+    void createArchive() throws ArchiverException, IOException;
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
@@ -80,8 +76,7 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addDirectory( @Nonnull File directory )
-        throws ArchiverException;
+    void addDirectory(@Nonnull File directory) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
@@ -89,8 +84,7 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addDirectory( @Nonnull File directory, String prefix )
-        throws ArchiverException;
+    void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
@@ -98,8 +92,7 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addDirectory( @Nonnull File directory, String[] includes, String[] excludes )
-        throws ArchiverException;
+    void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addFileSet(FileSet)}.
@@ -107,8 +100,8 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addDirectory( @Nonnull File directory, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException;
+    void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException;
 
     /**
      * Adds the given file set to the archive. This method is basically obsoleting {@link #addDirectory(File)},
@@ -120,28 +113,22 @@ public interface Archiver
      * Adding the file set failed.
      * @since 1.0-alpha-9
      */
-    void addFileSet( @Nonnull FileSet fileSet )
-        throws ArchiverException;
+    void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException;
 
-    void addSymlink( String symlinkName, String symlinkDestination )
-        throws ArchiverException;
+    void addSymlink(String symlinkName, String symlinkDestination) throws ArchiverException;
 
-    void addSymlink( String symlinkName, int permissions, String symlinkDestination )
-        throws ArchiverException;
+    void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException;
 
-    void addFile( @Nonnull File inputFile, @Nonnull String destFileName )
-        throws ArchiverException;
+    void addFile(@Nonnull File inputFile, @Nonnull String destFileName) throws ArchiverException;
 
-    void addFile( @Nonnull File inputFile, @Nonnull String destFileName, int permissions )
-        throws ArchiverException;
+    void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
      *
      * @deprecated Will go away in next major version
      */
-    void addArchivedFileSet( @Nonnull File archiveFile )
-        throws ArchiverException;
+    void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
@@ -149,8 +136,7 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addArchivedFileSet( @Nonnull File archiveFile, String prefix )
-        throws ArchiverException;
+    void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
@@ -158,8 +144,7 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addArchivedFileSet( File archiveFile, String[] includes, String[] excludes )
-        throws ArchiverException;
+    void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException;
 
     /**
      * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
@@ -167,8 +152,8 @@ public interface Archiver
      * @deprecated Will go away in next major version
      */
     @Deprecated
-    void addArchivedFileSet( @Nonnull File archiveFile, String prefix, String[] includes, String[] excludes )
-        throws ArchiverException;
+    void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
+            throws ArchiverException;
 
     /**
      * Adds the given archive file set to the archive. This method is basically obsoleting
@@ -180,8 +165,7 @@ public interface Archiver
      *
      * @since 1.0-alpha-9
      */
-    void addArchivedFileSet( ArchivedFileSet fileSet )
-        throws ArchiverException;
+    void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException;
 
     /**
      * Adds the given archive file set to the archive. This method is basically obsoleting
@@ -199,8 +183,7 @@ public interface Archiver
      *
      * @since 1.0-alpha-9
      */
-    void addArchivedFileSet( ArchivedFileSet fileSet, Charset charset )
-        throws ArchiverException;
+    void addArchivedFileSet(ArchivedFileSet fileSet, Charset charset) throws ArchiverException;
 
     /**
      * Adds the given resource collection to the archive.
@@ -209,8 +192,7 @@ public interface Archiver
      *
      * @since 1.0-alpha-10
      */
-    void addResource( PlexusIoResource resource, String destFileName, int permissions )
-        throws ArchiverException;
+    void addResource(PlexusIoResource resource, String destFileName, int permissions) throws ArchiverException;
 
     /**
      * Adds the given resource collection to the archive.
@@ -219,20 +201,19 @@ public interface Archiver
      *
      * @since 1.0-alpha-10
      */
-    void addResources( PlexusIoResourceCollection resources )
-        throws ArchiverException;
+    void addResources(PlexusIoResourceCollection resources) throws ArchiverException;
 
     File getDestFile();
 
-    void setDestFile( File destFile );
+    void setDestFile(File destFile);
 
-    void setFileMode( int mode );
+    void setFileMode(int mode);
 
     int getFileMode();
 
     int getOverrideFileMode();
 
-    void setDefaultFileMode( int mode );
+    void setDefaultFileMode(int mode);
 
     int getDefaultFileMode();
 
@@ -241,7 +222,7 @@ public interface Archiver
      *
      * @param mode
      */
-    void setDirectoryMode( int mode );
+    void setDirectoryMode(int mode);
 
     /**
      * Gets the forced mode for directories, falling back to default if none is forced.
@@ -257,15 +238,15 @@ public interface Archiver
      *
      * @param mode
      */
-    void setDefaultDirectoryMode( int mode );
+    void setDefaultDirectoryMode(int mode);
 
     int getDefaultDirectoryMode();
 
     boolean getIncludeEmptyDirs();
 
-    void setIncludeEmptyDirs( boolean includeEmptyDirs );
+    void setIncludeEmptyDirs(boolean includeEmptyDirs);
 
-    void setDotFileDirectory( File dotFileDirectory );
+    void setDotFileDirectory(File dotFileDirectory);
 
     /**
      * Returns an iterator over instances of {@link ArchiveEntry}, which have previously been added by calls to
@@ -275,8 +256,7 @@ public interface Archiver
      * @since 1.0-alpha-10
      */
     @Nonnull
-    ResourceIterator getResources()
-        throws ArchiverException;
+    ResourceIterator getResources() throws ArchiverException;
 
     /**
      * @deprecated Use {@link #getResources()}
@@ -326,7 +306,7 @@ public interface Archiver
      * @see #isForced()
      * @see #isSupportingForced()
      */
-    void setForced( boolean forced );
+    void setForced(boolean forced);
 
     /**
      * Returns, whether the archive supports uptodate checks. If so, you may set {@link #setForced(boolean)} to true.
@@ -354,7 +334,7 @@ public interface Archiver
      * See {@link Archiver#DUPLICATES_ADD}, {@link Archiver#DUPLICATES_SKIP}, {@link Archiver#DUPLICATES_PRESERVE},
      * {@link Archiver#DUPLICATES_FAIL}.
      */
-    void setDuplicateBehavior( String duplicate );
+    void setDuplicateBehavior(String duplicate);
 
     /**
      * to use or not the jvm method for file permissions: user all <b>not active for group permissions</b>
@@ -364,7 +344,7 @@ public interface Archiver
      * @deprecated this setting is now ignored. The jvm is always used.
      */
     @Deprecated
-    void setUseJvmChmod( boolean useJvmChmod );
+    void setUseJvmChmod(boolean useJvmChmod);
 
     /**
      *
@@ -383,7 +363,7 @@ public interface Archiver
     /**
      * @since 1.1
      */
-    void setIgnorePermissions( final boolean ignorePermissions );
+    void setIgnorePermissions(final boolean ignorePermissions);
 
     /**
      * Define forced last modification date for entries (if non null).
@@ -393,7 +373,7 @@ public interface Archiver
      * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead
      */
     @Deprecated
-    void setLastModifiedDate( final Date lastModifiedDate );
+    void setLastModifiedDate(final Date lastModifiedDate);
 
     /**
      * @since 4.2.0
@@ -410,7 +390,7 @@ public interface Archiver
      * @see #getLastModifiedTime()
      * @since 4.3.0
      */
-    void setLastModifiedTime( final FileTime lastModifiedTime );
+    void setLastModifiedTime(final FileTime lastModifiedTime);
 
     /**
      * Returns the last modification time of the archiver.
@@ -428,17 +408,17 @@ public interface Archiver
      *
      * @since 4.2.0
      */
-    void setFilenameComparator( Comparator<String> filenameComparator );
+    void setFilenameComparator(Comparator<String> filenameComparator);
 
     /**
      * @since 4.2.0
      */
-    void setOverrideUid( int uid );
+    void setOverrideUid(int uid);
 
     /**
      * @since 4.2.0
      */
-    void setOverrideUserName( String userName );
+    void setOverrideUserName(String userName);
 
     /**
      * @since 4.2.0
@@ -453,12 +433,12 @@ public interface Archiver
     /**
      * @since 4.2.0
      */
-    void setOverrideGid( int gid );
+    void setOverrideGid(int gid);
 
     /**
      * @since 4.2.0
      */
-    void setOverrideGroupName( String groupName );
+    void setOverrideGroupName(String groupName);
 
     /**
      * @since 4.2.0
@@ -473,7 +453,7 @@ public interface Archiver
     /**
      * @since 4.7.0
      */
-    void setUmask( int umask );
+    void setUmask(int umask);
 
     /**
      * @since 4.7.0
@@ -489,7 +469,7 @@ public interface Archiver
      * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
      */
     @Deprecated
-    void configureReproducible( Date lastModifiedDate );
+    void configureReproducible(Date lastModifiedDate);
 
     /**
      * Configure the archiver to create archives in a reproducible way (see
@@ -505,5 +485,5 @@ public interface Archiver
      * @see <a href="https://reproducible-builds.org/">Reproducible Builds</a>
      * @since 4.3.0
      */
-    void configureReproducibleBuild( FileTime lastModifiedTime );
+    void configureReproducibleBuild(FileTime lastModifiedTime);
 }

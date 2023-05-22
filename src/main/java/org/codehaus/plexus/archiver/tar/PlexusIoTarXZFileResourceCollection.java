@@ -24,18 +24,13 @@ import java.io.File;
  * @author philip.lourandos
  * @since 3.3
  */
-@Named( "tar.xz" )
-public class PlexusIoTarXZFileResourceCollection extends PlexusIoTarFileResourceCollection
-{
+@Named("tar.xz")
+public class PlexusIoTarXZFileResourceCollection extends PlexusIoTarFileResourceCollection {
 
-    public PlexusIoTarXZFileResourceCollection()
-    {
-    }
+    public PlexusIoTarXZFileResourceCollection() {}
 
     @Override
-    protected TarFile newTarFile( File file )
-    {
-        return new XZTarFile( file );
+    protected TarFile newTarFile(File file) {
+        return new XZTarFile(file);
     }
-
 }

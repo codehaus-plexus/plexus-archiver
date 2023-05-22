@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -37,82 +38,64 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 /**
  * A plexus archiver implementation that stores the files to archive in a directory.
  */
-@Named( "dir" )
-public class DirectoryArchiver
-    extends AbstractArchiver
-{
+@Named("dir")
+public class DirectoryArchiver extends AbstractArchiver {
 
     private final List<Runnable> directoryChmods = new ArrayList<>();
 
-    public void resetArchiver()
-        throws IOException
-    {
+    public void resetArchiver() throws IOException {
         cleanUp();
     }
 
     @Override
-    public void execute()
-        throws ArchiverException, IOException
-    {
+    public void execute() throws ArchiverException, IOException {
         // Most of this method was copied from org.codehaus.plexus.archiver.tar.TarArchiver
         // and modified to store files in a directory, not a tar archive.
         final ResourceIterator iter = getResources();
-        if ( !iter.hasNext() )
-        {
-            throw new EmptyArchiveException( "archive cannot be empty" );
+        if (!iter.hasNext()) {
+            throw new EmptyArchiveException("archive cannot be empty");
         }
 
         final File destDirectory = getDestFile();
-        if ( destDirectory == null )
-        {
-            throw new ArchiverException( "You must set the destination directory." );
+        if (destDirectory == null) {
+            throw new ArchiverException("You must set the destination directory.");
         }
-        if ( destDirectory.exists() && !destDirectory.isDirectory() )
-        {
-            throw new ArchiverException( destDirectory + " is not a directory." );
+        if (destDirectory.exists() && !destDirectory.isDirectory()) {
+            throw new ArchiverException(destDirectory + " is not a directory.");
         }
-        if ( destDirectory.exists() && !destDirectory.canWrite() )
-        {
-            throw new ArchiverException( destDirectory + " is not writable." );
+        if (destDirectory.exists() && !destDirectory.canWrite()) {
+            throw new ArchiverException(destDirectory + " is not writable.");
         }
 
-        getLogger().info( "Copying files to " + destDirectory.getAbsolutePath() );
+        getLogger().info("Copying files to " + destDirectory.getAbsolutePath());
 
-        try
-        {
-            while ( iter.hasNext() )
-            {
+        try {
+            while (iter.hasNext()) {
                 final ArchiveEntry f = iter.next();
                 // Check if we don't add directory file in itself
-                if ( ResourceUtils.isSame( f.getResource(), destDirectory ) )
-                {
-                    throw new ArchiverException( "The destination directory cannot include itself." );
+                if (ResourceUtils.isSame(f.getResource(), destDirectory)) {
+                    throw new ArchiverException("The destination directory cannot include itself.");
                 }
                 String fileName = f.getName();
                 final String destDir = destDirectory.getCanonicalPath();
                 fileName = destDir + File.separator + fileName;
                 PlexusIoResource resource = f.getResource();
-                if ( resource instanceof SymlinkDestinationSupplier )
-                {
-                    String dest = ( (SymlinkDestinationSupplier) resource ).getSymlinkDestination();
-                    File target = new File( dest );
-                    File symlink = new File( fileName );
-                    makeParentDirectories( symlink );
-                    SymlinkUtils.createSymbolicLink( symlink, target );
-                }
-                else
-                {
-                    copyFile( f, fileName );
+                if (resource instanceof SymlinkDestinationSupplier) {
+                    String dest = ((SymlinkDestinationSupplier) resource).getSymlinkDestination();
+                    File target = new File(dest);
+                    File symlink = new File(fileName);
+                    makeParentDirectories(symlink);
+                    SymlinkUtils.createSymbolicLink(symlink, target);
+                } else {
+                    copyFile(f, fileName);
                 }
             }
 
-            directoryChmods.forEach( Runnable::run );
+            directoryChmods.forEach(Runnable::run);
             directoryChmods.clear();
-        }
-        catch ( final IOException ioe )
-        {
+        } catch (final IOException ioe) {
             final String message = "Problem copying files : " + ioe.getMessage();
-            throw new ArchiverException( message, ioe );
+            throw new ArchiverException(message, ioe);
         }
     }
 
@@ -125,116 +108,87 @@ public class DirectoryArchiver
      * @throws ArchiverException If there is a problem creating the directory structure
      * @throws IOException If there is a problem copying the file
      */
-    protected void copyFile( final ArchiveEntry entry, final String vPath )
-        throws ArchiverException, IOException
-    {
+    protected void copyFile(final ArchiveEntry entry, final String vPath) throws ArchiverException, IOException {
         // don't add "" to the archive
-        if ( vPath.length() <= 0 )
-        {
+        if (vPath.length() <= 0) {
             return;
         }
 
         final PlexusIoResource in = entry.getResource();
-        final File outFile = new File( vPath );
+        final File outFile = new File(vPath);
 
         final long inLastModified = in.getLastModified();
         final long outLastModified = outFile.lastModified();
-        if ( ResourceUtils.isUptodate( inLastModified, outLastModified ) )
-        {
+        if (ResourceUtils.isUptodate(inLastModified, outLastModified)) {
             return;
         }
 
-        if ( !in.isDirectory() )
-        {
-            makeParentDirectories( outFile );
-            ResourceUtils.copyFile( entry.getInputStream(), outFile );
+        if (!in.isDirectory()) {
+            makeParentDirectories(outFile);
+            ResourceUtils.copyFile(entry.getInputStream(), outFile);
 
-            setFileModes( entry, outFile, inLastModified );
-        }
-        else
-        { // file is a directory
-            if ( outFile.exists() )
-            {
-                if ( !outFile.isDirectory() )
-                {
+            setFileModes(entry, outFile, inLastModified);
+        } else { // file is a directory
+            if (outFile.exists()) {
+                if (!outFile.isDirectory()) {
                     // should we just delete the file and replace it with a directory?
                     // throw an exception, let the user delete the file manually.
-                    throw new ArchiverException(
-                        "Expected directory and found file at copy destination of " + in.getName() + " to " + outFile );
+                    throw new ArchiverException("Expected directory and found file at copy destination of "
+                            + in.getName() + " to " + outFile);
                 }
-            }
-            else if ( !outFile.mkdirs() )
-            {
+            } else if (!outFile.mkdirs()) {
                 // Failure, unable to create specified directory for some unknown reason.
-                throw new ArchiverException( "Unable to create directory or parent directory of " + outFile );
+                throw new ArchiverException("Unable to create directory or parent directory of " + outFile);
             }
 
-            directoryChmods.add( () -> {
-                try
-                {
-                    setFileModes( entry, outFile, inLastModified );
+            directoryChmods.add(() -> {
+                try {
+                    setFileModes(entry, outFile, inLastModified);
+                } catch (IOException e) {
+                    throw new ArchiverException("Failed setting file attributes", e);
                 }
-                catch ( IOException e )
-                {
-                    throw new ArchiverException( "Failed setting file attributes", e );
-                }
-            } );
+            });
         }
-
     }
 
-    private static void makeParentDirectories( File file ) {
-        if ( !file.getParentFile().exists() )
-        {
+    private static void makeParentDirectories(File file) {
+        if (!file.getParentFile().exists()) {
             // create the parent directory...
-            if ( !file.getParentFile().mkdirs() )
-            {
+            if (!file.getParentFile().mkdirs()) {
                 // Failure, unable to create specified directory for some unknown reason.
-                throw new ArchiverException( "Unable to create directory or parent directory of " + file );
+                throw new ArchiverException("Unable to create directory or parent directory of " + file);
             }
         }
     }
 
-    private void setFileModes( ArchiveEntry entry, File outFile, long inLastModified )
-        throws IOException
-    {
-        if ( !isIgnorePermissions() )
-        {
-            ArchiveEntryUtils.chmod( outFile, entry.getMode() );
+    private void setFileModes(ArchiveEntry entry, File outFile, long inLastModified) throws IOException {
+        if (!isIgnorePermissions()) {
+            ArchiveEntryUtils.chmod(outFile, entry.getMode());
         }
 
-        if ( getLastModifiedTime() == null )
-        {
-            FileTime fromMillis = FileTime.fromMillis( inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+        if (getLastModifiedTime() == null) {
+            FileTime fromMillis = FileTime.fromMillis(
+                    inLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
                             ? System.currentTimeMillis()
-                            : inLastModified );
-            Files.setLastModifiedTime( outFile.toPath(), fromMillis );
-        }
-        else
-        {
-            Files.setLastModifiedTime( outFile.toPath(), getLastModifiedTime() );
+                            : inLastModified);
+            Files.setLastModifiedTime(outFile.toPath(), fromMillis);
+        } else {
+            Files.setLastModifiedTime(outFile.toPath(), getLastModifiedTime());
         }
     }
 
     @Override
-    protected void cleanUp()
-        throws IOException
-    {
+    protected void cleanUp() throws IOException {
         super.cleanUp();
-        setIncludeEmptyDirs( false );
-        setIncludeEmptyDirs( true );
+        setIncludeEmptyDirs(false);
+        setIncludeEmptyDirs(true);
     }
 
     @Override
-    protected void close()
-        throws IOException
-    {
-    }
+    protected void close() throws IOException {}
 
     @Override
-    protected String getArchiveType()
-    {
+    protected String getArchiveType() {
         return "directory";
     }
-
 }

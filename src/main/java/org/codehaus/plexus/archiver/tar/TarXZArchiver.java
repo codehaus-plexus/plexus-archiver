@@ -22,18 +22,14 @@ import javax.inject.Named;
  *
  * @since 4.7.0
  */
-@Named( "tar.xz" )
-public class TarXZArchiver extends TarArchiver
-{
+@Named("tar.xz")
+public class TarXZArchiver extends TarArchiver {
 
-    public TarXZArchiver()
-    {
+    public TarXZArchiver() {
         setupCompressionMethod();
     }
 
-    private void setupCompressionMethod()
-    {
-        setCompression( TarCompressionMethod.xz );
+    private void setupCompressionMethod() {
+        setCompression(TarCompressionMethod.xz);
     }
-
 }

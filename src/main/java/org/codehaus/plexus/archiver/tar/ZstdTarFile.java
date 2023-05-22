@@ -15,27 +15,23 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
-import org.codehaus.plexus.archiver.zstd.ZstdUnArchiver;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.codehaus.plexus.archiver.zstd.ZstdUnArchiver;
+
 /**
  * Extension of {@link org.codehaus.plexus.archiver.tar.TarFile} for zst compressed files.
  */
-public class ZstdTarFile extends TarFile
-{
+public class ZstdTarFile extends TarFile {
 
-    public ZstdTarFile( File file )
-    {
-        super( file );
+    public ZstdTarFile(File file) {
+        super(file);
     }
 
     @Override
-    protected InputStream getInputStream( File file ) throws IOException
-    {
-        return ZstdUnArchiver.getZstdInputStream( super.getInputStream( file ) );
+    protected InputStream getInputStream(File file) throws IOException {
+        return ZstdUnArchiver.getZstdInputStream(super.getInputStream(file));
     }
-
 }

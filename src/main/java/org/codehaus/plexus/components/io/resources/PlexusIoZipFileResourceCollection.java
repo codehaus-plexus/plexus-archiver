@@ -20,8 +20,4 @@ package org.codehaus.plexus.components.io.resources;
  * Make sure maven-assembly-plugin IT's work when you do :)
  */
 public class PlexusIoZipFileResourceCollection
-    extends org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection
-
-{
-
-}
+        extends org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection {}

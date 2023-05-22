@@ -17,18 +17,18 @@
 package org.codehaus.plexus.archiver.snappy;
 
 import java.io.IOException;
+
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
 import org.iq80.snappy.SnappyFramedOutputStream;
+
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;
 
 /**
  * Snappy compression
  */
-public class SnappyCompressor
-    extends Compressor
-{
+public class SnappyCompressor extends Compressor {
 
     private SnappyFramedOutputStream zOut;
 
@@ -36,36 +36,25 @@ public class SnappyCompressor
      * perform the Snappy compression operation.
      */
     @Override
-    public void compress()
-        throws ArchiverException
-    {
-        try
-        {
-            zOut = new SnappyFramedOutputStream( bufferedOutputStream( fileOutputStream( getDestFile() ) ) );
-            compress( getSource(), zOut );
-        }
-        catch ( IOException ioe )
-        {
+    public void compress() throws ArchiverException {
+        try {
+            zOut = new SnappyFramedOutputStream(bufferedOutputStream(fileOutputStream(getDestFile())));
+            compress(getSource(), zOut);
+        } catch (IOException ioe) {
             String msg = "Problem creating snappy " + ioe.getMessage();
-            throw new ArchiverException( msg, ioe );
+            throw new ArchiverException(msg, ioe);
         }
     }
 
     @Override
-    public void close()
-    {
-        try
-        {
-            if ( this.zOut != null )
-            {
+    public void close() {
+        try {
+            if (this.zOut != null) {
                 this.zOut.close();
                 zOut = null;
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ArchiverException( "Failure closing target.", e );
+        } catch (final IOException e) {
+            throw new ArchiverException("Failure closing target.", e);
         }
     }
-
 }
