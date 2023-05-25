@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Enumeration;
 
+import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
@@ -18,7 +18,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
  * Test case for {@link TarFile}.
@@ -92,15 +92,15 @@ public class TarFileTest extends TestSupport {
         }
         final TarFile tarFile = tarFileCreator.newTarFile(file);
 
-        for (Enumeration en = tarFile.getEntries(); en.hasMoreElements(); ) {
+        for (Enumeration<ArchiveEntry> en = tarFile.getEntries(); en.hasMoreElements(); ) {
             final TarArchiveEntry te = (TarArchiveEntry) en.nextElement();
-            if (te.isDirectory() || te.isSymbolicLink()) {
+            if (te.isDirectory() || te.isSymbolicLink() || te.isLink()) {
                 continue;
             }
             final File teFile = new File("src", te.getName());
             final InputStream teStream = tarFile.getInputStream(te);
             final InputStream fileStream = Files.newInputStream(teFile.toPath());
-            assertTrue(Arrays.equals(IOUtil.toByteArray(teStream), IOUtil.toByteArray(fileStream)));
+            assertArrayEquals(IOUtil.toByteArray(teStream), IOUtil.toByteArray(fileStream));
             teStream.close();
             fileStream.close();
         }

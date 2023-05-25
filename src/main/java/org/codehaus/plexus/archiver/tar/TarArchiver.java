@@ -23,6 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -39,6 +43,7 @@ import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
+import org.codehaus.plexus.components.io.resources.PlexusIoFileResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -64,6 +69,8 @@ public class TarArchiver extends AbstractArchiver {
     private final TarOptions options = new TarOptions();
 
     private TarArchiveOutputStream tOut;
+
+    private final Map<Object, String> seenFiles = new HashMap<>(10);
 
     /**
      * Set how to handle long files, those with a path&gt;100 chars.
@@ -177,7 +184,8 @@ public class TarArchiver extends AbstractArchiver {
             return;
         }
 
-        if (entry.getResource().isDirectory() && !vPath.endsWith("/")) {
+        final PlexusIoResource ioResource = entry.getResource();
+        if (ioResource.isDirectory() && !vPath.endsWith("/")) {
             vPath += "/";
         }
 
@@ -194,7 +202,7 @@ public class TarArchiver extends AbstractArchiver {
         InputStream fIn = null;
 
         try {
-            TarArchiveEntry te;
+            TarArchiveEntry te = null;
             if (!longFileMode.isGnuMode()
                     && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN) {
                 int maxPosixPathLen = org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
@@ -233,18 +241,43 @@ public class TarArchiver extends AbstractArchiver {
                 }
             }
 
+            boolean doCopy = true;
             if (entry.getType() == ArchiveEntry.SYMLINK) {
-                final SymlinkDestinationSupplier plexusIoSymlinkResource =
-                        (SymlinkDestinationSupplier) entry.getResource();
+                final SymlinkDestinationSupplier plexusIoSymlinkResource = (SymlinkDestinationSupplier) ioResource;
 
                 te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
                 te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
-            } else {
+                doCopy = false;
+            } else if (options.getPreserveHardLinks()
+                    && ioResource.isFile()
+                    && ioResource instanceof PlexusIoFileResource) {
+                final PlexusIoFileResource fileResource = (PlexusIoFileResource) ioResource;
+                final Path file = fileResource.getFile().toPath();
+                if (Files.exists(file)) {
+                    final BasicFileAttributeView fileAttributeView =
+                            Files.getFileAttributeView(file, BasicFileAttributeView.class);
+                    if (fileAttributeView != null) {
+                        final Object fileKey =
+                                fileAttributeView.readAttributes().fileKey();
+                        if (fileKey != null) {
+                            final String seenFile = this.seenFiles.get(fileKey);
+                            if (seenFile != null) {
+                                te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_LINK);
+                                te.setLinkName(seenFile);
+                                doCopy = false;
+                            } else {
+                                this.seenFiles.put(fileKey, vPath);
+                            }
+                        }
+                    }
+                }
+            }
+            if (te == null) {
                 te = new TarArchiveEntry(vPath);
             }
 
             if (getLastModifiedTime() == null) {
-                long teLastModified = entry.getResource().getLastModified();
+                long teLastModified = ioResource.getLastModified();
                 te.setModTime(
                         teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
                                 ? System.currentTimeMillis()
@@ -253,11 +286,11 @@ public class TarArchiver extends AbstractArchiver {
                 te.setModTime(getLastModifiedTime().toMillis());
             }
 
-            if (entry.getType() == ArchiveEntry.SYMLINK) {
+            if (!doCopy) {
                 te.setSize(0);
 
-            } else if (!entry.getResource().isDirectory()) {
-                final long size = entry.getResource().getSize();
+            } else if (!ioResource.isDirectory()) {
+                final long size = ioResource.getSize();
                 te.setSize(size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size);
             }
             te.setMode(entry.getMode());
@@ -289,7 +322,7 @@ public class TarArchiver extends AbstractArchiver {
             tOut.putArchiveEntry(te);
 
             try {
-                if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
+                if (ioResource.isFile() && doCopy) {
                     fIn = entry.getInputStream();
 
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
@@ -319,6 +352,8 @@ public class TarArchiver extends AbstractArchiver {
         private int gid;
 
         private boolean preserveLeadingSlashes = false;
+
+        private boolean preserveHardLinks = true;
 
         /**
          * The username for the tar entry
@@ -404,6 +439,14 @@ public class TarArchiver extends AbstractArchiver {
          */
         public void setPreserveLeadingSlashes(boolean preserveLeadingSlashes) {
             this.preserveLeadingSlashes = preserveLeadingSlashes;
+        }
+
+        public boolean getPreserveHardLinks() {
+            return preserveHardLinks;
+        }
+
+        public void setPreserveHardLinks(boolean preserveHardLinks) {
+            this.preserveHardLinks = preserveHardLinks;
         }
     }
 

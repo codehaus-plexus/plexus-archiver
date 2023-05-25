@@ -99,7 +99,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
                 while ((te = tis.getNextTarEntry()) != null) {
                     TarResource fileInfo = new TarResource(tarFile, te);
                     if (isSelected(te.getName(), fileInfo)) {
-                        final String symlinkDestination = te.isSymbolicLink() ? te.getLinkName() : null;
+                        final String symlinkDestination = te.isSymbolicLink() || te.isLink() ? te.getLinkName() : null;
                         extractFile(
                                 sourceFile,
                                 destDirectory,
@@ -107,6 +107,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
                                 te.getName(),
                                 te.getModTime(),
                                 te.isDirectory(),
+                                te.isSymbolicLink(),
                                 te.getMode() != 0 ? te.getMode() : null,
                                 symlinkDestination,
                                 fileMappers);

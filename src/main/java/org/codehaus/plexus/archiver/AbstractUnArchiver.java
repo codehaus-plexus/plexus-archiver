@@ -78,6 +78,8 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      */
     private boolean ignorePermissions = false;
 
+    private boolean warnCannotHardlink = true;
+
     public AbstractUnArchiver() {
         // no op
     }
@@ -278,8 +280,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             String entryName,
             final Date entryDate,
             final boolean isDirectory,
+            final boolean isSymlink,
             final Integer mode,
-            String symlinkDestination,
+            String linkDestination,
             final FileMapper[] fileMappers)
             throws IOException, ArchiverException {
         if (fileMappers != null) {
@@ -312,11 +315,30 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                 dirF.mkdirs();
             }
 
-            if (!StringUtils.isEmpty(symlinkDestination)) {
-                SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
+            boolean doCopy = true;
+            if (!StringUtils.isEmpty(linkDestination)) {
+                if (isSymlink) {
+                    SymlinkUtils.createSymbolicLink(targetFileName, new File(linkDestination));
+                    doCopy = false;
+                } else {
+                    try {
+                        Files.createLink(
+                                targetFileName.toPath(),
+                                FileUtils.resolveFile(dir, linkDestination).toPath());
+                        doCopy = false;
+                    } catch (final UnsupportedOperationException ex) {
+                        if (warnCannotHardlink) {
+                            getLogger().warn("Creating hardlinks is not supported");
+                            warnCannotHardlink = false;
+                        }
+                        // We will do a copy instead.
+                    }
+                }
             } else if (isDirectory) {
                 targetFileName.mkdirs();
-            } else {
+                doCopy = false;
+            }
+            if (doCopy) {
                 try (OutputStream out = Files.newOutputStream(targetFileName.toPath())) {
                     IOUtil.copy(compressedInputStream, out);
                 }

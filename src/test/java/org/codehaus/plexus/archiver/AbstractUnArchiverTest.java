@@ -74,7 +74,7 @@ public class AbstractUnArchiverTest {
         Exception exception = assertThrows(
                 ArchiverException.class,
                 () -> abstractUnArchiver.extractFile(
-                        null, targetFolder, null, "ENTRYNAME", null, false, null, null, fileMappers));
+                        null, targetFolder, null, "ENTRYNAME", null, false, false, null, null, fileMappers));
         // then
         // ArchiverException is thrown providing the rewritten path
         assertEquals(
