@@ -240,14 +240,14 @@ public class TarArchiver extends AbstractArchiver {
                 }
             }
 
-            boolean doCopy = true;
+            boolean isLink = false;
             if (entry.getType() == ArchiveEntry.SYMLINK) {
                 final SymlinkDestinationSupplier plexusIoSymlinkResource =
                         (SymlinkDestinationSupplier) entry.getResource();
 
                 te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
                 te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
-                doCopy = false;
+                isLink = true;
             } else if (options.getPreserveHardLinks()
                     && entry.getResource().isFile()
                     && entry.getResource() instanceof PlexusIoFileResource) {
@@ -264,7 +264,7 @@ public class TarArchiver extends AbstractArchiver {
                             if (seenFile != null) {
                                 te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_LINK);
                                 te.setLinkName(seenFile);
-                                doCopy = false;
+                                isLink = true;
                             } else {
                                 this.seenFiles.put(fileKey, vPath);
                             }
@@ -286,7 +286,7 @@ public class TarArchiver extends AbstractArchiver {
                 te.setModTime(getLastModifiedTime().toMillis());
             }
 
-            if (!doCopy) {
+            if (isLink) {
                 te.setSize(0);
 
             } else if (!entry.getResource().isDirectory()) {
@@ -322,7 +322,7 @@ public class TarArchiver extends AbstractArchiver {
             tOut.putArchiveEntry(te);
 
             try {
-                if (entry.getResource().isFile() && doCopy) {
+                if (entry.getResource().isFile() && !isLink) {
                     fIn = entry.getInputStream();
 
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
