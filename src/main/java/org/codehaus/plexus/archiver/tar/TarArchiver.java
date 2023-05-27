@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.util.HashMap;
@@ -255,7 +256,7 @@ public class TarArchiver extends AbstractArchiver {
                 final Path file = fileResource.getFile().toPath();
                 if (Files.exists(file)) {
                     final BasicFileAttributeView fileAttributeView =
-                            Files.getFileAttributeView(file, BasicFileAttributeView.class);
+                            Files.getFileAttributeView(file, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
                     if (fileAttributeView != null) {
                         final Object fileKey =
                                 fileAttributeView.readAttributes().fileKey();
