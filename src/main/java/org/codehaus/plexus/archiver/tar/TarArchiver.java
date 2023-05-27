@@ -184,8 +184,7 @@ public class TarArchiver extends AbstractArchiver {
             return;
         }
 
-        final PlexusIoResource ioResource = entry.getResource();
-        if (ioResource.isDirectory() && !vPath.endsWith("/")) {
+        if (entry.getResource().isDirectory() && !vPath.endsWith("/")) {
             vPath += "/";
         }
 
@@ -243,15 +242,16 @@ public class TarArchiver extends AbstractArchiver {
 
             boolean doCopy = true;
             if (entry.getType() == ArchiveEntry.SYMLINK) {
-                final SymlinkDestinationSupplier plexusIoSymlinkResource = (SymlinkDestinationSupplier) ioResource;
+                final SymlinkDestinationSupplier plexusIoSymlinkResource =
+                        (SymlinkDestinationSupplier) entry.getResource();
 
                 te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
                 te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
                 doCopy = false;
             } else if (options.getPreserveHardLinks()
-                    && ioResource.isFile()
-                    && ioResource instanceof PlexusIoFileResource) {
-                final PlexusIoFileResource fileResource = (PlexusIoFileResource) ioResource;
+                    && entry.getResource().isFile()
+                    && entry.getResource() instanceof PlexusIoFileResource) {
+                final PlexusIoFileResource fileResource = (PlexusIoFileResource) entry.getResource();
                 final Path file = fileResource.getFile().toPath();
                 if (Files.exists(file)) {
                     final BasicFileAttributeView fileAttributeView =
@@ -277,7 +277,7 @@ public class TarArchiver extends AbstractArchiver {
             }
 
             if (getLastModifiedTime() == null) {
-                long teLastModified = ioResource.getLastModified();
+                long teLastModified = entry.getResource().getLastModified();
                 te.setModTime(
                         teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
                                 ? System.currentTimeMillis()
@@ -289,8 +289,8 @@ public class TarArchiver extends AbstractArchiver {
             if (!doCopy) {
                 te.setSize(0);
 
-            } else if (!ioResource.isDirectory()) {
-                final long size = ioResource.getSize();
+            } else if (!entry.getResource().isDirectory()) {
+                final long size = entry.getResource().getSize();
                 te.setSize(size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size);
             }
             te.setMode(entry.getMode());
@@ -322,7 +322,7 @@ public class TarArchiver extends AbstractArchiver {
             tOut.putArchiveEntry(te);
 
             try {
-                if (ioResource.isFile() && doCopy) {
+                if (entry.getResource().isFile() && doCopy) {
                     fIn = entry.getInputStream();
 
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
