@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -123,14 +124,16 @@ public class JarArchiverTest extends BaseJarArchiverTest {
 
             JarArchiver archiver = getJarArchiver();
             archiver.setDestFile(jarFile.toFile());
-            archiver.addConfiguredManifest(manifest);
-            archiver.addDirectory(new File("src/test/resources/java-classes"));
 
             SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
             long parsedTime = isoFormat.parse("2038-01-19T03:14:08Z").getTime();
             FileTime lastModTime = FileTime.fromMillis(parsedTime);
 
             archiver.configureReproducibleBuild(lastModTime);
+
+            archiver.addConfiguredManifest(manifest);
+            archiver.addDirectory(new File("src/test/resources/java-classes"));
+
             archiver.createArchive();
 
             // zip 2 seconds precision, normalized to UTC
@@ -145,6 +148,45 @@ public class JarArchiverTest extends BaseJarArchiverTest {
             }
         } finally {
             TimeZone.setDefault(defaultTz);
+        }
+    }
+
+    /**
+     * Check group not writable for reproducible archive.
+     *
+     * @throws IOException
+     * @throws ParseException
+     */
+    @Test
+    public void testReproducibleUmask() throws IOException, ParseException {
+        Path jarFile = Files.createTempFile(tempDir, "JarArchiverTest-umask", ".jar");
+
+        JarArchiver archiver = getJarArchiver();
+        archiver.setDestFile(jarFile.toFile());
+
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+        long parsedTime = isoFormat.parse("2038-01-19T03:14:08Z").getTime();
+        FileTime lastModTime = FileTime.fromMillis(parsedTime);
+
+        archiver.configureReproducibleBuild(lastModTime);
+
+        archiver.addDirectory(new File("src/test/resources/java-classes"));
+        archiver.addFile(new File("src/test/resources/world-writable/foo.txt"), "addFile.txt");
+
+        archiver.createArchive();
+
+        try (org.apache.commons.compress.archivers.zip.ZipFile zip =
+                new org.apache.commons.compress.archivers.zip.ZipFile(jarFile.toFile())) {
+            Enumeration<? extends ZipArchiveEntry> entries = zip.getEntries();
+            while (entries.hasMoreElements()) {
+                ZipArchiveEntry entry = entries.nextElement();
+                int mode = entry.getUnixMode();
+                assertEquals(
+                        0,
+                        mode & 0_020,
+                        entry.getName() + " group should not be writable in reproducible mode: "
+                                + Integer.toOctalString(mode));
+            }
         }
     }
 

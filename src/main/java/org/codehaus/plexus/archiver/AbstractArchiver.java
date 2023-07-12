@@ -40,6 +40,7 @@ import java.util.Set;
 
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
+import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.attributes.SimpleResourceAttributes;
 import org.codehaus.plexus.components.io.functions.ResourceAttributeSupplier;
@@ -364,9 +365,20 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
     @Override
     public void addFile(@Nonnull final File inputFile, @Nonnull final String destFileName) throws ArchiverException {
-        final int fileMode = getOverrideFileMode();
+        int permissions;
+        if (forcedFileMode > 0) {
+            permissions = forcedFileMode;
+        } else {
+            permissions = PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE;
+            try {
+                permissions = PlexusIoResourceAttributeUtils.getFileAttributes(inputFile)
+                        .getOctalMode();
+            } catch (IOException ioe) {
+                // ignore
+            }
+        }
 
-        addFile(inputFile, destFileName, fileMode);
+        addFile(inputFile, destFileName, permissions);
     }
 
     @Override
@@ -460,6 +472,10 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
         if (permissions < 0) {
             permissions = getOverrideFileMode();
+        }
+
+        if (umask > 0 && permissions != PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE) {
+            permissions &= ~umask;
         }
 
         try {
