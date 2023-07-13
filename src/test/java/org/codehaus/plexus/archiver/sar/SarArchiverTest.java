@@ -22,10 +22,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SarArchiverTest extends BasePlexusArchiverTest {
+class SarArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testLookup() throws Exception {
+    void testLookup() throws Exception {
         ArchiverManager dam = lookup(ArchiverManager.class);
         PlexusIoResourceCollection sar = dam.getResourceCollection("sar");
         assertNotNull(sar);

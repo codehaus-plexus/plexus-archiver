@@ -7,6 +7,4 @@ bin
 *.iml
 *.iws
 .idea
-
-
-
+.DS_Store

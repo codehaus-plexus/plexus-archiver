@@ -30,10 +30,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author <a href="mailto:richardv@mxtelecom.com">Richard van der Hoff</a>
  */
-public class IndexTest extends TestSupport {
+class IndexTest extends TestSupport {
 
     @Test
-    public void testCreateArchiveWithIndexedJars() throws Exception {
+    void testCreateArchiveWithIndexedJars() throws Exception {
         /* create a dummy jar */
         JarArchiver archiver1 = (JarArchiver) lookup(Archiver.class, "jar");
         archiver1.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), "one.txt");
@@ -75,7 +75,7 @@ public class IndexTest extends TestSupport {
      * tests for files in META-INF
      */
     @Test
-    public void testCreateArchiveWithIndexedJarsAndMetaInf() throws Exception {
+    void testCreateArchiveWithIndexedJarsAndMetaInf() throws Exception {
         /* create a dummy jar */
         JarArchiver archiver1 = (JarArchiver) lookup(Archiver.class, "jar");
         archiver1.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), "one.txt");

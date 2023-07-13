@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Kristian Rosenvold
  */
-public class JdkManifestFactoryTest extends TestSupport {
+class JdkManifestFactoryTest extends TestSupport {
 
     @Test
-    public void testGetDefaultManifest() throws Exception {
+    void testGetDefaultManifest() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Manifest manifest = JdkManifestFactory.getDefaultManifest();
         manifest.write(byteArrayOutputStream);
@@ -28,7 +28,7 @@ public class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    public void testGetDefaultManifestString() throws Exception {
+    void testGetDefaultManifestString() throws Exception {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestWithClassPath.mf");
         Manifest manifestWithout = getManifest("src/test/resources/manifests/manifest1.mf");
         String value = manifest.getMainAttributes().getValue(ManifestConstants.ATTRIBUTE_CLASSPATH);
@@ -40,7 +40,7 @@ public class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    public void testIllegals() throws ManifestException, IOException {
+    void testIllegals() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifest6.mf");
         assertNotNull(manifest);
 
@@ -53,7 +53,7 @@ public class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    public void testMerge() throws ManifestException, IOException {
+    void testMerge() throws ManifestException, IOException {
         Manifest manifest1 = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest manifest2 = getManifest("src/test/resources/manifests/manifestMerge2.mf");
 
@@ -80,7 +80,7 @@ public class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    public void testDualClassPath() throws ManifestException, IOException {
+    void testDualClassPath() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestWithDualClassPath.mf");
         final Attributes mainAttributes = manifest.getMainAttributes();
         final String attribute = mainAttributes.getValue("Class-Path");

@@ -46,10 +46,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests for the snappy archiver
  */
-public class SnappyArchiverTest extends BasePlexusArchiverTest {
+class SnappyArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForSnappy.zip"));
@@ -63,7 +63,7 @@ public class SnappyArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         SnappyArchiver archiver = (SnappyArchiver) lookup(Archiver.class, "snappy");
         archiver.setDestFile(getTestFile("target/output/empty.snappy"));
         try {
@@ -75,7 +75,7 @@ public class SnappyArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateResourceCollection() throws Exception {
+    void testCreateResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File snappyFile = new File("target/output/pom.xml.snappy");
         SnappyArchiver SnappyArchiver = (SnappyArchiver) lookup(Archiver.class, "snappy");
@@ -111,7 +111,7 @@ public class SnappyArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testsnappyIsForcedBehaviour() throws Exception {
+    void testsnappyIsForcedBehaviour() throws Exception {
         SnappyArchiver SnappyArchiver = (SnappyArchiver) createArchiver("snappy");
 
         assertTrue(SnappyArchiver.isSupportingForced());

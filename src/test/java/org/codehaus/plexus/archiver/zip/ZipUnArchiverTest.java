@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Jason van Zyl
  */
-public class ZipUnArchiverTest extends TestSupport {
+class ZipUnArchiverTest extends TestSupport {
 
     @Test
-    public void testExtractingZipPreservesExecutableFlag() throws Exception {
+    void testExtractingZipPreservesExecutableFlag() throws Exception {
 
         String s = "target/zip-unarchiver-tests";
         File testZip = new File(getBasedir(), "src/test/jars/test.zip");
@@ -48,7 +48,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testZeroFileModeInZip() throws Exception {
+    void testZeroFileModeInZip() throws Exception {
 
         String s = "target/zip-unarchiver-filemode-tests";
         File testZip = new File(getBasedir(), "src/test/resources/zeroFileMode/foobar.zip");
@@ -72,7 +72,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testUnarchiveUtf8() throws Exception {
+    void testUnarchiveUtf8() throws Exception {
         File dest = new File("target/output/unzip/utf8");
         dest.mkdirs();
 
@@ -89,7 +89,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testUnarchiveUnicodePathExtra() throws Exception {
+    void testUnarchiveUnicodePathExtra() throws Exception {
         File dest = new File("target/output/unzip/unicodePathExtra");
         dest.mkdirs();
         for (String name : dest.list()) {
@@ -108,7 +108,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testUnarchiveUnicodePathExtraSelector() throws Exception {
+    void testUnarchiveUnicodePathExtraSelector() throws Exception {
         File dest = new File("target/output/unzip/unicodePathExtraSelector");
         dest.mkdirs();
         for (String name : dest.list()) {
@@ -174,13 +174,13 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testExtractingADirectoryFromAJarFile() throws Exception {
+    void testExtractingADirectoryFromAJarFile() throws Exception {
         runUnarchiver("resources/artifactId", null, new boolean[] {true, true, false});
         runUnarchiver("", null, new boolean[] {true, true, true});
     }
 
     @Test
-    public void testSelectors() throws Exception {
+    void testSelectors() throws Exception {
         IncludeExcludeFileSelector fileSelector = new IncludeExcludeFileSelector();
         runUnarchiver("", new FileSelector[] {fileSelector}, new boolean[] {true, true, true});
         fileSelector.setExcludes(new String[] {"**/test.properties"});
@@ -193,7 +193,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testExtractingZipWithEntryOutsideDestDirThrowsException() throws Exception {
+    void testExtractingZipWithEntryOutsideDestDirThrowsException() throws Exception {
         Exception ex = null;
         String s = "target/zip-unarchiver-slip-tests";
         File testZip = new File(getBasedir(), "src/test/zips/zip-slip.zip");
@@ -213,7 +213,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testZipOutputSizeException() throws Exception {
+    void testZipOutputSizeException() throws Exception {
         Exception ex = null;
         String s = "target/zip-size-tests";
         File testZip = new File(getBasedir(), "src/test/jars/test.zip");
@@ -234,7 +234,7 @@ public class ZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testZipMaxOutputSizeEqualToExtractedFileSize() throws Exception {
+    void testZipMaxOutputSizeEqualToExtractedFileSize() throws Exception {
         long extractedFileSize = 11L;
         String s = "target/zip-size-tests";
         File testZip = new File(getBasedir(), "src/test/jars/test.zip");

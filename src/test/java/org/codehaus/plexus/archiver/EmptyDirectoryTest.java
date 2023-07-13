@@ -34,21 +34,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Daniel Krisher
  */
-public class EmptyDirectoryTest extends TestSupport {
+class EmptyDirectoryTest extends TestSupport {
 
     @Test
-    public void testZipArchiver() throws Exception {
+    void testZipArchiver() throws Exception {
         testEmptyDirectory("zip", lookup(Archiver.class, "zip"));
     }
 
     @Test
-    public void testJarArchiver() throws Exception {
+    void testJarArchiver() throws Exception {
         // No JAR UnArchiver implementation :(
         //        testEmptyDirectory( "jar" );
     }
 
     @Test
-    public void testTarArchiver() throws Exception {
+    void testTarArchiver() throws Exception {
         final TarArchiver tar = (TarArchiver) lookup(Archiver.class, "tar");
         tar.setLongfile(TarLongFileMode.posix);
         testEmptyDirectory("tar", tar);

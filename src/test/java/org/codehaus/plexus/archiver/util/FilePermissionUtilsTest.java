@@ -28,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Olivier Lamy
  */
-public class FilePermissionUtilsTest {
+class FilePermissionUtilsTest {
 
     Logger getLogger() {
         return LoggerFactory.getLogger("foo");
     }
 
     @Test
-    public void testOnlyWritableOnlyUser() throws Exception {
+    void testOnlyWritableOnlyUser() throws Exception {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("200", getLogger());
         assertTrue(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -45,7 +45,7 @@ public class FilePermissionUtilsTest {
     }
 
     @Test
-    public void testExecAndRead() {
+    void testExecAndRead() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("500", getLogger());
         assertFalse(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -55,7 +55,7 @@ public class FilePermissionUtilsTest {
     }
 
     @Test
-    public void testAllUser() {
+    void testAllUser() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("700", getLogger());
         assertTrue(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -65,7 +65,7 @@ public class FilePermissionUtilsTest {
     }
 
     @Test
-    public void testAllAllUser() {
+    void testAllAllUser() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("707", getLogger());
         assertTrue(fp.isWritable());
         assertFalse(fp.isOwnerOnlyWritable());

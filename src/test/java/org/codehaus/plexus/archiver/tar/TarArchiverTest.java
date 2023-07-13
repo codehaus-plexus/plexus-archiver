@@ -65,13 +65,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Emmanuel Venisse
  */
-public class TarArchiverTest extends TestSupport {
+class TarArchiverTest extends TestSupport {
     @TempDir
     private File tempDir;
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testCreateArchiveWithDetectedModes() throws Exception {
+    void testCreateArchiveWithDetectedModes() throws Exception {
 
         String[] executablePaths = {"path/to/executable", "path/to/executable.bat"};
 
@@ -183,7 +183,7 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         TarArchiver archiver = getPosixTarArchiver();
         archiver.setDestFile(getTestFile("target/output/empty.tar"));
         try {
@@ -195,7 +195,7 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testUnicode() throws Exception {
+    void testUnicode() throws Exception {
         File tmpDir = getTestFile("src/test/resources/utf8");
         TarArchiver archiver = getPosixTarArchiver();
         File tarFile = getTestFile("target/output/tar-with-longFileName.tar");
@@ -221,12 +221,12 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         createArchive(0500, new int[] {0400, 0640, 0664});
         createArchive(0500, new int[] {0400, 0640, 0664});
     }
 
-    public void createArchive(final int directoryMode, final int fileModes[]) throws Exception {
+    void createArchive(final int directoryMode, final int fileModes[]) throws Exception {
         int defaultFileMode = fileModes[0];
         int oneFileMode = fileModes[1];
         int twoFileMode = fileModes[2];
@@ -281,7 +281,7 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testCreateArchiveWithJiustASymlink() throws Exception {
+    void testCreateArchiveWithJiustASymlink() throws Exception {
         TarArchiver archiver = getPosixTarArchiver();
 
         archiver.setDirectoryMode(0500);
@@ -397,17 +397,17 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testUncompressedResourceCollection() throws Exception {
+    void testUncompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new TarHandler());
     }
 
     @Test
-    public void testGzipCompressedResourceCollection() throws Exception {
+    void testGzipCompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new GZipTarHandler());
     }
 
     @Test
-    public void testGzipFIleHandleLeak() throws Exception {
+    void testGzipFIleHandleLeak() throws Exception {
         GZipTarHandler tarHandler = new GZipTarHandler();
         final File tarFile = tarHandler.createTarFile();
         final File tarFile2 = tarHandler.createTarfile2(tarFile);
@@ -419,12 +419,12 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testBzip2CompressedResourceCollection() throws Exception {
+    void testBzip2CompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new BZip2TarHandler());
     }
 
     @Test
-    public void testTarFileNotClosingInputStream() throws Exception {
+    void testTarFileNotClosingInputStream() throws Exception {
         // Supposedly not closing the stream according to yjp.
         TarHandler tarHandler = new BZip2TarHandler();
         final File fileName = tarHandler.createTarFile();
@@ -444,7 +444,7 @@ public class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testSymlinkArchivedFileSet() throws Exception {
+    void testSymlinkArchivedFileSet() throws Exception {
         final File tarFile = getTestFile("src/test/resources/symlinks/symlinks.tar");
         final File tarFile2 = getTestFile("target/output/pasymlinks-archivedFileset.tar");
         final TarArchiver tarArchiver = getPosixTarArchiver();

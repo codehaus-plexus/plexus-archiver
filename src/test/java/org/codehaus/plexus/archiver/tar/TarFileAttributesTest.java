@@ -22,7 +22,7 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public class TarFileAttributesTest extends TestSupport {
+class TarFileAttributesTest extends TestSupport {
 
     @TempDir
     private Path tempDir;
@@ -44,7 +44,7 @@ public class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testUseAttributesFromTarArchiveInputInTarArchiverOutput() throws Exception {
+    void testUseAttributesFromTarArchiveInputInTarArchiverOutput() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -96,7 +96,7 @@ public class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testUseDetectedFileAttributes() throws Exception {
+    void testUseDetectedFileAttributes() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -137,7 +137,7 @@ public class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testOverrideDetectedFileAttributes() throws Exception {
+    void testOverrideDetectedFileAttributes() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -181,7 +181,7 @@ public class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testOverrideDetectedFileAttributesUsingFileMode() throws Exception {
+    void testOverrideDetectedFileAttributesUsingFileMode() throws Exception {
         printTestHeader();
         File tempFile =
                 Files.createTempFile(tempDir, "tar-file-attributes.", ".tmp").toFile();

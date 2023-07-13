@@ -29,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TarZstdUnArchiverTest extends TestSupport {
+class TarZstdUnArchiverTest extends TestSupport {
 
     @Test
-    public void testExtract() throws Exception {
+    void testExtract() throws Exception {
         TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
         tarArchiver.setLongfile(TarLongFileMode.posix);
 
@@ -78,7 +78,7 @@ public class TarZstdUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testLookup() throws Exception {
+    void testLookup() throws Exception {
         assertNotNull(lookup(UnArchiver.class, "tar.zst"));
     }
 }

@@ -34,17 +34,17 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Emmanuel Venisse
  */
-public class ManifestTest extends TestSupport {
+class ManifestTest extends TestSupport {
 
     @Test
-    public void testManifest1() throws Exception {
+    void testManifest1() throws Exception {
         Manifest manifest = getManifest("src/test/resources/manifests/manifest1.mf");
         String version = manifest.getManifestVersion();
         assertEquals("1.0", version, "Manifest was not created with correct version - ");
     }
 
     @Test
-    public void testManifest2() throws Exception {
+    void testManifest2() throws Exception {
         try {
             getManifest("src/test/resources/manifests/manifest2.mf");
             fail("Manifest isn't well formed. It must be generate an exception.");
@@ -53,7 +53,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testManifest3() throws Exception {
+    void testManifest3() throws Exception {
         try {
             getManifest("src/test/resources/manifests/manifest3.mf");
             fail("Manifest isn't well formed. It must be generate an exception.");
@@ -62,7 +62,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testManifest5() throws Exception {
+    void testManifest5() throws Exception {
         try {
             getManifest("src/test/resources/manifests/manifest5.mf");
             fail();
@@ -71,7 +71,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAddConfiguredSection() throws ManifestException {
+    void testAddConfiguredSection() throws ManifestException {
         Manifest manifest = new Manifest();
         Manifest.Section section = new Manifest.Section();
         section.setName("fud");
@@ -81,7 +81,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAttributeLongLineWrite() throws Exception {
+    void testAttributeLongLineWrite() throws Exception {
         StringWriter writer = new StringWriter();
         Manifest.Attribute attr = new Manifest.Attribute();
         String longLineOfChars = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 "
@@ -98,7 +98,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAttributeLongLineWriteNonAscii() throws Exception {
+    void testAttributeLongLineWriteNonAscii() throws Exception {
         StringWriter writer = new StringWriter();
         Manifest.Attribute attr = new Manifest.Attribute();
         String longLineOfChars = "Ед докэндё форынчйбюж зкрипторэм векж, льабятюр ыкжпэтэндяз мэль ут, квюо ут модо "
@@ -126,7 +126,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testDualClassPath() throws ManifestException, IOException {
+    void testDualClassPath() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestWithDualClassPath.mf");
         final String attribute = manifest.getMainSection().getAttributeValue("Class-Path");
         // According to discussions, we drop support for duplicate class-path attribute
@@ -134,20 +134,20 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAttributeMultiLineValue() throws Exception {
+    void testAttributeMultiLineValue() throws Exception {
         checkMultiLineAttribute(
                 "123456789" + Manifest.EOL + "123456789", "123456789" + Manifest.EOL + " 123456789" + Manifest.EOL);
     }
 
     @Test
-    public void testAttributeDifferentLineEndings() throws Exception {
+    void testAttributeDifferentLineEndings() throws Exception {
         checkMultiLineAttribute(
                 "\tA\rB\n\t C\r\n \tD\n\r",
                 "\tA" + Manifest.EOL + " B" + Manifest.EOL + " \t C" + Manifest.EOL + "  \tD" + Manifest.EOL);
     }
 
     @Test
-    public void testAddAttributes() throws ManifestException, IOException {
+    void testAddAttributes() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest.ExistingSection fudz = manifest.getSection("Fudz");
         fudz.addConfiguredAttribute(new Manifest.Attribute("boz", "bzz"));
@@ -156,7 +156,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testRemoveAttributes() throws ManifestException, IOException {
+    void testRemoveAttributes() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest.ExistingSection fudz = manifest.getSection("Fudz");
         fudz.addConfiguredAttribute(new Manifest.Attribute("boz", "bzz"));
@@ -166,7 +166,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAttributeSerialization() throws IOException, ManifestException {
+    void testAttributeSerialization() throws IOException, ManifestException {
         Manifest manifest = new Manifest();
         manifest.getMainAttributes().putValue("mfa1", "fud1");
         manifest.getMainSection().addAttributeAndCheck(new Manifest.Attribute("mfa2", "fud2"));
@@ -184,7 +184,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testDefaultBehaviour() {
+    void testDefaultBehaviour() {
         Manifest manifest = new Manifest();
         Manifest.ExistingSection mainSection = manifest.getMainSection();
         assertNotNull(mainSection);
@@ -194,7 +194,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testGetDefaultManifest() throws Exception {
+    void testGetDefaultManifest() throws Exception {
         java.util.jar.Manifest mf = Manifest.getDefaultManifest();
         java.util.jar.Attributes mainAttributes = mf.getMainAttributes();
         assertEquals(2, mainAttributes.size());
@@ -207,7 +207,7 @@ public class ManifestTest extends TestSupport {
         assertTrue(mainAttributes.containsKey(new java.util.jar.Attributes.Name("Manifest-Version")));
     }
 
-    public void checkMultiLineAttribute(String in, String expected) throws Exception {
+    void checkMultiLineAttribute(String in, String expected) throws Exception {
         StringWriter writer = new StringWriter();
         Manifest.Attribute attr = new Manifest.Attribute();
         attr.setName("test");
@@ -251,7 +251,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAddAttributesPlexusManifest() throws ManifestException, IOException {
+    void testAddAttributesPlexusManifest() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest.ExistingSection fudz = manifest.getSection("Fudz");
         fudz.addConfiguredAttribute(new Manifest.Attribute("boz", "bzz"));
@@ -259,7 +259,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testRemoveAttributesPlexusManifest() throws ManifestException, IOException {
+    void testRemoveAttributesPlexusManifest() throws ManifestException, IOException {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest.ExistingSection fudz = manifest.getSection("Fudz");
         fudz.addConfiguredAttribute(new Manifest.Attribute("boz", "bzz"));
@@ -269,7 +269,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAttributeSerializationPlexusManifest() throws IOException, ManifestException {
+    void testAttributeSerializationPlexusManifest() throws IOException, ManifestException {
         Manifest manifest = new Manifest();
         manifest.getMainSection().addConfiguredAttribute(new Manifest.Attribute("mfa1", "fud1"));
         manifest.getMainSection().addConfiguredAttribute(new Manifest.Attribute("mfa2", "fud2"));
@@ -288,7 +288,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testClassPathPlexusManifest() throws ManifestException {
+    void testClassPathPlexusManifest() throws ManifestException {
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(new Manifest.Attribute(ManifestConstants.ATTRIBUTE_CLASSPATH, "fud"));
         manifest.addConfiguredAttribute(new Manifest.Attribute(ManifestConstants.ATTRIBUTE_CLASSPATH, "duf"));
@@ -296,7 +296,7 @@ public class ManifestTest extends TestSupport {
     }
 
     @Test
-    public void testAddConfiguredSectionPlexusManifest() throws ManifestException {
+    void testAddConfiguredSectionPlexusManifest() throws ManifestException {
         Manifest manifest = new Manifest();
         Manifest.Section section = new Manifest.Section();
         section.setName("fud");

@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
+class PlexusIoZipFileResourceCollectionTest extends TestSupport {
 
     @Test
-    public void testNamelessRootFolder() throws Exception {
+    void testNamelessRootFolder() throws Exception {
         PlexusIoZipFileResourceCollection resourceCollection = new PlexusIoZipFileResourceCollection();
         resourceCollection.setFile(getTestFile("src/test/jars/namelessrootfolder.jar"));
         Iterator iterator = resourceCollection.getResources();
@@ -38,7 +38,7 @@ public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testDescriptionForError() throws Exception {
+    void testDescriptionForError() throws Exception {
         PlexusIoZipFileResourceCollection resourceCollection = new PlexusIoZipFileResourceCollection();
         resourceCollection.setFile(getTestFile("src/test/jars/namelessrootfolder.jar"));
         Iterator<PlexusIoResource> iterator = resourceCollection.getResources();
@@ -49,7 +49,7 @@ public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testFilesWithIllegalHtmlChars() throws Exception {
+    void testFilesWithIllegalHtmlChars() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/bogusManifest.zip");
         PlexusIoZipFileResourceCollection prc = new PlexusIoZipFileResourceCollection();
         prc.setFile(testZip);
@@ -66,7 +66,7 @@ public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testFilesThatAreNotThere() throws Exception {
+    void testFilesThatAreNotThere() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/archiveWithIllegalHtmlFileName.zip");
         Set<String> seen = new HashSet<>();
         seen.add("AFileThatNeedsHtmlEsc%3F&gt");
@@ -86,7 +86,7 @@ public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testSymlinkEntries() throws Exception {
+    void testSymlinkEntries() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/symlinks/symlinks.zip");
         Map<String, String> symLinks = new HashMap<>();
         symLinks.put("symDir", "targetDir/");
@@ -114,7 +114,7 @@ public class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testUnarchiveUnicodePathExtra() throws Exception {
+    void testUnarchiveUnicodePathExtra() throws Exception {
         PlexusIoZipFileResourceCollection prc = new PlexusIoZipFileResourceCollection();
         prc.setFile(getTestFile("src/test/resources/unicodePathExtra/efsclear.zip"));
         Set<String> names = new HashSet<>();

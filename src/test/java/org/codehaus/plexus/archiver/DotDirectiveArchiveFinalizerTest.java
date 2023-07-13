@@ -11,10 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author Jason van Zyl
  */
-public class DotDirectiveArchiveFinalizerTest extends TestSupport {
+class DotDirectiveArchiveFinalizerTest extends TestSupport {
 
     @Test
-    public void testDotDirectiveArchiveFinalizer() throws Exception {
+    void testDotDirectiveArchiveFinalizer() throws Exception {
         DotDirectiveArchiveFinalizer ddaf =
                 new DotDirectiveArchiveFinalizer(new File(getBasedir(), "src/test/dotfiles"));
 
@@ -40,7 +40,7 @@ public class DotDirectiveArchiveFinalizerTest extends TestSupport {
     }
 
     @Test
-    public void testDefaultDotDirectiveBehaviour() throws Exception {
+    void testDefaultDotDirectiveBehaviour() throws Exception {
         File dotFileDirectory = new File(getBasedir(), "src/test/dotfiles");
 
         JarArchiver archiver = new JarArchiver();

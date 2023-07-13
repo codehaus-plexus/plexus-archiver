@@ -46,10 +46,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Emmanuel Venisse
  */
-public class BZip2ArchiverTest extends BasePlexusArchiverTest {
+class BZip2ArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForbz2.zip"));
@@ -63,7 +63,7 @@ public class BZip2ArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         BZip2Archiver archiver = (BZip2Archiver) lookup(Archiver.class, "bzip2");
         archiver.setDestFile(getTestFile("target/output/empty.bz2"));
         try {
@@ -75,7 +75,7 @@ public class BZip2ArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateResourceCollection() throws Exception {
+    void testCreateResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File bz2File = new File("target/output/pom.xml.bz2");
         BZip2Archiver bzip2Archiver = (BZip2Archiver) lookup(Archiver.class, "bzip2");
@@ -111,7 +111,7 @@ public class BZip2ArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testBz2IsForcedBehaviour() throws Exception {
+    void testBz2IsForcedBehaviour() throws Exception {
         BZip2Archiver bZip2Archiver = (BZip2Archiver) createArchiver("bzip2");
 
         assertTrue(bZip2Archiver.isSupportingForced());

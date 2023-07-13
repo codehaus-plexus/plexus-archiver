@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author <a href="mailto:viktor@jv-ration.com">Viktor Sadovnikov</a>
  */
-public class TarUnArchiverTest extends TestSupport {
+class TarUnArchiverTest extends TestSupport {
 
     private void runUnarchiver(FileSelector[] selectors, boolean[] results) throws Exception {
         String s = "target/tar-unarchiver-tests";
@@ -46,12 +46,12 @@ public class TarUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testExtractingADirectory() throws Exception {
+    void testExtractingADirectory() throws Exception {
         runUnarchiver(null, new boolean[] {true, true, true});
     }
 
     @Test
-    public void testSelectors() throws Exception {
+    void testSelectors() throws Exception {
         IncludeExcludeFileSelector fileSelector = new IncludeExcludeFileSelector();
         runUnarchiver(new FileSelector[] {fileSelector}, new boolean[] {true, true, true});
 
