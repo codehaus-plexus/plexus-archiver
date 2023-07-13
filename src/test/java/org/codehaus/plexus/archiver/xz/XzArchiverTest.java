@@ -39,10 +39,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author philip.lourandos
  * @since 3.3
  */
-public class XzArchiverTest extends BasePlexusArchiverTest {
+class XzArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForxz.zip"));
@@ -66,7 +66,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         XZArchiver archiver = (XZArchiver) lookup(Archiver.class, "xz");
         archiver.setDestFile(getTestFile("target/output/empty.xz"));
         try {
@@ -78,7 +78,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateResourceCollection() throws Exception {
+    void testCreateResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File xzFile = new File("target/output/pom.xml.xz");
         XZArchiver xzArchiver = (XZArchiver) lookup(Archiver.class, "xz");
@@ -114,7 +114,7 @@ public class XzArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testXzIsForcedBehaviour() throws Exception {
+    void testXzIsForcedBehaviour() throws Exception {
         XZArchiver xzArchiver = (XZArchiver) createArchiver("xz");
 
         assertTrue(xzArchiver.isSupportingForced());

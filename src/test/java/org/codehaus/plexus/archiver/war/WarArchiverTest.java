@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Kristian Rosenvold
  */
-public class WarArchiverTest extends TestSupport {
+class WarArchiverTest extends TestSupport {
 
     private final int expected = 8;
 
     @Test
-    public void testReAddingPlatformSpecificEncoding() throws Exception {
+    void testReAddingPlatformSpecificEncoding() throws Exception {
         WarArchiver archiver = (WarArchiver) lookup(Archiver.class, "war");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.war"));
 
@@ -40,7 +40,7 @@ public class WarArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testInfiniteRecursion() throws Exception {
+    void testInfiniteRecursion() throws Exception {
         WarArchiver archiver = (WarArchiver) lookup(Archiver.class, "war");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.war"));
 

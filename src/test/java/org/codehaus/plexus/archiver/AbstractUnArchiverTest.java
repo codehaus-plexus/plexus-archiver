@@ -36,11 +36,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author <a href="mailto:karg@quipsy.de">Markus KARG</a>
  */
-public class AbstractUnArchiverTest {
+class AbstractUnArchiverTest {
     private AbstractUnArchiver abstractUnArchiver;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.abstractUnArchiver = new AbstractUnArchiver() {
             @Override
             protected void execute(final String path, final File outputDirectory) throws ArchiverException {
@@ -55,13 +55,12 @@ public class AbstractUnArchiverTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         this.abstractUnArchiver = null;
     }
 
     @Test
-    public void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory(@TempDir File targetFolder)
-            throws ArchiverException {
+    void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory(@TempDir File targetFolder) throws ArchiverException {
         // given
 
         // The prefix includes the target directory name to make sure we catch cases when the paths
@@ -82,7 +81,7 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenFileOnDiskDoesNotExist(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenFileOnDiskDoesNotExist(@TempDir File temporaryFolder) throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt"); // does not create the file!
         String entryname = file.getName();
@@ -96,7 +95,7 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive(@TempDir File temporaryFolder) throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -112,8 +111,8 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing(
-            @TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing(@TempDir File temporaryFolder)
+            throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -127,7 +126,7 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk(@TempDir File temporaryFolder) throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -143,8 +142,8 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing(
-            @TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing(@TempDir File temporaryFolder)
+            throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -161,7 +160,7 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldNotWarnAboutDifferentCasingForDirectoryEntries(@TempDir File temporaryFolder) throws IOException {
+    void shouldNotWarnAboutDifferentCasingForDirectoryEntries(@TempDir File temporaryFolder) throws IOException {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -176,7 +175,7 @@ public class AbstractUnArchiverTest {
     }
 
     @Test
-    public void shouldExtractWhenCasingDifferOnlyInEntryNamePath(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenCasingDifferOnlyInEntryNamePath(@TempDir File temporaryFolder) throws IOException {
         // given
         String entryName = "directory/whatever.txt";
         File file = new File(temporaryFolder, entryName); // does not create the file!

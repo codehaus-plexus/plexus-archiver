@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AbstractArchiverTest {
+class AbstractArchiverTest {
 
     private AbstractArchiver archiver;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         this.archiver = new AbstractArchiver() {
 
             @Override
@@ -34,7 +34,7 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testModesAndOverridesAreUnsetByDefault() {
+    void testModesAndOverridesAreUnsetByDefault() {
         assertEquals(-1, archiver.getDefaultFileMode());
         assertEquals(-1, archiver.getOverrideFileMode());
 
@@ -43,13 +43,13 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testWhenUnsetModeUsesDefault() {
+    void testWhenUnsetModeUsesDefault() {
         assertEquals(Archiver.DEFAULT_FILE_MODE, archiver.getFileMode());
         assertEquals(Archiver.DEFAULT_DIR_MODE, archiver.getDirectoryMode());
     }
 
     @Test
-    public void testSetModeIsUsedWithFlagsForType() {
+    void testSetModeIsUsedWithFlagsForType() {
         archiver.setFileMode(0400);
         assertEquals(0100400, archiver.getFileMode());
 
@@ -58,7 +58,7 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testSetDefaultIncludesFlagsForType() {
+    void testSetDefaultIncludesFlagsForType() {
         archiver.setDefaultFileMode(0400);
         assertEquals(0100400, archiver.getDefaultFileMode());
 
@@ -67,7 +67,7 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testDefaultIsUsedWhenModeIsUnset() {
+    void testDefaultIsUsedWhenModeIsUnset() {
         archiver.setDefaultFileMode(0400);
         assertEquals(0100400, archiver.getFileMode());
 
@@ -76,7 +76,7 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testOverridesCanBeReset() {
+    void testOverridesCanBeReset() {
         archiver.setFileMode(0400);
         archiver.setFileMode(-1);
         assertEquals(-1, archiver.getOverrideFileMode());
@@ -87,7 +87,7 @@ public class AbstractArchiverTest {
     }
 
     @Test
-    public void testSetDestFileInTheWorkingDir() {
+    void testSetDestFileInTheWorkingDir() {
         archiver.setDestFile(new File("archive"));
     }
 }

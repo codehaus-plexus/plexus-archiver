@@ -21,13 +21,13 @@ import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class JarArchiverTest extends BaseJarArchiverTest {
+class JarArchiverTest extends BaseJarArchiverTest {
 
     @TempDir
     private Path tempDir;
 
     @Test
-    public void testCreateManifestOnlyJar() throws IOException, ManifestException, ArchiverException {
+    void testCreateManifestOnlyJar() throws IOException, ManifestException, ArchiverException {
         File jarFile = Files.createTempFile(tempDir, "JarArchiverTest.", ".jar").toFile();
 
         JarArchiver archiver = getJarArchiver();
@@ -45,7 +45,7 @@ public class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    public void testNonCompressed() throws IOException, ManifestException, ArchiverException {
+    void testNonCompressed() throws IOException, ManifestException, ArchiverException {
         File jarFile = new File("target/output/jarArchiveNonCompressed.jar");
 
         JarArchiver archiver = getJarArchiver();
@@ -56,7 +56,7 @@ public class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    public void testVeryLargeJar() throws IOException, ArchiverException {
+    void testVeryLargeJar() throws IOException, ArchiverException {
         // Generate some number of random files that is likely to be
         // two or three times the number of available file handles
         Random rand = new Random();
@@ -81,7 +81,7 @@ public class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    public void testReproducibleBuild() throws IOException, ManifestException, ParseException {
+    void testReproducibleBuild() throws IOException, ManifestException, ParseException {
         String[] tzList = {
             "America/Managua",
             "America/New_York",

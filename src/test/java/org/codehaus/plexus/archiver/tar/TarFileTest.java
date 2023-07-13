@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Test case for {@link TarFile}.
  */
-public class TarFileTest extends TestSupport {
+class TarFileTest extends TestSupport {
 
     private interface TarFileCreator {
 
@@ -34,7 +34,7 @@ public class TarFileTest extends TestSupport {
      * Test for the uncompressed tar file, {@link TarFile}.
      */
     @Test
-    public void testTarFile() throws Exception {
+    void testTarFile() throws Exception {
         testTarFile(null, null, new TarFileCreator() {
 
             @Override
@@ -48,7 +48,7 @@ public class TarFileTest extends TestSupport {
      * Test for the gzip compressed tar file, {@link GZipTarFile}.
      */
     @Test
-    public void testGZipTarFile() throws Exception {
+    void testGZipTarFile() throws Exception {
         final GZipCompressor compressor = new GZipCompressor();
         testTarFile(compressor, ".gz", new TarFileCreator() {
 
@@ -63,7 +63,7 @@ public class TarFileTest extends TestSupport {
      * Test for the bzip2 compressed tar file, {@link BZip2TarFile}.
      */
     @Test
-    public void testBZip2TarFile() throws Exception {
+    void testBZip2TarFile() throws Exception {
         final BZip2Compressor compressor = new BZip2Compressor();
         testTarFile(compressor, ".bz2", new TarFileCreator() {
 

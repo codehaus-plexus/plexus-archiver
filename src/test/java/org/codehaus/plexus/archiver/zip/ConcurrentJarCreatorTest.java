@@ -16,10 +16,10 @@ import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 @Disabled
-public class ConcurrentJarCreatorTest {
+class ConcurrentJarCreatorTest {
 
     @Test
-    public void concurrent() throws Exception {
+    void concurrent() throws Exception {
         File home = new File(System.getProperty("user.home"));
         File result = new File(home, "multiStream2-parallel.zip");
         ConcurrentJarCreator zipCreator =
@@ -35,13 +35,13 @@ public class ConcurrentJarCreatorTest {
     }
 
     @Test
-    public void concurrent2() throws Exception {
+    void concurrent2() throws Exception {
         concurrent();
     }
 
     @Test
     @Disabled
-    public void classic() throws Exception {
+    void classic() throws Exception {
         long startAt = System.currentTimeMillis();
         File home = new File(System.getProperty("user.home"));
         File result = new File(home, "multiStream2-classic.zip");

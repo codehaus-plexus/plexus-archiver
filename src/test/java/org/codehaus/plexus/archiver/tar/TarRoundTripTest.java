@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * from org.apache.ant.tools.tar.TarRoundTripTest v1.6
  */
-public class TarRoundTripTest {
+class TarRoundTripTest {
 
     private static final String LONG_NAME = "this/path/name/contains/more/than/one/hundred/characters/in/order/"
             + "to/test/the/GNU/long/file/name/capability/round/tripped";
@@ -41,7 +41,7 @@ public class TarRoundTripTest {
      * test round-tripping long (GNU) entries
      */
     @Test
-    public void testLongRoundTripping() throws IOException {
+    void testLongRoundTripping() throws IOException {
         TarArchiveEntry original = new TarArchiveEntry(LONG_NAME);
         assertTrue(LONG_NAME.length() > 100, "over 100 chars");
         assertEquals(LONG_NAME, original.getName(), "original name");

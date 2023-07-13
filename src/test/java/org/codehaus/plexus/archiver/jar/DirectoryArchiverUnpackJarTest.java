@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DirectoryArchiverUnpackJarTest extends TestSupport {
+class DirectoryArchiverUnpackJarTest extends TestSupport {
 
     public static final String[] DEFAULT_INCLUDES_ARRAY = {"**/*"};
 
@@ -34,7 +34,7 @@ public class DirectoryArchiverUnpackJarTest extends TestSupport {
     }
 
     @Test
-    public void test_dependency_sets_depSet_unpacked_rdonly() throws Exception {
+    void test_dependency_sets_depSet_unpacked_rdonly() throws Exception {
         File src = new File("src/test/resources/unpack_issue.jar");
         assertTrue(src.exists());
         DefaultArchivedFileSet afs = DefaultArchivedFileSet.archivedFileSet(src);

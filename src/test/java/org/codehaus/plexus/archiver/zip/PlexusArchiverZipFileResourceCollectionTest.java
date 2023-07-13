@@ -17,10 +17,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PlexusArchiverZipFileResourceCollectionTest extends TestSupport {
+class PlexusArchiverZipFileResourceCollectionTest extends TestSupport {
 
     @Test
-    public void testFilesWithIllegalHtmlChars() throws Exception {
+    void testFilesWithIllegalHtmlChars() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/archiveWithIllegalHtmlFileName.zip");
         Set<String> seen = new HashSet<>();
         seen.add("AFileThatNeedsHtmlEsc%3F&gt");
@@ -39,7 +39,7 @@ public class PlexusArchiverZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    public void testFileModes() throws IOException {
+    void testFileModes() throws IOException {
         File testZip = new File(getBasedir(), "src/test/resources/zeroFileMode/mixed-file-mode.zip");
         Map<String, Integer> originalUnixModes = new HashMap<>();
         originalUnixModes.put("platform-fat", -1);

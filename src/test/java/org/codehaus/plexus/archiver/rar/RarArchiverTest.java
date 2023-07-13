@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author <a href="mailto:olamy@codehaus.org">olamy</a>
  * @since 13 mars 07
  */
-public class RarArchiverTest extends BasePlexusArchiverTest {
+class RarArchiverTest extends BasePlexusArchiverTest {
 
     public File getTargetRarFolder() {
         return new File(getBasedir(), "/target/rartest/");
@@ -49,7 +49,7 @@ public class RarArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testArchive() throws Exception {
+    void testArchive() throws Exception {
         Archiver archiver = lookup(Archiver.class, "rar");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.rar"));
         // archiver.addDirectory( , "manifests" );
@@ -70,7 +70,7 @@ public class RarArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testUnarchive() throws Exception {
+    void testUnarchive() throws Exception {
 
         UnArchiver unArchiver = lookup(UnArchiver.class, "rar");
         File rarFile = new File(getBasedir() + "/src/test/jars/test.rar");
@@ -92,7 +92,7 @@ public class RarArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testRarIsForcedBehaviour() throws Exception {
+    void testRarIsForcedBehaviour() throws Exception {
         Archiver rarArvhiver = createArchiver("rar");
 
         assertTrue(rarArvhiver.isSupportingForced());

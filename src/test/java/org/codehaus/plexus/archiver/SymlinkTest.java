@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Kristian Rosenvold
  */
-public class SymlinkTest extends TestSupport {
+class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testSymlinkDir() throws IOException {
+    void testSymlinkDir() throws IOException {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symDir");
         assertTrue(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
@@ -32,7 +32,7 @@ public class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testSymlinkDirWithSlash() throws IOException {
+    void testSymlinkDirWithSlash() throws IOException {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symDir/");
         assertTrue(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
@@ -40,14 +40,14 @@ public class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testSymlinkFile() {
+    void testSymlinkFile() {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symR");
         assertFalse(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
     }
 
     @Test
-    public void testSymlinkTar() throws Exception {
+    void testSymlinkTar() throws Exception {
         TarArchiver archiver = (TarArchiver) lookup(Archiver.class, "tar");
         archiver.setLongfile(TarLongFileMode.posix);
 
@@ -65,7 +65,7 @@ public class SymlinkTest extends TestSupport {
     }
 
     @Test
-    public void testSymlinkZip() throws Exception {
+    void testSymlinkZip() throws Exception {
         ZipArchiver archiver = (ZipArchiver) lookup(Archiver.class, "zip");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
@@ -85,7 +85,7 @@ public class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testSymlinkDirArchiver() throws Exception {
+    void testSymlinkDirArchiver() throws Exception {
         DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");

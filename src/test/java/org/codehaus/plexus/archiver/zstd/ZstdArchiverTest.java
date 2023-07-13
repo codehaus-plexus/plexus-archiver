@@ -35,10 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ZstdArchiverTest extends BasePlexusArchiverTest {
+class ZstdArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForxz.zip"));
@@ -62,7 +62,7 @@ public class ZstdArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         ZstdArchiver archiver = (ZstdArchiver) lookup(Archiver.class, "zst");
         archiver.setDestFile(getTestFile("target/output/empty.zst"));
         try {
@@ -74,7 +74,7 @@ public class ZstdArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateResourceCollection() throws Exception {
+    void testCreateResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File zstFile = new File("target/output/pom.xml.zst");
         ZstdArchiver zstdArchiver = (ZstdArchiver) lookup(Archiver.class, "zst");
@@ -110,7 +110,7 @@ public class ZstdArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testZstIsForcedBehaviour() throws Exception {
+    void testZstIsForcedBehaviour() throws Exception {
         ZstdArchiver zstdArchiver = (ZstdArchiver) createArchiver("zst");
 
         assertTrue(zstdArchiver.isSupportingForced());

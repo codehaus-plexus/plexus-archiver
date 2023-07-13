@@ -15,14 +15,14 @@ import org.junit.jupiter.api.io.TempDir;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ArchiveEntryUtilsTest {
+class ArchiveEntryUtilsTest {
 
     @TempDir
     private Path tempDir;
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testChmodForFileWithDollarPLXCOMP164() throws Exception {
+    void testChmodForFileWithDollarPLXCOMP164() throws Exception {
         File temp = Files.createTempFile(tempDir, "A$A", "BB$").toFile();
         ArchiveEntryUtils.chmod(temp, 0770);
         assert0770(temp);
@@ -30,7 +30,7 @@ public class ArchiveEntryUtilsTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    public void testChmodWithJava7() throws Exception {
+    void testChmodWithJava7() throws Exception {
         File temp = Files.createTempFile(tempDir, "D$D", "BB$").toFile();
         ArchiveEntryUtils.chmod(temp, 0770);
         assert0770(temp);

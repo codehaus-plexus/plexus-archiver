@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Kristian Rosenvold
  */
-public class DefaultFileSetTest {
+class DefaultFileSetTest {
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         final String[] includes = {"zz", "yy"};
         final String[] exc = {"xx1", "xx2"};
         final DefaultFileSet dfs =

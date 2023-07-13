@@ -42,7 +42,7 @@ public abstract class BaseJarArchiverTest {
      * could create basic JAR file
      */
     @Test
-    public void testCreateJar() throws IOException, ArchiverException {
+    void testCreateJar() throws IOException, ArchiverException {
         File jarFile = new File("target/output/testJar.jar");
         jarFile.delete();
 

@@ -46,10 +46,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Emmanuel Venisse
  */
-public class GZipArchiverTest extends BasePlexusArchiverTest {
+class GZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    public void testCreateArchive() throws Exception {
+    void testCreateArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForGzip.zip"));
@@ -63,7 +63,7 @@ public class GZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateEmptyArchive() throws Exception {
+    void testCreateEmptyArchive() throws Exception {
         GZipArchiver archiver = (GZipArchiver) lookup(Archiver.class, "gzip");
         archiver.setDestFile(getTestFile("target/output/empty.gz"));
         try {
@@ -75,7 +75,7 @@ public class GZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    public void testCreateResourceCollection() throws Exception {
+    void testCreateResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File gzFile = new File("target/output/pom.xml.gz");
         GZipArchiver gzipArchiver = (GZipArchiver) lookup(Archiver.class, "gzip");
@@ -108,7 +108,7 @@ public class GZipArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    public void testTarGzIsForcedBehaviour() throws Exception {
+    void testTarGzIsForcedBehaviour() throws Exception {
         GZipArchiver gZipArchiver = (GZipArchiver) createArchiver("gzip");
 
         assertTrue(gZipArchiver.isSupportingForced());

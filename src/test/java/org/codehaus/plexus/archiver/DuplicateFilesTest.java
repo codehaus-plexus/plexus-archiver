@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Erik Engstrom
  */
-public class DuplicateFilesTest extends TestSupport {
+class DuplicateFilesTest extends TestSupport {
 
     private static final File file1 = getTestFile("src/test/resources/group-writable/foo.txt");
 
@@ -29,7 +29,7 @@ public class DuplicateFilesTest extends TestSupport {
     private static final File destination = getTestFile("target/output/duplicateFiles");
 
     @Test
-    public void testZipArchiver() throws Exception {
+    void testZipArchiver() throws Exception {
         Archiver archiver = lookup(Archiver.class, "zip");
         archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);
 
@@ -53,14 +53,14 @@ public class DuplicateFilesTest extends TestSupport {
     }
 
     @Test
-    public void testDirArchiver() throws Exception {
+    void testDirArchiver() throws Exception {
         Archiver archiver = lookup(Archiver.class, "dir");
         createArchive(archiver, "dir");
         testFinalFile("target/output/duplicateFiles.dir/duplicateFiles/foo.txt");
     }
 
     @Test
-    public void testTarArchiver() throws Exception {
+    void testTarArchiver() throws Exception {
         TarArchiver archiver = (TarArchiver) lookup(Archiver.class, "tar");
         archiver.setLongfile(TarLongFileMode.posix);
         archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);

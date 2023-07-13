@@ -37,10 +37,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Dan Tran
  */
-public class TarGZipUnArchiverTest extends TestSupport {
+class TarGZipUnArchiverTest extends TestSupport {
 
     @Test
-    public void testExtract() throws Exception {
+    void testExtract() throws Exception {
         TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
         tarArchiver.setLongfile(TarLongFileMode.posix);
 
@@ -76,7 +76,7 @@ public class TarGZipUnArchiverTest extends TestSupport {
     }
 
     @Test
-    public void testLookup() throws Exception {
+    void testLookup() throws Exception {
         lookup(UnArchiver.class, "tar.gz");
     }
 }
