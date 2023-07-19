@@ -23,6 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -39,6 +44,7 @@ import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
+import org.codehaus.plexus.components.io.resources.PlexusIoFileResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -64,6 +70,8 @@ public class TarArchiver extends AbstractArchiver {
     private final TarOptions options = new TarOptions();
 
     private TarArchiveOutputStream tOut;
+
+    private final Map<Object, String> seenFiles = new HashMap<>(10);
 
     /**
      * Set how to handle long files, those with a path&gt;100 chars.
@@ -194,7 +202,7 @@ public class TarArchiver extends AbstractArchiver {
         InputStream fIn = null;
 
         try {
-            TarArchiveEntry te;
+            TarArchiveEntry te = null;
             if (!longFileMode.isGnuMode()
                     && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN) {
                 int maxPosixPathLen = org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
@@ -233,13 +241,39 @@ public class TarArchiver extends AbstractArchiver {
                 }
             }
 
+            boolean isLink = false;
             if (entry.getType() == ArchiveEntry.SYMLINK) {
                 final SymlinkDestinationSupplier plexusIoSymlinkResource =
                         (SymlinkDestinationSupplier) entry.getResource();
 
                 te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
                 te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
-            } else {
+                isLink = true;
+            } else if (options.getPreserveHardLinks()
+                    && entry.getResource().isFile()
+                    && entry.getResource() instanceof PlexusIoFileResource) {
+                final PlexusIoFileResource fileResource = (PlexusIoFileResource) entry.getResource();
+                final Path file = fileResource.getFile().toPath();
+                if (Files.exists(file)) {
+                    final BasicFileAttributeView fileAttributeView =
+                            Files.getFileAttributeView(file, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+                    if (fileAttributeView != null) {
+                        final Object fileKey =
+                                fileAttributeView.readAttributes().fileKey();
+                        if (fileKey != null) {
+                            final String seenFile = this.seenFiles.get(fileKey);
+                            if (seenFile != null) {
+                                te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_LINK);
+                                te.setLinkName(seenFile);
+                                isLink = true;
+                            } else {
+                                this.seenFiles.put(fileKey, vPath);
+                            }
+                        }
+                    }
+                }
+            }
+            if (te == null) {
                 te = new TarArchiveEntry(vPath);
             }
 
@@ -253,7 +287,7 @@ public class TarArchiver extends AbstractArchiver {
                 te.setModTime(getLastModifiedTime().toMillis());
             }
 
-            if (entry.getType() == ArchiveEntry.SYMLINK) {
+            if (isLink) {
                 te.setSize(0);
 
             } else if (!entry.getResource().isDirectory()) {
@@ -289,7 +323,7 @@ public class TarArchiver extends AbstractArchiver {
             tOut.putArchiveEntry(te);
 
             try {
-                if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
+                if (entry.getResource().isFile() && !isLink) {
                     fIn = entry.getInputStream();
 
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
@@ -319,6 +353,8 @@ public class TarArchiver extends AbstractArchiver {
         private int gid;
 
         private boolean preserveLeadingSlashes = false;
+
+        private boolean preserveHardLinks = true;
 
         /**
          * The username for the tar entry
@@ -404,6 +440,14 @@ public class TarArchiver extends AbstractArchiver {
          */
         public void setPreserveLeadingSlashes(boolean preserveLeadingSlashes) {
             this.preserveLeadingSlashes = preserveLeadingSlashes;
+        }
+
+        public boolean getPreserveHardLinks() {
+            return preserveHardLinks;
+        }
+
+        public void setPreserveHardLinks(boolean preserveHardLinks) {
+            this.preserveHardLinks = preserveHardLinks;
         }
     }
 

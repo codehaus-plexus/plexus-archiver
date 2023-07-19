@@ -176,6 +176,7 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
                                 ze.getName(),
                                 new Date(ze.getTime()),
                                 ze.isDirectory(),
+                                ze.isUnixSymlink(),
                                 ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
                                 resolveSymlink(zipFile, ze),
                                 getFileMappers());
