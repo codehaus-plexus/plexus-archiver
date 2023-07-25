@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.7.2-SNAPSHOT</version>
+  <version>4.8.0</version>
   <name>Plexus Archiver Component</name>
 
   <url>https://codehaus-plexus.github.io/plexus-archiver/</url>
@@ -30,7 +30,7 @@
   <scm>
     <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>plexus-archiver-4.8.0</tag>
     <url>https://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
   </scm>
   <issueManagement>
@@ -47,7 +47,7 @@
   <properties>
     <sisuVersion>0.9.0.M2</sisuVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
-    <project.build.outputTimestamp>2023-05-05T22:34:21Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2023-07-25T07:04:55Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
