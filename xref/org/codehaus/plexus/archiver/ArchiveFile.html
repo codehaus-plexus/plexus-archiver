@@ -15,25 +15,21 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * Interface of a zip, or tar file.</em>
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="ArchiveFile" href="../../../../org/codehaus/plexus/archiver/ArchiveFile.html#ArchiveFile">ArchiveFile</a>
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  {
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment">     * Returns an enumeration with the archive files entries.</em>
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">     * Any element returned by the enumeration is an instance</em>
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment">     * of {@link org.apache.commons.compress.archivers.ArchiveEntry}.</em>
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>      Enumeration&lt;? <strong class="jxr_keyword">extends</strong> org.apache.commons.compress.archivers.ArchiveEntry&gt; getEntries()
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>          <strong class="jxr_keyword">throws</strong> IOException;
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>      <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">     * Returns an {@link InputStream} with the given entries contents.</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment">     * org.apache.commons.compress.archivers.ArchiveEntry</em>
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      InputStream getInputStream( org.apache.commons.compress.archivers.ArchiveEntry entry )
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">throws</strong> IOException;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  }
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">interface</strong> <a name="ArchiveFile" href="../../../../org/codehaus/plexus/archiver/ArchiveFile.html#ArchiveFile">ArchiveFile</a> {
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment">     * Returns an enumeration with the archive files entries.</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment">     * Any element returned by the enumeration is an instance</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">     * of {@link org.apache.commons.compress.archivers.ArchiveEntry}.</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>      Enumeration&lt;? <strong class="jxr_keyword">extends</strong> org.apache.commons.compress.archivers.ArchiveEntry&gt; getEntries() <strong class="jxr_keyword">throws</strong> IOException;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">     * Returns an {@link InputStream} with the given entries contents.</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">     * org.apache.commons.compress.archivers.ArchiveEntry</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>      InputStream getInputStream(org.apache.commons.compress.archivers.ArchiveEntry entry) <strong class="jxr_keyword">throws</strong> IOException;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2001&#x2013;2023 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
