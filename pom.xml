@@ -45,7 +45,6 @@
   </distributionManagement>
 
   <properties>
-    <sisuVersion>0.9.0.M2</sisuVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <project.build.outputTimestamp>2023-07-25T07:06:02Z</project.build.outputTimestamp>
   </properties>
@@ -129,7 +128,7 @@
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.inject</artifactId>
-      <version>${sisuVersion}</version>
+      <version>${sisuMavenPluginVersion}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -161,16 +160,6 @@
       <plugin>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>sisu-maven-plugin</artifactId>
-        <version>${sisuVersion}</version>
-        <executions>
-          <execution>
-            <id>index-project</id>
-            <goals>
-              <goal>main-index</goal>
-              <goal>test-index</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
