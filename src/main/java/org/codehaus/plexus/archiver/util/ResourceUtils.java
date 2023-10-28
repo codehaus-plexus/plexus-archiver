@@ -3,12 +3,12 @@ package org.codehaus.plexus.archiver.util;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 
 import org.codehaus.plexus.components.io.functions.FileSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.IOUtil;
+
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * Utility class for work with {@link PlexusIoResource} instances.
@@ -35,16 +35,7 @@ public class ResourceUtils {
      * the given modification date.
      */
     public static boolean isUptodate(PlexusIoResource source, long destinationDate) {
-        final long s = source.getLastModified();
-        if (s == PlexusIoResource.UNKNOWN_MODIFICATION_DATE) {
-            return false;
-        }
-
-        if (destinationDate == 0) {
-            return false;
-        }
-
-        return destinationDate > s;
+        return isUptodate(source.getLastModified(), destinationDate);
     }
 
     /**
@@ -60,16 +51,15 @@ public class ResourceUtils {
             return false;
         }
 
-        return destinationDate > sourceDate;
+        return destinationDate >= sourceDate;
     }
 
     /**
      * Copies the sources contents to the given destination file.
      */
     public static void copyFile(PlexusIoResource in, File outFile) throws IOException {
-        try (InputStream input = in.getContents();
-                OutputStream output = Files.newOutputStream(outFile.toPath())) {
-            IOUtil.copy(input, output);
+        try (InputStream input = in.getContents()) {
+            Files.copy(input, outFile.toPath(), REPLACE_EXISTING);
         }
     }
 
@@ -77,18 +67,7 @@ public class ResourceUtils {
      * Copies the sources contents to the given destination file.
      */
     public static void copyFile(InputStream input, File outFile) throws IOException {
-        OutputStream output = null;
-        try {
-            output = Files.newOutputStream(outFile.toPath());
-            IOUtil.copy(input, output);
-            output.close();
-            output = null;
-            input.close();
-            input = null;
-        } finally {
-            IOUtil.close(input);
-            IOUtil.close(output);
-        }
+        Files.copy(input, outFile.toPath(), REPLACE_EXISTING);
     }
 
     /**

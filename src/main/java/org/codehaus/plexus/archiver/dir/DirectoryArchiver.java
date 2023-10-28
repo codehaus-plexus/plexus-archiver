@@ -19,6 +19,7 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
@@ -42,6 +43,15 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 public class DirectoryArchiver extends AbstractArchiver {
 
     private final List<Runnable> directoryChmods = new ArrayList<>();
+    private long filesCopied;
+
+    /**
+     * Default constructor.
+     */
+    public DirectoryArchiver() {
+        // preserver default behavior
+        setForced(false);
+    }
 
     public void resetArchiver() throws IOException {
         cleanUp();
@@ -67,7 +77,7 @@ public class DirectoryArchiver extends AbstractArchiver {
             throw new ArchiverException(destDirectory + " is not writable.");
         }
 
-        getLogger().info("Copying files to " + destDirectory.getAbsolutePath());
+        getLogger().info("Copying files to {}", destDirectory.getAbsolutePath());
 
         try {
             while (iter.hasNext()) {
@@ -93,6 +103,20 @@ public class DirectoryArchiver extends AbstractArchiver {
 
             directoryChmods.forEach(Runnable::run);
             directoryChmods.clear();
+
+            if (filesCopied > 0) {
+                getLogger()
+                        .info(
+                                "{} file{} copied to {}",
+                                filesCopied,
+                                filesCopied > 0 ? "s" : "",
+                                destDirectory.getAbsolutePath());
+            } else {
+                getLogger().info("All files are uptodate in {}", destDirectory.getAbsolutePath());
+            }
+
+            filesCopied = 0;
+
         } catch (final IOException ioe) {
             final String message = "Problem copying files : " + ioe.getMessage();
             throw new ArchiverException(message, ioe);
@@ -118,15 +142,20 @@ public class DirectoryArchiver extends AbstractArchiver {
         final File outFile = new File(vPath);
 
         final long inLastModified = in.getLastModified();
-        final long outLastModified = outFile.lastModified();
-        if (ResourceUtils.isUptodate(inLastModified, outLastModified)) {
-            return;
+
+        if (!isForced()) {
+            final long outLastModified = outFile.lastModified();
+            if (ResourceUtils.isUptodate(inLastModified, outLastModified)) {
+                return;
+            }
         }
 
         if (!in.isDirectory()) {
             makeParentDirectories(outFile);
-            ResourceUtils.copyFile(entry.getInputStream(), outFile);
-
+            try (InputStream input = entry.getInputStream()) {
+                ResourceUtils.copyFile(input, outFile);
+            }
+            filesCopied++;
             setFileModes(entry, outFile, inLastModified);
         } else { // file is a directory
             if (outFile.exists()) {
@@ -190,5 +219,10 @@ public class DirectoryArchiver extends AbstractArchiver {
     @Override
     protected String getArchiveType() {
         return "directory";
+    }
+
+    @Override
+    public boolean isSupportingForced() {
+        return true;
     }
 }
