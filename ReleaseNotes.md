@@ -1,6 +1,11 @@
 Plexus Archiver Release Notes
 ========================================================================
 
+Newer release
+---------------
+
+Newer release notes are maintained on GitHub [releases](https://github.com/codehaus-plexus/plexus-archiver/releases)
+
 Plexus Archiver 4.2.1
 ---------------------
 
