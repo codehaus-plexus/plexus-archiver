@@ -16,11 +16,16 @@ class DefaultFileSetTest {
     void testCreate() {
         final String[] includes = {"zz", "yy"};
         final String[] exc = {"xx1", "xx2"};
-        final DefaultFileSet dfs =
-                fileSet(new File("foo")).prefixed("pfx").include(includes).exclude(exc);
+        final boolean usingDefaultExcludes = true;
+        final DefaultFileSet dfs = fileSet(new File("foo"))
+                .prefixed("pfx")
+                .include(includes)
+                .exclude(exc)
+                .usingDefaultExcludes(usingDefaultExcludes);
         assertEquals("foo", dfs.getDirectory().getName());
         assertEquals("pfx", dfs.getPrefix());
         assertEquals("zz", dfs.getIncludes()[0]);
         assertEquals("xx1", dfs.getExcludes()[0]);
+        assertEquals(usingDefaultExcludes, dfs.isUsingDefaultExcludes());
     }
 }
