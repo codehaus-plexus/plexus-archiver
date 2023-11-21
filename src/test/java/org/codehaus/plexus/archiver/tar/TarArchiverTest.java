@@ -449,8 +449,8 @@ class TarArchiverTest extends TestSupport {
         final File tarFile2 = getTestFile("target/output/pasymlinks-archivedFileset.tar");
         final TarArchiver tarArchiver = getPosixTarArchiver();
         tarArchiver.setDestFile(tarFile2);
-        DefaultArchivedFileSet archivedFileSet = DefaultArchivedFileSet.archivedFileSet(tarFile);
-        archivedFileSet.setUsingDefaultExcludes(false);
+        DefaultArchivedFileSet archivedFileSet =
+                DefaultArchivedFileSet.archivedFileSet(tarFile).usingDefaultExcludes(false);
         tarArchiver.addArchivedFileSet(archivedFileSet);
         tarArchiver.createArchive();
 

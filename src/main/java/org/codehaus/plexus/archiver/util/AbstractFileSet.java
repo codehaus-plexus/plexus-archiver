@@ -162,6 +162,12 @@ public abstract class AbstractFileSet<T extends AbstractFileSet> implements Base
         return (T) this;
     }
 
+    @SuppressWarnings("unchecked")
+    public T usingDefaultExcludes(boolean usingDefaultExcludes) {
+        setUsingDefaultExcludes(usingDefaultExcludes);
+        return (T) this;
+    }
+
     public void setStreamTransformer(@Nonnull InputStreamTransformer streamTransformer) {
         this.streamTransformer = streamTransformer;
     }
