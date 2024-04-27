@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -31,6 +32,7 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -147,7 +149,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private void fixLastModifiedTimeZipEntries() throws IOException {
         long timeMillis = getLastModifiedTime().toMillis();
         Path destFile = getDestFile().toPath();
-        Path tmpZip = Files.createTempFile(destFile.getParent(), null, null);
+        Path tmpZip = createTempFile(destFile.getParent());
         try (ZipFile zipFile = new ZipFile(getDestFile());
                 ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -261,6 +263,26 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
             return result != null && result.intValue() == 0;
         } catch (ReflectiveOperationException | SecurityException e) {
             return false;
+        }
+    }
+
+    /**
+     * Create a temporary file in the provided directory.
+     *
+     * It is an unsecure replacement for {@code Files#createTempFile(Path, String, String, java.nio.file.attribute.FileAttribute...)}:
+     * The new file permissions are controlled by the umask property instead of just being accessible to the current user.
+     */
+    private Path createTempFile(Path dir) throws IOException {
+        Random random = new Random();
+        for (; ; ) {
+
+            String name = Long.toUnsignedString(random.nextLong()) + ".tmp";
+            Path path = dir.resolve(name);
+            try {
+                return Files.createFile(path);
+            } catch (FileAlreadyExistsException e) {
+                // retry;
+            }
         }
     }
 }
