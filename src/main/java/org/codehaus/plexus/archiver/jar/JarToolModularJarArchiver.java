@@ -22,17 +22,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -67,6 +70,9 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private static final String MODULE_DESCRIPTOR_FILE_NAME = "module-info.class";
 
     private static final Pattern MRJAR_VERSION_AREA = Pattern.compile("META-INF/versions/\\d+/");
+
+    private static final boolean IS_POSIX =
+            FileSystems.getDefault().supportedFileAttributeViews().contains("posix");
 
     private Object jarTool;
 
@@ -149,7 +155,16 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private void fixLastModifiedTimeZipEntries() throws IOException {
         long timeMillis = getLastModifiedTime().toMillis();
         Path destFile = getDestFile().toPath();
-        Path tmpZip = createTempFile(destFile.getParent());
+        FileAttribute<?>[] attributes;
+        if (IS_POSIX) {
+            PosixFileAttributes posixFileAttributes = Files.getFileAttributeView(destFile, PosixFileAttributeView.class)
+                    .readAttributes();
+            attributes = new FileAttribute<?>[1];
+            attributes[0] = PosixFilePermissions.asFileAttribute(posixFileAttributes.permissions());
+        } else {
+            attributes = new FileAttribute<?>[0];
+        }
+        Path tmpZip = Files.createTempFile(destFile.getParent(), null, null, attributes);
         try (ZipFile zipFile = new ZipFile(getDestFile());
                 ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -263,26 +278,6 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
             return result != null && result.intValue() == 0;
         } catch (ReflectiveOperationException | SecurityException e) {
             return false;
-        }
-    }
-
-    /**
-     * Create a temporary file in the provided directory.
-     *
-     * It is an unsecure replacement for {@code Files#createTempFile(Path, String, String, java.nio.file.attribute.FileAttribute...)}:
-     * The new file permissions are controlled by the umask property instead of just being accessible to the current user.
-     */
-    private Path createTempFile(Path dir) throws IOException {
-        Random random = new Random();
-        for (; ; ) {
-
-            String name = Long.toUnsignedString(random.nextLong()) + ".tmp";
-            Path path = dir.resolve(name);
-            try {
-                return Files.createFile(path);
-            } catch (FileAlreadyExistsException e) {
-                // retry;
-            }
         }
     }
 }
