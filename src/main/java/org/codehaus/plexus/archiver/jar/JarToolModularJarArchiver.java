@@ -165,22 +165,32 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
             attributes = new FileAttribute<?>[0];
         }
         Path tmpZip = Files.createTempFile(destFile.getParent(), null, null, attributes);
-        try (ZipFile zipFile = new ZipFile(getDestFile());
-                ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                // Not using setLastModifiedTime(FileTime) as it sets the extended timestamp
-                // which is not compatible with the jar tool output.
-                entry.setTime(timeMillis);
-                out.putNextEntry(entry);
-                if (!entry.isDirectory()) {
-                    IOUtil.copy(zipFile.getInputStream(entry), out);
+        try {
+            try (ZipFile zipFile = new ZipFile(getDestFile());
+                    ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
+                Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    // Not using setLastModifiedTime(FileTime) as it sets the extended timestamp
+                    // which is not compatible with the jar tool output.
+                    entry.setTime(timeMillis);
+                    out.putNextEntry(entry);
+                    if (!entry.isDirectory()) {
+                        IOUtil.copy(zipFile.getInputStream(entry), out);
+                    }
+                    out.closeEntry();
                 }
-                out.closeEntry();
             }
+            Files.move(tmpZip, destFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            // Clean up temporary file if an error occurs
+            try {
+                Files.delete(tmpZip);
+            } catch (IOException ioe) {
+                e.addSuppressed(ioe);
+            }
+            throw e;
         }
-        Files.move(tmpZip, destFile, StandardCopyOption.REPLACE_EXISTING);
     }
 
     /**
