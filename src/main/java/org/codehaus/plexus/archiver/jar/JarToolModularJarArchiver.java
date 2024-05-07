@@ -22,8 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileAttribute;
@@ -70,9 +70,6 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private static final String MODULE_DESCRIPTOR_FILE_NAME = "module-info.class";
 
     private static final Pattern MRJAR_VERSION_AREA = Pattern.compile("META-INF/versions/\\d+/");
-
-    private static final boolean IS_POSIX =
-            FileSystems.getDefault().supportedFileAttributeViews().contains("posix");
 
     private Object jarTool;
 
@@ -155,10 +152,11 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private void fixLastModifiedTimeZipEntries() throws IOException {
         long timeMillis = getLastModifiedTime().toMillis();
         Path destFile = getDestFile().toPath();
+        PosixFileAttributes posixFileAttributes = Files.getFileAttributeView(
+                        destFile, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
+                .readAttributes();
         FileAttribute<?>[] attributes;
-        if (IS_POSIX) {
-            PosixFileAttributes posixFileAttributes = Files.getFileAttributeView(destFile, PosixFileAttributeView.class)
-                    .readAttributes();
+        if (posixFileAttributes != null) {
             attributes = new FileAttribute<?>[1];
             attributes[0] = PosixFilePermissions.asFileAttribute(posixFileAttributes.permissions());
         } else {
