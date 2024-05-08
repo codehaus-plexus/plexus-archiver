@@ -23,9 +23,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.PosixFileAttributes;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Enumeration;
@@ -147,23 +152,43 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private void fixLastModifiedTimeZipEntries() throws IOException {
         long timeMillis = getLastModifiedTime().toMillis();
         Path destFile = getDestFile().toPath();
-        Path tmpZip = Files.createTempFile(destFile.getParent(), null, null);
-        try (ZipFile zipFile = new ZipFile(getDestFile());
-                ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();
-            while (entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                // Not using setLastModifiedTime(FileTime) as it sets the extended timestamp
-                // which is not compatible with the jar tool output.
-                entry.setTime(timeMillis);
-                out.putNextEntry(entry);
-                if (!entry.isDirectory()) {
-                    IOUtil.copy(zipFile.getInputStream(entry), out);
-                }
-                out.closeEntry();
-            }
+        PosixFileAttributes posixFileAttributes = Files.getFileAttributeView(
+                        destFile, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
+                .readAttributes();
+        FileAttribute<?>[] attributes;
+        if (posixFileAttributes != null) {
+            attributes = new FileAttribute<?>[1];
+            attributes[0] = PosixFilePermissions.asFileAttribute(posixFileAttributes.permissions());
+        } else {
+            attributes = new FileAttribute<?>[0];
         }
-        Files.move(tmpZip, destFile, StandardCopyOption.REPLACE_EXISTING);
+        Path tmpZip = Files.createTempFile(destFile.getParent(), null, null, attributes);
+        try {
+            try (ZipFile zipFile = new ZipFile(getDestFile());
+                    ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
+                Enumeration<? extends ZipEntry> entries = zipFile.entries();
+                while (entries.hasMoreElements()) {
+                    ZipEntry entry = entries.nextElement();
+                    // Not using setLastModifiedTime(FileTime) as it sets the extended timestamp
+                    // which is not compatible with the jar tool output.
+                    entry.setTime(timeMillis);
+                    out.putNextEntry(entry);
+                    if (!entry.isDirectory()) {
+                        IOUtil.copy(zipFile.getInputStream(entry), out);
+                    }
+                    out.closeEntry();
+                }
+            }
+            Files.move(tmpZip, destFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            // Clean up temporary file if an error occurs
+            try {
+                Files.delete(tmpZip);
+            } catch (IOException ioe) {
+                e.addSuppressed(ioe);
+            }
+            throw e;
+        }
     }
 
     /**
