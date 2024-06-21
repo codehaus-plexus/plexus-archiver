@@ -91,9 +91,9 @@
       <version>${slf4jVersion}</version>
     </dependency>
     <dependency>
-      <groupId>org.iq80.snappy</groupId>
-      <artifactId>snappy</artifactId>
-      <version>0.4</version>
+      <groupId>io.airlift</groupId>
+      <artifactId>aircompressor</artifactId>
+      <version>0.27</version>
     </dependency>
     <dependency>
       <groupId>org.tukaani</groupId>

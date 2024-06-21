@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
+import io.airlift.compress.snappy.SnappyFramedInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
@@ -32,7 +33,6 @@ import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.iq80.snappy.SnappyFramedInputStream;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
