@@ -25,6 +25,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.zip.GZIPOutputStream;
 
+import io.airlift.compress.snappy.SnappyFramedOutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
@@ -42,7 +43,6 @@ import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
-import org.iq80.snappy.SnappyOutputStream;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 
@@ -426,7 +426,7 @@ public class TarArchiver extends AbstractArchiver {
         } else if (TarCompressionMethod.bzip2.equals(tarCompressionMethod)) {
             return new BZip2CompressorOutputStream(bufferedOutputStream(ostream));
         } else if (TarCompressionMethod.snappy.equals(tarCompressionMethod)) {
-            return new SnappyOutputStream(bufferedOutputStream(ostream));
+            return new SnappyFramedOutputStream(bufferedOutputStream(ostream));
         } else if (TarCompressionMethod.xz.equals(tarCompressionMethod)) {
             return new XZCompressorOutputStream(bufferedOutputStream(ostream));
         } else if (TarCompressionMethod.zstd.equals(tarCompressionMethod)) {

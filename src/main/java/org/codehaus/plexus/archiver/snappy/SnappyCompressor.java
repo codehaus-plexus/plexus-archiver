@@ -18,9 +18,9 @@ package org.codehaus.plexus.archiver.snappy;
 
 import java.io.IOException;
 
+import io.airlift.compress.snappy.SnappyFramedOutputStream;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Compressor;
-import org.iq80.snappy.SnappyFramedOutputStream;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileOutputStream;

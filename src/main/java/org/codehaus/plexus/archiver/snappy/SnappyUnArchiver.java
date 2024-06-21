@@ -23,9 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import io.airlift.compress.snappy.SnappyFramedInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.iq80.snappy.SnappyFramedInputStream;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
