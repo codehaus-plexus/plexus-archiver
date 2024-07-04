@@ -46,6 +46,7 @@
 
   <properties>
     <slf4jVersion>1.7.36</slf4jVersion>
+    <sisuMavenPluginVersion>0.9.0.M3</sisuMavenPluginVersion>
     <project.build.outputTimestamp>2024-03-14T22:25:56Z</project.build.outputTimestamp>
   </properties>
 
