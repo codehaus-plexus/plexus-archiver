@@ -33,24 +33,24 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.zip.GZIPOutputStream;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.AbstractArchiver;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ArchiveEntry;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ArchiverException;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ResourceIterator;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.util.ResourceUtils;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.util.Streams;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.IOUtil;
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.StringUtils;
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> org.iq80.snappy.SnappyOutputStream;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> io.airlift.compress.snappy.SnappyFramedOutputStream;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.AbstractArchiver;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ArchiveEntry;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ArchiverException;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.ResourceIterator;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.util.ResourceUtils;
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.util.Streams;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.resources.PlexusIoResource;
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.IOUtil;
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.StringUtils;
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
@@ -434,7 +434,7 @@
 <a class="jxr_linenumber" name="L426" href="#L426">426</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.bzip2.equals(tarCompressionMethod)) {
 <a class="jxr_linenumber" name="L427" href="#L427">427</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BZip2CompressorOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L428" href="#L428">428</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.snappy.equals(tarCompressionMethod)) {
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> SnappyOutputStream(bufferedOutputStream(ostream));
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> SnappyFramedOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.xz.equals(tarCompressionMethod)) {
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XZCompressorOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L432" href="#L432">432</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.zstd.equals(tarCompressionMethod)) {
