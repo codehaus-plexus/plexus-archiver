@@ -24,7 +24,6 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.util.Calendar;
 import java.util.Deque;
@@ -550,7 +549,7 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
         // Must create it manually.
         getLogger().info("Note: creating empty " + archiveType + " archive " + zipFile);
 
-        try (OutputStream os = Files.newOutputStream(zipFile.toPath())) {
+        try (OutputStream os = Streams.fileOutputStream(zipFile.toPath())) {
             // Cf. PKZIP specification.
             byte[] empty = new byte[22];
             empty[0] = 80; // P
@@ -670,13 +669,9 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
             }
 
         } catch (InterruptedException e) {
-            IOException ex = new IOException("InterruptedException exception");
-            ex.initCause(e.getCause());
-            throw ex;
+            throw new IOException("InterruptedException exception", e.getCause());
         } catch (ExecutionException e) {
-            IOException ex = new IOException("Execution exception");
-            ex.initCause(e.getCause());
-            throw ex;
+            throw new IOException("Execution exception", e.getCause());
         }
     }
 
