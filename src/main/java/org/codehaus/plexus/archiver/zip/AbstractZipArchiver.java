@@ -651,8 +651,10 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
             if (zipArchiveOutputStream != null) {
                 if (zOut != null) {
                     zOut.writeTo(zipArchiveOutputStream);
+                } else {
+                    zipArchiveOutputStream.close();
                 }
-                zipArchiveOutputStream.close();
+                zipArchiveOutputStream = null;
             }
         } catch (IOException ex) {
             // If we're in this finally clause because of an
