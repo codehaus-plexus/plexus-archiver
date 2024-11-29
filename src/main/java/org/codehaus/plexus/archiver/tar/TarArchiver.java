@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.zip.GZIPOutputStream;
 
 import io.airlift.compress.snappy.SnappyFramedOutputStream;
@@ -127,7 +126,7 @@ public class TarArchiver extends AbstractArchiver {
         getLogger().info("Building tar: " + tarFile.getAbsolutePath());
 
         try {
-            tOut = new TarArchiveOutputStream(compress(compression, Files.newOutputStream(tarFile.toPath())), "UTF8");
+            tOut = new TarArchiveOutputStream(compress(compression, Streams.fileOutputStream(tarFile)), "UTF8");
             if (longFileMode.isTruncateMode()) {
                 tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_TRUNCATE);
             } else if (longFileMode.isPosixMode() || longFileMode.isPosixWarnMode()) {

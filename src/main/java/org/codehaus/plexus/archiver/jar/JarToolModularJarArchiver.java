@@ -45,6 +45,7 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.apache.commons.io.output.NullPrintStream;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 import org.codehaus.plexus.util.IOUtil;
 
@@ -165,7 +166,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
         Path tmpZip = Files.createTempFile(destFile.getParent(), null, null, attributes);
         try {
             try (ZipFile zipFile = new ZipFile(getDestFile());
-                    ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(tmpZip))) {
+                    ZipOutputStream out = new ZipOutputStream(Streams.fileOutputStream(tmpZip))) {
                 Enumeration<? extends ZipEntry> entries = zipFile.entries();
                 while (entries.hasMoreElements()) {
                     ZipEntry entry = entries.nextElement();
