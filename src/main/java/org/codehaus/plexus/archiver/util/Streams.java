@@ -26,9 +26,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.io.CachingOutputStream;
 
 public class Streams {
 
@@ -60,12 +62,16 @@ public class Streams {
     }
 
     public static OutputStream fileOutputStream(File file) throws IOException {
-        return Files.newOutputStream(file.toPath());
+        return new CachingOutputStream(file);
+    }
+
+    public static OutputStream fileOutputStream(Path file) throws IOException {
+        return new CachingOutputStream(file);
     }
 
     public static OutputStream fileOutputStream(File file, String operation) throws ArchiverException {
         try {
-            return Files.newOutputStream(file.toPath());
+            return new CachingOutputStream(file);
         } catch (IOException e) {
             throw new ArchiverException(
                     "Problem creating output file for " + operation + " " + file.getParent() + ", " + e.getMessage());

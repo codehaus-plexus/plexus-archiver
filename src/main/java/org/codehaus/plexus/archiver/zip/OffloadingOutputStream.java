@@ -26,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.commons.io.output.ThresholdingOutputStream;
+import org.codehaus.plexus.archiver.util.Streams;
 
 /**
  * Offloads to disk when a given memory consumption has been reached
@@ -35,7 +36,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
     // ----------------------------------------------------------- Data members
 
     /**
-     * The output stream to which data will be written prior to the theshold
+     * The output stream to which data will be written prior to the threshold
      * being reached.
      */
     private ByteArrayOutputStream memoryOutputStream;
@@ -111,7 +112,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
     @Override
     protected void thresholdReached() throws IOException {
         outputPath = Files.createTempFile(prefix, suffix);
-        currentOutputStream = Files.newOutputStream(outputPath);
+        currentOutputStream = Streams.fileOutputStream(outputPath);
     }
 
     public InputStream getInputStream() throws IOException {
