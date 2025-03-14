@@ -10,8 +10,8 @@ The current master is now at https://github.com/codehaus-plexus/plexus-archiver
 
 ## Important Hint
 
-Based on a hint of snyk.io security team they have found a possible security issue. 
-Furthermore they have offered an patch to prevent the possible security issue. 
+Based on a hint of snyk.io security team they have found a possible security issue.
+Furthermore they have offered an patch to prevent the possible security issue.
 This patch has been integrated into the Release 3.6.0
 
 ## Release Notes
