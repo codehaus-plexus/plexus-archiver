@@ -13,4 +13,8 @@ echo -ne 'content' > entry2
 zip  --symlinks ../non_existing_symlink.zip entry1 entry2
 cd ..
 rm -rf non_existing_symlink
-LC_ALL=C sed  -i '' 's/entry2/entry1/' non_existing_symlink.zip
+if [ "x$(uname)" = "xLinux" ];then
+    LC_ALL=C sed  -i  's/entry2/entry1/' non_existing_symlink.zip
+else
+    LC_ALL=C sed  -i '' 's/entry2/entry1/' non_existing_symlink.zip
+fi
