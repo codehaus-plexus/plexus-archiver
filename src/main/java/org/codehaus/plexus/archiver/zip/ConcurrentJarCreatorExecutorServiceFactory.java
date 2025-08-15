@@ -24,6 +24,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Classic (pre Java 21) implementation. Create one thread eagerly, but allow pool to scale up to provided
+ * number (usually set to Java reported CPU count). Apply same thread names as well.
+ *
+ * @since 4.10.1
+ */
 public class ConcurrentJarCreatorExecutorServiceFactory {
     private static final AtomicInteger POOL_COUNTER = new AtomicInteger();
 

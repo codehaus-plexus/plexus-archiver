@@ -21,6 +21,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Post Java 21 implementation. Create one Virtual Thread per task execution. Apply same thread names as well.
+ *
+ * @since 4.10.1
+ */
 public class ConcurrentJarCreatorExecutorServiceFactory {
     private static final AtomicInteger POOL_COUNTER = new AtomicInteger();
 
