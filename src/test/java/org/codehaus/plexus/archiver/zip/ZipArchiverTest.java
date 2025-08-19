@@ -51,7 +51,7 @@ import org.apache.commons.compress.archivers.zip.ExtraFieldUtils;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipExtraField;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.compress.utils.BoundedInputStream;
+import org.apache.commons.io.input.BoundedInputStream;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
@@ -115,7 +115,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
-        ZipFile zf = new ZipFile(zipFile);
+        ZipFile zf = ZipFile.builder().setFile(zipFile).get();
         ZipArchiveEntry fizz = zf.getEntry("fizz/");
         assertEquals(040641, fizz.getUnixMode());
         ZipArchiveEntry pom = zf.getEntry("fizz/buzz/pom.xml");
@@ -140,7 +140,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
-        ZipFile zf = new ZipFile(zipFile);
+        ZipFile zf = ZipFile.builder().setFile(zipFile).get();
         ZipArchiveEntry fizz = zf.getEntry("symDir");
         assertTrue(fizz.isUnixSymlink());
         ZipArchiveEntry symR = zf.getEntry("symR");
@@ -224,7 +224,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.addArchivedFileSet(zipFile);
         archiver.createArchive();
 
-        ZipFile zf = new ZipFile(zipFile2);
+        ZipFile zf = ZipFile.builder().setFile(zipFile2).get();
 
         for (String path : executablePaths) {
             ZipArchiveEntry ze = zf.getEntry(path);
@@ -277,7 +277,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         return zipArchiver;
     }
 
-    private ZipUnArchiver getZipUnArchiver(File testJar) throws Exception {
+    private ZipUnArchiver getZipUnArchiver(File testJar) {
         ZipUnArchiver zu = (ZipUnArchiver) lookup(UnArchiver.class, "zip");
         zu.setSourceFile(testJar);
         return zu;
@@ -314,7 +314,8 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         FileUtils.removePath(zipFileRecompress.getPath());
         zipArchiverRecompress.createArchive();
 
-        final ZipFile zfRecompress = new ZipFile(zipFileRecompress);
+        final ZipFile zfRecompress =
+                ZipFile.builder().setFile(zipFileRecompress).get();
         assertEquals(ZipEntry.DEFLATED, zfRecompress.getEntry("test.zip").getMethod());
         assertEquals(ZipEntry.DEFLATED, zfRecompress.getEntry("test.jar").getMethod());
         assertEquals(ZipEntry.DEFLATED, zfRecompress.getEntry("test.rar").getMethod());
@@ -330,7 +331,8 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         FileUtils.removePath(zipFileDontRecompress.getPath());
         zipArchiver.createArchive();
 
-        final ZipFile zfDontRecompress = new ZipFile(zipFileDontRecompress);
+        final ZipFile zfDontRecompress =
+                ZipFile.builder().setFile(zipFileDontRecompress).get();
         final ZipArchiveEntry zipEntry = zfDontRecompress.getEntry("test.zip");
         final ZipArchiveEntry jarEntry = zfDontRecompress.getEntry("test.jar");
         final ZipArchiveEntry rarEntry = zfDontRecompress.getEntry("test.rar");
@@ -367,7 +369,10 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             @Nonnull
             public InputStream transform(@Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream)
                     throws IOException {
-                return new BoundedInputStream(inputStream, 3);
+                return BoundedInputStream.builder()
+                        .setInputStream(inputStream)
+                        .setMaxCount(3)
+                        .get();
             }
         };
         sfd.setStreamTransformer(is);
@@ -386,7 +391,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
                 destFile,
                 "prefixUsers/kristian/lsrc/plexus/plexus-archiver/src/main/java/org/codehaus/plexus/archiver/zip/ZipArchiver.java");
         assertTrue(a3byteFile.exists());
-        assertTrue(a3byteFile.length() == 3);
+        assertEquals(3, a3byteFile.length());
     }
 
     @Test
@@ -397,7 +402,10 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             @Override
             public InputStream transform(@Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream)
                     throws IOException {
-                return new BoundedInputStream(inputStream, 3);
+                return BoundedInputStream.builder()
+                        .setInputStream(inputStream)
+                        .setBufferSizeMax(3)
+                        .get();
             }
         };
 
@@ -422,7 +430,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         zipArchiver.createArchive();
     }
 
-    private ZipArchiver newArchiver(String name) throws Exception {
+    private ZipArchiver newArchiver(String name) {
         ZipArchiver archiver = getZipArchiver(getTestFile("target/output/" + name));
 
         archiver.setFileMode(0640);
@@ -451,12 +459,12 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     private void createArchive(ZipArchiver archiver) throws ArchiverException, IOException {
         archiver.createArchive();
 
-        ZipFile zf = new ZipFile(archiver.getDestFile());
+        ZipFile zf = ZipFile.builder().setFile(archiver.getDestFile()).get();
 
-        Enumeration e = zf.getEntries();
+        Enumeration<ZipArchiveEntry> e = zf.getEntries();
 
         while (e.hasMoreElements()) {
-            ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+            ZipArchiveEntry ze = e.nextElement();
             if (ze.isDirectory()) {
                 if (ze.getName().startsWith("worldwritable")) {
                     fileModeAssert(0777, UnixStat.PERM_MASK & ze.getUnixMode());
@@ -529,8 +537,8 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         zipArchiver.addArchivedFileSet(zipFile);
         zipArchiver.createArchive();
 
-        final ZipFile cmp1 = new ZipFile(zipFile);
-        final ZipFile cmp2 = new ZipFile(zipFile2);
+        final ZipFile cmp1 = ZipFile.builder().setFile(zipFile).get();
+        final ZipFile cmp2 = ZipFile.builder().setFile(zipFile2).get();
         ArchiveFileComparator.assertZipEquals(cmp1, cmp2, "");
     }
 
@@ -553,7 +561,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.createArchive();
 
         // verify that the last modified time of the entry is equal or newer than the original file
-        try (ZipFile resultingZipFile = new ZipFile(destFile)) {
+        try (ZipFile resultingZipFile = ZipFile.builder().setFile(destFile).get()) {
             assertEquals(
                     1534189012_000L, resultingZipFile.getEntry("odd-seconds").getTime());
             assertEquals(
@@ -611,11 +619,11 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
         System.out.println(Arrays.asList(ExtraFieldUtils.parse(oddEntry.getExtra())));
 
-        System.out.println("oddEntry.getTime() = " + new Date(oddEntry.getTime()).toString());
+        System.out.println("oddEntry.getTime() = " + new Date(oddEntry.getTime()));
         System.out.println("oddEntry.getName() = " + oddEntry.getName());
         System.out.println("new String(oddEntry.getExtra()) = " + new String(oddEntry.getExtra()));
         System.out.println("evenEntry.getName() = " + evenEntry.getName());
-        System.out.println("evenEntry.getTime() = " + new Date(evenEntry.getTime()).toString());
+        System.out.println("evenEntry.getTime() = " + new Date(evenEntry.getTime()));
         System.out.println("new String(evenEntry.getExtra()) = " + new String(evenEntry.getExtra()));
     }
 
@@ -638,11 +646,11 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
         ZipInputStream zipInputStream = new ZipInputStream(bais);
         final java.util.zip.ZipEntry oddEntry = zipInputStream.getNextEntry();
-        System.out.println("oddEntry.getTime() = " + new Date(oddEntry.getTime()).toString());
+        System.out.println("oddEntry.getTime() = " + new Date(oddEntry.getTime()));
         System.out.println("oddEntry.getName() = " + oddEntry.getName());
         final java.util.zip.ZipEntry evenEntry = zipInputStream.getNextEntry();
         System.out.println("evenEntry.getName() = " + evenEntry.getName());
-        System.out.println("evenEntry.getTime() = " + new Date(evenEntry.getTime()).toString());
+        System.out.println("evenEntry.getTime() = " + new Date(evenEntry.getTime()));
     }
 
     @Disabled("Junit3 method name is notest")
@@ -678,8 +686,8 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         FileUtils.removePath(zipFile2.getPath());
         zipArchiver2.createArchive();
 
-        final ZipFile cmp1 = new ZipFile(zipFile);
-        final ZipFile cmp2 = new ZipFile(zipFile2);
+        final ZipFile cmp1 = ZipFile.builder().setFile(zipFile).get();
+        final ZipFile cmp2 = ZipFile.builder().setFile(zipFile2).get();
         ArchiveFileComparator.assertZipEquals(cmp1, cmp2, "prfx/");
         cmp1.close();
         cmp2.close();
@@ -710,7 +718,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         zipArchive.createArchive();
 
         final TarFile cmp1 = new TarFile(tarFile);
-        final ZipFile cmp2 = new ZipFile(zipFile);
+        final ZipFile cmp2 = ZipFile.builder().setFile(zipFile).get();
         ArchiveFileComparator.assertTarZipEquals(cmp1, cmp2, "prfx/");
         cmp1.close();
         cmp2.close();
@@ -749,7 +757,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
             zipArchiver.createArchive();
 
-            ZipFile zf = new ZipFile(step1file);
+            ZipFile zf = ZipFile.builder().setFile(step1file).get();
             fileModeAssert(040007, zf.getEntry("sixsixsix/a/").getUnixMode());
             fileModeAssert(0100077, zf.getEntry("sixsixsix/b/FileInB.txt").getUnixMode());
             fileModeAssert(0100707, zf.getEntry("Test2.txt").getUnixMode());
@@ -767,7 +775,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             zipSrc.setPrefix("zz/");
             za2.addResources(zipSrc);
             za2.createArchive();
-            ZipFile zf = new ZipFile(Step2file);
+            ZipFile zf = ZipFile.builder().setFile(Step2file).get();
             fileModeAssert(040676, zf.getEntry("zz/sixsixsix/a/").getUnixMode());
             fileModeAssert(0100666, zf.getEntry("zz/Test2.txt").getUnixMode());
             zf.close();
@@ -784,7 +792,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             zipSrc.setPrefix("zz/");
             za2.addResources(zipSrc);
             za2.createArchive();
-            ZipFile zf = new ZipFile(Step2file);
+            ZipFile zf = ZipFile.builder().setFile(Step2file).get();
             fileModeAssert(040676, zf.getEntry("zz/sixsixsix/a/").getUnixMode());
             fileModeAssert(0100666, zf.getEntry("zz/Test2.txt").getUnixMode());
             zf.close();
@@ -802,7 +810,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
-        try (final ZipFile zf = new ZipFile(zipFile)) {
+        try (final ZipFile zf = ZipFile.builder().setFile(zipFile).get()) {
             assertEquals(
                     almostMinDosTime, zf.getEntry("file-with-even-time.txt").getTime());
             assertEquals(almostMinDosTime, zf.getEntry("file-with-odd-time.txt").getTime());

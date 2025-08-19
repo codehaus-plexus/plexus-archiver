@@ -97,6 +97,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
      * @throws java.io.IOException if an error occurs.
      */
     @Override
+    @Deprecated
     protected OutputStream getStream() throws IOException {
         return currentOutputStream;
     }

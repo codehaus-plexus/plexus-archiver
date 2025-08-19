@@ -28,7 +28,6 @@ import java.util.Enumeration;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.apache.commons.io.input.CountingInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
@@ -154,7 +153,11 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
     @Override
     protected void execute(final String path, final File outputDirectory) throws ArchiverException {
         getLogger().debug("Expanding: " + getSourceFile() + " into " + outputDirectory);
-        try (ZipFile zipFile = new ZipFile(getSourceFile(), encoding, true)) {
+        try (ZipFile zipFile = ZipFile.builder()
+                .setFile(getSourceFile())
+                .setCharset(encoding)
+                .setUseUnicodeExtraFields(true)
+                .get()) {
             long remainingSpace = maxOutputSize;
             final Enumeration<ZipArchiveEntry> e = zipFile.getEntriesInPhysicalOrder();
 
@@ -167,12 +170,14 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
 
                 if (ze.getName().startsWith(path)) {
                     try (InputStream in = zipFile.getInputStream(ze)) {
-                        BoundedInputStream bis = new BoundedInputStream(in, remainingSpace + 1);
-                        CountingInputStream cis = new CountingInputStream(bis);
+                        BoundedInputStream bis = BoundedInputStream.builder()
+                                .setInputStream(in)
+                                .setMaxCount(remainingSpace + 1)
+                                .get();
                         extractFile(
                                 getSourceFile(),
                                 outputDirectory,
-                                cis,
+                                bis,
                                 ze.getName(),
                                 new Date(ze.getTime()),
                                 ze.isDirectory(),
@@ -180,7 +185,7 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
                                 resolveSymlink(zipFile, ze),
                                 getFileMappers());
 
-                        remainingSpace -= cis.getByteCount();
+                        remainingSpace -= bis.getCount();
                         if (remainingSpace < 0) {
                             throw new ArchiverException("Maximum output size limit reached");
                         }

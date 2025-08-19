@@ -54,7 +54,7 @@ class TarRoundTripTest {
         tos.close();
 
         TarArchiveInputStream tis = new TarArchiveInputStream(new ByteArrayInputStream(buff.toByteArray()));
-        TarArchiveEntry tripped = tis.getNextTarEntry();
+        TarArchiveEntry tripped = tis.getNextEntry();
         assertEquals(LONG_NAME, tripped.getName(), "round-tripped name");
         assertNull(tis.getNextEntry(), "no more entries");
         tis.close();

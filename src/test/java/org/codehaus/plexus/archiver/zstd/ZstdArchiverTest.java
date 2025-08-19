@@ -18,7 +18,6 @@ package org.codehaus.plexus.archiver.zstd;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -30,6 +29,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,7 +97,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
         final InputStream archivePom = juZipFile.getInputStream(zipEntry);
         final InputStream pom = Files.newInputStream(pomFile.toPath());
 
-        assertTrue(Arrays.equals(IOUtil.toByteArray(pom), IOUtil.toByteArray(archivePom)));
+        assertArrayEquals(IOUtil.toByteArray(pom), IOUtil.toByteArray(archivePom));
         archivePom.close();
         pom.close();
         juZipFile.close();

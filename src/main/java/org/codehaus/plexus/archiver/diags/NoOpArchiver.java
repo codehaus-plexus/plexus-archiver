@@ -55,9 +55,11 @@ public class NoOpArchiver implements Archiver {
     public void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException {}
 
     @Override
+    @Deprecated
     public void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException {}
 
     @Override
+    @Deprecated
     public void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
             throws ArchiverException {}
 
@@ -78,15 +80,18 @@ public class NoOpArchiver implements Archiver {
             throws ArchiverException {}
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException {}
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException {}
 
     @Override
     public void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException {}
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
             throws ArchiverException {}
 
@@ -186,6 +191,7 @@ public class NoOpArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public Map<String, ArchiveEntry> getFiles() {
         return Collections.emptyMap();
     }
@@ -212,11 +218,13 @@ public class NoOpArchiver implements Archiver {
     public void setDuplicateBehavior(String duplicate) {}
 
     @Override
+    @Deprecated
     public void setUseJvmChmod(boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }
 
     @Override
+    @Deprecated
     public boolean isUseJvmChmod() {
         return useJvmChmod;
     }

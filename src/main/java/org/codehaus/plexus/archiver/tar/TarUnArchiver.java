@@ -96,7 +96,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
             try (TarArchiveInputStream tis = new TarArchiveInputStream(
                     decompress(compression, sourceFile, bufferedInputStream(fileInputStream(sourceFile))))) {
                 TarArchiveEntry te;
-                while ((te = tis.getNextTarEntry()) != null) {
+                while ((te = tis.getNextEntry()) != null) {
                     TarResource fileInfo = new TarResource(tarFile, te);
                     if (isSelected(te.getName(), fileInfo)) {
                         final String symlinkDestination = te.isSymbolicLink() ? te.getLinkName() : null;

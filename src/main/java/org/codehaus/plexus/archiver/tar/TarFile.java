@@ -72,7 +72,7 @@ public class TarFile implements ArchiveFile {
             public boolean hasMoreElements() {
                 if (!currentEntryValid) {
                     try {
-                        currentEntry = inputStream.getNextTarEntry();
+                        currentEntry = inputStream.getNextEntry();
                     } catch (IOException e) {
                         throw new UndeclaredThrowableException(e);
                     }
@@ -155,7 +155,7 @@ public class TarFile implements ArchiveFile {
 
     private boolean findEntry(TarArchiveEntry entry, TarArchiveEntry currentEntry) throws IOException {
         for (; ; ) {
-            this.currentEntry = inputStream.getNextTarEntry();
+            this.currentEntry = inputStream.getNextEntry();
             if (this.currentEntry == null || (currentEntry != null && this.currentEntry.equals(currentEntry))) {
                 return false;
             }

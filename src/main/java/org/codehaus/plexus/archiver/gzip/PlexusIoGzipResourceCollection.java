@@ -6,7 +6,6 @@ import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
@@ -36,6 +35,6 @@ public class PlexusIoGzipResourceCollection extends PlexusIoCompressedFileResour
 
     @Override
     protected PlexusIoResourceAttributes getAttributes(File file) throws IOException {
-        return new FileAttributes(file, new HashMap<Integer, String>(), new HashMap<Integer, String>());
+        return new FileAttributes(file);
     }
 }

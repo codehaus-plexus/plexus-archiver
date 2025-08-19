@@ -7,7 +7,6 @@ import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
@@ -31,7 +30,7 @@ public class PlexusIoBzip2ResourceCollection extends PlexusIoCompressedFileResou
 
     @Override
     protected PlexusIoResourceAttributes getAttributes(File file) throws IOException {
-        return new FileAttributes(file, new HashMap<Integer, String>(), new HashMap<Integer, String>());
+        return new FileAttributes(file);
     }
 
     @Override

@@ -284,17 +284,20 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     @Override
+    @Deprecated
     public void addDirectory(@Nonnull final File directory) throws ArchiverException {
         addFileSet(fileSet(directory).prefixed("").includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
+    @Deprecated
     public void addDirectory(@Nonnull final File directory, final String prefix) throws ArchiverException {
         addFileSet(
                 fileSet(directory).prefixed(prefix).includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
+    @Deprecated
     public void addDirectory(@Nonnull final File directory, final String[] includes, final String[] excludes)
             throws ArchiverException {
         addFileSet(fileSet(directory)
@@ -304,6 +307,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     @Override
+    @Deprecated
     public void addDirectory(
             @Nonnull final File directory, final String prefix, final String[] includes, final String[] excludes)
             throws ArchiverException {
@@ -613,6 +617,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     @Override
+    @Deprecated
     public Map<String, ArchiveEntry> getFiles() {
         try {
             final Map<String, ArchiveEntry> map = new HashMap<>();
@@ -719,6 +724,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.0-alpha-7
      */
     @Override
+    @Deprecated
     public void addArchivedFileSet(
             @Nonnull final File archiveFile, final String prefix, final String[] includes, final String[] excludes)
             throws ArchiverException {
@@ -732,6 +738,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.0-alpha-7
      */
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull final File archiveFile, final String prefix) throws ArchiverException {
         addArchivedFileSet(archivedFileSet(archiveFile).prefixed(prefix).includeEmptyDirs(includeEmptyDirs));
     }
@@ -740,6 +747,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.0-alpha-7
      */
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull final File archiveFile, final String[] includes, final String[] excludes)
             throws ArchiverException {
         addArchivedFileSet(
@@ -750,6 +758,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.0-alpha-7
      */
     @Override
+    @Deprecated
     public void addArchivedFileSet(@Nonnull final File archiveFile) throws ArchiverException {
         addArchivedFileSet(archivedFileSet(archiveFile).includeEmptyDirs(includeEmptyDirs));
     }
@@ -960,6 +969,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.1
      */
     @Override
+    @Deprecated
     public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
@@ -968,6 +978,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.1
      */
     @Override
+    @Deprecated
     public void setUseJvmChmod(final boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }

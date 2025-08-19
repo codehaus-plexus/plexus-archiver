@@ -56,13 +56,15 @@ class IndexTest extends TestSupport {
 
         // read the index file back and check it looks like it ought to
         org.apache.commons.compress.archivers.zip.ZipFile zf =
-                new org.apache.commons.compress.archivers.zip.ZipFile(archiver2.getDestFile());
+                org.apache.commons.compress.archivers.zip.ZipFile.builder()
+                        .setFile(archiver2.getDestFile())
+                        .get();
 
         ZipArchiveEntry indexEntry = zf.getEntry("META-INF/INDEX.LIST");
         assertNotNull(indexEntry);
         InputStream bis = bufferedInputStream(zf.getInputStream(indexEntry));
 
-        byte buf[] = new byte[1024];
+        byte[] buf = new byte[1024];
         int i = bis.read(buf);
         String res = new String(buf, 0, i);
         assertEquals(
@@ -109,13 +111,15 @@ class IndexTest extends TestSupport {
 
         // read the index file back and check it looks like it ought to
         org.apache.commons.compress.archivers.zip.ZipFile zf =
-                new org.apache.commons.compress.archivers.zip.ZipFile(archiver2.getDestFile());
+                org.apache.commons.compress.archivers.zip.ZipFile.builder()
+                        .setFile(archiver2.getDestFile())
+                        .get();
 
         ZipArchiveEntry indexEntry = zf.getEntry("META-INF/INDEX.LIST");
         assertNotNull(indexEntry);
         InputStream bis = bufferedInputStream(zf.getInputStream(indexEntry));
 
-        byte buf[] = new byte[1024];
+        byte[] buf = new byte[1024];
         int i = bis.read(buf);
         String res = new String(buf, 0, i);
         // System.out.println(res);

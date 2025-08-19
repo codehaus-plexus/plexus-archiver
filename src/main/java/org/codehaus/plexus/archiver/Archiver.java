@@ -128,6 +128,7 @@ public interface Archiver {
      *
      * @deprecated Will go away in next major version
      */
+    @Deprecated
     void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException;
 
     /**
@@ -261,6 +262,7 @@ public interface Archiver {
     /**
      * @deprecated Use {@link #getResources()}
      */
+    @Deprecated
     Map<String, ArchiveEntry> getFiles();
 
     /**
