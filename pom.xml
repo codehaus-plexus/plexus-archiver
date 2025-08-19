@@ -213,5 +213,11 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>plexus-release</id>
+      <properties>
+        <minimalJavaBuildVersion>21</minimalJavaBuildVersion>
+      </properties>
+    </profile>
   </profiles>
 </project>
