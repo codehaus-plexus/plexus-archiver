@@ -281,7 +281,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
             // Test the output code validating the --date option.
             String[] args = {"--date", "2099-12-31T23:59:59Z", "--version"};
 
-            PrintStream nullPrintStream = NullPrintStream.NULL_PRINT_STREAM;
+            PrintStream nullPrintStream = NullPrintStream.INSTANCE;
             Integer result = (Integer) runMethod.invoke(jarTool, nullPrintStream, nullPrintStream, args);
 
             return result != null && result.intValue() == 0;

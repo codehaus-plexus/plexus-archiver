@@ -68,17 +68,20 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public void addDirectory(final @Nonnull File directory, final String prefix) throws ArchiverException {
         added.add(new Addition(directory, prefix, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
 
     @Override
+    @Deprecated
     public void addDirectory(final @Nonnull File directory, final String[] includes, final String[] excludes)
             throws ArchiverException {
         added.add(new Addition(directory, null, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
 
     @Override
+    @Deprecated
     public void addDirectory(
             final @Nonnull File directory, final String prefix, final String[] includes, final String[] excludes)
             throws ArchiverException {
@@ -107,6 +110,7 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(final @Nonnull File archiveFile, final String prefix) throws ArchiverException {
         added.add(new Addition(archiveFile, prefix, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
@@ -122,12 +126,14 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(final File archiveFile, final String[] includes, final String[] excludes)
             throws ArchiverException {
         added.add(new Addition(archiveFile, null, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
 
     @Override
+    @Deprecated
     public void addArchivedFileSet(
             final @Nonnull File archiveFile, final String prefix, final String[] includes, final String[] excludes)
             throws ArchiverException {
@@ -223,6 +229,7 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public Map<String, ArchiveEntry> getFiles() {
         return new HashMap<>();
     }
@@ -306,11 +313,13 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
 
     @Override
+    @Deprecated
     public void setUseJvmChmod(final boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }

@@ -67,7 +67,10 @@ public class PlexusIoZipFileResourceCollection extends AbstractPlexusIoArchiveRe
 
         final URL url = new URL("jar:" + f.toURI().toURL() + "!/");
         final JarFile jarFile = new JarFile(f);
-        final ZipFile zipFile = new ZipFile(f, charset != null ? charset.name() : "UTF8");
+        final ZipFile zipFile = ZipFile.builder()
+                .setFile(f)
+                .setCharset(charset != null ? charset : StandardCharsets.UTF_8)
+                .get();
         final Enumeration<ZipArchiveEntry> en = zipFile.getEntriesInPhysicalOrder();
         return new ZipFileResourceIterator(en, url, jarFile, zipFile, urlClassLoader);
     }

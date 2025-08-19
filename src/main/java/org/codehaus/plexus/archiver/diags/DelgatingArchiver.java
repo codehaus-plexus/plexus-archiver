@@ -222,6 +222,7 @@ public class DelgatingArchiver implements Archiver {
     }
 
     @Override
+    @Deprecated
     public Map<String, ArchiveEntry> getFiles() {
         return target.getFiles();
     }

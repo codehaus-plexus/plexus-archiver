@@ -35,7 +35,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.parallel.InputStreamSupplier;
 import org.apache.commons.compress.parallel.ScatterGatherBackingStore;
 import org.apache.commons.compress.parallel.ScatterGatherBackingStoreSupplier;
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.plexus.archiver.util.Streams;
 
 import static org.apache.commons.compress.archivers.zip.ZipArchiveEntryRequest.createZipArchiveEntryRequest;
@@ -86,7 +86,6 @@ public class ConcurrentJarCreator {
      * {@link #ConcurrentJarCreator(boolean, int) ConcurrentJarCreator(true, nThreads) }</p>
      *
      * @param nThreads The number of concurrent thread used to create the archive
-     *
      * @throws IOException
      */
     public ConcurrentJarCreator(int nThreads) throws IOException {

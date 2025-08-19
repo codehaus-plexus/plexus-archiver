@@ -38,9 +38,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dan T. Tran
@@ -109,9 +109,9 @@ class ArchiverManagerTest extends TestSupport {
 
         Archiver newArchiver = manager.getArchiver("jar");
         assertNotNull(newArchiver);
-        assertFalse(newArchiver.equals(archiver));
+        assertNotEquals(newArchiver, archiver);
 
-        assertTrue(!newArchiver.getResources().hasNext());
+        assertFalse(newArchiver.getResources().hasNext());
     }
 
     @Test

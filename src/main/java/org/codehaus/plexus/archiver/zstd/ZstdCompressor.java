@@ -44,11 +44,12 @@ public class ZstdCompressor extends Compressor {
     public void compress() throws ArchiverException {
         try {
             BufferedOutputStream outStream = bufferedOutputStream(fileOutputStream(getDestFile()));
-            if (level == null) {
-                zstdOut = new ZstdCompressorOutputStream(outStream);
-            } else {
-                zstdOut = new ZstdCompressorOutputStream(outStream, level);
+            ZstdCompressorOutputStream.Builder zstdOutBuilder = ZstdCompressorOutputStream.builder();
+            zstdOutBuilder.setOutputStream(outStream);
+            if (level != null) {
+                zstdOutBuilder.setLevel(level);
             }
+            zstdOut = zstdOutBuilder.get();
             compress(getSource(), zstdOut);
         } catch (IOException ioe) {
             throw new ArchiverException("Problem creating zstd " + ioe.getMessage(), ioe);

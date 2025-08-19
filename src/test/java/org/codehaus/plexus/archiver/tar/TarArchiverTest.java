@@ -49,7 +49,6 @@ import org.codehaus.plexus.archiver.zip.ArchiveFileComparator;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -248,36 +247,34 @@ class TarArchiverTest extends TestSupport {
 
         archiver.createArchive();
 
-        TarArchiveInputStream tis;
+        try (TarArchiveInputStream tis = new TarArchiveInputStream(
+                bufferedInputStream(Files.newInputStream(archiver.getDestFile().toPath())))) {
+            TarArchiveEntry te;
 
-        tis = new TarArchiveInputStream(
-                bufferedInputStream(Files.newInputStream(archiver.getDestFile().toPath())));
-        TarArchiveEntry te;
-
-        while ((te = tis.getNextTarEntry()) != null) {
-            if (te.isDirectory()) {
-                assertEquals(
-                        directoryMode,
-                        te.getMode() & UnixStat.PERM_MASK,
-                        "un-expected tar-entry mode for [te.name=" + te.getName() + "]");
-            } else if (te.isSymbolicLink()) {
-                assertEquals("../test_destination/", te.getLinkName());
-                assertEquals("link_to_test_destinaton", te.getName());
-                assertEquals(0640, te.getMode() & UnixStat.PERM_MASK);
-            } else {
-                if (te.getName().equals("one.txt")) {
-                    assertEquals(oneFileMode, te.getMode() & UnixStat.PERM_MASK);
-                } else if (te.getName().equals("two.txt")) {
-                    assertEquals(twoFileMode, te.getMode() & UnixStat.PERM_MASK);
-                } else {
+            while ((te = tis.getNextEntry()) != null) {
+                if (te.isDirectory()) {
                     assertEquals(
-                            defaultFileMode,
+                            directoryMode,
                             te.getMode() & UnixStat.PERM_MASK,
                             "un-expected tar-entry mode for [te.name=" + te.getName() + "]");
+                } else if (te.isSymbolicLink()) {
+                    assertEquals("../test_destination/", te.getLinkName());
+                    assertEquals("link_to_test_destinaton", te.getName());
+                    assertEquals(0640, te.getMode() & UnixStat.PERM_MASK);
+                } else {
+                    if (te.getName().equals("one.txt")) {
+                        assertEquals(oneFileMode, te.getMode() & UnixStat.PERM_MASK);
+                    } else if (te.getName().equals("two.txt")) {
+                        assertEquals(twoFileMode, te.getMode() & UnixStat.PERM_MASK);
+                    } else {
+                        assertEquals(
+                                defaultFileMode,
+                                te.getMode() & UnixStat.PERM_MASK,
+                                "un-expected tar-entry mode for [te.name=" + te.getName() + "]");
+                    }
                 }
             }
         }
-        IOUtil.close(tis);
     }
 
     @Test
@@ -302,7 +299,7 @@ class TarArchiverTest extends TestSupport {
                 Files.newInputStream(archiver.getDestFile().toPath())));
         TarArchiveEntry te;
 
-        while ((te = tis.getNextTarEntry()) != null) {
+        while ((te = tis.getNextEntry()) != null) {
             if (te.isDirectory()) {
                 assertEquals(
                         0500,

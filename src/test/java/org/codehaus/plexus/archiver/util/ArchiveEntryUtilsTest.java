@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 
 import org.codehaus.plexus.components.io.attributes.FileAttributes;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class ArchiveEntryUtilsTest {
     }
 
     private void assert0770(File temp) throws IOException {
-        FileAttributes j7 = new FileAttributes(temp, new HashMap<Integer, String>(), new HashMap<Integer, String>());
+        FileAttributes j7 = new FileAttributes(temp);
         assertTrue(j7.isGroupExecutable());
         assertTrue(j7.isGroupReadable());
         assertTrue(j7.isGroupWritable());

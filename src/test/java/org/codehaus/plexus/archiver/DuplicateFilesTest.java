@@ -36,7 +36,9 @@ class DuplicateFilesTest extends TestSupport {
         File archive = createArchive(archiver, "zip");
 
         org.apache.commons.compress.archivers.zip.ZipFile zf =
-                new org.apache.commons.compress.archivers.zip.ZipFile(archive);
+                org.apache.commons.compress.archivers.zip.ZipFile.builder()
+                        .setFile(archive)
+                        .get();
 
         Enumeration<ZipArchiveEntry> e = zf.getEntries();
         int entryCount = 0;

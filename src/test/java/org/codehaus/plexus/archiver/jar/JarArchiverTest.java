@@ -45,7 +45,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    void testNonCompressed() throws IOException, ManifestException, ArchiverException {
+    void testNonCompressed() throws IOException, ArchiverException {
         File jarFile = new File("target/output/jarArchiveNonCompressed.jar");
 
         JarArchiver archiver = getJarArchiver();
@@ -176,7 +176,9 @@ class JarArchiverTest extends BaseJarArchiverTest {
         archiver.createArchive();
 
         try (org.apache.commons.compress.archivers.zip.ZipFile zip =
-                new org.apache.commons.compress.archivers.zip.ZipFile(jarFile.toFile())) {
+                org.apache.commons.compress.archivers.zip.ZipFile.builder()
+                        .setFile(jarFile.toFile())
+                        .get()) {
             Enumeration<? extends ZipArchiveEntry> entries = zip.getEntries();
             while (entries.hasMoreElements()) {
                 ZipArchiveEntry entry = entries.nextElement();

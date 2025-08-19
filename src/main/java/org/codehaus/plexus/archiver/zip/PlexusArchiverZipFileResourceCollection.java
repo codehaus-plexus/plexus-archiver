@@ -24,11 +24,15 @@ public class PlexusArchiverZipFileResourceCollection extends AbstractPlexusIoArc
 
     @Override
     protected Iterator<PlexusIoResource> getEntries() throws IOException {
-        final File f = getFile();
-        if (f == null) {
+        final File file = getFile();
+        if (file == null) {
             throw new IOException("The tar archive file has not been set.");
         }
-        final ZipFile zipFile = new ZipFile(f, charset != null ? charset.name() : "UTF8");
+
+        final ZipFile zipFile = ZipFile.builder()
+                .setFile(file)
+                .setCharset(charset != null ? charset : StandardCharsets.UTF_8)
+                .get();
         return new CloseableIterator(zipFile);
     }
 

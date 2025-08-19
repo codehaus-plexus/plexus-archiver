@@ -672,7 +672,10 @@ public class JarArchiver extends ZipArchiver {
         } else if (zipFile.isDirectory()) {
             getLogger().info("JarArchiver skipping indexJar " + zipFile + " because it is not a jar");
         } else {
-            try (ZipFile zf = new ZipFile(file, "utf-8")) {
+            try (ZipFile zf = ZipFile.builder()
+                    .setFile(file)
+                    .setCharset(StandardCharsets.UTF_8)
+                    .get()) {
                 Enumeration<ZipArchiveEntry> entries = zf.getEntries();
                 HashSet<String> dirSet = new HashSet<>();
                 while (entries.hasMoreElements()) {

@@ -26,7 +26,6 @@ package org.codehaus.plexus.archiver.gzip;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -38,6 +37,7 @@ import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -95,7 +95,7 @@ class GZipArchiverTest extends BasePlexusArchiverTest {
         final ZipEntry zipEntry = juZipFile.getEntry("prfx/target/output/pom.xml");
         final InputStream archivePom = juZipFile.getInputStream(zipEntry);
         final InputStream pom = Files.newInputStream(pomFile.toPath());
-        assertTrue(Arrays.equals(IOUtil.toByteArray(pom), IOUtil.toByteArray(archivePom)));
+        assertArrayEquals(IOUtil.toByteArray(pom), IOUtil.toByteArray(archivePom));
         archivePom.close();
         pom.close();
         juZipFile.close();

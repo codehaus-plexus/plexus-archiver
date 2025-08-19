@@ -241,6 +241,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      * @since 1.1
      */
     @Override
+    @Deprecated
     public boolean isUseJvmChmod() {
         return useJvmChmod;
     }
@@ -251,6 +252,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      * @since 1.1
      */
     @Override
+    @Deprecated
     public void setUseJvmChmod(final boolean useJvmChmod) {
         this.useJvmChmod = useJvmChmod;
     }

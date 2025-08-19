@@ -64,6 +64,7 @@ public class DryRunArchiver extends DelgatingArchiver {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void addArchivedFileSet(final @Nonnull File archiveFile, final String prefix) throws ArchiverException {
         debug("DRY RUN: Skipping delegated call to: " + getMethodName());
     }
@@ -115,6 +116,7 @@ public class DryRunArchiver extends DelgatingArchiver {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void addDirectory(final @Nonnull File directory, final String prefix) throws ArchiverException {
         debug("DRY RUN: Skipping delegated call to: " + getMethodName());
     }
@@ -123,6 +125,7 @@ public class DryRunArchiver extends DelgatingArchiver {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void addDirectory(final @Nonnull File directory, final String[] includes, final String[] excludes)
             throws ArchiverException {
         debug("DRY RUN: Skipping delegated call to: " + getMethodName());
@@ -132,6 +135,7 @@ public class DryRunArchiver extends DelgatingArchiver {
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public void addDirectory(final @Nonnull File directory) throws ArchiverException {
         debug("DRY RUN: Skipping delegated call to: " + getMethodName());
     }
