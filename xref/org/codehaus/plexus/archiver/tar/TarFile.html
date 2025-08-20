@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>TarFile xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>              <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> hasMoreElements() {
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>                  <strong class="jxr_keyword">if</strong> (!currentEntryValid) {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>                      <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>                          currentEntry = inputStream.getNextTarEntry();
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>                          currentEntry = inputStream.getNextEntry();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>                      } <strong class="jxr_keyword">catch</strong> (IOException e) {
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>                          <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UndeclaredThrowableException(e);
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>                      }
@@ -163,7 +163,7 @@
 <a class="jxr_linenumber" name="L155" href="#L155">155</a> 
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> findEntry(TarArchiveEntry entry, TarArchiveEntry currentEntry) <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L157" href="#L157">157</a>         <strong class="jxr_keyword">for</strong> (; ; ) {
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.currentEntry = inputStream.getNextTarEntry();
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.currentEntry = inputStream.getNextEntry();
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>             <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.currentEntry == <strong class="jxr_keyword">null</strong> || (currentEntry != <strong class="jxr_keyword">null</strong> &amp;&amp; <strong class="jxr_keyword">this</strong>.currentEntry.equals(currentEntry))) {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>                 <strong class="jxr_keyword">return</strong> false;
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>             }
@@ -175,6 +175,6 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2024 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
 </body>
 </html>

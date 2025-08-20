@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>TarRoundTripTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
@@ -62,7 +62,7 @@
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          tos.close();
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          TarArchiveInputStream tis = <strong class="jxr_keyword">new</strong> TarArchiveInputStream(<strong class="jxr_keyword">new</strong> ByteArrayInputStream(buff.toByteArray()));
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          TarArchiveEntry tripped = tis.getNextTarEntry();
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          TarArchiveEntry tripped = tis.getNextEntry();
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          assertEquals(LONG_NAME, tripped.getName(), <span class="jxr_string">"round-tripped name"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          assertNull(tis.getNextEntry(), <span class="jxr_string">"no more entries"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          tis.close();
@@ -70,6 +70,6 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2024 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
 </body>
 </html>

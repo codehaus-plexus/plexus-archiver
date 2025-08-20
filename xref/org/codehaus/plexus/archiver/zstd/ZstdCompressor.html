@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>ZstdCompressor xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
@@ -52,31 +52,32 @@
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> compress() <strong class="jxr_keyword">throws</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a> {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>              BufferedOutputStream outStream = bufferedOutputStream(fileOutputStream(getDestFile()));
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>              <strong class="jxr_keyword">if</strong> (level == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>                  zstdOut = <strong class="jxr_keyword">new</strong> ZstdCompressorOutputStream(outStream);
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>              } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>                  zstdOut = <strong class="jxr_keyword">new</strong> ZstdCompressorOutputStream(outStream, level);
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>              ZstdCompressorOutputStream.Builder zstdOutBuilder = ZstdCompressorOutputStream.builder();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>              zstdOutBuilder.setOutputStream(outStream);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>              <strong class="jxr_keyword">if</strong> (level != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>                  zstdOutBuilder.setLevel(level);
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              }
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>              compress(getSource(), zstdOut);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          } <strong class="jxr_keyword">catch</strong> (IOException ioe) {
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>(<span class="jxr_string">"Problem creating zstd "</span> + ioe.getMessage(), ioe);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          }
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Override
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> close() {
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>              <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.zstdOut != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>                  <strong class="jxr_keyword">this</strong>.zstdOut.close();
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  zstdOut = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>              }
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>(<span class="jxr_string">"Failure closing target."</span>, e);
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          }
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>      }
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  }
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>              zstdOut = zstdOutBuilder.get();
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              compress(getSource(), zstdOut);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          } <strong class="jxr_keyword">catch</strong> (IOException ioe) {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>(<span class="jxr_string">"Problem creating zstd "</span> + ioe.getMessage(), ioe);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          }
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      }
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      @Override
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> close() {
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              <strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.zstdOut != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>                  <strong class="jxr_keyword">this</strong>.zstdOut.close();
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>                  zstdOut = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>              }
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="ArchiverException" href="../../../../../org/codehaus/plexus/archiver/ArchiverException.html#ArchiverException">ArchiverException</a>(<span class="jxr_string">"Failure closing target."</span>, e);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      }
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2024 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>JarArchiverTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      }
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      @Test
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">void</strong> testNonCompressed() <strong class="jxr_keyword">throws</strong> IOException, ManifestException, ArchiverException {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">void</strong> testNonCompressed() <strong class="jxr_keyword">throws</strong> IOException, ArchiverException {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>          File jarFile = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/jarArchiveNonCompressed.jar"</span>);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          JarArchiver archiver = getJarArchiver();
@@ -184,27 +184,29 @@
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>         archiver.createArchive();
 <a class="jxr_linenumber" name="L177" href="#L177">177</a> 
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         <strong class="jxr_keyword">try</strong> (org.apache.commons.compress.archivers.zip.ZipFile zip =
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 <strong class="jxr_keyword">new</strong> org.apache.commons.compress.archivers.zip.ZipFile(jarFile.toFile())) {
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>             Enumeration&lt;? <strong class="jxr_keyword">extends</strong> ZipArchiveEntry&gt; entries = zip.getEntries();
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>             <strong class="jxr_keyword">while</strong> (entries.hasMoreElements()) {
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>                 ZipArchiveEntry entry = entries.nextElement();
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>                 <strong class="jxr_keyword">int</strong> mode = entry.getUnixMode();
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 assertEquals(
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>                         0,
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>                         mode &amp; 0_020,
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>                         entry.getName() + <span class="jxr_string">" group should not be writable in reproducible mode: "</span>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>                                 + Integer.toOctalString(mode));
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>             }
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         }
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>     }
-<a class="jxr_linenumber" name="L192" href="#L192">192</a> 
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>     @Override
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>     <strong class="jxr_keyword">protected</strong> JarArchiver getJarArchiver() {
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> JarArchiver();
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     }
-<a class="jxr_linenumber" name="L197" href="#L197">197</a> }
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>                 org.apache.commons.compress.archivers.zip.ZipFile.builder()
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>                         .setFile(jarFile.toFile())
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>                         .get()) {
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>             Enumeration&lt;? <strong class="jxr_keyword">extends</strong> ZipArchiveEntry&gt; entries = zip.getEntries();
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">while</strong> (entries.hasMoreElements()) {
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>                 ZipArchiveEntry entry = entries.nextElement();
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>                 <strong class="jxr_keyword">int</strong> mode = entry.getUnixMode();
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>                 assertEquals(
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>                         0,
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>                         mode &amp; 0_020,
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>                         entry.getName() + <span class="jxr_string">" group should not be writable in reproducible mode: "</span>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>                                 + Integer.toOctalString(mode));
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>             }
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         }
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     }
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> 
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>     @Override
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <strong class="jxr_keyword">protected</strong> JarArchiver getJarArchiver() {
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> JarArchiver();
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>     }
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2001&#x2013;2024 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a>. All rights reserved.</div>
+<div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
 </body>
 </html>
