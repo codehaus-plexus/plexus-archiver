@@ -816,6 +816,12 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             assertEquals(almostMinDosTime, zf.getEntry("file-with-odd-time.txt").getTime());
             assertEquals(almostMinDosTime, zf.getEntry("foo/").getTime());
         }
+
+        final File zipFile1970 = getTestFile("target/output/zip-with-fixed-entry-modification-times-1970.zip");
+        final ZipArchiver archiver1970 = getZipArchiver(zipFile1970);
+        archiver1970.setLastModifiedTime(FileTime.fromMillis(0));
+        archiver1970.addDirectory(new File("src/test/resources/zip-timestamp"));
+        archiver1970.createArchive();
     }
 
     @Test
