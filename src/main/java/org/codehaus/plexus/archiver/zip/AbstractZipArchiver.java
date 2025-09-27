@@ -698,7 +698,14 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
      */
     private static long dosToJavaTime(long dosTime) {
         Calendar cal = Calendar.getInstance(TimeZone.getDefault(), Locale.ROOT);
+        if (dosTime < MIN_DOS_JAVA_TIME) {
+            dosTime = MIN_DOS_JAVA_TIME;
+        }
         cal.setTimeInMillis(dosTime);
         return dosTime - (cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
     }
+
+    // minimum DOS time that will give a positive Java time, whatever the current TZ is:
+    // biggest TZ offset is for Etc/GMT-14 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    private static final long MIN_DOS_JAVA_TIME = 1000 * 14 * 3600;
 }
