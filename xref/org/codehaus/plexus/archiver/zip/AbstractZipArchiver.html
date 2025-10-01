@@ -706,10 +706,17 @@
 <a class="jxr_linenumber" name="L698" href="#L698">698</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L699" href="#L699">699</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> dosToJavaTime(<strong class="jxr_keyword">long</strong> dosTime) {
 <a class="jxr_linenumber" name="L700" href="#L700">700</a>         Calendar cal = Calendar.getInstance(TimeZone.getDefault(), Locale.ROOT);
-<a class="jxr_linenumber" name="L701" href="#L701">701</a>         cal.setTimeInMillis(dosTime);
-<a class="jxr_linenumber" name="L702" href="#L702">702</a>         <strong class="jxr_keyword">return</strong> dosTime - (cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
-<a class="jxr_linenumber" name="L703" href="#L703">703</a>     }
-<a class="jxr_linenumber" name="L704" href="#L704">704</a> }
+<a class="jxr_linenumber" name="L701" href="#L701">701</a>         <strong class="jxr_keyword">if</strong> (dosTime &lt; MIN_DOS_JAVA_TIME) {
+<a class="jxr_linenumber" name="L702" href="#L702">702</a>             dosTime = MIN_DOS_JAVA_TIME;
+<a class="jxr_linenumber" name="L703" href="#L703">703</a>         }
+<a class="jxr_linenumber" name="L704" href="#L704">704</a>         cal.setTimeInMillis(dosTime);
+<a class="jxr_linenumber" name="L705" href="#L705">705</a>         <strong class="jxr_keyword">return</strong> dosTime - (cal.get(Calendar.ZONE_OFFSET) + cal.get(Calendar.DST_OFFSET));
+<a class="jxr_linenumber" name="L706" href="#L706">706</a>     }
+<a class="jxr_linenumber" name="L707" href="#L707">707</a> 
+<a class="jxr_linenumber" name="L708" href="#L708">708</a>     <em class="jxr_comment">// minimum DOS time that will give a positive Java time, whatever the current TZ is:</em>
+<a class="jxr_linenumber" name="L709" href="#L709">709</a>     <em class="jxr_comment">// biggest TZ offset is for Etc/GMT-14 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones</em>
+<a class="jxr_linenumber" name="L710" href="#L710">710</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> MIN_DOS_JAVA_TIME = 1000 * 14 * 3600;
+<a class="jxr_linenumber" name="L711" href="#L711">711</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
