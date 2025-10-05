@@ -58,6 +58,12 @@ public class ByteArrayOutputStream extends OutputStream {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
+     * Maximum size of a single buffer (16MB) to prevent excessive memory allocation.
+     * When buffers need to grow beyond this size, additional buffers are created instead.
+     */
+    private static final int MAX_BUFFER_SIZE = 16 * 1024 * 1024;
+
+    /**
      * The list of buffers, which grows and never reduces.
      */
     private final List<byte[]> buffers = new ArrayList<byte[]>();
@@ -135,6 +141,9 @@ public class ByteArrayOutputStream extends OutputStream {
                 newBufferSize = Math.max(currentBuffer.length << 1, newcount - filledBufferSum);
                 filledBufferSum += currentBuffer.length;
             }
+
+            // Cap the buffer size to prevent excessive memory allocation
+            newBufferSize = Math.min(newBufferSize, MAX_BUFFER_SIZE);
 
             currentBufferIndex++;
             currentBuffer = new byte[newBufferSize];
