@@ -263,4 +263,36 @@ class ZipUnArchiverTest extends TestSupport {
         zipArchiver.setDestFile(destFile);
         return zipArchiver;
     }
+
+    @Test
+    void testZipWithNegativeModificationTime() throws Exception {
+        // Create a zip file with an entry that has -1 modification time
+        File zipFile = new File("target/output/zip-with-negative-time.zip");
+        zipFile.getParentFile().mkdirs();
+
+        // Create a simple zip file using Apache Commons Compress
+        try (org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream zos =
+                new org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream(zipFile)) {
+            org.apache.commons.compress.archivers.zip.ZipArchiveEntry entry =
+                    new org.apache.commons.compress.archivers.zip.ZipArchiveEntry("test-file.txt");
+            // Set modification time to -1 to simulate unspecified modification time
+            entry.setTime(-1);
+            zos.putArchiveEntry(entry);
+            zos.write("Test content".getBytes());
+            zos.closeArchiveEntry();
+        }
+
+        // Now try to extract it - this should not throw an IllegalArgumentException
+        File outputDirectory = new File("target/output/zip-negative-time-extract");
+        FileUtils.deleteDirectory(outputDirectory);
+        outputDirectory.mkdirs();
+
+        ZipUnArchiver zu = getZipUnArchiver(zipFile);
+        zu.extract("", outputDirectory);
+
+        // Verify the file was extracted
+        File extractedFile = new File(outputDirectory, "test-file.txt");
+        assertTrue(extractedFile.exists());
+        assertEquals("Test content", new String(java.nio.file.Files.readAllBytes(extractedFile.toPath())));
+    }
 }
