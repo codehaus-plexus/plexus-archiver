@@ -117,7 +117,7 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
         @Override
         public long getLastModified() {
             final long l = zipEntry.getTime();
-            return l == 0 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;
+            return l <= 0 ? PlexusIoResource.UNKNOWN_MODIFICATION_DATE : l;
         }
 
         @Override
@@ -174,12 +174,16 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
                                 .setInputStream(in)
                                 .setMaxCount(remainingSpace + 1)
                                 .get();
+                        long time = ze.getTime();
+                        if (time <= 0) {
+                            time = PlexusIoResource.UNKNOWN_MODIFICATION_DATE;
+                        }
                         extractFile(
                                 getSourceFile(),
                                 outputDirectory,
                                 bis,
                                 ze.getName(),
-                                new Date(ze.getTime()),
+                                new Date(time),
                                 ze.isDirectory(),
                                 ze.getUnixMode() != 0 ? ze.getUnixMode() : null,
                                 resolveSymlink(zipFile, ze),
