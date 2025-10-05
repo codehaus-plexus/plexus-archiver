@@ -260,6 +260,16 @@ public interface Archiver {
     ResourceIterator getResources() throws ArchiverException;
 
     /**
+     * Returns a map of the files that have been added to the archive.
+     * <p>
+     * Note: The entry names in the map may use platform-specific path separators
+     * in the base implementation. However, archive format-specific implementations
+     * (such as ZIP-based archivers) should normalize paths according to their format
+     * requirements. For example, ZIP archivers normalize to forward slashes as required
+     * by the ZIP file specification.
+     * </p>
+     *
+     * @return A map where keys are entry names and values are the corresponding ArchiveEntry objects.
      * @deprecated Use {@link #getResources()}
      */
     @Deprecated

@@ -616,6 +616,23 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         }
     }
 
+    /**
+     * Returns a map of the files that have been added to the archive.
+     * <p>
+     * Note: The entry names in the map use platform-specific path separators
+     * (e.g., backslashes on Windows, forward slashes on Unix). For ZIP archivers,
+     * the actual archive entries will use forward slashes as required by the ZIP
+     * specification, but this map returns names as they were added.
+     * </p>
+     * <p>
+     * For ZIP-based archivers (ZipArchiver, JarArchiver, etc.), use the overridden
+     * implementation which normalizes paths to forward slashes to match the actual
+     * ZIP entry names.
+     * </p>
+     *
+     * @return A map where keys are entry names and values are the corresponding ArchiveEntry objects.
+     * @deprecated Use {@link #getResources()} instead.
+     */
     @Override
     @Deprecated
     public Map<String, ArchiveEntry> getFiles() {

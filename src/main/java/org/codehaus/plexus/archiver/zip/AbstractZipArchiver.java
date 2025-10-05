@@ -27,8 +27,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.attribute.FileTime;
 import java.util.Calendar;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 import java.util.zip.CRC32;
@@ -562,6 +564,29 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
             throw new ArchiverException("Could not create empty ZIP archive " + "(" + ioe.getMessage() + ")", ioe);
         }
         return true;
+    }
+
+    /**
+     * Returns a map of the files that have been added to the archive.
+     * This method is overridden to normalize path separators to forward slashes,
+     * as required by the ZIP file format specification.
+     *
+     * @return A map where keys are entry names with forward slashes as separators,
+     *         and values are the corresponding ArchiveEntry objects.
+     * @deprecated Use {@link #getResources()} instead.
+     */
+    @Override
+    @Deprecated
+    public Map<String, ArchiveEntry> getFiles() {
+        Map<String, ArchiveEntry> files = super.getFiles();
+        Map<String, ArchiveEntry> normalizedFiles = new HashMap<>();
+
+        for (Map.Entry<String, ArchiveEntry> entry : files.entrySet()) {
+            String normalizedPath = entry.getKey().replace(File.separatorChar, '/');
+            normalizedFiles.put(normalizedPath, entry.getValue());
+        }
+
+        return normalizedFiles;
     }
 
     /**
