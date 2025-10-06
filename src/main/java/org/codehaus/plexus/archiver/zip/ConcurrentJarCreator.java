@@ -112,7 +112,7 @@ public class ConcurrentJarCreator {
      */
     public ConcurrentJarCreator(boolean compressAddedZips, int nThreads) throws IOException {
         this.compressAddedZips = compressAddedZips;
-        ScatterGatherBackingStoreSupplier defaultSupplier = new DeferredSupplier(100000000 / nThreads);
+        ScatterGatherBackingStoreSupplier defaultSupplier = new DeferredSupplier(10000000 / nThreads);
         metaInfDir = createDeferred(defaultSupplier);
         manifest = createDeferred(defaultSupplier);
         directories = createDeferred(defaultSupplier);
