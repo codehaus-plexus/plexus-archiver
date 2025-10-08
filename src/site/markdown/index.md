@@ -8,3 +8,55 @@ Collection of Plexus components to create archives or extract archives to a dire
 |                                                                                   |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | [`UnArchiver`](./apidocs/index.html?org/codehaus/plexus/archiver/UnArchiver.html) | [`bzip2`](./apidocs/index.html?org/codehaus/plexus/archiver/bzip2/BZip2UnArchiver.html), [`gzip`](./apidocs/index.html?org/codehaus/plexus/archiver/gzip/GZipUnArchiver.html), [`snappy`](./apidocs/index.html?org/codehaus/plexus/archiver/snappy/SnappyUnArchiver.html), [`tar`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarUnArchiver.html), [`tar.bz2`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarBZip2Archiver.html) \([`tbz2`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TBZ2Archiver.html)\), [`tar.gz`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarGZipUnArchiver.html) \([`tgz`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TGZUnArchiver.html)\), [`tar.snappy`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarSnappyUnArchiver.html) [`tar.zst`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarZstdUnArchiver.html) \([`tzst`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TZstdUnArchiver.html)\), [`tar.xz`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TarXZUnArchiver.html) \([`txz`](./apidocs/index.html?org/codehaus/plexus/archiver/tar/TXZUnArchiver.html)\), [`xz`](./apidocs/index.html?org/codehaus/plexus/archiver/xz/XZUnArchiver.html), [`zip`](./apidocs/index.html?org/codehaus/plexus/archiver/zip/ZipUnArchiver.html) \(also available as [`car`](./apidocs/index.html?org/codehaus/plexus/archiver/car/CarUnArchiver.html), [`ear`](./apidocs/index.html?org/codehaus/plexus/archiver/ear/EarUnArchiver.html), [`esb`](./apidocs/index.html?org/codehaus/plexus/archiver/esb/EsbUnArchiver.html), [`jar`](./apidocs/index.html?org/codehaus/plexus/archiver/jar/JarUnArchiver.html), [`nar`](./apidocs/index.html?org/codehaus/plexus/archiver/nar/NarUnArchiver.html), [`par`](./apidocs/index.html?org/codehaus/plexus/archiver/par/ParUnArchiver.html), [`rar`](./apidocs/index.html?org/codehaus/plexus/archiver/rar/RarUnArchiver.html), [`sar`](./apidocs/index.html?org/codehaus/plexus/archiver/sar/SarUnArchiver.html), [`swc`](./apidocs/index.html?org/codehaus/plexus/archiver/swc/SwcUnArchiver.html), [`war`](./apidocs/index.html?org/codehaus/plexus/archiver/war/WarUnArchiver.html)\), [`zst`](./apidocs/index.html?org/codehaus/plexus/archiver/zstd/ZstdUnArchiver.html) |
 
+## What is Plexus Archiver?
+
+Plexus Archiver is a high-level Java API for creating and extracting archives (ZIP, JAR, TAR, etc.). It provides a simple, unified interface for working with various archive formats, abstracting away the low-level details of archive manipulation.
+
+## Comparison to Apache Commons Compress
+
+Plexus Archiver builds on top of [Apache Commons Compress](https://commons.apache.org/proper/commons-compress/) (since version 2.5) and provides additional capabilities:
+
+### Apache Commons Compress
+
+Commons Compress is a low-level library that provides:
+- Direct access to archive formats and compression algorithms
+- Fine-grained control over archive entries and their attributes
+- Support for a wide range of archive formats (ZIP, TAR, AR, CPIO, etc.)
+- Streaming API for memory-efficient processing
+
+### Plexus Archiver
+
+Plexus Archiver is a higher-level abstraction layer that adds:
+
+**Simplified API**: Easy-to-use builder-style interface for common archiving tasks without dealing with low-level stream handling.
+
+**Advanced Features**:
+- File selectors and filtering capabilities
+- Automatic handling of file permissions and attributes
+- Built-in support for directory scanning with includes/excludes patterns
+- Reproducible builds support (configurable timestamps and ordering)
+- Duplicate handling strategies
+- File mappers for transforming entry names during archiving/unarchiving
+- Protection against ZIP bombs (configurable output size limits)
+
+**Build Tool Integration**: Designed for integration with build tools like Maven, with support for:
+- Modular JAR creation (Java 9+ modules)
+- Manifest generation and customization
+- Archive finalizers for post-processing
+
+**Dependency Injection Ready**: Includes JSR-330 annotations for easy integration with dependency injection frameworks.
+
+### When to Use Which?
+
+**Use Apache Commons Compress when:**
+- You need fine-grained control over archive format details
+- You're working with streaming data or large archives
+- You need to support specialized or uncommon archive formats
+- Memory efficiency is critical
+
+**Use Plexus Archiver when:**
+- You want a simple, declarative API for common archiving tasks
+- You're building a Maven plugin or similar build tool
+- You need reproducible builds with consistent archive ordering
+- You want built-in file filtering and selection capabilities
+- You need to create modular JARs or other specialized Java archives
