@@ -271,7 +271,39 @@
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         zipArchiver.setDestFile(destFile);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         <strong class="jxr_keyword">return</strong> zipArchiver;
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>     }
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> }
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> 
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>     @Test
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>     <strong class="jxr_keyword">void</strong> testZipWithNegativeModificationTime() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">// Create a zip file with an entry that has -1 modification time</em>
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         File zipFile = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/zip-with-negative-time.zip"</span>);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         zipFile.getParentFile().mkdirs();
+<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>         <em class="jxr_comment">// Create a simple zip file using Apache Commons Compress</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <strong class="jxr_keyword">try</strong> (org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream zos =
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>                 <strong class="jxr_keyword">new</strong> org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream(zipFile)) {
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>             org.apache.commons.compress.archivers.zip.ZipArchiveEntry entry =
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>                     <strong class="jxr_keyword">new</strong> org.apache.commons.compress.archivers.zip.ZipArchiveEntry(<span class="jxr_string">"test-file.txt"</span>);
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>             <em class="jxr_comment">// Set modification time to -1 to simulate unspecified modification time</em>
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>             entry.setTime(-1);
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>             zos.putArchiveEntry(entry);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>             zos.write(<span class="jxr_string">"Test content"</span>.getBytes());
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>             zos.closeArchiveEntry();
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>         }
+<a class="jxr_linenumber" name="L284" href="#L284">284</a> 
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         <em class="jxr_comment">// Now try to extract it - this should not throw an IllegalArgumentException</em>
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         File outputDirectory = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/zip-negative-time-extract"</span>);
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         FileUtils.deleteDirectory(outputDirectory);
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>         outputDirectory.mkdirs();
+<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         ZipUnArchiver zu = getZipUnArchiver(zipFile);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         zu.extract(<span class="jxr_string">""</span>, outputDirectory);
+<a class="jxr_linenumber" name="L292" href="#L292">292</a> 
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <em class="jxr_comment">// Verify the file was extracted</em>
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>         File extractedFile = <strong class="jxr_keyword">new</strong> File(outputDirectory, <span class="jxr_string">"test-file.txt"</span>);
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>         assertTrue(extractedFile.exists());
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         assertEquals(<span class="jxr_string">"Test content"</span>, <strong class="jxr_keyword">new</strong> String(java.nio.file.Files.readAllBytes(extractedFile.toPath())));
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     }
+<a class="jxr_linenumber" name="L298" href="#L298">298</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
