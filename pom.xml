@@ -61,12 +61,12 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>4.0.2</version>
+      <version>3.6.0</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-io</artifactId>
-      <version>3.5.1</version>
+      <version>3.5.2</version>
     </dependency>
     <!-- Apache Commons dependencies -->
     <dependency>
@@ -134,7 +134,7 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>6.0.0</version>
+      <version>5.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
