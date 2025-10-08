@@ -52,6 +52,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipExtraField;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.input.BoundedInputStream;
+import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
@@ -856,5 +857,39 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
             fail("Date '" + sDate + "' can not be parsed!");
             return 0L;
         }
+    }
+
+    /**
+     * Test that getFiles() returns entry names with forward slashes (not platform-specific separators)
+     * as required by the ZIP file specification.
+     */
+    @Test
+    void testGetFilesReturnsForwardSlashes() throws Exception {
+        File zipFile = getTestFile("target/output/test-getfiles-slashes.zip");
+        ZipArchiver archiver = getZipArchiver(zipFile);
+
+        // Add files with nested directory structure
+        File pomFile = new File("pom.xml");
+        archiver.addFile(pomFile, "dir1/dir2/pom.xml");
+        archiver.addFile(pomFile, "another/nested/path/file.xml");
+
+        // Get the files map BEFORE creating the archive
+        Map<String, ArchiveEntry> files = archiver.getFiles();
+
+        // Verify all entry names use forward slashes
+        for (String entryName : files.keySet()) {
+            assertFalse(entryName.contains("\\"), "Entry name should not contain backslashes, but got: " + entryName);
+            assertTrue(
+                    entryName.contains("/") || !entryName.contains(File.separator),
+                    "Entry name should use forward slashes as separator: " + entryName);
+        }
+
+        // Verify specific entries exist with correct format
+        assertTrue(files.containsKey("dir1/dir2/pom.xml"), "Should contain dir1/dir2/pom.xml");
+        assertTrue(files.containsKey("another/nested/path/file.xml"), "Should contain another/nested/path/file.xml");
+
+        // Create the archive to ensure it's valid
+        archiver.createArchive();
+        assertTrue(zipFile.exists());
     }
 }
