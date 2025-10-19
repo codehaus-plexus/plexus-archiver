@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.par;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for PAR files.
  */
 @Named("par")
-public class PlexusIoJarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoJarFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

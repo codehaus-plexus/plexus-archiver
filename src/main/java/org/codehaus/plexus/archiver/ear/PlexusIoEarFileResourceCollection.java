@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.ear;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for EAR files.
  */
 @Named("ear")
-public class PlexusIoEarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoEarFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

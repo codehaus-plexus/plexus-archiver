@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.war;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for WAR files.
  */
 @Named("war")
-public class PlexusIoWarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoWarFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

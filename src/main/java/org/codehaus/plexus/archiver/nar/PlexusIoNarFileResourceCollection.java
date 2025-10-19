@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.nar;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for NAR files.
  */
 @Named("nar")
-public class PlexusIoNarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoNarFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

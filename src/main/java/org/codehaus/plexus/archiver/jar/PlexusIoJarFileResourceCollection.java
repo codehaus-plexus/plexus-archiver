@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.jar;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusIoJarFileResourceCollectionWithSignatureVerification;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for JAR files that uses JarFile to verify signatures when present.
  */
 @Named("jar")
-public class PlexusIoJarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoJarFileResourceCollection extends PlexusIoJarFileResourceCollectionWithSignatureVerification {}
