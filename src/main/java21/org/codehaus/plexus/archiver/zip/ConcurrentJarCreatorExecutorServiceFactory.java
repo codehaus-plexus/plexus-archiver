@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver.zip;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -32,7 +33,11 @@ public class ConcurrentJarCreatorExecutorServiceFactory {
     static ExecutorService createExecutorService(int poolSize) {
         int poolCount = POOL_COUNTER.incrementAndGet();
         AtomicInteger threadCounter = new AtomicInteger();
-        return Executors.newThreadPerTaskExecutor(
-                Thread.ofVirtual().name("plx-arch-" + poolCount + "-" + threadCounter.incrementAndGet()).factory());
+        ThreadFactory threadFactory = r -> {
+            return Thread.ofVirtual()
+                    .name("plx-arch-" + poolCount + "-" + threadCounter.incrementAndGet())
+                    .unstarted(r);
+        };
+        return Executors.newThreadPerTaskExecutor(threadFactory);
     }
 }
