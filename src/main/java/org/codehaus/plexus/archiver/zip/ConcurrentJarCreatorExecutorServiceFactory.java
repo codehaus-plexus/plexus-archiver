@@ -46,6 +46,11 @@ public class ConcurrentJarCreatorExecutorServiceFactory {
                 return thread;
             }
         };
-        return new ThreadPoolExecutor(1, poolSize, 1L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, poolSize, 1L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), threadFactory);
+        // Allow core threads to time out quickly to prevent ThreadLocal memory leaks
+        // from Apache Commons Compress ParallelScatterZipCreator
+        executor.allowCoreThreadTimeOut(true);
+        return executor;
     }
 }
