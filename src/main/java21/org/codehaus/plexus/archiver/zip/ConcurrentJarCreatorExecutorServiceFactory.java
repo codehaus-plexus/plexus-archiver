@@ -19,11 +19,15 @@ package org.codehaus.plexus.archiver.zip;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Post Java 21 implementation. Create one Virtual Thread per task execution. Apply same thread names as well.
+ * Post Java 21 implementation. Uses virtual threads with a bounded thread pool to prevent
+ * unbounded ThreadLocal accumulation while maintaining the benefits of virtual threads.
  *
  * @since 4.10.1
  */
@@ -38,6 +42,10 @@ public class ConcurrentJarCreatorExecutorServiceFactory {
                     .name("plx-arch-" + poolCount + "-" + threadCounter.incrementAndGet())
                     .unstarted(r);
         };
-        return Executors.newThreadPerTaskExecutor(threadFactory);
+        // Use poolSize as both core and max to prevent unbounded thread growth
+        // Even with virtual threads, we need to limit concurrent threads to prevent
+        // unbounded ThreadLocal accumulation across multiple jar creation operations
+        return new ThreadPoolExecutor(
+                poolSize, poolSize, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);
     }
 }
