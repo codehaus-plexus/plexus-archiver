@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.esb;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for ESB files.
  */
 @Named("esb")
-public class PlexusIoEsbFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoEsbFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

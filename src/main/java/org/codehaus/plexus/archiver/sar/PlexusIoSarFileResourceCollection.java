@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.sar;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for SAR files.
  */
 @Named("sar")
-public class PlexusIoSarFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoSarFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}

@@ -27,7 +27,9 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
 
     @Test
     void testNamelessRootFolder() throws Exception {
-        PlexusIoZipFileResourceCollection resourceCollection = new PlexusIoZipFileResourceCollection();
+        // Use signature-verifying collection for JAR files that need URL support
+        PlexusIoJarFileResourceCollectionWithSignatureVerification resourceCollection =
+                new PlexusIoJarFileResourceCollectionWithSignatureVerification();
         resourceCollection.setFile(getTestFile("src/test/jars/namelessrootfolder.jar"));
         Iterator iterator = resourceCollection.getResources();
         PlexusIoURLResource entry = (PlexusIoURLResource) iterator.next();
@@ -39,7 +41,9 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
 
     @Test
     void testDescriptionForError() throws Exception {
-        PlexusIoZipFileResourceCollection resourceCollection = new PlexusIoZipFileResourceCollection();
+        // Use signature-verifying collection for JAR files that need URL support
+        PlexusIoJarFileResourceCollectionWithSignatureVerification resourceCollection =
+                new PlexusIoJarFileResourceCollectionWithSignatureVerification();
         resourceCollection.setFile(getTestFile("src/test/jars/namelessrootfolder.jar"));
         Iterator<PlexusIoResource> iterator = resourceCollection.getResources();
         PlexusIoURLResource entry = (PlexusIoURLResource) iterator.next();
@@ -79,7 +83,6 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
         while (entries.hasNext()) {
             final PlexusIoResource next = entries.next();
             assertTrue(seen.remove(next.getName()), next.getName() + "was not present");
-            final URL url = next.getURL();
             final InputStream contents = next.getContents();
             contents.close();
         }

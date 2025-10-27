@@ -17,10 +17,10 @@ package org.codehaus.plexus.archiver.swc;
 
 import javax.inject.Named;
 
-import org.codehaus.plexus.archiver.zip.PlexusIoZipFileResourceCollection;
+import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 
 /**
- * Alias for {@link PlexusIoZipFileResourceCollection}.
+ * Resource collection for SWC files.
  */
 @Named("swc")
-public class PlexusIoSwcFileResourceCollection extends PlexusIoZipFileResourceCollection {}
+public class PlexusIoSwcFileResourceCollection extends PlexusArchiverZipFileResourceCollection {}
