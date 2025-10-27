@@ -331,8 +331,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
 
             if (!StringUtils.isEmpty(symlinkDestination)) {
                 // Delete existing symlink if it exists
-                if (Files.isSymbolicLink(targetFileName.toPath())) {
-                    Files.delete(targetFileName.toPath());
+                Path symlinkPath = targetFileName.toPath();
+                if (Files.isSymbolicLink(symlinkPath)) {
+                    Files.delete(symlinkPath);
                 }
                 SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
             } else if (isDirectory) {
