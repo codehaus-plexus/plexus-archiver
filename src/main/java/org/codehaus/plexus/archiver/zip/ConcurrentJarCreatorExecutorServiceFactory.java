@@ -46,6 +46,9 @@ public class ConcurrentJarCreatorExecutorServiceFactory {
                 return thread;
             }
         };
-        return new ThreadPoolExecutor(1, poolSize, 1L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);
+        // Use poolSize as both core and max to prevent thread growth
+        // This limits the number of concurrent threads and associated ThreadLocal instances
+        return new ThreadPoolExecutor(
+                poolSize, poolSize, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);
     }
 }
