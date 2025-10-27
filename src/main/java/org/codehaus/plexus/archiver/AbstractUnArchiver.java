@@ -38,6 +38,8 @@ import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+
 // TODO there should really be constructors which take the source file.
 
 /**
@@ -327,7 +329,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                 if (targetFileName.exists()) {
                     targetFileName.delete();
                 }
-                Files.copy(compressedInputStream, targetFileName.toPath());
+                Files.copy(compressedInputStream, targetFileName.toPath(), REPLACE_EXISTING);
             }
 
             targetFileName.setLastModified(entryDate.getTime());
