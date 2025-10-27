@@ -188,4 +188,33 @@ class AbstractUnArchiverTest {
         assertTrue(abstractUnArchiver.shouldExtractEntry(temporaryFolder, file, entryName, entryDate));
         assertEquals(0, abstractUnArchiver.casingMessageEmitted.get());
     }
+
+    @Test
+    void shouldExtractReadOnlyFile(@TempDir File temporaryFolder) throws Exception {
+        // given
+        File readOnlyFile = new File(temporaryFolder, "readonly.txt");
+        readOnlyFile.createNewFile();
+        java.nio.file.Files.write(readOnlyFile.toPath(), "original content".getBytes());
+
+        // Make the file read-only (simulate -r-xr-xr-x permissions)
+        readOnlyFile.setWritable(false);
+        assertTrue(readOnlyFile.exists());
+        assertFalse(readOnlyFile.canWrite());
+
+        // Create a mock input stream with new content
+        String newContent = "new content";
+        java.io.InputStream inputStream = new java.io.ByteArrayInputStream(newContent.getBytes());
+
+        // when
+        abstractUnArchiver.setOverwrite(true);
+        abstractUnArchiver.extractFile(
+                null, temporaryFolder, inputStream, "readonly.txt", new Date(), false, null, null, null);
+
+        // then
+        // The file should have been successfully overwritten
+        assertTrue(readOnlyFile.exists());
+        byte[] actualBytes = java.nio.file.Files.readAllBytes(readOnlyFile.toPath());
+        String actualContent = new String(actualBytes);
+        assertEquals(newContent, actualContent);
+    }
 }

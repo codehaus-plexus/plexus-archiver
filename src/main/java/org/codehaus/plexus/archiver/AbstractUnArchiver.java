@@ -38,8 +38,6 @@ import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 // TODO there should really be constructors which take the source file.
 
 /**
@@ -324,7 +322,12 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             } else if (isDirectory) {
                 targetFileName.mkdirs();
             } else {
-                Files.copy(compressedInputStream, targetFileName.toPath(), REPLACE_EXISTING);
+                // Delete existing file first to handle read-only files
+                // This matches the behavior of tar and unzip
+                if (targetFileName.exists()) {
+                    targetFileName.delete();
+                }
+                Files.copy(compressedInputStream, targetFileName.toPath());
             }
 
             targetFileName.setLastModified(entryDate.getTime());
