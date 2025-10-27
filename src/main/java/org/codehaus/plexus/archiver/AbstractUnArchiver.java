@@ -324,6 +324,13 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             } else if (isDirectory) {
                 targetFileName.mkdirs();
             } else {
+                // Delete existing file first to handle read-only files
+                // This matches the behavior of tar and unzip
+                if (targetFileName.exists()) {
+                    // Make file writable before deleting (required on Windows for read-only files)
+                    targetFileName.setWritable(true);
+                    targetFileName.delete();
+                }
                 Files.copy(compressedInputStream, targetFileName.toPath(), REPLACE_EXISTING);
             }
 
