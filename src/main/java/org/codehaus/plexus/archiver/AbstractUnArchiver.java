@@ -290,14 +290,31 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
         }
 
-        // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File targetFileName = FileUtils.resolveFile(dir, entryName);
+        // For symlinks, we need to get the file path without following symlinks.
+        // FileUtils.resolveFile calls getCanonicalFile() which follows symlinks,
+        // causing the symlink to resolve to its target instead of the symlink itself.
+        final File targetFileName;
+        if (!StringUtils.isEmpty(symlinkDestination)) {
+            // For symlinks, use simple path resolution without canonicalization
+            targetFileName = resolveFileWithoutFollowingSymlinks(dir, entryName);
+        } else {
+            // For regular files and directories, use the existing logic
+            targetFileName = FileUtils.resolveFile(dir, entryName);
+        }
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
         // getCanonicalFile().toPath() is used instead of getCanonicalPath() (returns String),
         // because "/opt/directory".startsWith("/opt/dir") would return false negative.
         Path canonicalDirPath = dir.getCanonicalFile().toPath();
-        Path canonicalDestPath = targetFileName.getCanonicalFile().toPath();
+
+        // For symlinks, we need to check the symlink path itself, not the target it points to
+        Path canonicalDestPath;
+        if (!StringUtils.isEmpty(symlinkDestination)) {
+            // For symlinks, normalize without following the link
+            canonicalDestPath = targetFileName.toPath().toAbsolutePath().normalize();
+        } else {
+            canonicalDestPath = targetFileName.getCanonicalFile().toPath();
+        }
 
         if (!canonicalDestPath.startsWith(canonicalDirPath)) {
             throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
@@ -395,5 +412,34 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
 
     private String normalizedFileSeparator(String pathOrEntry) {
         return pathOrEntry.replace("/", File.separator);
+    }
+
+    /**
+     * Resolves a file path relative to a base directory without following symlinks.
+     * This is similar to FileUtils.resolveFile but doesn't call getCanonicalFile(),
+     * which would follow symlinks and resolve them to their targets.
+     *
+     * @param baseDir the base directory
+     * @param filename the filename to resolve
+     * @return the resolved file
+     */
+    private File resolveFileWithoutFollowingSymlinks(File baseDir, String filename) {
+        String filenm = filename;
+        if ('/' != File.separatorChar) {
+            filenm = filename.replace('/', File.separatorChar);
+        }
+
+        if ('\\' != File.separatorChar) {
+            filenm = filenm.replace('\\', File.separatorChar);
+        }
+
+        // For absolute paths, just return a File object without canonicalization
+        if (filenm.startsWith(File.separator)) {
+            return new File(filenm);
+        }
+
+        // For relative paths, combine with base directory and get absolute path
+        // but don't call getCanonicalFile() which would follow symlinks
+        return new File(baseDir, filenm).getAbsoluteFile();
     }
 }
