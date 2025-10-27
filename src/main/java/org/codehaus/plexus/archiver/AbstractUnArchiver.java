@@ -33,7 +33,6 @@ import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -290,21 +289,32 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
         }
 
-        // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File targetFileName = FileUtils.resolveFile(dir, entryName);
+        // Don't use FileUtils.resolveFile as it follows symlinks, which would cause issues
+        // when trying to overwrite an existing symlink
+        final File targetFileName = new File(dir, entryName);
 
         // Make sure that the resolved path of the extracted file doesn't escape the destination directory
         // getCanonicalFile().toPath() is used instead of getCanonicalPath() (returns String),
         // because "/opt/directory".startsWith("/opt/dir") would return false negative.
         Path canonicalDirPath = dir.getCanonicalFile().toPath();
-        Path canonicalDestPath = targetFileName.getCanonicalFile().toPath();
+        // Don't follow symlinks for the target file, to avoid issues with symlink handling
+        Path targetPath = targetFileName.toPath();
+        // For security check, we need the canonical path but without following the last symlink
+        Path canonicalDestPath;
+        if (Files.isSymbolicLink(targetPath)) {
+            // If it's a symlink, get the canonical path of the parent and append the file name
+            canonicalDestPath =
+                    targetFileName.getParentFile().getCanonicalFile().toPath().resolve(targetFileName.getName());
+        } else {
+            canonicalDestPath = targetFileName.getCanonicalFile().toPath();
+        }
 
         if (!canonicalDestPath.startsWith(canonicalDirPath)) {
             throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
         }
 
         // don't allow override target symlink by standard file
-        if (StringUtils.isEmpty(symlinkDestination) && Files.isSymbolicLink(canonicalDestPath)) {
+        if (StringUtils.isEmpty(symlinkDestination) && Files.isSymbolicLink(targetPath)) {
             throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
         }
 
@@ -320,6 +330,10 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
 
             if (!StringUtils.isEmpty(symlinkDestination)) {
+                // Delete existing symlink if it exists
+                if (Files.isSymbolicLink(targetFileName.toPath())) {
+                    Files.delete(targetFileName.toPath());
+                }
                 SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
             } else if (isDirectory) {
                 targetFileName.mkdirs();
@@ -362,6 +376,11 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         // scenario (4) and (5).
         // No matter the case sensitivity of the file system, file.exists() returns false when there is no file with the
         // same name (1).
+        // Check if it's a symlink first, as exists() follows symlinks and may give incorrect results
+        if (Files.isSymbolicLink(targetFileName.toPath())) {
+            // For symlinks, always extract to overwrite the existing symlink
+            return true;
+        }
         if (!targetFileName.exists()) {
             return true;
         }
