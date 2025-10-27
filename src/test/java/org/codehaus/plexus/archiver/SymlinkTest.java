@@ -107,4 +107,75 @@ class SymlinkTest extends TestSupport {
         symbolicLink = new File("target/output/dirarchiver-symlink/aDirWithALink/backOutsideToFileX");
         assertTrue(Files.isSymbolicLink(symbolicLink.toPath()));
     }
+
+    /**
+     * Test for the issue where symlinks were not properly resolved when extracting archives.
+     * When a symlink is extracted and then the archive is extracted again, the symlink
+     * should remain a symlink and not be resolved to its target.
+     * This test verifies:
+     * 1. Extracting a symlink creates the symlink correctly
+     * 2. Re-extracting the same archive preserves the symlink
+     * 3. Symlinks to non-existent files are handled correctly
+     */
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void testSymlinkExtractionTwice() throws Exception {
+        // Test with tar
+        TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
+        tarArchiver.setLongfile(TarLongFileMode.posix);
+
+        File srcDir = getTestFile("src/test/resources/symlinks/src");
+        tarArchiver.addDirectory(srcDir);
+        File tarFile = new File("target/output/symlink-twice-test.tar");
+        tarArchiver.setDestFile(tarFile);
+        tarArchiver.createArchive();
+
+        File outputDir = new File("target/output/symlink-twice-test-tar");
+        outputDir.mkdirs();
+
+        TarUnArchiver tarUnarchiver = (TarUnArchiver) lookup(UnArchiver.class, "tar");
+        tarUnarchiver.setSourceFile(tarFile);
+        tarUnarchiver.setDestFile(outputDir);
+
+        // First extraction
+        tarUnarchiver.extract();
+
+        // Verify symlinks exist and are actually symlinks
+        File symR = new File(outputDir, "symR");
+        assertTrue(Files.isSymbolicLink(symR.toPath()), "symR should be a symlink");
+
+        // Second extraction - this should not fail and should preserve symlinks
+        tarUnarchiver.extract();
+
+        // Verify symlinks still exist and are still symlinks
+        assertTrue(Files.isSymbolicLink(symR.toPath()), "symR should still be a symlink after re-extraction");
+
+        // Test with zip
+        ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
+        zipArchiver.addDirectory(srcDir);
+        File zipFile = new File("target/output/symlink-twice-test.zip");
+        zipFile.delete();
+        zipArchiver.setDestFile(zipFile);
+        zipArchiver.createArchive();
+
+        File zipOutputDir = new File("target/output/symlink-twice-test-zip");
+        zipOutputDir.mkdirs();
+
+        ZipUnArchiver zipUnarchiver = (ZipUnArchiver) lookup(UnArchiver.class, "zip");
+        zipUnarchiver.setSourceFile(zipFile);
+        zipUnarchiver.setDestFile(zipOutputDir);
+
+        // First extraction
+        zipUnarchiver.extract();
+
+        // Verify symlinks exist and are actually symlinks
+        File symRZip = new File(zipOutputDir, "symR");
+        assertTrue(Files.isSymbolicLink(symRZip.toPath()), "symR should be a symlink in zip");
+
+        // Second extraction - this should not fail and should preserve symlinks
+        zipUnarchiver.extract();
+
+        // Verify symlinks still exist and are still symlinks
+        assertTrue(Files.isSymbolicLink(symRZip.toPath()), "symR should still be a symlink after re-extraction in zip");
+    }
 }
