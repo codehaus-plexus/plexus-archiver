@@ -2,11 +2,11 @@ package org.codehaus.plexus.archiver.war;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.TestSupport;
-import org.codehaus.plexus.util.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
