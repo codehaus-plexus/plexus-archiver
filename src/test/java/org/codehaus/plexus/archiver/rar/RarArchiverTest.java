@@ -49,7 +49,7 @@ class RarArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testArchive() throws Exception {
+    void archive() throws Exception {
         Archiver archiver = lookup(Archiver.class, "rar");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.rar"));
         // archiver.addDirectory( , "manifests" );
@@ -70,7 +70,7 @@ class RarArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testUnarchive() throws Exception {
+    void unarchive() throws Exception {
 
         UnArchiver unArchiver = lookup(UnArchiver.class, "rar");
         File rarFile = new File(getBasedir() + "/src/test/jars/test.rar");
@@ -92,7 +92,7 @@ class RarArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    void testRarIsForcedBehaviour() throws Exception {
+    void rarIsForcedBehaviour() throws Exception {
         Archiver rarArvhiver = createArchiver("rar");
 
         assertTrue(rarArvhiver.isSupportingForced());

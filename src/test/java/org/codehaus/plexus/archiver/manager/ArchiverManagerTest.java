@@ -99,7 +99,7 @@ class ArchiverManagerTest extends TestSupport {
     }
 
     @Test
-    void testReuseArchiver() throws Exception {
+    void reuseArchiver() throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         Archiver archiver = manager.getArchiver("jar");
@@ -141,7 +141,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getArchiversForTests")
-    void testLookupArchiver(String archiveName) throws Exception {
+    void lookupArchiver(String archiveName) throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
         Archiver archiver = manager.getArchiver(archiveName);
 
@@ -150,7 +150,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getUnArchiversForTests")
-    void testLookupUnArchiver(String archiveName) throws Exception {
+    void lookupUnArchiver(String archiveName) throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
         UnArchiver archiver = manager.getUnArchiver(archiveName);
 
@@ -159,7 +159,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getResourceCollectionsForTests")
-    void testLookupResourceCollection(String resourceName) throws Exception {
+    void lookupResourceCollection(String resourceName) throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
         PlexusIoResourceCollection resourceCollection = manager.getResourceCollection(resourceName);
 
@@ -167,21 +167,21 @@ class ArchiverManagerTest extends TestSupport {
     }
 
     @Test
-    void testLookupUnknownArchiver() {
+    void lookupUnknownArchiver() {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getArchiver("Unknown"));
     }
 
     @Test
-    void testLookupUnknownUnArchiver() {
+    void lookupUnknownUnArchiver() {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getUnArchiver("Unknown"));
     }
 
     @Test
-    void testLookupUnknownResourceCollection() {
+    void lookupUnknownResourceCollection() {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         assertThrowsExactly(NoSuchArchiverException.class, () -> manager.getResourceCollection("Unknown"));
@@ -189,7 +189,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getUnArchiversForTests")
-    void testLookupUnArchiverUsingFile(String archiveName) throws Exception {
+    void lookupUnArchiverUsingFile(String archiveName) throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         UnArchiver archiver = manager.getUnArchiver(new File("test", "test." + archiveName));
@@ -198,7 +198,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getArchiversForTests")
-    void testLookupArchiverUsingFile(String archiveName) throws Exception {
+    void lookupArchiverUsingFile(String archiveName) throws Exception {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         Archiver archiver = manager.getArchiver(new File("test." + archiveName));
@@ -216,7 +216,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getUnsupportedFiles")
-    void testUnsupportedLookupArchiverUsingFile(String fileName, String fileExtension) {
+    void unsupportedLookupArchiverUsingFile(String fileName, String fileExtension) {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         NoSuchArchiverException exception = assertThrowsExactly(
@@ -227,7 +227,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getUnsupportedFiles")
-    void testUnsupportedLookupUnArchiverUsingFile(String fileName, String fileExtension) {
+    void unsupportedLookupUnArchiverUsingFile(String fileName, String fileExtension) {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         NoSuchArchiverException exception =
@@ -238,7 +238,7 @@ class ArchiverManagerTest extends TestSupport {
 
     @ParameterizedTest
     @MethodSource("getUnsupportedFiles")
-    void testUnsupportedLookupResourceCollectionUsingFile(String fileName, String fileExtension) {
+    void unsupportedLookupResourceCollectionUsingFile(String fileName, String fileExtension) {
         ArchiverManager manager = lookup(ArchiverManager.class);
 
         NoSuchArchiverException exception = assertThrowsExactly(

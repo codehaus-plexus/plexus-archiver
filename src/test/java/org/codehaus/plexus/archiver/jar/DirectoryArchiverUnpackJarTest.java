@@ -40,7 +40,7 @@ class DirectoryArchiverUnpackJarTest extends TestSupport {
     }
 
     @Test
-    void test_dependency_sets_depSet_unpacked_rdonly() throws Exception {
+    void dependency_sets_dep_set_unpacked_rdonly() throws Exception {
         File src = new File("src/test/resources/unpack_issue.jar");
         File dest = new File("target/depset_unpack");
         FileUtils.deleteDirectory(dest);
@@ -61,7 +61,7 @@ class DirectoryArchiverUnpackJarTest extends TestSupport {
     }
 
     @Test
-    void test_dependency_sets_depSet_unpacked_by_default_dont_override() throws Exception {
+    void dependency_sets_dep_set_unpacked_by_default_dont_override() throws Exception {
 
         File src = new File("src/test/resources/unpack_issue.jar");
         File dest = new File("target/depset_unpack_dont_override");
@@ -85,7 +85,7 @@ class DirectoryArchiverUnpackJarTest extends TestSupport {
     }
 
     @Test
-    void test_dependency_sets_depSet_force_unpacked() throws Exception {
+    void dependency_sets_dep_set_force_unpacked() throws Exception {
 
         File src = new File("src/test/resources/unpack_issue.jar");
         File dest = new File("target/depset_unpack_force");

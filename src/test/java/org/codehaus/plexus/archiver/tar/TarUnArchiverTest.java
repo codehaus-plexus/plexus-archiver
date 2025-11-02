@@ -46,12 +46,12 @@ class TarUnArchiverTest extends TestSupport {
     }
 
     @Test
-    void testExtractingADirectory() throws Exception {
+    void extractingADirectory() throws Exception {
         runUnarchiver(null, new boolean[] {true, true, true});
     }
 
     @Test
-    void testSelectors() throws Exception {
+    void selectors() throws Exception {
         IncludeExcludeFileSelector fileSelector = new IncludeExcludeFileSelector();
         runUnarchiver(new FileSelector[] {fileSelector}, new boolean[] {true, true, true});
 

@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class IndexTest extends TestSupport {
 
     @Test
-    void testCreateArchiveWithIndexedJars() throws Exception {
+    void createArchiveWithIndexedJars() throws Exception {
         /* create a dummy jar */
         JarArchiver archiver1 = (JarArchiver) lookup(Archiver.class, "jar");
         archiver1.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), "one.txt");
@@ -77,7 +77,7 @@ class IndexTest extends TestSupport {
      * tests for files in META-INF
      */
     @Test
-    void testCreateArchiveWithIndexedJarsAndMetaInf() throws Exception {
+    void createArchiveWithIndexedJarsAndMetaInf() throws Exception {
         /* create a dummy jar */
         JarArchiver archiver1 = (JarArchiver) lookup(Archiver.class, "jar");
         archiver1.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), "one.txt");

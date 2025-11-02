@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TarSnappyUnArchiverTest extends TestSupport {
 
     @Test
-    void testExtract() throws Exception {
+    void extract() throws Exception {
         TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
         tarArchiver.setLongfile(TarLongFileMode.posix);
 

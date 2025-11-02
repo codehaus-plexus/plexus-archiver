@@ -17,7 +17,6 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
@@ -60,7 +59,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory(@TempDir File targetFolder) throws ArchiverException {
+    void shouldThrowExceptionBecauseRewrittenPathIsOutOfDirectory(@TempDir File targetFolder) throws Exception {
         // given
 
         // The prefix includes the target directory name to make sure we catch cases when the paths
@@ -81,7 +80,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldExtractWhenFileOnDiskDoesNotExist(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenFileOnDiskDoesNotExist(@TempDir File temporaryFolder) throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt"); // does not create the file!
         String entryname = file.getName();
@@ -95,7 +94,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive(@TempDir File temporaryFolder) throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -112,7 +111,7 @@ class AbstractUnArchiverTest {
 
     @Test
     void shouldExtractWhenFileOnDiskIsNewerThanEntryInArchive_andWarnAboutDifferentCasing(@TempDir File temporaryFolder)
-            throws IOException {
+            throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -126,7 +125,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDisk(@TempDir File temporaryFolder) throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -143,7 +142,7 @@ class AbstractUnArchiverTest {
 
     @Test
     void shouldExtractWhenEntryInArchiveIsNewerThanFileOnDiskAndWarnAboutDifferentCasing(@TempDir File temporaryFolder)
-            throws IOException {
+            throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -160,7 +159,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldNotWarnAboutDifferentCasingForDirectoryEntries(@TempDir File temporaryFolder) throws IOException {
+    void shouldNotWarnAboutDifferentCasingForDirectoryEntries(@TempDir File temporaryFolder) throws Exception {
         // given
         File file = new File(temporaryFolder, "whatever.txt");
         file.createNewFile();
@@ -175,7 +174,7 @@ class AbstractUnArchiverTest {
     }
 
     @Test
-    void shouldExtractWhenCasingDifferOnlyInEntryNamePath(@TempDir File temporaryFolder) throws IOException {
+    void shouldExtractWhenCasingDifferOnlyInEntryNamePath(@TempDir File temporaryFolder) throws Exception {
         // given
         String entryName = "directory/whatever.txt";
         File file = new File(temporaryFolder, entryName); // does not create the file!

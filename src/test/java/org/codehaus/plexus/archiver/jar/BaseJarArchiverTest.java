@@ -17,7 +17,6 @@
 package org.codehaus.plexus.archiver.jar;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -28,7 +27,6 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +40,7 @@ public abstract class BaseJarArchiverTest {
      * could create basic JAR file
      */
     @Test
-    void testCreateJar() throws IOException, ArchiverException {
+    void createJar() throws Exception {
         File jarFile = new File("target/output/testJar.jar");
         jarFile.delete();
 

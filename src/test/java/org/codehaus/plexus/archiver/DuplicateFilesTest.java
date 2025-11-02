@@ -29,7 +29,7 @@ class DuplicateFilesTest extends TestSupport {
     private static final File destination = getTestFile("target/output/duplicateFiles");
 
     @Test
-    void testZipArchiver() throws Exception {
+    void zipArchiver() throws Exception {
         Archiver archiver = lookup(Archiver.class, "zip");
         archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);
 
@@ -55,14 +55,14 @@ class DuplicateFilesTest extends TestSupport {
     }
 
     @Test
-    void testDirArchiver() throws Exception {
+    void dirArchiver() throws Exception {
         Archiver archiver = lookup(Archiver.class, "dir");
         createArchive(archiver, "dir");
         testFinalFile("target/output/duplicateFiles.dir/duplicateFiles/foo.txt");
     }
 
     @Test
-    void testTarArchiver() throws Exception {
+    void tarArchiver() throws Exception {
         TarArchiver archiver = (TarArchiver) lookup(Archiver.class, "tar");
         archiver.setLongfile(TarLongFileMode.posix);
         archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class DefaultFileSetTest {
 
     @Test
-    void testCreate() {
+    void create() {
         final String[] includes = {"zz", "yy"};
         final String[] exc = {"xx1", "xx2"};
         final boolean usingDefaultExcludes = true;

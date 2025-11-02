@@ -18,7 +18,6 @@ package org.codehaus.plexus.archiver.tar;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -41,7 +40,7 @@ class TarRoundTripTest {
      * test round-tripping long (GNU) entries
      */
     @Test
-    void testLongRoundTripping() throws IOException {
+    void longRoundTripping() throws Exception {
         TarArchiveEntry original = new TarArchiveEntry(LONG_NAME);
         assertTrue(LONG_NAME.length() > 100, "over 100 chars");
         assertEquals(LONG_NAME, original.getName(), "original name");

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class JdkManifestFactoryTest extends TestSupport {
 
     @Test
-    void testGetDefaultManifest() throws Exception {
+    void getDefaultManifest() throws Exception {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Manifest manifest = JdkManifestFactory.getDefaultManifest();
         manifest.write(byteArrayOutputStream);
@@ -28,7 +28,7 @@ class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    void testGetDefaultManifestString() throws Exception {
+    void getDefaultManifestString() throws Exception {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestWithClassPath.mf");
         Manifest manifestWithout = getManifest("src/test/resources/manifests/manifest1.mf");
         String value = manifest.getMainAttributes().getValue(ManifestConstants.ATTRIBUTE_CLASSPATH);
@@ -40,7 +40,7 @@ class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    void testIllegals() throws ManifestException, IOException {
+    void illegals() throws Exception {
         Manifest manifest = getManifest("src/test/resources/manifests/manifest6.mf");
         assertNotNull(manifest);
 
@@ -53,7 +53,7 @@ class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    void testMerge() throws ManifestException, IOException {
+    void merge() throws Exception {
         Manifest manifest1 = getManifest("src/test/resources/manifests/manifestMerge1.mf");
         Manifest manifest2 = getManifest("src/test/resources/manifests/manifestMerge2.mf");
 
@@ -80,7 +80,7 @@ class JdkManifestFactoryTest extends TestSupport {
     }
 
     @Test
-    void testDualClassPath() throws ManifestException, IOException {
+    void dualClassPath() throws Exception {
         Manifest manifest = getManifest("src/test/resources/manifests/manifestWithDualClassPath.mf");
         final Attributes mainAttributes = manifest.getMainAttributes();
         final String attribute = mainAttributes.getValue("Class-Path");

@@ -34,7 +34,7 @@ class TarFileTest extends TestSupport {
      * Test for the uncompressed tar file, {@link TarFile}.
      */
     @Test
-    void testTarFile() throws Exception {
+    void tarFile() throws Exception {
         testTarFile(null, null, new TarFileCreator() {
 
             @Override
@@ -48,7 +48,7 @@ class TarFileTest extends TestSupport {
      * Test for the gzip compressed tar file, {@link GZipTarFile}.
      */
     @Test
-    void testGZipTarFile() throws Exception {
+    void gZipTarFile() throws Exception {
         final GZipCompressor compressor = new GZipCompressor();
         testTarFile(compressor, ".gz", new TarFileCreator() {
 
@@ -63,7 +63,7 @@ class TarFileTest extends TestSupport {
      * Test for the bzip2 compressed tar file, {@link BZip2TarFile}.
      */
     @Test
-    void testBZip2TarFile() throws Exception {
+    void bZip2TarFile() throws Exception {
         final BZip2Compressor compressor = new BZip2Compressor();
         testTarFile(compressor, ".bz2", new TarFileCreator() {
 

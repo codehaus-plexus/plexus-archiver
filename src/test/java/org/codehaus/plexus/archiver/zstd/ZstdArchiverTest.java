@@ -32,13 +32,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ZstdArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    void testCreateArchive() throws Exception {
+    void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForxz.zip"));
@@ -62,7 +63,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         ZstdArchiver archiver = (ZstdArchiver) lookup(Archiver.class, "zst");
         archiver.setDestFile(getTestFile("target/output/empty.zst"));
         try {
@@ -74,7 +75,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateResourceCollection() throws Exception {
+    void createResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File zstFile = new File("target/output/pom.xml.zst");
         ZstdArchiver zstdArchiver = (ZstdArchiver) lookup(Archiver.class, "zst");
@@ -110,7 +111,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    void testZstIsForcedBehaviour() throws Exception {
+    void zstIsForcedBehaviour() throws Exception {
         ZstdArchiver zstdArchiver = (ZstdArchiver) createArchiver("zst");
 
         assertTrue(zstdArchiver.isSupportingForced());
@@ -127,7 +128,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
 
         final long firstRunTime = zstdArchiver.getDestFile().lastModified();
 
-        assertFalse(creationTime == firstRunTime);
+        assertNotSame(creationTime, firstRunTime);
 
         zstdArchiver = (ZstdArchiver) createArchiver("zst");
 
