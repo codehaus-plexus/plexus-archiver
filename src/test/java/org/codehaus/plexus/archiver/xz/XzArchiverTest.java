@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -42,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class XzArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    void testCreateArchive() throws Exception {
+    void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForxz.zip"));
@@ -66,7 +67,7 @@ class XzArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         XZArchiver archiver = (XZArchiver) lookup(Archiver.class, "xz");
         archiver.setDestFile(getTestFile("target/output/empty.xz"));
         try {
@@ -78,7 +79,7 @@ class XzArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateResourceCollection() throws Exception {
+    void createResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File xzFile = new File("target/output/pom.xml.xz");
         XZArchiver xzArchiver = (XZArchiver) lookup(Archiver.class, "xz");
@@ -114,7 +115,7 @@ class XzArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    void testXzIsForcedBehaviour() throws Exception {
+    void xzIsForcedBehaviour() throws Exception {
         XZArchiver xzArchiver = (XZArchiver) createArchiver("xz");
 
         assertTrue(xzArchiver.isSupportingForced());
@@ -131,7 +132,7 @@ class XzArchiverTest extends BasePlexusArchiverTest {
 
         final long firstRunTime = xzArchiver.getDestFile().lastModified();
 
-        assertFalse(creationTime == firstRunTime);
+        assertNotSame(creationTime, firstRunTime);
 
         xzArchiver = (XZArchiver) createArchiver("xz");
 

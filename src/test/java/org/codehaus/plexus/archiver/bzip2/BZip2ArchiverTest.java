@@ -39,7 +39,7 @@ import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class BZip2ArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    void testCreateArchive() throws Exception {
+    void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForbz2.zip"));
@@ -63,7 +63,7 @@ class BZip2ArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         BZip2Archiver archiver = (BZip2Archiver) lookup(Archiver.class, "bzip2");
         archiver.setDestFile(getTestFile("target/output/empty.bz2"));
         try {
@@ -75,7 +75,7 @@ class BZip2ArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateResourceCollection() throws Exception {
+    void createResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File bz2File = new File("target/output/pom.xml.bz2");
         BZip2Archiver bzip2Archiver = (BZip2Archiver) lookup(Archiver.class, "bzip2");
@@ -111,7 +111,7 @@ class BZip2ArchiverTest extends BasePlexusArchiverTest {
      * @throws Exception
      */
     @Test
-    void testBz2IsForcedBehaviour() throws Exception {
+    void bz2IsForcedBehaviour() throws Exception {
         BZip2Archiver bZip2Archiver = (BZip2Archiver) createArchiver("bzip2");
 
         assertTrue(bZip2Archiver.isSupportingForced());
@@ -128,7 +128,7 @@ class BZip2ArchiverTest extends BasePlexusArchiverTest {
 
         final long firstRunTime = bZip2Archiver.getDestFile().lastModified();
 
-        assertFalse(creationTime == firstRunTime);
+        assertNotSame(creationTime, firstRunTime);
 
         bZip2Archiver = (BZip2Archiver) createArchiver("bzip2");
 

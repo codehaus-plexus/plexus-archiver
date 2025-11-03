@@ -1,7 +1,6 @@
 package org.codehaus.plexus.archiver.zip;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class PlexusArchiverZipFileResourceCollectionTest extends TestSupport {
 
     @Test
-    void testFilesWithIllegalHtmlChars() throws Exception {
+    void filesWithIllegalHtmlChars() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/archiveWithIllegalHtmlFileName.zip");
         Set<String> seen = new HashSet<>();
         seen.add("AFileThatNeedsHtmlEsc%3F&gt");
@@ -39,7 +38,7 @@ class PlexusArchiverZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testFileModes() throws IOException {
+    void fileModes() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/zeroFileMode/mixed-file-mode.zip");
         Map<String, Integer> originalUnixModes = new HashMap<>();
         originalUnixModes.put("platform-fat", -1);
