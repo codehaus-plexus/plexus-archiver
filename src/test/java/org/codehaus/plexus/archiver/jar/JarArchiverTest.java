@@ -15,7 +15,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -27,7 +26,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
     private Path tempDir;
 
     @Test
-    void testCreateManifestOnlyJar() throws IOException, ManifestException, ArchiverException {
+    void createManifestOnlyJar() throws Exception {
         File jarFile = Files.createTempFile(tempDir, "JarArchiverTest.", ".jar").toFile();
 
         JarArchiver archiver = getJarArchiver();
@@ -45,7 +44,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    void testNonCompressed() throws IOException, ArchiverException {
+    void nonCompressed() throws Exception {
         File jarFile = new File("target/output/jarArchiveNonCompressed.jar");
 
         JarArchiver archiver = getJarArchiver();
@@ -56,7 +55,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    void testVeryLargeJar() throws IOException, ArchiverException {
+    void veryLargeJar() throws Exception {
         // Generate some number of random files that is likely to be
         // two or three times the number of available file handles
         Random rand = new Random();
@@ -81,7 +80,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
     }
 
     @Test
-    void testReproducibleBuild() throws IOException, ManifestException, ParseException {
+    void reproducibleBuild() throws Exception {
         String[] tzList = {
             "America/Managua",
             "America/New_York",
@@ -158,7 +157,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
      * @throws ParseException
      */
     @Test
-    public void testReproducibleUmask() throws IOException, ParseException {
+    void reproducibleUmask() throws Exception {
         Path jarFile = Files.createTempFile(tempDir, "JarArchiverTest-umask", ".jar");
 
         JarArchiver archiver = getJarArchiver();

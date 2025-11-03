@@ -34,7 +34,7 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testModesAndOverridesAreUnsetByDefault() {
+    void modesAndOverridesAreUnsetByDefault() {
         assertEquals(-1, archiver.getDefaultFileMode());
         assertEquals(-1, archiver.getOverrideFileMode());
 
@@ -43,13 +43,13 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testWhenUnsetModeUsesDefault() {
+    void whenUnsetModeUsesDefault() {
         assertEquals(Archiver.DEFAULT_FILE_MODE, archiver.getFileMode());
         assertEquals(Archiver.DEFAULT_DIR_MODE, archiver.getDirectoryMode());
     }
 
     @Test
-    void testSetModeIsUsedWithFlagsForType() {
+    void setModeIsUsedWithFlagsForType() {
         archiver.setFileMode(0400);
         assertEquals(0100400, archiver.getFileMode());
 
@@ -58,7 +58,7 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testSetDefaultIncludesFlagsForType() {
+    void setDefaultIncludesFlagsForType() {
         archiver.setDefaultFileMode(0400);
         assertEquals(0100400, archiver.getDefaultFileMode());
 
@@ -67,7 +67,7 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testDefaultIsUsedWhenModeIsUnset() {
+    void defaultIsUsedWhenModeIsUnset() {
         archiver.setDefaultFileMode(0400);
         assertEquals(0100400, archiver.getFileMode());
 
@@ -76,7 +76,7 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testOverridesCanBeReset() {
+    void overridesCanBeReset() {
         archiver.setFileMode(0400);
         archiver.setFileMode(-1);
         assertEquals(-1, archiver.getOverrideFileMode());
@@ -87,7 +87,7 @@ class AbstractArchiverTest {
     }
 
     @Test
-    void testSetDestFileInTheWorkingDir() {
+    void setDestFileInTheWorkingDir() {
         archiver.setDestFile(new File("archive"));
     }
 }

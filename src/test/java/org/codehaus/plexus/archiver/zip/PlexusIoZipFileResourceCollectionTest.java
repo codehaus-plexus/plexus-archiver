@@ -21,12 +21,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlexusIoZipFileResourceCollectionTest extends TestSupport {
 
     @Test
-    void testNamelessRootFolder() throws Exception {
+    void namelessRootFolder() throws Exception {
         // Use signature-verifying collection for JAR files that need URL support
         PlexusIoJarFileResourceCollectionWithSignatureVerification resourceCollection =
                 new PlexusIoJarFileResourceCollectionWithSignatureVerification();
@@ -40,7 +41,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testDescriptionForError() throws Exception {
+    void descriptionForError() throws Exception {
         // Use signature-verifying collection for JAR files that need URL support
         PlexusIoJarFileResourceCollectionWithSignatureVerification resourceCollection =
                 new PlexusIoJarFileResourceCollectionWithSignatureVerification();
@@ -53,7 +54,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testFilesWithIllegalHtmlChars() throws Exception {
+    void filesWithIllegalHtmlChars() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/bogusManifest.zip");
         PlexusIoZipFileResourceCollection prc = new PlexusIoZipFileResourceCollection();
         prc.setFile(testZip);
@@ -70,7 +71,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testFilesThatAreNotThere() throws Exception {
+    void filesThatAreNotThere() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/archiveWithIllegalHtmlFileName.zip");
         Set<String> seen = new HashSet<>();
         seen.add("AFileThatNeedsHtmlEsc%3F&gt");
@@ -89,7 +90,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testSymlinkEntries() throws Exception {
+    void symlinkEntries() throws Exception {
         File testZip = new File(getBasedir(), "src/test/resources/symlinks/symlinks.zip");
         Map<String, String> symLinks = new HashMap<>();
         symLinks.put("symDir", "targetDir/");
@@ -106,7 +107,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
             String symLinkTarget = symLinks.remove(next.getName());
             if (symLinkTarget != null) {
                 assertTrue(next.isSymbolicLink(), next.getName() + " must be symlink");
-                assertTrue(next instanceof SymlinkDestinationSupplier);
+                assertInstanceOf(SymlinkDestinationSupplier.class, next);
                 assertEquals(symLinkTarget, ((SymlinkDestinationSupplier) next).getSymlinkDestination());
             } else {
                 assertFalse(next.isSymbolicLink(), next.getName() + " must not be symlink");
@@ -117,7 +118,7 @@ class PlexusIoZipFileResourceCollectionTest extends TestSupport {
     }
 
     @Test
-    void testUnarchiveUnicodePathExtra() throws Exception {
+    void unarchiveUnicodePathExtra() throws Exception {
         PlexusIoZipFileResourceCollection prc = new PlexusIoZipFileResourceCollection();
         prc.setFile(getTestFile("src/test/resources/unicodePathExtra/efsclear.zip"));
         Set<String> names = new HashSet<>();

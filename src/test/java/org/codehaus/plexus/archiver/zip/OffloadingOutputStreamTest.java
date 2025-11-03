@@ -17,7 +17,6 @@
 package org.codehaus.plexus.archiver.zip;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class OffloadingOutputStreamTest {
 
     @Test
-    void temporaryFileShouldBeCreated() throws IOException {
+    void temporaryFileShouldBeCreated() throws Exception {
         File streamFile = null;
         try (OffloadingOutputStream stream = new OffloadingOutputStream(100, "test", "test")) {
             stream.write(new byte[256]);

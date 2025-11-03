@@ -44,7 +44,7 @@ class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testUseAttributesFromTarArchiveInputInTarArchiverOutput() throws Exception {
+    void useAttributesFromTarArchiveInputInTarArchiverOutput() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -96,7 +96,7 @@ class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testUseDetectedFileAttributes() throws Exception {
+    void useDetectedFileAttributes() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -137,7 +137,7 @@ class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testOverrideDetectedFileAttributes() throws Exception {
+    void overrideDetectedFileAttributes() throws Exception {
         printTestHeader();
 
         File tempFile =
@@ -181,7 +181,7 @@ class TarFileAttributesTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testOverrideDetectedFileAttributesUsingFileMode() throws Exception {
+    void overrideDetectedFileAttributesUsingFileMode() throws Exception {
         printTestHeader();
         File tempFile =
                 Files.createTempFile(tempDir, "tar-file-attributes.", ".tmp").toFile();

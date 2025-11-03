@@ -1,7 +1,6 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import org.codehaus.plexus.archiver.dir.DirectoryArchiver;
@@ -24,7 +23,7 @@ class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testSymlinkDir() throws IOException {
+    void symlinkDir() throws Exception {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symDir");
         assertTrue(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
@@ -32,7 +31,7 @@ class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testSymlinkDirWithSlash() throws IOException {
+    void symlinkDirWithSlash() throws Exception {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symDir/");
         assertTrue(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
@@ -40,14 +39,14 @@ class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testSymlinkFile() {
+    void symlinkFile() {
         File dummyContent = getTestFile("src/test/resources/symlinks/src/symR");
         assertFalse(dummyContent.isDirectory());
         assertTrue(Files.isSymbolicLink(dummyContent.toPath()));
     }
 
     @Test
-    void testSymlinkTar() throws Exception {
+    void symlinkTar() throws Exception {
         TarArchiver archiver = (TarArchiver) lookup(Archiver.class, "tar");
         archiver.setLongfile(TarLongFileMode.posix);
 
@@ -67,7 +66,7 @@ class SymlinkTest extends TestSupport {
     }
 
     @Test
-    void testSymlinkZip() throws Exception {
+    void symlinkZip() throws Exception {
         ZipArchiver archiver = (ZipArchiver) lookup(Archiver.class, "zip");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
@@ -89,7 +88,7 @@ class SymlinkTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testSymlinkDirArchiver() throws Exception {
+    void symlinkDirArchiver() throws Exception {
         DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");

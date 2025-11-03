@@ -49,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class SnappyArchiverTest extends BasePlexusArchiverTest {
 
     @Test
-    void testCreateArchive() throws Exception {
+    void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.addDirectory(getTestFile("src"));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForSnappy.zip"));
@@ -63,7 +63,7 @@ class SnappyArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         SnappyArchiver archiver = (SnappyArchiver) lookup(Archiver.class, "snappy");
         archiver.setDestFile(getTestFile("target/output/empty.snappy"));
         try {
@@ -75,7 +75,7 @@ class SnappyArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateResourceCollection() throws Exception {
+    void createResourceCollection() throws Exception {
         final File pomFile = new File("pom.xml");
         final File snappyFile = new File("target/output/pom.xml.snappy");
         SnappyArchiver SnappyArchiver = (SnappyArchiver) lookup(Archiver.class, "snappy");

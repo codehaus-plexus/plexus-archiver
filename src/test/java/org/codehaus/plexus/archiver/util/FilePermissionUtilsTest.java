@@ -35,7 +35,7 @@ class FilePermissionUtilsTest {
     }
 
     @Test
-    void testOnlyWritableOnlyUser() throws Exception {
+    void onlyWritableOnlyUser() throws Exception {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("200", getLogger());
         assertTrue(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -45,7 +45,7 @@ class FilePermissionUtilsTest {
     }
 
     @Test
-    void testExecAndRead() {
+    void execAndRead() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("500", getLogger());
         assertFalse(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -55,7 +55,7 @@ class FilePermissionUtilsTest {
     }
 
     @Test
-    void testAllUser() {
+    void allUser() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("700", getLogger());
         assertTrue(fp.isWritable());
         assertTrue(fp.isOwnerOnlyWritable());
@@ -65,7 +65,7 @@ class FilePermissionUtilsTest {
     }
 
     @Test
-    void testAllAllUser() {
+    void allAllUser() {
         FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("707", getLogger());
         assertTrue(fp.isWritable());
         assertFalse(fp.isOwnerOnlyWritable());

@@ -21,7 +21,7 @@ class ArchiveEntryUtilsTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testChmodForFileWithDollarPLXCOMP164() throws Exception {
+    void chmodForFileWithDollarPLXCOMP164() throws Exception {
         File temp = Files.createTempFile(tempDir, "A$A", "BB$").toFile();
         ArchiveEntryUtils.chmod(temp, 0770);
         assert0770(temp);
@@ -29,7 +29,7 @@ class ArchiveEntryUtilsTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testChmodWithJava7() throws Exception {
+    void chmodWithJava7() throws Exception {
         File temp = Files.createTempFile(tempDir, "D$D", "BB$").toFile();
         ArchiveEntryUtils.chmod(temp, 0770);
         assert0770(temp);

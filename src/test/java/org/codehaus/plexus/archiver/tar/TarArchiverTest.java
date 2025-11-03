@@ -70,7 +70,7 @@ class TarArchiverTest extends TestSupport {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testCreateArchiveWithDetectedModes() throws Exception {
+    void createArchiveWithDetectedModes() throws Exception {
 
         String[] executablePaths = {"path/to/executable", "path/to/executable.bat"};
 
@@ -182,7 +182,7 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         TarArchiver archiver = getPosixTarArchiver();
         archiver.setDestFile(getTestFile("target/output/empty.tar"));
         try {
@@ -194,7 +194,7 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testUnicode() throws Exception {
+    void unicode() throws Exception {
         File tmpDir = getTestFile("src/test/resources/utf8");
         TarArchiver archiver = getPosixTarArchiver();
         File tarFile = getTestFile("target/output/tar-with-longFileName.tar");
@@ -278,7 +278,7 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testCreateArchiveWithJiustASymlink() throws Exception {
+    void createArchiveWithJiustASymlink() throws Exception {
         TarArchiver archiver = getPosixTarArchiver();
 
         archiver.setDirectoryMode(0500);
@@ -394,17 +394,17 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testUncompressedResourceCollection() throws Exception {
+    void uncompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new TarHandler());
     }
 
     @Test
-    void testGzipCompressedResourceCollection() throws Exception {
+    void gzipCompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new GZipTarHandler());
     }
 
     @Test
-    void testGzipFIleHandleLeak() throws Exception {
+    void gzipFIleHandleLeak() throws Exception {
         GZipTarHandler tarHandler = new GZipTarHandler();
         final File tarFile = tarHandler.createTarFile();
         final File tarFile2 = tarHandler.createTarfile2(tarFile);
@@ -416,12 +416,12 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testBzip2CompressedResourceCollection() throws Exception {
+    void bzip2CompressedResourceCollection() throws Exception {
         testCreateResourceCollection(new BZip2TarHandler());
     }
 
     @Test
-    void testTarFileNotClosingInputStream() throws Exception {
+    void tarFileNotClosingInputStream() throws Exception {
         // Supposedly not closing the stream according to yjp.
         TarHandler tarHandler = new BZip2TarHandler();
         final File fileName = tarHandler.createTarFile();
@@ -441,7 +441,7 @@ class TarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testSymlinkArchivedFileSet() throws Exception {
+    void symlinkArchivedFileSet() throws Exception {
         final File tarFile = getTestFile("src/test/resources/symlinks/symlinks.tar");
         final File tarFile2 = getTestFile("target/output/pasymlinks-archivedFileset.tar");
         final TarArchiver tarArchiver = getPosixTarArchiver();

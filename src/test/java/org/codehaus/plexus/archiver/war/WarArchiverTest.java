@@ -21,7 +21,7 @@ class WarArchiverTest extends TestSupport {
     private final int expected = 8;
 
     @Test
-    void testReAddingPlatformSpecificEncoding() throws Exception {
+    void reAddingPlatformSpecificEncoding() throws Exception {
         WarArchiver archiver = (WarArchiver) lookup(Archiver.class, "war");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.war"));
 
@@ -40,7 +40,7 @@ class WarArchiverTest extends TestSupport {
     }
 
     @Test
-    void testInfiniteRecursion() throws Exception {
+    void infiniteRecursion() throws Exception {
         WarArchiver archiver = (WarArchiver) lookup(Archiver.class, "war");
         archiver.setDestFile(new File(getTargetRarFolder(), "test.war"));
 

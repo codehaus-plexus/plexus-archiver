@@ -100,7 +100,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     private File tempDir;
 
     @Test
-    void testImplicitPermissions() throws IOException {
+    void implicitPermissions() throws Exception {
         File zipFile = getTestFile("target/output/zip-with-implicit-dirmode.zip");
 
         ZipArchiver archiver = getZipArchiver(zipFile);
@@ -130,7 +130,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testOveriddenPermissions() throws IOException {
+    void overiddenPermissions() throws Exception {
         File zipFile = getTestFile("target/output/zip-with-overriden-modes.zip");
 
         ZipArchiver archiver = getZipArchiver(zipFile);
@@ -150,7 +150,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testCreateArchiveWithDetectedModes() throws Exception {
+    void createArchiveWithDetectedModes() throws Exception {
 
         String[] executablePaths = {"path/to/executable", "path/to/executable.bat"};
 
@@ -253,7 +253,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateEmptyArchive() throws Exception {
+    void createEmptyArchive() throws Exception {
         ZipArchiver archiver = getZipArchiver();
         archiver.setDestFile(getTestFile("target/output/empty.zip"));
         try {
@@ -306,7 +306,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testRecompressAddedZips() throws Exception {
+    void recompressAddedZips() throws Exception {
         // check that by default the zip archives are re-compressed
 
         final File zipFileRecompress = getTestFile("target/output/recompress-added-zips.zip");
@@ -360,7 +360,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testAddArchivedFileSet() throws Exception {
+    void addArchivedFileSet() throws Exception {
         File toBeAdded = new File("src/test/resources/test.zip");
         DefaultArchivedFileSet sfd = DefaultArchivedFileSet.archivedFileSet(toBeAdded);
         File zipFIle = getTestFile("target/output/withZip.zip");
@@ -396,7 +396,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateArchiveWithStreamTransformer() throws IOException {
+    void createArchiveWithStreamTransformer() throws Exception {
         InputStreamTransformer is = new InputStreamTransformer() {
 
             @Nonnull
@@ -490,7 +490,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testSymlinkZip() throws Exception {
+    void symlinkZip() throws Exception {
         final File zipFile = getTestFile("target/output/pasymlinks.zip");
         final ZipArchiver zipArchiver = getZipArchiver(zipFile);
         PlexusIoFileResourceCollection files = new PlexusIoFileResourceCollection();
@@ -512,7 +512,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     @Test
     @DisabledOnOs(OS.WINDOWS)
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    void testSymlinkFileSet() throws Exception {
+    void symlinkFileSet() throws Exception {
         final File zipFile = getTestFile("target/output/pasymlinks-fileset.zip");
         final ZipArchiver zipArchiver = getZipArchiver(zipFile);
         final DefaultFileSet fs = new DefaultFileSet();
@@ -531,7 +531,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testSymlinkArchivedFileSet() throws Exception {
+    void symlinkArchivedFileSet() throws Exception {
         final File zipFile = getTestFile("src/test/resources/symlinks/symlinks.zip");
         final File zipFile2 = getTestFile("target/output/pasymlinks-archivedFileset.zip");
         final ZipArchiver zipArchiver = getZipArchiver(zipFile2);
@@ -548,7 +548,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
      * Verify that ZipArchiver rounds up the last modified time.
      */
     @Test
-    void testLastModifiedTimeRounding() throws Exception {
+    void lastModifiedTimeRounding() throws Exception {
         Path oddSecondsTimestampFile = Files.createTempFile(tempDir.toPath(), "odd-seconds-timestamp", null);
         // The milliseconds part is set to zero as not all filesystem support timestamp more granular than second.
         Files.setLastModifiedTime(oddSecondsTimestampFile, FileTime.fromMillis(1534189011_000L));
@@ -577,7 +577,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     /*
      */
     @Test
-    void testForced() throws Exception {
+    void forced() throws Exception {
         ZipArchiver archiver = newArchiver("archive2.zip");
 
         assertTrue(archiver.isForced());
@@ -610,7 +610,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     // Used to investigate extrafields
     @Test
-    void testLookAtExtraZipFields_from_macos() throws IOException {
+    void lookAtExtraZipFieldsFromMacos() throws Exception {
         InputStream fis = Streams.fileInputStream(new File("src/test/resources/zip-timestamp/macOsZipFile.zip"));
         ZipInputStream zis = new ZipInputStream(fis);
         final java.util.zip.ZipEntry evenEntry = zis.getNextEntry();
@@ -630,7 +630,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     // Used to investigate date roundtrip behaviour across zip versions
     @Test
-    void testZipStuff() throws IOException {
+    void zipStuff() throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ZipOutputStream zos = new ZipOutputStream(baos);
         // name the file inside the zip  file
@@ -671,7 +671,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testCreateResourceCollection() throws Exception {
+    void createResourceCollection() throws Exception {
         final File srcDir = new File("src");
         final File zipFile = new File("target/output/src.zip");
         ZipArchiver zipArchiver = getZipArchiver(zipFile);
@@ -695,7 +695,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testZipNonConcurrentResourceCollection() throws Exception {
+    void zipNonConcurrentResourceCollection() throws Exception {
         final File tarFile = getTestFile("target/output/zip-non-concurrent.tar");
         TarArchiver tarArchiver = (TarArchiver) lookup(Archiver.class, "tar");
         // Override uId and gId - in standard mode on OS where uId or gId can have long values creation of tar can fail
@@ -726,14 +726,14 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testDefaultUTF8() throws IOException {
+    void defaultUTF8() throws Exception {
         final ZipArchiver zipArchiver = getZipArchiver(new File("target/output/utf8-default.zip"));
         zipArchiver.addDirectory(new File("src/test/resources/miscUtf8"));
         zipArchiver.createArchive();
     }
 
     @Test
-    void testDefaultUTF8withUTF8() throws IOException {
+    void defaultUTF8withUTF8() throws Exception {
         final ZipArchiver zipArchiver = getZipArchiver(new File("target/output/utf8-with_utf.zip"));
         zipArchiver.setEncoding("UTF-8");
         zipArchiver.addDirectory(new File("src/test/resources/miscUtf8"));
@@ -741,7 +741,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testForcedFileModes() throws IOException {
+    void forcedFileModes() throws Exception {
         File step1file = new File("target/output/forced-file-mode.zip");
         {
             final ZipArchiver zipArchiver = getZipArchiver(step1file);
@@ -801,7 +801,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     }
 
     @Test
-    void testFixedEntryModificationTime() throws IOException {
+    void fixedEntryModificationTime() throws Exception {
         final long almostMinDosTime = toLocalTimeZone(315532802000L);
 
         final File zipFile = getTestFile("target/output/zip-with-fixed-entry-modification-times.zip");
@@ -821,7 +821,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
     @Test
     @DisabledOnOs(OS.WINDOWS)
-    void testNonExistingSymlink() throws Exception {
+    void nonExistingSymlink() throws Exception {
         File zipFile = new File("src/test/resources/symlinks/non_existing_symlink.zip");
         ZipUnArchiver unArchiver = getZipUnArchiver(zipFile);
         String tmpdir = Files.createTempDirectory("tmpe_extract").toFile().getAbsolutePath();
@@ -864,7 +864,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
      * as required by the ZIP file specification.
      */
     @Test
-    void testGetFilesReturnsForwardSlashes() throws Exception {
+    void getFilesReturnsForwardSlashes() throws Exception {
         File zipFile = getTestFile("target/output/test-getfiles-slashes.zip");
         ZipArchiver archiver = getZipArchiver(zipFile);
 
