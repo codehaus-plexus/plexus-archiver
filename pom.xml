@@ -66,13 +66,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-io</artifactId>
-      <version>3.5.2</version>
-    </dependency>
-    <!-- Apache Commons dependencies -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.20.0</version>
+      <version>3.6.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
