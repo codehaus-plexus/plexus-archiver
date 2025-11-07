@@ -41,7 +41,7 @@
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">class</strong> <a name="IndexTest" href="../../../../../org/codehaus/plexus/archiver/jar/IndexTest.html#IndexTest">IndexTest</a> <strong class="jxr_keyword">extends</strong> <a name="TestSupport" href="../../../../../org/codehaus/plexus/archiver/TestSupport.html#TestSupport">TestSupport</a> {
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>      @Test
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">void</strong> testCreateArchiveWithIndexedJars() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      <strong class="jxr_keyword">void</strong> createArchiveWithIndexedJars() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <em class="jxr_comment">/* create a dummy jar */</em>
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>          JarArchiver archiver1 = (JarArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"jar"</span>);
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>          archiver1.addFile(getTestFile(<span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span>), <span class="jxr_string">"one.txt"</span>);
@@ -85,7 +85,7 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">     * tests for files in META-INF</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>      @Test
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">void</strong> testCreateArchiveWithIndexedJarsAndMetaInf() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">void</strong> createArchiveWithIndexedJarsAndMetaInf() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          <em class="jxr_comment">/* create a dummy jar */</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          JarArchiver archiver1 = (JarArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"jar"</span>);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          archiver1.addFile(getTestFile(<span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span>), <span class="jxr_string">"one.txt"</span>);

@@ -15,13 +15,13 @@
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.util.HashSet;
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.util.Set;
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.Archiver;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.TestSupport;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileInfo;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileSelector;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.FileUtils;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.Archiver;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.TestSupport;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileInfo;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileSelector;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +34,7 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">class</strong> <a name="ZipUnArchiverTest" href="../../../../../org/codehaus/plexus/archiver/zip/ZipUnArchiverTest.html#ZipUnArchiverTest">ZipUnArchiverTest</a> <strong class="jxr_keyword">extends</strong> <a name="TestSupport" href="../../../../../org/codehaus/plexus/archiver/TestSupport.html#TestSupport">TestSupport</a> {
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      @Test
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">void</strong> testExtractingZipPreservesExecutableFlag() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">void</strong> extractingZipPreservesExecutableFlag() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>          String s = <span class="jxr_string">"target/zip-unarchiver-tests"</span>;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          File testZip = <strong class="jxr_keyword">new</strong> File(getBasedir(), <span class="jxr_string">"src/test/jars/test.zip"</span>);
@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">void</strong> testZeroFileModeInZip() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">void</strong> zeroFileModeInZip() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          String s = <span class="jxr_string">"target/zip-unarchiver-filemode-tests"</span>;
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          File testZip = <strong class="jxr_keyword">new</strong> File(getBasedir(), <span class="jxr_string">"src/test/resources/zeroFileMode/foobar.zip"</span>);
@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      }
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      @Test
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">void</strong> testUnarchiveUtf8() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">void</strong> unarchiveUtf8() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          File dest = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/unzip/utf8"</span>);
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          dest.mkdirs();
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  
@@ -97,7 +97,7 @@
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>      }
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>      @Test
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">void</strong> testUnarchiveUnicodePathExtra() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      <strong class="jxr_keyword">void</strong> unarchiveUnicodePathExtra() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>          File dest = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/unzip/unicodePathExtra"</span>);
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          dest.mkdirs();
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">for</strong> (String name : dest.list()) {
@@ -116,7 +116,7 @@
 <a class="jxr_linenumber" name="L108" href="#L108">108</a>     }
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> 
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>     @Test
-<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">void</strong> testUnarchiveUnicodePathExtraSelector() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>     <strong class="jxr_keyword">void</strong> unarchiveUnicodePathExtraSelector() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L112" href="#L112">112</a>         File dest = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/unzip/unicodePathExtraSelector"</span>);
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>         dest.mkdirs();
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>         <strong class="jxr_keyword">for</strong> (String name : dest.list()) {
@@ -182,13 +182,13 @@
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>     }
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> 
 <a class="jxr_linenumber" name="L176" href="#L176">176</a>     @Test
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">void</strong> testExtractingADirectoryFromAJarFile() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">void</strong> extractingADirectoryFromAJarFile() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         runUnarchiver(<span class="jxr_string">"resources/artifactId"</span>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {<strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, false});
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>         runUnarchiver(<span class="jxr_string">""</span>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {<strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>});
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>     }
 <a class="jxr_linenumber" name="L181" href="#L181">181</a> 
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>     @Test
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">void</strong> testSelectors() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>     <strong class="jxr_keyword">void</strong> selectors() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>         IncludeExcludeFileSelector fileSelector = <strong class="jxr_keyword">new</strong> IncludeExcludeFileSelector();
 <a class="jxr_linenumber" name="L185" href="#L185">185</a>         runUnarchiver(<span class="jxr_string">""</span>, <strong class="jxr_keyword">new</strong> FileSelector[] {fileSelector}, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {<strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>});
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>         fileSelector.setExcludes(<strong class="jxr_keyword">new</strong> String[] {<span class="jxr_string">"**/test.properties"</span>});
@@ -201,7 +201,7 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>     }
 <a class="jxr_linenumber" name="L194" href="#L194">194</a> 
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>     @Test
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <strong class="jxr_keyword">void</strong> testExtractingZipWithEntryOutsideDestDirThrowsException() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L196" href="#L196">196</a>     <strong class="jxr_keyword">void</strong> extractingZipWithEntryOutsideDestDirThrowsException() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         Exception ex = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         String s = <span class="jxr_string">"target/zip-unarchiver-slip-tests"</span>;
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         File testZip = <strong class="jxr_keyword">new</strong> File(getBasedir(), <span class="jxr_string">"src/test/zips/zip-slip.zip"</span>);
@@ -221,7 +221,7 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     }
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     @Test
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> testZipOutputSizeException() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">void</strong> zipOutputSizeException() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         Exception ex = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         String s = <span class="jxr_string">"target/zip-size-tests"</span>;
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         File testZip = <strong class="jxr_keyword">new</strong> File(getBasedir(), <span class="jxr_string">"src/test/jars/test.zip"</span>);
@@ -242,7 +242,7 @@
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>     }
 <a class="jxr_linenumber" name="L235" href="#L235">235</a> 
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>     @Test
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>     <strong class="jxr_keyword">void</strong> testZipMaxOutputSizeEqualToExtractedFileSize() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>     <strong class="jxr_keyword">void</strong> zipMaxOutputSizeEqualToExtractedFileSize() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>         <strong class="jxr_keyword">long</strong> extractedFileSize = 11L;
 <a class="jxr_linenumber" name="L239" href="#L239">239</a>         String s = <span class="jxr_string">"target/zip-size-tests"</span>;
 <a class="jxr_linenumber" name="L240" href="#L240">240</a>         File testZip = <strong class="jxr_keyword">new</strong> File(getBasedir(), <span class="jxr_string">"src/test/jars/test.zip"</span>);
@@ -273,7 +273,7 @@
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>     }
 <a class="jxr_linenumber" name="L266" href="#L266">266</a> 
 <a class="jxr_linenumber" name="L267" href="#L267">267</a>     @Test
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>     <strong class="jxr_keyword">void</strong> testZipWithNegativeModificationTime() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>     <strong class="jxr_keyword">void</strong> zipWithNegativeModificationTime() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">// Create a zip file with an entry that has -1 modification time</em>
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>         File zipFile = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/zip-with-negative-time.zip"</span>);
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>         zipFile.getParentFile().mkdirs();

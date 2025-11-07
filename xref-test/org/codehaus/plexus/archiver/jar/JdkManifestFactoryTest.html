@@ -28,7 +28,7 @@
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">class</strong> <a name="JdkManifestFactoryTest" href="../../../../../org/codehaus/plexus/archiver/jar/JdkManifestFactoryTest.html#JdkManifestFactoryTest">JdkManifestFactoryTest</a> <strong class="jxr_keyword">extends</strong> <a name="TestSupport" href="../../../../../org/codehaus/plexus/archiver/TestSupport.html#TestSupport">TestSupport</a> {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      @Test
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">void</strong> testGetDefaultManifest() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">void</strong> getDefaultManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>          ByteArrayOutputStream byteArrayOutputStream = <strong class="jxr_keyword">new</strong> ByteArrayOutputStream();
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>          Manifest manifest = JdkManifestFactory.getDefaultManifest();
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          manifest.write(byteArrayOutputStream);
@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      }
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      @Test
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">void</strong> testGetDefaultManifestString() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">void</strong> getDefaultManifestString() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestWithClassPath.mf"</span>);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          Manifest manifestWithout = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span>);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          String value = manifest.getMainAttributes().getValue(ManifestConstants.ATTRIBUTE_CLASSPATH);
@@ -48,7 +48,7 @@
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>      }
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      @Test
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">void</strong> testIllegals() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">void</strong> illegals() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest6.mf"</span>);
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>          assertNotNull(manifest);
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
@@ -61,7 +61,7 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      @Test
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> testMerge() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> merge() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          Manifest manifest1 = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge1.mf"</span>);
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>          Manifest manifest2 = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge2.mf"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  
@@ -88,7 +88,7 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      }
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>      @Test
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">void</strong> testDualClassPath() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>      <strong class="jxr_keyword">void</strong> dualClassPath() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestWithDualClassPath.mf"</span>);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">final</strong> Attributes mainAttributes = manifest.getMainAttributes();
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">final</strong> String attribute = mainAttributes.getValue(<span class="jxr_string">"Class-Path"</span>);

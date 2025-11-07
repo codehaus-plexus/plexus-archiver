@@ -17,9 +17,9 @@
 <a class="jxr_linenumber" name="L9" href="#L9">9</a>   
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.tar.TarArchiver;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.tar.TarLongFileMode;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.FileUtils;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.tar.TarArchiver;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.tar.TarLongFileMode;
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +37,7 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> File destination = getTestFile(<span class="jxr_string">"target/output/duplicateFiles"</span>);
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      @Test
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">void</strong> testZipArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">void</strong> zipArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          Archiver archiver = lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"zip"</span>);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  
@@ -63,14 +63,14 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      }
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>      @Test
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">void</strong> testDirArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">void</strong> dirArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          Archiver archiver = lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"dir"</span>);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          createArchive(archiver, <span class="jxr_string">"dir"</span>);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>          testFinalFile(<span class="jxr_string">"target/output/duplicateFiles.dir/duplicateFiles/foo.txt"</span>);
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Test
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> testTarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> tarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          TarArchiver archiver = (TarArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"tar"</span>);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          archiver.setLongfile(TarLongFileMode.posix);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          archiver.setDuplicateBehavior(Archiver.DUPLICATES_SKIP);

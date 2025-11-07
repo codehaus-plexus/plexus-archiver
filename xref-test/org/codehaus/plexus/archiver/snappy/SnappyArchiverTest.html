@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">class</strong> <a name="SnappyArchiverTest" href="../../../../../org/codehaus/plexus/archiver/snappy/SnappyArchiverTest.html#SnappyArchiverTest">SnappyArchiverTest</a> <strong class="jxr_keyword">extends</strong> <a name="BasePlexusArchiverTest" href="../../../../../org/codehaus/plexus/archiver/BasePlexusArchiverTest.html#BasePlexusArchiverTest">BasePlexusArchiverTest</a> {
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      @Test
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">void</strong> testCreateArchive() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">void</strong> createArchive() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"zip"</span>);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          zipArchiver.addDirectory(getTestFile(<span class="jxr_string">"src"</span>));
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          zipArchiver.setDestFile(getTestFile(<span class="jxr_string">"target/output/archiveForSnappy.zip"</span>));
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>      }
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>      @Test
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">void</strong> testCreateEmptyArchive() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      <strong class="jxr_keyword">void</strong> createEmptyArchive() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>          SnappyArchiver archiver = (SnappyArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"snappy"</span>);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          archiver.setDestFile(getTestFile(<span class="jxr_string">"target/output/empty.snappy"</span>));
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">try</strong> {
@@ -83,7 +83,7 @@
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>      }
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>  
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      @Test
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">void</strong> testCreateResourceCollection() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">void</strong> createResourceCollection() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">final</strong> File pomFile = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"pom.xml"</span>);
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">final</strong> File snappyFile = <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"target/output/pom.xml.snappy"</span>);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          SnappyArchiver SnappyArchiver = (SnappyArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"snappy"</span>);

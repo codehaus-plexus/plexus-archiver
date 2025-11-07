@@ -45,14 +45,14 @@
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">class</strong> <a name="ManifestTest" href="../../../../../org/codehaus/plexus/archiver/jar/ManifestTest.html#ManifestTest">ManifestTest</a> <strong class="jxr_keyword">extends</strong> <a name="TestSupport" href="../../../../../org/codehaus/plexus/archiver/TestSupport.html#TestSupport">TestSupport</a> {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      @Test
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">void</strong> testManifest1() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">void</strong> manifest1() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest1.mf"</span>);
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          String version = manifest.getManifestVersion();
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          assertEquals(<span class="jxr_string">"1.0"</span>, version, <span class="jxr_string">"Manifest was not created with correct version - "</span>);
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      @Test
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">void</strong> testManifest2() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">void</strong> manifest2() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>              getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest2.mf"</span>);
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>              fail(<span class="jxr_string">"Manifest isn't well formed. It must be generate an exception."</span>);
@@ -61,7 +61,7 @@
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      @Test
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> testManifest3() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">void</strong> manifest3() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>              getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest3.mf"</span>);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>              fail(<span class="jxr_string">"Manifest isn't well formed. It must be generate an exception."</span>);
@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      }
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>      @Test
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> testManifest5() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">void</strong> manifest5() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>              getManifest(<span class="jxr_string">"src/test/resources/manifests/manifest5.mf"</span>);
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              fail();
@@ -79,7 +79,7 @@
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      }
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      @Test
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">void</strong> testAddConfiguredSection() <strong class="jxr_keyword">throws</strong> ManifestException {
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">void</strong> addConfiguredSection() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          Manifest.Section section = <strong class="jxr_keyword">new</strong> Manifest.Section();
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>          section.setName(<span class="jxr_string">"fud"</span>);
@@ -89,7 +89,7 @@
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      }
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      @Test
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">void</strong> testAttributeLongLineWrite() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">void</strong> attributeLongLineWrite() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          StringWriter writer = <strong class="jxr_keyword">new</strong> StringWriter();
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>          Manifest.Attribute attr = <strong class="jxr_keyword">new</strong> Manifest.Attribute();
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>          String longLineOfChars = <span class="jxr_string">"123456789 123456789 123456789 123456789 123456789 123456789 123456789 "</span>
@@ -106,7 +106,7 @@
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>      }
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>  
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>     @Test
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">void</strong> testAttributeLongLineWriteNonAscii() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>     <strong class="jxr_keyword">void</strong> attributeLongLineWriteNonAscii() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         StringWriter writer = <strong class="jxr_keyword">new</strong> StringWriter();
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         Manifest.Attribute attr = <strong class="jxr_keyword">new</strong> Manifest.Attribute();
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>         String longLineOfChars = <span class="jxr_string">"Ед докэндё форынчйбюж зкрипторэм векж, льабятюр ыкжпэтэндяз мэль ут, квюо ут модо "</span>
@@ -134,7 +134,7 @@
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     }
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>     @Test
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">void</strong> testDualClassPath() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">void</strong> dualClassPath() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestWithDualClassPath.mf"</span>);
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         <strong class="jxr_keyword">final</strong> String attribute = manifest.getMainSection().getAttributeValue(<span class="jxr_string">"Class-Path"</span>);
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         <em class="jxr_comment">// According to discussions, we drop support for duplicate class-path attribute</em>
@@ -142,20 +142,20 @@
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     }
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> 
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     @Test
-<a class="jxr_linenumber" name="L137" href="#L137">137</a>     <strong class="jxr_keyword">void</strong> testAttributeMultiLineValue() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>     <strong class="jxr_keyword">void</strong> attributeMultiLineValue() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         checkMultiLineAttribute(
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>                 <span class="jxr_string">"123456789"</span> + Manifest.EOL + <span class="jxr_string">"123456789"</span>, <span class="jxr_string">"123456789"</span> + Manifest.EOL + <span class="jxr_string">" 123456789"</span> + Manifest.EOL);
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>     }
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> 
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     @Test
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">void</strong> testAttributeDifferentLineEndings() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>     <strong class="jxr_keyword">void</strong> attributeDifferentLineEndings() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         checkMultiLineAttribute(
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>                 <span class="jxr_string">"\tA\rB\n\t C\r\n \tD\n\r"</span>,
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>                 <span class="jxr_string">"\tA"</span> + Manifest.EOL + <span class="jxr_string">" B"</span> + Manifest.EOL + <span class="jxr_string">" \t C"</span> + Manifest.EOL + <span class="jxr_string">"  \tD"</span> + Manifest.EOL);
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     }
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> 
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     @Test
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">void</strong> testAddAttributes() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">void</strong> addAttributes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge1.mf"</span>);
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         Manifest.ExistingSection fudz = manifest.getSection(<span class="jxr_string">"Fudz"</span>);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         fudz.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"boz"</span>, <span class="jxr_string">"bzz"</span>));
@@ -164,7 +164,7 @@
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>     }
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>     @Test
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">void</strong> testRemoveAttributes() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">void</strong> removeAttributes() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>         Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge1.mf"</span>);
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>         Manifest.ExistingSection fudz = manifest.getSection(<span class="jxr_string">"Fudz"</span>);
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         fudz.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"boz"</span>, <span class="jxr_string">"bzz"</span>));
@@ -174,7 +174,7 @@
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>     }
 <a class="jxr_linenumber" name="L167" href="#L167">167</a> 
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>     @Test
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">void</strong> testAttributeSerialization() <strong class="jxr_keyword">throws</strong> IOException, ManifestException {
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">void</strong> attributeSerialization() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         manifest.getMainAttributes().putValue(<span class="jxr_string">"mfa1"</span>, <span class="jxr_string">"fud1"</span>);
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         manifest.getMainSection().addAttributeAndCheck(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"mfa2"</span>, <span class="jxr_string">"fud2"</span>));
@@ -192,7 +192,7 @@
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>     }
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> 
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>     @Test
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> testDefaultBehaviour() {
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>     <strong class="jxr_keyword">void</strong> defaultBehaviour() {
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         Manifest.ExistingSection mainSection = manifest.getMainSection();
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         assertNotNull(mainSection);
@@ -202,7 +202,7 @@
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>     }
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>     @Test
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">void</strong> testGetDefaultManifest() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L197" href="#L197">197</a>     <strong class="jxr_keyword">void</strong> getDefaultManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         java.util.jar.Manifest mf = Manifest.getDefaultManifest();
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         java.util.jar.Attributes mainAttributes = mf.getMainAttributes();
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         assertEquals(2, mainAttributes.size());
@@ -259,7 +259,7 @@
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>     }
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>     @Test
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">void</strong> testAddAttributesPlexusManifest() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>     <strong class="jxr_keyword">void</strong> addAttributesPlexusManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>         Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge1.mf"</span>);
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>         Manifest.ExistingSection fudz = manifest.getSection(<span class="jxr_string">"Fudz"</span>);
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>         fudz.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"boz"</span>, <span class="jxr_string">"bzz"</span>));
@@ -267,7 +267,7 @@
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>     }
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> 
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>     @Test
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">void</strong> testRemoveAttributesPlexusManifest() <strong class="jxr_keyword">throws</strong> ManifestException, IOException {
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">void</strong> removeAttributesPlexusManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         Manifest manifest = getManifest(<span class="jxr_string">"src/test/resources/manifests/manifestMerge1.mf"</span>);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         Manifest.ExistingSection fudz = manifest.getSection(<span class="jxr_string">"Fudz"</span>);
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         fudz.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"boz"</span>, <span class="jxr_string">"bzz"</span>));
@@ -277,7 +277,7 @@
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>     }
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> 
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>     @Test
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">void</strong> testAttributeSerializationPlexusManifest() <strong class="jxr_keyword">throws</strong> IOException, ManifestException {
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">void</strong> attributeSerializationPlexusManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         manifest.getMainSection().addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"mfa1"</span>, <span class="jxr_string">"fud1"</span>));
 <a class="jxr_linenumber" name="L275" href="#L275">275</a>         manifest.getMainSection().addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"mfa2"</span>, <span class="jxr_string">"fud2"</span>));
@@ -296,7 +296,7 @@
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
 <a class="jxr_linenumber" name="L289" href="#L289">289</a> 
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     @Test
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">void</strong> testClassPathPlexusManifest() <strong class="jxr_keyword">throws</strong> ManifestException {
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">void</strong> classPathPlexusManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L293" href="#L293">293</a>         manifest.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(ManifestConstants.ATTRIBUTE_CLASSPATH, <span class="jxr_string">"fud"</span>));
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>         manifest.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(ManifestConstants.ATTRIBUTE_CLASSPATH, <span class="jxr_string">"duf"</span>));
@@ -304,7 +304,7 @@
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>     }
 <a class="jxr_linenumber" name="L297" href="#L297">297</a> 
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>     @Test
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">void</strong> testAddConfiguredSectionPlexusManifest() <strong class="jxr_keyword">throws</strong> ManifestException {
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <strong class="jxr_keyword">void</strong> addConfiguredSectionPlexusManifest() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L301" href="#L301">301</a>         Manifest.Section section = <strong class="jxr_keyword">new</strong> Manifest.Section();
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>         section.setName(<span class="jxr_string">"fud"</span>);

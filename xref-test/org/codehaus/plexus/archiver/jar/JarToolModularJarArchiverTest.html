@@ -68,7 +68,7 @@
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>      @Test
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>      @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">void</strong> testModularJarWithMainClassAndVersion() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">void</strong> modularJarWithMainClassAndVersion() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>          archiver.setModuleVersion(<span class="jxr_string">"1.0.0"</span>);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          archiver.setModuleMainClass(<span class="jxr_string">"com.example.app.Main"</span>);
@@ -87,7 +87,7 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>      @Test
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>      @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">void</strong> testModularJarWithManifestAndModuleMainClass() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">void</strong> modularJarWithManifestAndModuleMainClass() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>          archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          manifest.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"Main-Class"</span>, <span class="jxr_string">"com.example.app.Main2"</span>));
@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>     @Test
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">void</strong> testModularJarWithManifestMainClassAttribute() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">void</strong> modularJarWithManifestMainClassAttribute() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         Manifest manifest = <strong class="jxr_keyword">new</strong> Manifest();
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         manifest.addConfiguredAttribute(<strong class="jxr_keyword">new</strong> Manifest.Attribute(<span class="jxr_string">"Main-Class"</span>, <span class="jxr_string">"com.example.app.Main2"</span>));
@@ -128,7 +128,7 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     @Test
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>     <strong class="jxr_keyword">void</strong> testModularJar() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>     <strong class="jxr_keyword">void</strong> modularJar() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         archiver.createArchive();
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
@@ -141,7 +141,7 @@
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>     @Test
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> testInvalidModularJar() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>     <strong class="jxr_keyword">void</strong> invalidModularJar() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>         <em class="jxr_comment">// Not a valid version</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>         archiver.setModuleVersion(<span class="jxr_string">"notAValidVersion"</span>);
@@ -155,7 +155,7 @@
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>     @Test
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>     @DisabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">void</strong> testModularJarPriorJava9() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">void</strong> modularJarPriorJava9() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>         archiver.setModuleVersion(<span class="jxr_string">"1.0.0"</span>);
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>         archiver.setModuleMainClass(<span class="jxr_string">"com.example.app.Main"</span>);
@@ -173,7 +173,7 @@
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>     @Test
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">void</strong> testNoCompression() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">void</strong> noCompression() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L170" href="#L170">170</a>         archiver.setCompress(false);
 <a class="jxr_linenumber" name="L171" href="#L171">171</a> 
@@ -197,7 +197,7 @@
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>     @Test
 <a class="jxr_linenumber" name="L191" href="#L191">191</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">void</strong> testCompression() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">void</strong> compression() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         archiver.addDirectory(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor"</span>));
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         archiver.addFile(<strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/jars/test.jar"</span>), <span class="jxr_string">"META-INF/lib/test.jar"</span>);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         archiver.setRecompressAddedZips(false);
@@ -223,7 +223,7 @@
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> <em class="jxr_comment">     */</em>
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>     @Test
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>     @EnabledIf(<span class="jxr_string">"modulesAreSupported"</span>)
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <strong class="jxr_keyword">void</strong> testModularMultiReleaseJar() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L218" href="#L218">218</a>     <strong class="jxr_keyword">void</strong> modularMultiReleaseJar() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         <em class="jxr_comment">// Add two module-info.class, one on the root and one on the multi-release dir.</em>
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>         archiver.addFile(
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>                 <strong class="jxr_keyword">new</strong> File(<span class="jxr_string">"src/test/resources/java-module-descriptor/module-info.class"</span>),

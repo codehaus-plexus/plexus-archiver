@@ -45,18 +45,18 @@
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">class</strong> <a name="EmptyDirectoryTest" href="../../../../org/codehaus/plexus/archiver/EmptyDirectoryTest.html#EmptyDirectoryTest">EmptyDirectoryTest</a> <strong class="jxr_keyword">extends</strong> <a name="TestSupport" href="../../../../org/codehaus/plexus/archiver/TestSupport.html#TestSupport">TestSupport</a> {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      @Test
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">void</strong> testZipArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">void</strong> zipArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          testEmptyDirectory(<span class="jxr_string">"zip"</span>, lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"zip"</span>));
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>      }
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      @Test
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">void</strong> testJarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">void</strong> jarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>          <em class="jxr_comment">// No JAR UnArchiver implementation :(</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>          <em class="jxr_comment">//        testEmptyDirectory( "jar" );</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      }
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>      @Test
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">void</strong> testTarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>      <strong class="jxr_keyword">void</strong> tarArchiver() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">final</strong> TarArchiver tar = (TarArchiver) lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"tar"</span>);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          tar.setLongfile(TarLongFileMode.posix);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          testEmptyDirectory(<span class="jxr_string">"tar"</span>, tar);

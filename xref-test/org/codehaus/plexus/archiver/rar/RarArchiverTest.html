@@ -25,10 +25,10 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.Archiver;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.BasePlexusArchiverTest;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.FileUtils;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.Archiver;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.BasePlexusArchiverTest;
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.BeforeEach;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
@@ -57,7 +57,7 @@
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      @Test
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">void</strong> testArchive() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">void</strong> archive() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          Archiver archiver = lookup(Archiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"rar"</span>);
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          archiver.setDestFile(<strong class="jxr_keyword">new</strong> File(getTargetRarFolder(), <span class="jxr_string">"test.rar"</span>));
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          <em class="jxr_comment">// archiver.addDirectory( , "manifests" );</em>
@@ -78,7 +78,7 @@
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      }
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      @Test
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> testUnarchive() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      <strong class="jxr_keyword">void</strong> unarchive() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>  
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          UnArchiver unArchiver = lookup(UnArchiver.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"rar"</span>);
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          File rarFile = <strong class="jxr_keyword">new</strong> File(getBasedir() + <span class="jxr_string">"/src/test/jars/test.rar"</span>);
@@ -100,7 +100,7 @@
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     * @throws Exception</em>
 <a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      @Test
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">void</strong> testRarIsForcedBehaviour() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>      <strong class="jxr_keyword">void</strong> rarIsForcedBehaviour() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          Archiver rarArvhiver = createArchiver(<span class="jxr_string">"rar"</span>);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>  
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>          assertTrue(rarArvhiver.isSupportingForced());

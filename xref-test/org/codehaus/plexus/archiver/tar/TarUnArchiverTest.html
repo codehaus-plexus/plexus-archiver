@@ -10,11 +10,11 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.io.File;
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.TestSupport;
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileSelector;
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.FileUtils;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> org.apache.commons.io.FileUtils;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.TestSupport;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.UnArchiver;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.FileSelector;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> org.junit.jupiter.api.Test;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.jupiter.api.Assertions.assertEquals;
@@ -54,12 +54,12 @@
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>      }
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      @Test
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">void</strong> testExtractingADirectory() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">void</strong> extractingADirectory() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          runUnarchiver(<strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {<strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>});
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>      }
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      @Test
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">void</strong> testSelectors() <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">void</strong> selectors() <strong class="jxr_keyword">throws</strong> Exception {
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>          IncludeExcludeFileSelector fileSelector = <strong class="jxr_keyword">new</strong> IncludeExcludeFileSelector();
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          runUnarchiver(<strong class="jxr_keyword">new</strong> FileSelector[] {fileSelector}, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">boolean</strong>[] {<strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>, <strong class="jxr_keyword">true</strong>});
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  
