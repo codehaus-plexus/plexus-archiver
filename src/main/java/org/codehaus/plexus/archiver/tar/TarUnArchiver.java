@@ -23,10 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.GZIPInputStream;
 
-import io.airlift.compress.snappy.SnappyFramedInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
@@ -137,7 +137,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
         } else if (compression == UntarCompressionMethod.BZIP2) {
             return new BZip2CompressorInputStream(istream);
         } else if (compression == UntarCompressionMethod.SNAPPY) {
-            return new SnappyFramedInputStream(istream, true);
+            return new FramedSnappyCompressorInputStream(istream);
         } else if (compression == UntarCompressionMethod.XZ) {
             return new XZCompressorInputStream(istream);
         } else if (compression == UntarCompressionMethod.ZSTD) {

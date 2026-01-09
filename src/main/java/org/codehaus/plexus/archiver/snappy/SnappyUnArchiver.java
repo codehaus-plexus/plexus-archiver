@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import io.airlift.compress.snappy.SnappyFramedInputStream;
+import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 
@@ -61,9 +61,10 @@ public class SnappyUnArchiver extends AbstractUnArchiver {
         }
     }
 
-    public static @Nonnull SnappyFramedInputStream getSnappyInputStream(InputStream bis) throws ArchiverException {
+    public static @Nonnull FramedSnappyCompressorInputStream getSnappyInputStream(InputStream bis)
+            throws ArchiverException {
         try {
-            return new SnappyFramedInputStream(bis, true);
+            return new FramedSnappyCompressorInputStream(bis);
         } catch (IOException e) {
             throw new ArchiverException("Trouble creating Snappy compressor, invalid file ?", e);
         }
