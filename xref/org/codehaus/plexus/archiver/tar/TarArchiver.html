@@ -32,10 +32,10 @@
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.io.OutputStream;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.zip.GZIPOutputStream;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> io.airlift.compress.snappy.SnappyFramedOutputStream;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorOutputStream;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStream;
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.archiver.AbstractArchiver;
@@ -433,7 +433,7 @@
 <a class="jxr_linenumber" name="L425" href="#L425">425</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.bzip2.equals(tarCompressionMethod)) {
 <a class="jxr_linenumber" name="L426" href="#L426">426</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BZip2CompressorOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L427" href="#L427">427</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.snappy.equals(tarCompressionMethod)) {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> SnappyFramedOutputStream(bufferedOutputStream(ostream));
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> FramedSnappyCompressorOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.xz.equals(tarCompressionMethod)) {
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> XZCompressorOutputStream(bufferedOutputStream(ostream));
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (TarCompressionMethod.zstd.equals(tarCompressionMethod)) {
@@ -470,6 +470,6 @@
 <a class="jxr_linenumber" name="L462" href="#L462">462</a> }
 </pre>
 <hr/>
-<div id="footer">© 2001–2025 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
+<div id="footer">© 2001–2026 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
 </body>
 </html>
