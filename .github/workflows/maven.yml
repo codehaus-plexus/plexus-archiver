@@ -23,6 +23,14 @@ jobs:
   build:
     name: Build it
     uses: codehaus-plexus/.github/.github/workflows/maven.yml@master
+    with:
+      # Execute on a jdk between 17 and 17.0.2 to explicitly test workaround for jar tool --date support not present in that version
+      # See org.codehaus.plexus.archiver.jar.JarToolModularJarArchiver.isJarDateOptionSupported
+      # https://github.com/codehaus-plexus/plexus-archiver/issues/164
+      matrix-include: >
+        [ 
+          {"jdk": "17.0.2", "os": "windows-latest", distribution: "zulu" }
+        ]
 
 #   deploy:
 #     name: Deploy
