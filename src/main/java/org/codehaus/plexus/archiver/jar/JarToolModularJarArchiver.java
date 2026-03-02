@@ -153,9 +153,14 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     private void fixLastModifiedTimeZipEntries() throws IOException {
         long timeMillis = getLastModifiedTime().toMillis();
         Path destFile = getDestFile().toPath();
-        PosixFileAttributes posixFileAttributes = Files.getFileAttributeView(
-                        destFile, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS)
-                .readAttributes();
+        PosixFileAttributeView view =
+                Files.getFileAttributeView(destFile, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+
+        PosixFileAttributes posixFileAttributes = null;
+        if (view != null) {
+            posixFileAttributes = view.readAttributes();
+        }
+
         FileAttribute<?>[] attributes;
         if (posixFileAttributes != null) {
             attributes = new FileAttribute<?>[1];
@@ -272,7 +277,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
     }
 
     /**
-     * Check support for {@code --date} option introduced since Java 17.0.3 (JDK-8279925).
+     * Check support for {@code --date} option introduced since Java 17.0.3 with <a href="https://bugs.openjdk.org/browse/JDK-8277755">JDK-8277755</a>.
      *
      * @return true if the JAR tool supports the {@code --date} option
      */
