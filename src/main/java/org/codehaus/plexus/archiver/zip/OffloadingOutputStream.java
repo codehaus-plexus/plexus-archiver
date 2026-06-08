@@ -113,7 +113,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
     @Override
     protected void thresholdReached() throws IOException {
         outputPath = Files.createTempFile(prefix, suffix);
-        currentOutputStream = Streams.fileOutputStream(outputPath);
+        currentOutputStream = Streams.bufferedOutputStream(Files.newOutputStream(outputPath));
     }
 
     public InputStream getInputStream() throws IOException {
