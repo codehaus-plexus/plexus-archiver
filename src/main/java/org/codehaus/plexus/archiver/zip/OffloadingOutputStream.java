@@ -142,6 +142,10 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
         return null;
     }
 
+    public Path getOutputPath() {
+        return outputPath;
+    }
+
     /**
      * Returns either the output file specified in the constructor or
      * the temporary file created or null.
