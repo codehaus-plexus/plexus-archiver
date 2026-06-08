@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.io.UncheckedIOException;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
@@ -54,6 +55,8 @@ public class ConcurrentJarCreator {
     private final ScatterZipOutputStream synchronousEntries;
 
     private final ParallelScatterZipCreator parallelScatterZipCreator;
+
+    private final ExecutorService es;
 
     private long zipCloseElapsed;
 
@@ -118,8 +121,8 @@ public class ConcurrentJarCreator {
         manifest = createDeferred(defaultSupplier);
         directories = createDeferred(defaultSupplier);
         synchronousEntries = createDeferred(defaultSupplier);
-        parallelScatterZipCreator =
-                new ParallelScatterZipCreator(Executors.newFixedThreadPool(nThreads), defaultSupplier);
+        es = Executors.newFixedThreadPool(nThreads);
+        parallelScatterZipCreator = new ParallelScatterZipCreator(es, defaultSupplier);
     }
 
     /**
@@ -161,11 +164,15 @@ public class ConcurrentJarCreator {
 
     public void writeTo(ZipArchiveOutputStream targetStream)
             throws IOException, ExecutionException, InterruptedException {
-        metaInfDir.writeTo(targetStream);
-        manifest.writeTo(targetStream);
-        directories.writeTo(targetStream);
-        synchronousEntries.writeTo(targetStream);
-        parallelScatterZipCreator.writeTo(targetStream);
+        try {
+            metaInfDir.writeTo(targetStream);
+            manifest.writeTo(targetStream);
+            directories.writeTo(targetStream);
+            synchronousEntries.writeTo(targetStream);
+            parallelScatterZipCreator.writeTo(targetStream);
+        } finally {
+            es.shutdown();
+        }
         long startAt = System.currentTimeMillis();
         targetStream.close();
         zipCloseElapsed = System.currentTimeMillis() - startAt;
