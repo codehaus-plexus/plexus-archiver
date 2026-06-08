@@ -121,7 +121,7 @@
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>     @Override
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> thresholdReached() <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>         outputPath = Files.createTempFile(prefix, suffix);
-<a class="jxr_linenumber" name="L116" href="#L116">116</a>         currentOutputStream = Streams.fileOutputStream(outputPath);
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         currentOutputStream = Streams.bufferedOutputStream(Files.newOutputStream(outputPath));
 <a class="jxr_linenumber" name="L117" href="#L117">117</a>     }
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> 
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>     <strong class="jxr_keyword">public</strong> InputStream getInputStream() <strong class="jxr_keyword">throws</strong> IOException {
@@ -150,35 +150,39 @@
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>     }
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> 
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * Returns either the output file specified in the constructor or</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     * the temporary file created or null.</em>
-<a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     * If the constructor specifying the file is used then it returns that</em>
-<a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     * same output file, even when threshold has not been reached.</em>
-<a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     * If constructor specifying a temporary file prefix/suffix is used</em>
-<a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     * then the temporary file created once the threshold is reached is returned</em>
-<a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">     * If the threshold was not reached then &lt;code&gt;null&lt;/code&gt; is returned.</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L156" href="#L156">156</a> <em class="jxr_javadoccomment">     * @return The file for this output stream, or &lt;code&gt;null&lt;/code&gt; if no such</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     * file exists.</em>
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">public</strong> File getFile() {
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         <strong class="jxr_keyword">return</strong> outputPath != <strong class="jxr_keyword">null</strong> ? outputPath.toFile() : <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>     }
-<a class="jxr_linenumber" name="L162" href="#L162">162</a> 
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * Closes underlying output stream.</em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">     * @throws java.io.IOException if an error occurs.</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     @Override
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> close() <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">super</strong>.close();
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>         currentOutputStream.close();
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>     }
-<a class="jxr_linenumber" name="L173" href="#L173">173</a> }
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>     <strong class="jxr_keyword">public</strong> Path getOutputPath() {
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         <strong class="jxr_keyword">return</strong> outputPath;
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     }
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     * Returns either the output file specified in the constructor or</em>
+<a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">     * the temporary file created or null.</em>
+<a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">     * If the constructor specifying the file is used then it returns that</em>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">     * same output file, even when threshold has not been reached.</em>
+<a class="jxr_linenumber" name="L155" href="#L155">155</a> <em class="jxr_javadoccomment">     * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L156" href="#L156">156</a> <em class="jxr_javadoccomment">     * If constructor specifying a temporary file prefix/suffix is used</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     * then the temporary file created once the threshold is reached is returned</em>
+<a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     * If the threshold was not reached then &lt;code&gt;null&lt;/code&gt; is returned.</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">     * @return The file for this output stream, or &lt;code&gt;null&lt;/code&gt; if no such</em>
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * file exists.</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> File getFile() {
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         <strong class="jxr_keyword">return</strong> outputPath != <strong class="jxr_keyword">null</strong> ? outputPath.toFile() : <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>     }
+<a class="jxr_linenumber" name="L166" href="#L166">166</a> 
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">     * Closes underlying output stream.</em>
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L170" href="#L170">170</a> <em class="jxr_javadoccomment">     * @throws java.io.IOException if an error occurs.</em>
+<a class="jxr_linenumber" name="L171" href="#L171">171</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>     @Override
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> close() <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         <strong class="jxr_keyword">super</strong>.close();
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         currentOutputStream.close();
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     }
+<a class="jxr_linenumber" name="L177" href="#L177">177</a> }
 </pre>
 <hr/>
 <div id="footer">© 2001–2026 <a href="https://codehaus-plexus.github.io/">Codehaus Plexus</a></div>
