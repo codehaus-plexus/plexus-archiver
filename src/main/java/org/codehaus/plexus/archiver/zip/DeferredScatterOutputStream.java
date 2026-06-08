@@ -17,9 +17,10 @@
  */
 package org.codehaus.plexus.archiver.zip;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.apache.commons.compress.parallel.ScatterGatherBackingStore;
 
@@ -48,9 +49,9 @@ public class DeferredScatterOutputStream implements ScatterGatherBackingStore {
 
     @Override
     public void close() throws IOException {
-        File file = dfos.getFile();
+        Path file = dfos.getOutputPath();
         if (file != null) {
-            file.delete();
+            Files.deleteIfExists(file);
         }
     }
 }
