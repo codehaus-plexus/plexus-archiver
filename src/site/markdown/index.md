@@ -1,3 +1,10 @@
+---
+title: Plexus Archiver
+author:
+  - Hervé Boutemy
+date: 2018-05-08
+---
+
 # Plexus Archiver
 
 Collection of Plexus components to create archives or extract archives to a directory with a unified [`Archiver`](./apidocs/index.html?org/codehaus/plexus/archiver/Archiver.html)/[`UnArchiver`](./apidocs/index.html?org/codehaus/plexus/archiver/UnArchiver.html) API whatever the archive format is.
