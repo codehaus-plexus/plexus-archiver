@@ -16,131 +16,47 @@
  */
 package org.codehaus.plexus.archiver.manager;
 
-import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.codehaus.plexus.util.StringUtils;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * @author dantran
  */
 @Singleton
 @Named
-public class DefaultArchiverManager implements ArchiverManager {
-
-    private final Map<String, Provider<Archiver>> archivers;
-
-    private final Map<String, Provider<UnArchiver>> unArchivers;
-
-    private final Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections;
+public class DefaultArchiverManager extends AbstractArchiverManager {
 
     @Inject
     public DefaultArchiverManager(
             Map<String, Provider<Archiver>> archivers,
             Map<String, Provider<UnArchiver>> unArchivers,
             Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections) {
-        this.archivers = requireNonNull(archivers);
-        this.unArchivers = requireNonNull(unArchivers);
-        this.plexusIoResourceCollections = requireNonNull(plexusIoResourceCollections);
+        super(archivers(archivers), unarchivers(unArchivers), plexusIoResourceCollections(plexusIoResourceCollections));
     }
 
-    @Override
-    @Nonnull
-    public Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException {
-        requireNonNull(archiverName);
-        Provider<Archiver> archiver = archivers.get(archiverName);
-        if (archiver == null) {
-            throw new NoSuchArchiverException(archiverName);
-        }
-        return archiver.get();
+    private static Map<String, Supplier<Archiver>> archivers(Map<String, Provider<Archiver>> archivers) {
+        return archivers.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 
-    @Override
-    @Nonnull
-    public UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException {
-        requireNonNull(unArchiverName);
-        Provider<UnArchiver> unArchiver = unArchivers.get(unArchiverName);
-        if (unArchiver == null) {
-            throw new NoSuchArchiverException(unArchiverName);
-        }
-        return unArchiver.get();
+    private static Map<String, Supplier<UnArchiver>> unarchivers(Map<String, Provider<UnArchiver>> unArchivers) {
+        return unArchivers.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 
-    @Override
-    public @Nonnull PlexusIoResourceCollection getResourceCollection(String resourceCollectionName)
-            throws NoSuchArchiverException {
-        requireNonNull(resourceCollectionName);
-        Provider<PlexusIoResourceCollection> resourceCollection =
-                plexusIoResourceCollections.get(resourceCollectionName);
-        if (resourceCollection == null) {
-            throw new NoSuchArchiverException(resourceCollectionName);
-        }
-        return resourceCollection.get();
-    }
-
-    private static @Nonnull String getFileExtension(@Nonnull File file) {
-
-        String fileName = file.getName().toLowerCase(Locale.ROOT);
-        String[] tokens = StringUtils.split(fileName, ".");
-
-        String archiveExt = "";
-
-        if (tokens.length == 2) {
-            archiveExt = tokens[1];
-        } else if (tokens.length > 2 && "tar".equals(tokens[tokens.length - 2])) {
-            archiveExt = "tar." + tokens[tokens.length - 1];
-        } else if (tokens.length > 2) {
-            archiveExt = tokens[tokens.length - 1];
-        }
-
-        return archiveExt;
-    }
-
-    @Override
-    @Nonnull
-    public Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException {
-        return getArchiver(getFileExtension(file));
-    }
-
-    @Override
-    public Collection<String> getAvailableArchivers() {
-        return archivers.keySet();
-    }
-
-    @Override
-    @Nonnull
-    public UnArchiver getUnArchiver(@Nonnull File file) throws NoSuchArchiverException {
-        return getUnArchiver(getFileExtension(file));
-    }
-
-    @Nonnull
-    @Override
-    public Collection<String> getAvailableUnArchivers() {
-        return unArchivers.keySet();
-    }
-
-    @Override
-    @Nonnull
-    public PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException {
-        return getResourceCollection(getFileExtension(file));
-    }
-
-    @Nonnull
-    @Override
-    public Collection<String> getAvailableResourceCollections() {
-        return plexusIoResourceCollections.keySet();
+    private static Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections(
+            Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections) {
+        return plexusIoResourceCollections.entrySet().stream()
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 }
