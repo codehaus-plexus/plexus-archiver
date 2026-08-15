@@ -74,8 +74,8 @@ public class ResourceUtils {
      * Checks, whether the resource and the file are identical.
      */
     public static boolean isSame(PlexusIoResource resource, File file) {
-        if (resource instanceof FileSupplier) {
-            File resourceFile = ((FileSupplier) resource).getFile();
+        if (resource instanceof FileSupplier supplier) {
+            File resourceFile = supplier.getFile();
             return file.equals(resourceFile);
         }
         return false;
@@ -87,8 +87,8 @@ public class ResourceUtils {
      * slower than comparing the files.
      */
     public static boolean isCanonicalizedSame(PlexusIoResource resource, File file) throws IOException {
-        if (resource instanceof FileSupplier) {
-            File resourceFile = ((FileSupplier) resource).getFile();
+        if (resource instanceof FileSupplier supplier) {
+            File resourceFile = supplier.getFile();
             return file.getCanonicalFile().equals(resourceFile.getCanonicalFile());
         }
         return false;

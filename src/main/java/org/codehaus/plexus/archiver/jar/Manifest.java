@@ -625,8 +625,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
 
         @Override
         public boolean equals(Object rhs) {
-            return rhs instanceof ExistingSection
-                    && backingAttributes.equals(((ExistingSection) rhs).backingAttributes);
+            return rhs instanceof ExistingSection es && backingAttributes.equals(es.backingAttributes);
         }
     }
 

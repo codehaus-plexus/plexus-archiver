@@ -124,9 +124,21 @@ class IndexTest extends TestSupport {
         String res = new String(buf, 0, i);
         // System.out.println(res);
 
-        assertEquals(
-                "JarIndex-Version: 1.0\n\n" + "archive2.jar\ntwo.txt\n\n" + "archive1.jar\nMETA-INF\none.txt\n\n"
-                        + "archive3.jar\norg\norg/apache\norg/apache/maven\n\n",
-                res.replaceAll("\r\n", "\n"));
+        assertEquals("""
+                JarIndex-Version: 1.0
+
+                archive2.jar
+                two.txt
+
+                archive1.jar
+                META-INF
+                one.txt
+
+                archive3.jar
+                org
+                org/apache
+                org/apache/maven
+
+                """, res.replaceAll("\r\n", "\n"));
     }
 }
