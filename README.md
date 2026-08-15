@@ -15,31 +15,61 @@ Actively maintained. This is one of the most widely used artifacts in the Maven 
 
 ## Using it
 
+**pom.xml**
+
 ```xml
 <dependency>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-archiver</artifactId>
-  <version>4.12.0</version>
+  <version>5.0.0</version> <!-- requires Java 17 -->
+</dependency>
+```
+
+```xml
+<dependency>
+  <groupId>org.codehaus.plexus</groupId>
+  <artifactId>plexus-archiver</artifactId>
+  <version>4.12.0</version> <!-- requires Java 8 -->
 </dependency>
 ```
 
 Check the badge above for the current version.
+
+**Java sourcecode**
+
+Components are JSR-330 beans, resolved by role hint (`zip`, `jar`, `tar.gz`, …). No Plexus container is involved — [Eclipse Sisu](https://www.eclipse.org/sisu/) replaced that years ago. The [site](https://codehaus-plexus.github.io/plexus-archiver/) lists every supported format and its hint.
 
 ```java
 @Inject
 @Named("zip")
 Archiver archiver;
 
+@Inject
+ArchiverManager archiverManager;
+```
+
+As of version 5.0.0 there's also a [ServiceLoader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) based implementation.
+
+```java
+var archiveManager = new ServiceLoaderArchiverManager();
+
+// or without archiveManager
+var archiver = ServiceLoader.load(ArchiverProvider.class).stream()
+  .map(Provider::get)
+  .filter(p -> "zip".equals(p.getName()))
+  .findFirst()
+  .orElseThrow();
+```
+
+After retrieving a fresh archiver, you can do
+
+```java
+var archiver = archiveManager.getArchiver("zip");
+
 archiver.addDirectory(new File("src/main/resources"));
 archiver.setDestFile(new File("target/out.zip"));
 archiver.createArchive();
 ```
-
-Components are JSR-330 beans, resolved by role hint (`zip`, `jar`, `tar.gz`, …). No Plexus container is involved — [Eclipse Sisu](https://www.eclipse.org/sisu/) replaced that years ago. The [site](https://codehaus-plexus.github.io/plexus-archiver/) lists every supported format and its hint.
-
-## Requirements
-
-Java 8 or later.
 
 ## Documentation
 
