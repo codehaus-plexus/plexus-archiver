@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.UndeclaredThrowableException;
+import java.io.UncheckedIOException;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
@@ -74,7 +74,7 @@ public class TarFile implements ArchiveFile {
                     try {
                         currentEntry = inputStream.getNextEntry();
                     } catch (IOException e) {
-                        throw new UndeclaredThrowableException(e);
+                        throw new UncheckedIOException(e);
                     }
                 }
                 return currentEntry != null;

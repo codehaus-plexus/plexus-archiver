@@ -21,7 +21,6 @@ import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
+import java.util.spi.ToolProvider;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -72,23 +72,14 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
 
     private static final Pattern MRJAR_VERSION_AREA = Pattern.compile("META-INF/versions/\\d+/");
 
-    private Object jarTool;
+    private final ToolProvider jarTool;
 
     private boolean moduleDescriptorFound;
 
     private boolean hasJarDateOption;
 
     public JarToolModularJarArchiver() {
-        try {
-            Class<?> toolProviderClass = Class.forName("java.util.spi.ToolProvider");
-            Object jarToolOptional =
-                    toolProviderClass.getMethod("findFirst", String.class).invoke(null, "jar");
-
-            jarTool = jarToolOptional.getClass().getMethod("get").invoke(jarToolOptional);
-        } catch (ReflectiveOperationException | SecurityException e) {
-            // Ignore. It is expected that the jar tool
-            // may not be available.
-        }
+        this.jarTool = ToolProvider.findFirst("jar").orElse(null);
     }
 
     @Override
@@ -121,17 +112,14 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
         try {
             getLogger().debug("Using the jar tool to " + "update the archive to modular JAR.");
 
-            final Method jarRun =
-                    jarTool.getClass().getMethod("run", PrintStream.class, PrintStream.class, String[].class);
-
             if (getLastModifiedTime() != null) {
-                hasJarDateOption = isJarDateOptionSupported(jarRun);
+                hasJarDateOption = isJarDateOptionSupported();
                 getLogger().debug("jar tool --date option is supported: " + hasJarDateOption);
             }
 
-            Integer result = (Integer) jarRun.invoke(jarTool, System.out, System.err, getJarToolArguments());
+            int result = jarTool.run(System.out, System.err, getJarToolArguments());
 
-            if (result != null && result != 0) {
+            if (result != 0) {
                 throw new ArchiverException(
                         "Could not create modular JAR file. " + "The JDK jar tool exited with " + result);
             }
@@ -142,7 +130,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
                 // https://github.com/codehaus-plexus/plexus-archiver/issues/164
                 fixLastModifiedTimeZipEntries();
             }
-        } catch (IOException | ReflectiveOperationException | SecurityException e) {
+        } catch (IOException | IllegalArgumentException e) {
             throw new ArchiverException("Exception occurred " + "while creating modular JAR file", e);
         }
     }
@@ -281,17 +269,14 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
      *
      * @return true if the JAR tool supports the {@code --date} option
      */
-    private boolean isJarDateOptionSupported(Method runMethod) {
-        try {
-            // Test the output code validating the --date option.
-            String[] args = {"--date", "2099-12-31T23:59:59Z", "--version"};
+    private boolean isJarDateOptionSupported() {
+        // Test the output code validating the --date option.
+        String[] args = {"--date", "2099-12-31T23:59:59Z", "--version"};
 
-            PrintStream nullPrintStream = NullPrintStream.INSTANCE;
-            Integer result = (Integer) runMethod.invoke(jarTool, nullPrintStream, nullPrintStream, args);
+        PrintStream nullPrintStream = NullPrintStream.INSTANCE;
 
-            return result != null && result.intValue() == 0;
-        } catch (ReflectiveOperationException | SecurityException e) {
-            return false;
-        }
+        int result = jarTool.run(nullPrintStream, nullPrintStream, args);
+
+        return result == 0;
     }
 }

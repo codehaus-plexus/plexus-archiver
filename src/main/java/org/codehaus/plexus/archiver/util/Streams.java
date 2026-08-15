@@ -37,11 +37,11 @@ public class Streams {
     public static final InputStream EMPTY_INPUTSTREAM = new ByteArrayInputStream(new byte[0]);
 
     public static BufferedInputStream bufferedInputStream(InputStream is) {
-        return is instanceof BufferedInputStream ? (BufferedInputStream) is : new BufferedInputStream(is, 65536);
+        return is instanceof BufferedInputStream bis ? bis : new BufferedInputStream(is, 65536);
     }
 
     public static BufferedOutputStream bufferedOutputStream(OutputStream os) {
-        return os instanceof BufferedOutputStream ? (BufferedOutputStream) os : new BufferedOutputStream(os, 65536);
+        return os instanceof BufferedOutputStream bos ? bos : new BufferedOutputStream(os, 65536);
     }
 
     public static byte[] cacheBuffer() {

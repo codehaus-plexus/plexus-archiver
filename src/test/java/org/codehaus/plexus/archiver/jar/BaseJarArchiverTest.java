@@ -19,7 +19,7 @@ package org.codehaus.plexus.archiver.jar;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -62,7 +62,7 @@ public abstract class BaseJarArchiverTest {
             ZipEntry classFileEntry = resultingArchive.getEntry("com/example/app/Main.class");
             InputStream resultingClassFile = resultingArchive.getInputStream(classFileEntry);
             InputStream originalClassFile =
-                    Files.newInputStream(Paths.get("src/test/resources/java-classes/com/example/app/Main.class"));
+                    Files.newInputStream(Path.of("src/test/resources/java-classes/com/example/app/Main.class"));
 
             assertTrue(IOUtil.contentEquals(originalClassFile, resultingClassFile));
         }
