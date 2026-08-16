@@ -8,16 +8,19 @@ This page documents breaking API changes by major version and their replacements
 
 The following APIs that were previously marked `@Deprecated` have been removed in 5.0.0.
 
-### `Archiver`: `addDirectory` overloads → `addFileSet`
+### `Archiver`: removed `addDirectory` overloads
 
-The four `addDirectory` overloads on `Archiver` are removed. Use `addFileSet` with a `DefaultFileSet` instead.
+The four `addDirectory` overloads on `Archiver` are removed. When creating an archiver through an
+`ArchiverProvider`, configure its directories with `newArchiver(Consumer<ArchiverConfigurer>)` and a fluent
+`FileSet` specification. This keeps concrete file set implementations and the legacy `File` API out of application
+code.
 
 | Removed | Replacement |
 |---------|-------------|
-| `addDirectory(File dir)` | `addFileSet(DefaultFileSet.fileSet(dir))` |
-| `addDirectory(File dir, String prefix)` | `addFileSet(DefaultFileSet.fileSet(dir).prefixed(prefix))` |
-| `addDirectory(File dir, String[] includes, String[] excludes)` | `addFileSet(DefaultFileSet.fileSet(dir).includeExclude(includes, excludes))` |
-| `addDirectory(File dir, String prefix, String[] includes, String[] excludes)` | `addFileSet(DefaultFileSet.fileSet(dir).prefixed(prefix).includeExclude(includes, excludes))` |
+| `archiver.addDirectory(File dir)` | `c.addFileSet(FileSet.of(path))` |
+| `archiver.addDirectory(File dir, String prefix)` | `c.addFileSet(FileSet.of(path).prefixed(prefix))` |
+| `archiver.addDirectory(File dir, String[] includes, String[] excludes)` | `c.addFileSet(FileSet.of(path).including(includes).excluding(excludes))` |
+| `archiver.addDirectory(File dir, String prefix, String[] includes, String[] excludes)` | `c.addFileSet(FileSet.of(path).prefixed(prefix).including(includes).excluding(excludes))` |
 
 ```java
 // Before
@@ -26,25 +29,29 @@ archiver.addDirectory(new File("src/main/resources"), "resources/");
 archiver.addDirectory(new File("src"), null, new String[]{"**/*.class"});
 
 // After
-import org.codehaus.plexus.archiver.util.DefaultFileSet;
-
-archiver.addFileSet(DefaultFileSet.fileSet(new File("src/main/resources")));
-archiver.addFileSet(DefaultFileSet.fileSet(new File("src/main/resources")).prefixed("resources/"));
-archiver.addFileSet(DefaultFileSet.fileSet(new File("src")).includeExclude(null, new String[]{"**/*.class"}));
+Archiver archiver = provider.newArchiver(configurer -> {
+    configurer.addFileSet(FileSet.of(Path.of("src/main/resources")));
+    configurer.addFileSet(FileSet.of(Path.of("src/main/resources")).prefixed("resources/"));
+    configurer.addFileSet(FileSet.of(Path.of("src")).excluding(List.of("**/*.class")));
+});
 ```
+
+The returned `Archiver` retains its existing mutable API. The provider overload centralizes initial content
+configuration but does not make the legacy `Archiver` implementation immutable.
 
 ---
 
-### `Archiver`: `addArchivedFileSet(File)` overloads → `addArchivedFileSet(ArchivedFileSet)`
+### `Archiver`: removed `addArchivedFileSet(File)` overloads
 
-The four `addArchivedFileSet(File, ...)` overloads are removed. Use `addArchivedFileSet` with a `DefaultArchivedFileSet` instead.
+The four `addArchivedFileSet(File, ...)` overloads are removed. Use a fluent `ArchivedFileSet` specification with
+the provider configurer.
 
 | Removed | Replacement |
 |---------|-------------|
-| `addArchivedFileSet(File archive)` | `addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(archive))` |
-| `addArchivedFileSet(File archive, String prefix)` | `addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(archive).prefixed(prefix))` |
-| `addArchivedFileSet(File archive, String[] includes, String[] excludes)` | `addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(archive).includeExclude(includes, excludes))` |
-| `addArchivedFileSet(File archive, String prefix, String[] includes, String[] excludes)` | `addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(archive).prefixed(prefix).includeExclude(includes, excludes))` |
+| `archiver.addArchivedFileSet(File archive)` | `c.addArchivedFileSet(ArchivedFileSet.of(path))` |
+| `archiver.addArchivedFileSet(File archive, String prefix)` | `c.addArchivedFileSet(ArchivedFileSet.of(path).prefixed(prefix))` |
+| `archiver.addArchivedFileSet(File archive, String[] includes, String[] excludes)` | `c.addArchivedFileSet(ArchivedFileSet.of(path).including(includes).excluding(excludes))` |
+| `archiver.addArchivedFileSet(File archive, String prefix, String[] includes, String[] excludes)` | `c.addArchivedFileSet(ArchivedFileSet.of(path).prefixed(prefix).including(includes).excluding(excludes))` |
 
 ```java
 // Before
@@ -52,10 +59,10 @@ archiver.addArchivedFileSet(new File("libs/dependency.jar"));
 archiver.addArchivedFileSet(new File("libs/dependency.jar"), "lib/");
 
 // After
-import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
-
-archiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(new File("libs/dependency.jar")));
-archiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(new File("libs/dependency.jar")).prefixed("lib/"));
+Archiver archiver = provider.newArchiver(configurer -> {
+    configurer.addArchivedFileSet(ArchivedFileSet.of(Path.of("libs/dependency.jar")));
+    configurer.addArchivedFileSet(ArchivedFileSet.of(Path.of("libs/dependency.jar")).prefixed("lib/"));
+});
 ```
 
 ---
@@ -164,11 +171,9 @@ archiver.addArchivedFileSet(archive, new ArchiveFileFilter[]{new JarSecurityFile
 
 // After
 import org.codehaus.plexus.archiver.filters.JarSecurityFileSelector;
-import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 
-DefaultArchivedFileSet fileSet = DefaultArchivedFileSet.archivedFileSet(archive);
-fileSet.setFileSelectors(new FileSelector[]{new JarSecurityFileSelector()});
-archiver.addArchivedFileSet(fileSet);
+Archiver archiver = provider.newArchiver(configurer -> configurer.addArchivedFileSet(
+    ArchivedFileSet.of(archive.toPath()).selectedBy(List.of(new JarSecurityFileSelector()))));
 ```
 
 ---

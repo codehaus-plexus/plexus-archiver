@@ -17,10 +17,13 @@
 
 package org.codehaus.plexus.archiver.zip;
 
-import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
+import org.codehaus.plexus.archivers.spi.AbstractPlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public final class PlexusArchiverZipFileResourceCollectionProvider implements PlexusIoResourceCollectionProvider {
+/**
+ * @since 5.0.0
+ */
+public final class PlexusArchiverZipFileResourceCollectionProvider extends AbstractPlexusIoResourceCollectionProvider {
 
     @Override
     public String getName() {
@@ -28,7 +31,7 @@ public final class PlexusArchiverZipFileResourceCollectionProvider implements Pl
     }
 
     @Override
-    public PlexusIoResourceCollection newPlexusIoResourceCollection() {
+    protected PlexusIoResourceCollection createResourceCollection() {
         return new PlexusArchiverZipFileResourceCollection();
     }
 }

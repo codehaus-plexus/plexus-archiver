@@ -18,9 +18,12 @@
 package org.codehaus.plexus.archiver.car;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.spi.UnArchiverProvider;
+import org.codehaus.plexus.archivers.spi.AbstractUnArchiverProvider;
 
-public final class CarUnArchiverProvider implements UnArchiverProvider {
+/**
+ * @since 5.0.0
+ */
+public final class CarUnArchiverProvider extends AbstractUnArchiverProvider {
 
     @Override
     public String getName() {
@@ -28,7 +31,7 @@ public final class CarUnArchiverProvider implements UnArchiverProvider {
     }
 
     @Override
-    public UnArchiver newUnarchiver() {
+    protected UnArchiver createUnarchiver() {
         return new CarUnArchiver();
     }
 }

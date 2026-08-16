@@ -18,9 +18,12 @@
 package org.codehaus.plexus.archiver.tar;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archivers.spi.ArchiverProvider;
+import org.codehaus.plexus.archivers.spi.AbstractArchiverProvider;
 
-public final class TarSnappyArchiverProvider implements ArchiverProvider {
+/**
+ * @since 5.0.0
+ */
+public final class TarSnappyArchiverProvider extends AbstractArchiverProvider {
 
     @Override
     public String getName() {
@@ -28,7 +31,7 @@ public final class TarSnappyArchiverProvider implements ArchiverProvider {
     }
 
     @Override
-    public Archiver newArchiver() {
+    protected Archiver createArchiver() {
         return new TarSnappyArchiver();
     }
 }

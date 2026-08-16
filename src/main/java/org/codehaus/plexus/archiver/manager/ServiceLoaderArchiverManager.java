@@ -39,19 +39,21 @@ public class ServiceLoaderArchiverManager extends AbstractArchiverManager {
     private static Map<String, Supplier<Archiver>> archivers() {
         return ServiceLoader.load(ArchiverProvider.class).stream()
                 .map(Provider::get)
-                .collect(Collectors.toMap(ArchiverProvider::getName, k -> k::newArchiver));
+                .collect(Collectors.toMap(ArchiverProvider::getName, provider -> () -> provider.newArchiver(c -> {})));
     }
 
     private static Map<String, Supplier<UnArchiver>> unarchivers() {
         return ServiceLoader.load(UnArchiverProvider.class).stream()
                 .map(Provider::get)
-                .collect(Collectors.toMap(UnArchiverProvider::getName, k -> k::newUnarchiver));
+                .collect(Collectors.toMap(
+                        UnArchiverProvider::getName, provider -> () -> provider.newUnarchiver(c -> {})));
     }
 
     private static Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections() {
         return ServiceLoader.load(PlexusIoResourceCollectionProvider.class).stream()
                 .map(Provider::get)
                 .collect(Collectors.toMap(
-                        PlexusIoResourceCollectionProvider::getName, k -> k::newPlexusIoResourceCollection));
+                        PlexusIoResourceCollectionProvider::getName,
+                        provider -> () -> provider.newPlexusIoResourceCollection(c -> {})));
     }
 }

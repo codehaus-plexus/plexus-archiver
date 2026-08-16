@@ -17,11 +17,26 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.util.function.Consumer;
+
 import org.codehaus.plexus.archiver.Archiver;
 
-public interface ArchiverProvider {
+/**
+ * Service provider for a named archive format. Archivers are exposed only after their initial configuration has been
+ * applied.
+ *
+ * @since 5.0.0
+ */
+public sealed interface ArchiverProvider permits AbstractArchiverProvider {
 
     String getName();
 
-    Archiver newArchiver();
+    /**
+     * Creates and configures a new archiver.
+     *
+     * @param configurer configuration to apply before returning the archiver
+     * @return the configured archiver
+     * @since 5.0.0
+     */
+    Archiver newArchiver(Consumer<ArchiverConfigurer> configurer);
 }

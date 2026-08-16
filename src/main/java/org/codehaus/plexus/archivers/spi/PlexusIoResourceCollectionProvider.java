@@ -17,11 +17,18 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.util.function.Consumer;
+
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public interface PlexusIoResourceCollectionProvider {
+/**
+ * Service provider for a named Plexus IO resource collection.
+ *
+ * @since 5.0.0
+ */
+public sealed interface PlexusIoResourceCollectionProvider permits AbstractPlexusIoResourceCollectionProvider {
 
     String getName();
 
-    PlexusIoResourceCollection newPlexusIoResourceCollection();
+    PlexusIoResourceCollection newPlexusIoResourceCollection(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
 }
