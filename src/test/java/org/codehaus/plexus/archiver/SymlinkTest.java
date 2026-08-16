@@ -7,6 +7,7 @@ import org.codehaus.plexus.archiver.dir.DirectoryArchiver;
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
 import org.codehaus.plexus.archiver.tar.TarUnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 import org.junit.jupiter.api.Test;
@@ -51,7 +52,7 @@ class SymlinkTest extends TestSupport {
         archiver.setLongfile(TarLongFileMode.posix);
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
-        archiver.addDirectory(dummyContent);
+        archiver.addFileSet(DefaultFileSet.fileSet(dummyContent));
         final File archiveFile = new File("target/output/symlinks.tar");
         archiver.setDestFile(archiveFile);
         archiver.createArchive();
@@ -70,7 +71,7 @@ class SymlinkTest extends TestSupport {
         ZipArchiver archiver = (ZipArchiver) lookup(Archiver.class, "zip");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
-        archiver.addDirectory(dummyContent);
+        archiver.addFileSet(DefaultFileSet.fileSet(dummyContent));
         final File archiveFile = new File("target/output/symlinks.zip");
         archiveFile.delete();
         archiver.setDestFile(archiveFile);
@@ -92,7 +93,7 @@ class SymlinkTest extends TestSupport {
         DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
-        archiver.addDirectory(dummyContent);
+        archiver.addFileSet(DefaultFileSet.fileSet(dummyContent));
         final File archiveFile = new File("target/output/dirarchiver-symlink");
         archiveFile.mkdirs();
         archiver.setDestFile(archiveFile);

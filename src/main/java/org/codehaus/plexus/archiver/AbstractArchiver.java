@@ -29,12 +29,9 @@ import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -53,9 +50,6 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.codehaus.plexus.components.io.resources.proxy.PlexusIoProxyResourceCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.codehaus.plexus.archiver.util.DefaultArchivedFileSet.archivedFileSet;
-import static org.codehaus.plexus.archiver.util.DefaultFileSet.fileSet;
 
 public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
@@ -102,13 +96,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     private final boolean replacePathSlashesToJavaPaths = File.separatorChar == '/';
 
     private final List<Closeable> closeables = new ArrayList<>();
-
-    /**
-     * since 2.2 is on by default
-     *
-     * @since 1.1
-     */
-    private boolean useJvmChmod = true;
 
     private FileTime lastModifiedTime;
 
@@ -281,40 +268,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     @Override
     public void setIncludeEmptyDirs(final boolean includeEmptyDirs) {
         this.includeEmptyDirs = includeEmptyDirs;
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(@Nonnull final File directory) throws ArchiverException {
-        addFileSet(fileSet(directory).prefixed("").includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(@Nonnull final File directory, final String prefix) throws ArchiverException {
-        addFileSet(
-                fileSet(directory).prefixed(prefix).includeExclude(null, null).includeEmptyDirs(includeEmptyDirs));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(@Nonnull final File directory, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        addFileSet(fileSet(directory)
-                .prefixed("")
-                .includeExclude(includes, excludes)
-                .includeEmptyDirs(includeEmptyDirs));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(
-            @Nonnull final File directory, final String prefix, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        addFileSet(fileSet(directory)
-                .prefixed(prefix)
-                .includeExclude(includes, excludes)
-                .includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
@@ -613,36 +566,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         }
     }
 
-    /**
-     * Returns a map of the files that have been added to the archive.
-     * <p>
-     * Note: The entry names in the map use platform-specific path separators
-     * (e.g., backslashes on Windows, forward slashes on Unix). For ZIP archivers,
-     * the actual archive entries will use forward slashes as required by the ZIP
-     * specification, but this map returns names as they were added.
-     * </p>
-     * <p>
-     * For ZIP-based archivers (ZipArchiver, JarArchiver, etc.), use the overridden
-     * implementation which normalizes paths to forward slashes to match the actual
-     * ZIP entry names.
-     * </p>
-     *
-     * @return A map where keys are entry names and values are the corresponding ArchiveEntry objects.
-     * @deprecated Use {@link #getResources()} instead.
-     */
-    @Override
-    @Deprecated
-    public Map<String, ArchiveEntry> getFiles() {
-        final Map<String, ArchiveEntry> map = new HashMap<>();
-        for (final ResourceIterator iter = getResources(); iter.hasNext(); ) {
-            final ArchiveEntry entry = iter.next();
-            if (includeEmptyDirs || entry.getType() == ArchiveEntry.FILE) {
-                map.put(entry.getName(), entry);
-            }
-        }
-        return map;
-    }
-
     @Override
     public File getDestFile() {
         return destFile;
@@ -728,49 +651,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     public void addArchivedFileSet(final ArchivedFileSet fileSet, Charset charset) throws ArchiverException {
         final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, charset);
         addResources(resourceCollection);
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(
-            @Nonnull final File archiveFile, final String prefix, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        addArchivedFileSet(archivedFileSet(archiveFile)
-                .prefixed(prefix)
-                .includeExclude(includes, excludes)
-                .includeEmptyDirs(includeEmptyDirs));
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull final File archiveFile, final String prefix) throws ArchiverException {
-        addArchivedFileSet(archivedFileSet(archiveFile).prefixed(prefix).includeEmptyDirs(includeEmptyDirs));
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull final File archiveFile, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        addArchivedFileSet(
-                archivedFileSet(archiveFile).includeExclude(includes, excludes).includeEmptyDirs(includeEmptyDirs));
-    }
-
-    /**
-     * @since 1.0-alpha-7
-     */
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull final File archiveFile) throws ArchiverException {
-        addArchivedFileSet(archivedFileSet(archiveFile).includeEmptyDirs(includeEmptyDirs));
     }
 
     @Override
@@ -979,24 +859,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      * @since 1.1
      */
     @Override
-    @Deprecated
-    public boolean isUseJvmChmod() {
-        return useJvmChmod;
-    }
-
-    /**
-     * @since 1.1
-     */
-    @Override
-    @Deprecated
-    public void setUseJvmChmod(final boolean useJvmChmod) {
-        this.useJvmChmod = useJvmChmod;
-    }
-
-    /**
-     * @since 1.1
-     */
-    @Override
     public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
@@ -1007,24 +869,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     @Override
     public void setIgnorePermissions(final boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
-    }
-
-    /**
-     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis(lastModifiedDate.getTime()) : null;
-    }
-
-    /**
-     * @deprecated Use {@link #getLastModifiedTime()} instead.
-     */
-    @Override
-    @Deprecated
-    public Date getLastModifiedDate() {
-        return lastModifiedTime != null ? new Date(lastModifiedTime.toMillis()) : null;
     }
 
     @Override
@@ -1094,15 +938,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     @Override
     public int getUmask() {
         return umask;
-    }
-
-    /**
-     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void configureReproducible(Date lastModifiedDate) {
-        configureReproducibleBuild(FileTime.fromMillis(lastModifiedDate.getTime()));
     }
 
     @Override

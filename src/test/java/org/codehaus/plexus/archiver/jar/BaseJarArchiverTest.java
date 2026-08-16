@@ -27,6 +27,7 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
 
@@ -46,7 +47,7 @@ public abstract class BaseJarArchiverTest {
 
         JarArchiver archiver = getJarArchiver();
         archiver.setDestFile(jarFile);
-        archiver.addDirectory(new File("src/test/resources/java-classes"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-classes")));
 
         archiver.createArchive();
 

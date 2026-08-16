@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Map;
 
-import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -34,7 +31,7 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-@SuppressWarnings({"UnusedDeclaration", "deprecation"})
+@SuppressWarnings("UnusedDeclaration")
 public class DelgatingArchiver implements Archiver {
 
     private final Archiver target;
@@ -46,30 +43,6 @@ public class DelgatingArchiver implements Archiver {
     @Override
     public void createArchive() throws ArchiverException, IOException {
         target.createArchive();
-    }
-
-    @Deprecated
-    @Override
-    public void addDirectory(@Nonnull File directory) throws ArchiverException {
-        target.addDirectory(directory);
-    }
-
-    @Deprecated
-    @Override
-    public void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException {
-        target.addDirectory(directory, prefix);
-    }
-
-    @Deprecated
-    @Override
-    public void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException {
-        target.addDirectory(directory, includes, excludes);
-    }
-
-    @Override
-    public void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
-            throws ArchiverException {
-        target.addDirectory(directory, prefix, includes, excludes);
     }
 
     @Override
@@ -96,28 +69,6 @@ public class DelgatingArchiver implements Archiver {
     public void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions)
             throws ArchiverException {
         target.addFile(inputFile, destFileName, permissions);
-    }
-
-    @Override
-    public void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException {
-        target.addArchivedFileSet(archiveFile);
-    }
-
-    @Deprecated
-    @Override
-    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException {
-        target.addArchivedFileSet(archiveFile, prefix);
-    }
-
-    @Override
-    public void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException {
-        target.addArchivedFileSet(archiveFile, includes, excludes);
-    }
-
-    @Override
-    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
-            throws ArchiverException {
-        target.addArchivedFileSet(archiveFile, prefix, includes, excludes);
     }
 
     @Override
@@ -222,12 +173,6 @@ public class DelgatingArchiver implements Archiver {
     }
 
     @Override
-    @Deprecated
-    public Map<String, ArchiveEntry> getFiles() {
-        return target.getFiles();
-    }
-
-    @Override
     public boolean isForced() {
         return target.isForced();
     }
@@ -253,16 +198,6 @@ public class DelgatingArchiver implements Archiver {
     }
 
     @Override
-    public void setUseJvmChmod(boolean useJvmChmod) {
-        target.setUseJvmChmod(useJvmChmod);
-    }
-
-    @Override
-    public boolean isUseJvmChmod() {
-        return target.isUseJvmChmod();
-    }
-
-    @Override
     public boolean isIgnorePermissions() {
         return target.isIgnorePermissions();
     }
@@ -270,24 +205,6 @@ public class DelgatingArchiver implements Archiver {
     @Override
     public void setIgnorePermissions(boolean ignorePermissions) {
         target.setIgnorePermissions(ignorePermissions);
-    }
-
-    /**
-     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void setLastModifiedDate(final Date lastModifiedDate) {
-        target.setLastModifiedDate(lastModifiedDate);
-    }
-
-    /**
-     * @deprecated Use {@link #getLastModifiedTime()} instead.
-     */
-    @Override
-    @Deprecated
-    public Date getLastModifiedDate() {
-        return target.getLastModifiedDate();
     }
 
     @Override
@@ -353,15 +270,6 @@ public class DelgatingArchiver implements Archiver {
     @Override
     public int getUmask() {
         return target.getUmask();
-    }
-
-    /**
-     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void configureReproducible(Date lastModifiedDate) {
-        target.configureReproducible(lastModifiedDate);
     }
 
     @Override

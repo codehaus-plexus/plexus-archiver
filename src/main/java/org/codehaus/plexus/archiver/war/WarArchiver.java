@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 
@@ -101,35 +102,42 @@ public class WarArchiver extends JarArchiver {
      * add a file under WEB-INF/lib/
      */
     public void addLib(File fileName) throws ArchiverException {
-        addDirectory(fileName.getParentFile(), "WEB-INF/lib/", new String[] {fileName.getName()}, null);
+        addFileSet(DefaultFileSet.fileSet(fileName.getParentFile())
+                .prefixed("WEB-INF/lib/")
+                .includeExclude(new String[] {fileName.getName()}, null));
     }
 
     /**
      * add files under WEB-INF/lib/
      */
     public void addLibs(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
-        addDirectory(directoryName, "WEB-INF/lib/", includes, excludes);
+        addFileSet(
+                DefaultFileSet.fileSet(directoryName).prefixed("WEB-INF/lib/").includeExclude(includes, excludes));
     }
 
     /**
      * add a file under WEB-INF/lib/
      */
     public void addClass(File fileName) throws ArchiverException {
-        addDirectory(fileName.getParentFile(), "WEB-INF/classes/", new String[] {fileName.getName()}, null);
+        addFileSet(DefaultFileSet.fileSet(fileName.getParentFile())
+                .prefixed("WEB-INF/classes/")
+                .includeExclude(new String[] {fileName.getName()}, null));
     }
 
     /**
      * add files under WEB-INF/classes
      */
     public void addClasses(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
-        addDirectory(directoryName, "WEB-INF/classes/", includes, excludes);
+        addFileSet(DefaultFileSet.fileSet(directoryName)
+                .prefixed("WEB-INF/classes/")
+                .includeExclude(includes, excludes));
     }
 
     /**
      * files to add under WEB-INF;
      */
     public void addWebinf(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
-        addDirectory(directoryName, "WEB-INF/", includes, excludes);
+        addFileSet(DefaultFileSet.fileSet(directoryName).prefixed("WEB-INF/").includeExclude(includes, excludes));
     }
 
     /**

@@ -23,9 +23,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
@@ -71,46 +69,9 @@ public interface Archiver {
     void createArchive() throws ArchiverException, IOException;
 
     /**
-     * Obsolete, use {@link #addFileSet(FileSet)}.
+     * Adds the given file set to the archive.
      *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addDirectory(@Nonnull File directory) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addFileSet(FileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addFileSet(FileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addFileSet(FileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
-            throws ArchiverException;
-
-    /**
-     * Adds the given file set to the archive. This method is basically obsoleting {@link #addDirectory(File)},
-     * {@link #addDirectory(File, String)}, {@link #addDirectory(File, String[], String[])}, and
-     * {@link #addDirectory(File, String, String[], String[])}. However, as these methods are in widespread use, they
-     * cannot easily be deprecated.
-     *
-     * @throws ArchiverException
-     * Adding the file set failed.
+     * @throws ArchiverException if adding the file set failed.
      * @since 1.0-alpha-9
      */
     void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException;
@@ -123,64 +84,14 @@ public interface Archiver {
 
     void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions) throws ArchiverException;
 
-    /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException;
-
-    /**
-     * Obsolete, use {@link #addArchivedFileSet(ArchivedFileSet)}.
-     *
-     * @deprecated Will go away in next major version
-     */
-    @Deprecated
-    void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
-            throws ArchiverException;
-
-    /**
-     * Adds the given archive file set to the archive. This method is basically obsoleting
-     * {@link #addArchivedFileSet(File)}, {@link #addArchivedFileSet(File, String[], String[])}, and
-     * {@link #addArchivedFileSet(File, String, String[], String[])}. However, as these methods are in widespread use,
-     * they cannot easily be deprecated.
-     *
-     * Stream transformers are supported on this method
-     *
-     * @since 1.0-alpha-9
-     */
     void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException;
 
     /**
-     * Adds the given archive file set to the archive. This method is basically obsoleting
-     * {@link #addArchivedFileSet(File)}, {@link #addArchivedFileSet(File, String[], String[])}, and
-     * {@link #addArchivedFileSet(File, String, String[], String[])}. However, as these methods are in widespread use,
-     * they cannot easily be deprecated.
+     * Adds the given archive file set to the archive.
      *
-     * @param charset the encoding to use, particularly useful to specific non-standard filename encodings
-     * for some kinds of archives (for instance zip files)
+     * @param charset the encoding to use for filename encoding (e.g. for zip files)
      *
      * Stream transformers are supported on this method
-     *
-     * @param fileSet the fileSet to add
-     * @param charset
      *
      * @since 1.0-alpha-9
      */
@@ -260,22 +171,6 @@ public interface Archiver {
     ResourceIterator getResources() throws ArchiverException;
 
     /**
-     * Returns a map of the files that have been added to the archive.
-     * <p>
-     * Note: The entry names in the map may use platform-specific path separators
-     * in the base implementation. However, archive format-specific implementations
-     * (such as ZIP-based archivers) should normalize paths according to their format
-     * requirements. For example, ZIP archivers normalize to forward slashes as required
-     * by the ZIP file specification.
-     * </p>
-     *
-     * @return A map where keys are entry names and values are the corresponding ArchiveEntry objects.
-     * @deprecated Use {@link #getResources()}
-     */
-    @Deprecated
-    Map<String, ArchiveEntry> getFiles();
-
-    /**
      * <p>
      * Returns, whether recreating the archive is forced (default). Setting this option to false means, that the
      * archiver should compare the timestamps of included files with the timestamp of the target archive and rebuild the
@@ -349,25 +244,6 @@ public interface Archiver {
     void setDuplicateBehavior(String duplicate);
 
     /**
-     * to use or not the jvm method for file permissions: user all <b>not active for group permissions</b>
-     *
-     * @since 1.1
-     * @param useJvmChmod
-     * @deprecated this setting is now ignored. The jvm is always used.
-     */
-    @Deprecated
-    void setUseJvmChmod(boolean useJvmChmod);
-
-    /**
-     *
-     * @since 1.1
-     * @return
-     * @deprecated this setting is now ignored. The jvm is always used.
-     */
-    @Deprecated
-    boolean isUseJvmChmod();
-
-    /**
      * @since 1.1
      */
     boolean isIgnorePermissions();
@@ -376,23 +252,6 @@ public interface Archiver {
      * @since 1.1
      */
     void setIgnorePermissions(final boolean ignorePermissions);
-
-    /**
-     * Define forced last modification date for entries (if non null).
-     *
-     * @param lastModifiedDate
-     * @since 4.2.0
-     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead
-     */
-    @Deprecated
-    void setLastModifiedDate(final Date lastModifiedDate);
-
-    /**
-     * @since 4.2.0
-     * @deprecated Use {@link #getLastModifiedTime()} instead
-     */
-    @Deprecated
-    Date getLastModifiedDate();
 
     /**
      * Sets the last modification time of the entries (if non null).
@@ -471,17 +330,6 @@ public interface Archiver {
      * @since 4.7.0
      */
     int getUmask();
-
-    /**
-     * This method is obsolete and will just call {@link #configureReproducibleBuild(FileTime)}
-     * with the Date transformed into FileTime.
-     *
-     * @param lastModifiedDate the date to use for archive entries last modified time
-     * @since 4.2.0
-     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
-     */
-    @Deprecated
-    void configureReproducible(Date lastModifiedDate);
 
     /**
      * Configure the archiver to create archives in a reproducible way (see

@@ -15,6 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -50,7 +51,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
         JarArchiver archiver = getJarArchiver();
         archiver.setDestFile(jarFile);
         archiver.setCompress(false);
-        archiver.addDirectory(new File("src/test/resources/mjar179"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/mjar179")));
         archiver.createArchive();
     }
 
@@ -73,7 +74,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
 
         JarArchiver archiver = getJarArchiver();
         archiver.setDestFile(jarFile);
-        archiver.addDirectory(tempDir.toFile());
+        archiver.addFileSet(DefaultFileSet.fileSet(tempDir.toFile()));
         archiver.createArchive();
         // Clean up
         Files.delete(jarFile.toPath());
@@ -131,7 +132,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
             archiver.configureReproducibleBuild(lastModTime);
 
             archiver.addConfiguredManifest(manifest);
-            archiver.addDirectory(new File("src/test/resources/java-classes"));
+            archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-classes")));
 
             archiver.createArchive();
 
@@ -169,7 +170,7 @@ class JarArchiverTest extends BaseJarArchiverTest {
 
         archiver.configureReproducibleBuild(lastModTime);
 
-        archiver.addDirectory(new File("src/test/resources/java-classes"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-classes")));
         archiver.addFile(new File("src/test/resources/world-writable/foo.txt"), "addFile.txt");
 
         archiver.createArchive();

@@ -7,6 +7,7 @@ import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.TestSupport;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ class WarArchiverTest extends TestSupport {
         archiver.setDestFile(new File(getTargetRarFolder(), "test.war"));
 
         File dummyContent = getTestFile("src/test/resources/folders");
-        archiver.addDirectory(dummyContent);
+        archiver.addFileSet(DefaultFileSet.fileSet(dummyContent));
 
         assertEquals(expected, count(archiver.getResources())); // I wonder what the first entry is
 

@@ -45,6 +45,7 @@ import org.codehaus.plexus.archiver.gzip.GZipCompressor;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
 import org.codehaus.plexus.archiver.util.Compressor;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.zip.ArchiveFileComparator;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
@@ -135,7 +136,7 @@ class TarArchiverTest extends TestSupport {
         TarArchiver archiver = getPosixTarArchiver();
         archiver.setDestFile(tarFile);
 
-        archiver.addDirectory(tempDir);
+        archiver.addFileSet(DefaultFileSet.fileSet(tempDir));
         archiver.createArchive();
 
         assertTrue(tarFile.exists());
@@ -145,7 +146,7 @@ class TarArchiverTest extends TestSupport {
         archiver = getPosixTarArchiver();
         archiver.setDestFile(tarFile2);
 
-        archiver.addArchivedFileSet(tarFile);
+        archiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(tarFile));
         archiver.createArchive();
 
         TarFile tf = new TarFile(tarFile2);
@@ -200,7 +201,7 @@ class TarArchiverTest extends TestSupport {
         File tarFile = getTestFile("target/output/tar-with-longFileName.tar");
         archiver.setDestFile(tarFile);
         archiver.setLongfile(TarLongFileMode.posix); // Todo: should be gnu. But will fail with high userod
-        archiver.addDirectory(tmpDir);
+        archiver.addFileSet(DefaultFileSet.fileSet(tmpDir));
         archiver.createArchive();
         assertTrue(tarFile.exists());
     }
@@ -236,7 +237,7 @@ class TarArchiverTest extends TestSupport {
 
         archiver.setFileMode(defaultFileMode);
 
-        archiver.addDirectory(getTestFile("src/main"));
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src/main")));
         archiver.setFileMode(oneFileMode);
 
         archiver.addFile(getTestFile("src/test/resources/manifests/manifest1.mf"), "one.txt");
@@ -332,7 +333,7 @@ class TarArchiverTest extends TestSupport {
             final File tarFile = new File("target/output/src.tar");
             TarArchiver tarArchiver = getPosixTarArchiver();
             tarArchiver.setDestFile(tarFile);
-            tarArchiver.addDirectory(srcDir, null, FileUtils.getDefaultExcludes());
+            tarArchiver.addFileSet(DefaultFileSet.fileSet(srcDir).includeExclude(null, FileUtils.getDefaultExcludes()));
             FileUtils.removePath(tarFile.getPath());
             tarArchiver.createArchive();
             return tarFile;
@@ -342,7 +343,8 @@ class TarArchiverTest extends TestSupport {
             final File tarFile2 = new File("target/output/src2.tar");
             TarArchiver tarArchiver2 = getPosixTarArchiver();
             tarArchiver2.setDestFile(tarFile2);
-            tarArchiver2.addArchivedFileSet(tarFile, "prfx/");
+            tarArchiver2.addArchivedFileSet(
+                    DefaultArchivedFileSet.archivedFileSet(tarFile).prefixed("prfx/"));
             FileUtils.removePath(tarFile2.getPath());
             tarArchiver2.createArchive();
             return tarFile2;
