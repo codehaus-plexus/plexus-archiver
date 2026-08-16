@@ -45,55 +45,10 @@ public class DryRunArchiver extends DelgatingArchiver {
         this.logger = logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addArchivedFileSet(
-            final @Nonnull File archiveFile, final String prefix, final String[] includes, final String[] excludes) {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
     private void debug(final String message) {
         if ((logger != null) && logger.isDebugEnabled()) {
             logger.debug(message);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(final @Nonnull File archiveFile, final String prefix) throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addArchivedFileSet(final File archiveFile, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addArchivedFileSet(final @Nonnull File archiveFile) throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addDirectory(
-            final @Nonnull File directory, final String prefix, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
     }
 
     /**
@@ -109,34 +64,6 @@ public class DryRunArchiver extends DelgatingArchiver {
      */
     @Override
     public void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void addDirectory(final @Nonnull File directory, final String prefix) throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void addDirectory(final @Nonnull File directory, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        debug("DRY RUN: Skipping delegated call to: " + getMethodName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public void addDirectory(final @Nonnull File directory) throws ArchiverException {
         debug("DRY RUN: Skipping delegated call to: " + getMethodName());
     }
 

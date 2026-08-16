@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.fileselectors.FileInfo;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
@@ -78,7 +79,7 @@ class ZipUnArchiverTest extends TestSupport {
 
         final File zipFile = new File("target/output/unzip/utf8-default.zip");
         final ZipArchiver zipArchiver = getZipArchiver(zipFile);
-        zipArchiver.addDirectory(new File("src/test/resources/miscUtf8"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/miscUtf8")));
         zipArchiver.createArchive();
         final ZipUnArchiver unarchiver = getZipUnArchiver(zipFile);
         unarchiver.setDestFile(dest);

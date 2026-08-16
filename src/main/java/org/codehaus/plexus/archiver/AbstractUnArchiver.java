@@ -67,13 +67,6 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     private FileSelector[] fileSelectors;
 
     /**
-     * since 2.3 is on by default
-     *
-     * @since 1.1
-     */
-    private boolean useJvmChmod = true;
-
-    /**
      * @since 1.1
      */
     private boolean ignorePermissions = false;
@@ -236,26 +229,6 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     protected abstract void execute() throws ArchiverException;
 
     protected abstract void execute(String path, File outputDirectory) throws ArchiverException;
-
-    /**
-     * @since 1.1
-     */
-    @Override
-    @Deprecated
-    public boolean isUseJvmChmod() {
-        return useJvmChmod;
-    }
-
-    /**
-     * <b>jvm chmod won't set group level permissions !</b>
-     *
-     * @since 1.1
-     */
-    @Override
-    @Deprecated
-    public void setUseJvmChmod(final boolean useJvmChmod) {
-        this.useJvmChmod = useJvmChmod;
-    }
 
     /**
      * @since 1.1

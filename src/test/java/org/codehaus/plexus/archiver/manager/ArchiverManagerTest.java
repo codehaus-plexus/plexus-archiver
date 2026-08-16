@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -105,7 +106,7 @@ class ArchiverManagerTest extends TestSupport {
         Archiver archiver = manager.getArchiver("jar");
         assertNotNull(archiver);
 
-        archiver.addDirectory(new File(getBasedir()));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File(getBasedir())));
 
         Archiver newArchiver = manager.getArchiver("jar");
         assertNotNull(newArchiver);

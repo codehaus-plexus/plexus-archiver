@@ -21,10 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.attribute.FileTime;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.Map;
 
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
@@ -41,27 +38,10 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 @SuppressWarnings("UnusedDeclaration")
 public class NoOpArchiver implements Archiver {
 
-    boolean useJvmChmod;
-
     private boolean ignorePermissions;
 
     @Override
     public void createArchive() throws ArchiverException, IOException {}
-
-    @Override
-    public void addDirectory(@Nonnull File directory) throws ArchiverException {}
-
-    @Override
-    public void addDirectory(@Nonnull File directory, String prefix) throws ArchiverException {}
-
-    @Override
-    @Deprecated
-    public void addDirectory(@Nonnull File directory, String[] includes, String[] excludes) throws ArchiverException {}
-
-    @Override
-    @Deprecated
-    public void addDirectory(@Nonnull File directory, String prefix, String[] includes, String[] excludes)
-            throws ArchiverException {}
 
     @Override
     public void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException {}
@@ -77,22 +57,6 @@ public class NoOpArchiver implements Archiver {
 
     @Override
     public void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions)
-            throws ArchiverException {}
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull File archiveFile) throws ArchiverException {}
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix) throws ArchiverException {}
-
-    @Override
-    public void addArchivedFileSet(File archiveFile, String[] includes, String[] excludes) throws ArchiverException {}
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(@Nonnull File archiveFile, String prefix, String[] includes, String[] excludes)
             throws ArchiverException {}
 
     @Override
@@ -191,12 +155,6 @@ public class NoOpArchiver implements Archiver {
     }
 
     @Override
-    @Deprecated
-    public Map<String, ArchiveEntry> getFiles() {
-        return Collections.emptyMap();
-    }
-
-    @Override
     public boolean isForced() {
         return false;
     }
@@ -218,18 +176,6 @@ public class NoOpArchiver implements Archiver {
     public void setDuplicateBehavior(String duplicate) {}
 
     @Override
-    @Deprecated
-    public void setUseJvmChmod(boolean useJvmChmod) {
-        this.useJvmChmod = useJvmChmod;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isUseJvmChmod() {
-        return useJvmChmod;
-    }
-
-    @Override
     public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
@@ -237,22 +183,6 @@ public class NoOpArchiver implements Archiver {
     @Override
     public void setIgnorePermissions(boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
-    }
-
-    /**
-     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void setLastModifiedDate(final Date lastModifiedDate) {}
-
-    /**
-     * @deprecated Use {@link #getLastModifiedTime()} instead.
-     */
-    @Override
-    @Deprecated
-    public Date getLastModifiedDate() {
-        return null;
     }
 
     @Override
@@ -305,13 +235,6 @@ public class NoOpArchiver implements Archiver {
     public int getUmask() {
         return 0;
     }
-
-    /**
-     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void configureReproducible(Date lastModifiedDate) {}
 
     @Override
     public void configureReproducibleBuild(FileTime lastModifiedTime) {}

@@ -27,6 +27,7 @@ import java.io.File;
 
 import org.codehaus.plexus.archiver.tar.TarArchiver;
 import org.codehaus.plexus.archiver.tar.TarLongFileMode;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -67,7 +68,7 @@ class EmptyDirectoryTest extends TestSupport {
             emptyDir.delete();
         }
         emptyDir.mkdirs();
-        archiver.addDirectory(emptyDir.getParentFile());
+        archiver.addFileSet(DefaultFileSet.fileSet(emptyDir.getParentFile()));
 
         File archive = getTestFile("target/output/emptyDirArchive.zip");
         if (archive.exists()) {

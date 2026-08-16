@@ -13,6 +13,7 @@ import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.bzip2.BZip2Compressor;
 import org.codehaus.plexus.archiver.gzip.GZipCompressor;
 import org.codehaus.plexus.archiver.util.Compressor;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.junit.jupiter.api.Test;
@@ -79,7 +80,7 @@ class TarFileTest extends TestSupport {
         final TarArchiver archiver = (TarArchiver) lookup(Archiver.class, "tar");
         archiver.setLongfile(TarLongFileMode.posix);
         archiver.setDestFile(file);
-        archiver.addDirectory(new File("src"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src")));
         FileUtils.removePath(file.getPath());
         archiver.createArchive();
         if (compressor != null) {

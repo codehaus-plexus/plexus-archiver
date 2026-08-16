@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -123,7 +124,7 @@ class ServiceLoaderArchiverManagerTest {
         Archiver archiver = manager.getArchiver("jar");
         assertNotNull(archiver);
 
-        archiver.addDirectory(tempDir);
+        archiver.addFileSet(DefaultFileSet.fileSet(tempDir));
 
         Archiver newArchiver = manager.getArchiver("jar");
         assertNotNull(newArchiver);

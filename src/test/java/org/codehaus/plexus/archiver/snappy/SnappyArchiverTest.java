@@ -33,6 +33,8 @@ import java.util.zip.ZipFile;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -51,13 +53,13 @@ class SnappyArchiverTest extends BasePlexusArchiverTest {
     @Test
     void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
-        zipArchiver.addDirectory(getTestFile("src"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src")));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForSnappy.zip"));
         zipArchiver.createArchive();
         SnappyArchiver archiver = (SnappyArchiver) lookup(Archiver.class, "snappy");
         String[] inputFiles = new String[1];
         inputFiles[0] = "archiveForSnappy.zip";
-        archiver.addDirectory(getTestFile("target/output"), inputFiles, null);
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("target/output")).includeExclude(inputFiles, null));
         archiver.setDestFile(getTestFile("target/output/archive.snappy"));
         archiver.createArchive();
     }
@@ -89,7 +91,8 @@ class SnappyArchiverTest extends BasePlexusArchiverTest {
         final File zipFile = new File("target/output/pom.zip");
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.setDestFile(zipFile);
-        zipArchiver.addArchivedFileSet(snappyFile, "prfx/");
+        zipArchiver.addArchivedFileSet(
+                DefaultArchivedFileSet.archivedFileSet(snappyFile).prefixed("prfx/"));
         FileUtils.removePath(zipFile.getPath());
         zipArchiver.createArchive();
 

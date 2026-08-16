@@ -26,12 +26,8 @@ import java.nio.charset.Charset;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
@@ -51,8 +47,6 @@ public class TrackingArchiver implements Archiver {
 
     public final List<Addition> added = new ArrayList<>();
 
-    private boolean useJvmChmod;
-
     private boolean ignorePermissions;
 
     private FileTime lastModifiedTime;
@@ -61,32 +55,6 @@ public class TrackingArchiver implements Archiver {
 
     @Override
     public void createArchive() throws ArchiverException, IOException {}
-
-    @Override
-    public void addDirectory(final @Nonnull File directory) throws ArchiverException {
-        added.add(new Addition(directory, null, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(final @Nonnull File directory, final String prefix) throws ArchiverException {
-        added.add(new Addition(directory, prefix, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(final @Nonnull File directory, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        added.add(new Addition(directory, null, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addDirectory(
-            final @Nonnull File directory, final String prefix, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        added.add(new Addition(directory, prefix, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
 
     @Override
     public void addFileSet(final @Nonnull FileSet fileSet) throws ArchiverException {
@@ -105,17 +73,6 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
-    public void addArchivedFileSet(final @Nonnull File archiveFile) throws ArchiverException {
-        added.add(new Addition(archiveFile, null, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(final @Nonnull File archiveFile, final String prefix) throws ArchiverException {
-        added.add(new Addition(archiveFile, prefix, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
     public void addSymlink(String s, String s2) throws ArchiverException {
         added.add(new Addition(s, null, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
@@ -123,21 +80,6 @@ public class TrackingArchiver implements Archiver {
     @Override
     public void addSymlink(String s, int i, String s2) throws ArchiverException {
         added.add(new Addition(s, null, null, null, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(final File archiveFile, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        added.add(new Addition(archiveFile, null, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
-    }
-
-    @Override
-    @Deprecated
-    public void addArchivedFileSet(
-            final @Nonnull File archiveFile, final String prefix, final String[] includes, final String[] excludes)
-            throws ArchiverException {
-        added.add(new Addition(archiveFile, prefix, includes, excludes, PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE));
     }
 
     @Override
@@ -229,12 +171,6 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
-    @Deprecated
-    public Map<String, ArchiveEntry> getFiles() {
-        return new HashMap<>();
-    }
-
-    @Override
     public boolean isForced() {
         return false;
     }
@@ -312,18 +248,6 @@ public class TrackingArchiver implements Archiver {
     }
 
     @Override
-    @Deprecated
-    public boolean isUseJvmChmod() {
-        return useJvmChmod;
-    }
-
-    @Override
-    @Deprecated
-    public void setUseJvmChmod(final boolean useJvmChmod) {
-        this.useJvmChmod = useJvmChmod;
-    }
-
-    @Override
     public boolean isIgnorePermissions() {
         return ignorePermissions;
     }
@@ -331,24 +255,6 @@ public class TrackingArchiver implements Archiver {
     @Override
     public void setIgnorePermissions(final boolean ignorePermissions) {
         this.ignorePermissions = ignorePermissions;
-    }
-
-    /**
-     * @deprecated Use {@link #setLastModifiedTime(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void setLastModifiedDate(final Date lastModifiedDate) {
-        this.lastModifiedTime = lastModifiedDate != null ? FileTime.fromMillis(lastModifiedDate.getTime()) : null;
-    }
-
-    /**
-     * @deprecated Use {@link #getLastModifiedTime()} instead.
-     */
-    @Override
-    @Deprecated
-    public Date getLastModifiedDate() {
-        return lastModifiedTime != null ? new Date(lastModifiedTime.toMillis()) : null;
     }
 
     @Override
@@ -409,13 +315,6 @@ public class TrackingArchiver implements Archiver {
     public int getUmask() {
         return 0;
     }
-
-    /**
-     * @deprecated Use {@link #configureReproducibleBuild(FileTime)} instead.
-     */
-    @Override
-    @Deprecated
-    public void configureReproducible(Date lastModifiedDate) {}
 
     @Override
     public void configureReproducibleBuild(FileTime lastModifiedTime) {}

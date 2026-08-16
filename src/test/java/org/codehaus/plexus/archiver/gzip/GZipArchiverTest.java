@@ -32,6 +32,8 @@ import java.util.zip.ZipFile;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -51,13 +53,13 @@ class GZipArchiverTest extends BasePlexusArchiverTest {
     @Test
     void createArchive() throws Exception {
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
-        zipArchiver.addDirectory(getTestFile("src"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src")));
         zipArchiver.setDestFile(getTestFile("target/output/archiveForGzip.zip"));
         zipArchiver.createArchive();
         GZipArchiver archiver = (GZipArchiver) lookup(Archiver.class, "gzip");
         String[] inputFiles = new String[1];
         inputFiles[0] = "archiveForGzip.zip";
-        archiver.addDirectory(getTestFile("target/output"), inputFiles, null);
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("target/output")).includeExclude(inputFiles, null));
         archiver.setDestFile(getTestFile("target/output/archive.gzip"));
         archiver.createArchive();
     }
@@ -87,7 +89,8 @@ class GZipArchiverTest extends BasePlexusArchiverTest {
         final File zipFile = new File("target/output/pom.zip");
         ZipArchiver zipArchiver = (ZipArchiver) lookup(Archiver.class, "zip");
         zipArchiver.setDestFile(zipFile);
-        zipArchiver.addArchivedFileSet(gzFile, "prfx/");
+        zipArchiver.addArchivedFileSet(
+                DefaultArchivedFileSet.archivedFileSet(gzFile).prefixed("prfx/"));
         FileUtils.removePath(zipFile.getPath());
         zipArchiver.createArchive();
 

@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.jar.JarArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.zip.ConcurrentJarCreator;
 
@@ -61,14 +62,16 @@ public class EarArchiver extends JarArchiver {
      * Adds archive.
      */
     public void addArchive(File fileName) throws ArchiverException {
-        addDirectory(fileName.getParentFile(), "/", new String[] {fileName.getName()}, null);
+        addFileSet(DefaultFileSet.fileSet(fileName.getParentFile())
+                .prefixed("/")
+                .includeExclude(new String[] {fileName.getName()}, null));
     }
 
     /**
      * Adds archives.
      */
     public void addArchives(File directoryName, String[] includes, String[] excludes) throws ArchiverException {
-        addDirectory(directoryName, "/", includes, excludes);
+        addFileSet(DefaultFileSet.fileSet(directoryName).prefixed("/").includeExclude(includes, excludes));
     }
 
     @Override

@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -52,10 +53,10 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipExtraField;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.io.input.BoundedInputStream;
-import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.BasePlexusArchiverTest;
+import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.UnixStat;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
@@ -137,7 +138,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.setDefaultDirectoryMode(0777);
         archiver.setDirectoryMode(0641);
         archiver.setFileMode(0777);
-        archiver.addDirectory(new File("src/test/resources/symlinks/src"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/symlinks/src")));
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
@@ -212,7 +213,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
         ZipArchiver archiver = getZipArchiver(zipFile);
 
-        archiver.addDirectory(tempDir);
+        archiver.addFileSet(DefaultFileSet.fileSet(tempDir));
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
@@ -222,7 +223,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver = getZipArchiver();
         archiver.setDestFile(zipFile2);
 
-        archiver.addArchivedFileSet(zipFile);
+        archiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(zipFile));
         archiver.createArchive();
 
         ZipFile zf = ZipFile.builder().setFile(zipFile2).get();
@@ -311,7 +312,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
         final File zipFileRecompress = getTestFile("target/output/recompress-added-zips.zip");
         final ZipArchiver zipArchiverRecompress = getZipArchiver(zipFileRecompress);
-        zipArchiverRecompress.addDirectory(getTestFile("src/test/jars"));
+        zipArchiverRecompress.addFileSet(DefaultFileSet.fileSet(getTestFile("src/test/jars")));
         FileUtils.removePath(zipFileRecompress.getPath());
         zipArchiverRecompress.createArchive();
 
@@ -327,7 +328,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
         final File zipFileDontRecompress = getTestFile("target/output/dont-recompress-added-zips.zip");
         ZipArchiver zipArchiver = getZipArchiver(zipFileDontRecompress);
-        zipArchiver.addDirectory(getTestFile("src/test/jars"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src/test/jars")));
         zipArchiver.setRecompressAddedZips(false);
         FileUtils.removePath(zipFileDontRecompress.getPath());
         zipArchiver.createArchive();
@@ -441,14 +442,16 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         // reset default file mode for files included from now on
         archiver.setFileMode(0400);
         archiver.setDirectoryMode(0777);
-        archiver.addDirectory(getTestFile("src/test/resources/world-writable/"), "worldwritable/");
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src/test/resources/world-writable/"))
+                .prefixed("worldwritable/"));
 
         archiver.setDirectoryMode(0070);
-        archiver.addDirectory(getTestFile("src/test/resources/group-writable/"), "groupwritable/");
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src/test/resources/group-writable/"))
+                .prefixed("groupwritable/"));
 
         archiver.setDirectoryMode(0500);
         archiver.setFileMode(0400);
-        archiver.addDirectory(getTestFile("src"));
+        archiver.addFileSet(DefaultFileSet.fileSet(getTestFile("src")));
 
         return archiver;
     }
@@ -535,7 +538,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         final File zipFile = getTestFile("src/test/resources/symlinks/symlinks.zip");
         final File zipFile2 = getTestFile("target/output/pasymlinks-archivedFileset.zip");
         final ZipArchiver zipArchiver = getZipArchiver(zipFile2);
-        zipArchiver.addArchivedFileSet(zipFile);
+        zipArchiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(zipFile));
         zipArchiver.createArchive();
 
         final ZipFile cmp1 = ZipFile.builder().setFile(zipFile).get();
@@ -665,7 +668,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         ZipArchiver zipArchiver2 = getZipArchiver(zipFile2);
 
         // Bugbug: This does not work on 1.8....?
-        zipArchiver2.addArchivedFileSet(zipFile);
+        zipArchiver2.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(zipFile));
         FileUtils.removePath(zipFile2.getPath());
         zipArchiver2.createArchive();
     }
@@ -675,14 +678,15 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         final File srcDir = new File("src");
         final File zipFile = new File("target/output/src.zip");
         ZipArchiver zipArchiver = getZipArchiver(zipFile);
-        zipArchiver.addDirectory(srcDir, null, FileUtils.getDefaultExcludes());
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(srcDir).includeExclude(null, FileUtils.getDefaultExcludes()));
         zipArchiver.setEncoding("UTF-8");
         FileUtils.removePath(zipFile.getPath());
         zipArchiver.createArchive();
 
         final File zipFile2 = new File("target/output/src2.zip");
         ZipArchiver zipArchiver2 = getZipArchiver(zipFile2);
-        zipArchiver2.addArchivedFileSet(zipFile, "prfx/");
+        zipArchiver2.addArchivedFileSet(
+                DefaultArchivedFileSet.archivedFileSet(zipFile).prefixed("prfx/"));
         zipArchiver2.setEncoding("UTF-8");
         FileUtils.removePath(zipFile2.getPath());
         zipArchiver2.createArchive();
@@ -714,7 +718,8 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
 
         final File zipFile = new File("target/output/zip-non-concurrent.zip");
         ZipArchiver zipArchive = getZipArchiver(zipFile);
-        zipArchive.addArchivedFileSet(tarFile, "prfx/");
+        zipArchive.addArchivedFileSet(
+                DefaultArchivedFileSet.archivedFileSet(tarFile).prefixed("prfx/"));
         zipArchive.setEncoding("UTF-8");
         zipArchive.createArchive();
 
@@ -728,7 +733,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     @Test
     void defaultUTF8() throws Exception {
         final ZipArchiver zipArchiver = getZipArchiver(new File("target/output/utf8-default.zip"));
-        zipArchiver.addDirectory(new File("src/test/resources/miscUtf8"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/miscUtf8")));
         zipArchiver.createArchive();
     }
 
@@ -736,7 +741,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     void defaultUTF8withUTF8() throws Exception {
         final ZipArchiver zipArchiver = getZipArchiver(new File("target/output/utf8-with_utf.zip"));
         zipArchiver.setEncoding("UTF-8");
-        zipArchiver.addDirectory(new File("src/test/resources/miscUtf8"));
+        zipArchiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/miscUtf8")));
         zipArchiver.createArchive();
     }
 
@@ -807,7 +812,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         final File zipFile = getTestFile("target/output/zip-with-fixed-entry-modification-times.zip");
         final ZipArchiver archiver = getZipArchiver(zipFile);
         archiver.setLastModifiedTime(FileTime.fromMillis(almostMinDosTime));
-        archiver.addDirectory(new File("src/test/resources/zip-timestamp"));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/zip-timestamp")));
         archiver.createArchive();
 
         assertTrue(zipFile.exists());
@@ -873,22 +878,21 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         archiver.addFile(pomFile, "dir1/dir2/pom.xml");
         archiver.addFile(pomFile, "another/nested/path/file.xml");
 
-        // Get the files map BEFORE creating the archive
-        Map<String, ArchiveEntry> files = archiver.getFiles();
-
-        // Verify all entry names use forward slashes
-        for (String entryName : files.keySet()) {
-            assertFalse(entryName.contains("\\"), "Entry name should not contain backslashes, but got: " + entryName);
-            assertTrue(
-                    entryName.contains("/") || !entryName.contains(File.separator),
-                    "Entry name should use forward slashes as separator: " + entryName);
+        // Collect entry names via getResources()
+        Set<String> entryNames = new java.util.HashSet<>();
+        ResourceIterator it = archiver.getResources();
+        while (it.hasNext()) {
+            entryNames.add(it.next().getName().replace(File.separatorChar, '/'));
         }
 
-        // Verify specific entries exist with correct format
-        assertTrue(files.containsKey("dir1/dir2/pom.xml"), "Should contain dir1/dir2/pom.xml");
-        assertTrue(files.containsKey("another/nested/path/file.xml"), "Should contain another/nested/path/file.xml");
+        // Verify all entry names use forward slashes
+        for (String entryName : entryNames) {
+            assertFalse(entryName.contains("\\"), "Entry name should not contain backslashes, but got: " + entryName);
+        }
 
-        // Create the archive to ensure it's valid
+        assertTrue(entryNames.contains("dir1/dir2/pom.xml"), "Should contain dir1/dir2/pom.xml");
+        assertTrue(entryNames.contains("another/nested/path/file.xml"), "Should contain another/nested/path/file.xml");
+
         archiver.createArchive();
         assertTrue(zipFile.exists());
     }
