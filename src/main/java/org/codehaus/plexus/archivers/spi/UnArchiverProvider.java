@@ -17,11 +17,18 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.util.function.Consumer;
+
 import org.codehaus.plexus.archiver.UnArchiver;
 
-public interface UnArchiverProvider {
+/**
+ * Service provider for a named archive extraction format.
+ *
+ * @since 5.0.0
+ */
+public sealed interface UnArchiverProvider permits AbstractUnArchiverProvider {
 
     String getName();
 
-    UnArchiver newUnarchiver();
+    UnArchiver newUnarchiver(Consumer<UnArchiverConfigurer> configurer);
 }

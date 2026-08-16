@@ -18,9 +18,12 @@
 package org.codehaus.plexus.archiver.war;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.spi.UnArchiverProvider;
+import org.codehaus.plexus.archivers.spi.AbstractUnArchiverProvider;
 
-public final class WarUnArchiverProvider implements UnArchiverProvider {
+/**
+ * @since 5.0.0
+ */
+public final class WarUnArchiverProvider extends AbstractUnArchiverProvider {
 
     @Override
     public String getName() {
@@ -28,7 +31,7 @@ public final class WarUnArchiverProvider implements UnArchiverProvider {
     }
 
     @Override
-    public UnArchiver newUnarchiver() {
+    protected UnArchiver createUnarchiver() {
         return new WarUnArchiver();
     }
 }

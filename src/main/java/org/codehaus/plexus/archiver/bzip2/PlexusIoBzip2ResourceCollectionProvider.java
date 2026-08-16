@@ -17,10 +17,13 @@
 
 package org.codehaus.plexus.archiver.bzip2;
 
-import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
+import org.codehaus.plexus.archivers.spi.AbstractPlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public final class PlexusIoBzip2ResourceCollectionProvider implements PlexusIoResourceCollectionProvider {
+/**
+ * @since 5.0.0
+ */
+public final class PlexusIoBzip2ResourceCollectionProvider extends AbstractPlexusIoResourceCollectionProvider {
 
     @Override
     public String getName() {
@@ -28,7 +31,7 @@ public final class PlexusIoBzip2ResourceCollectionProvider implements PlexusIoRe
     }
 
     @Override
-    public PlexusIoResourceCollection newPlexusIoResourceCollection() {
+    protected PlexusIoResourceCollection createResourceCollection() {
         return new PlexusIoBzip2ResourceCollection();
     }
 }

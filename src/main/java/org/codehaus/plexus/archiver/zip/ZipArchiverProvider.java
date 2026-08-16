@@ -18,16 +18,19 @@
 package org.codehaus.plexus.archiver.zip;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archivers.spi.ArchiverProvider;
+import org.codehaus.plexus.archivers.spi.AbstractArchiverProvider;
 
-public final class ZipArchiverProvider implements ArchiverProvider {
+/**
+ * @since 5.0.0
+ */
+public final class ZipArchiverProvider extends AbstractArchiverProvider {
     @Override
     public String getName() {
         return "zip";
     }
 
     @Override
-    public Archiver newArchiver() {
+    protected Archiver createArchiver() {
         return new ZipArchiver();
     }
 }
