@@ -33,6 +33,8 @@ public abstract sealed class UnixPermissions permits PosixPermissions {
     public static UnixPermissions of(Set<PosixFilePermission> permissions) {
         return new PosixPermissions(permissions);
     }
+
+    public abstract Set<PosixFilePermission> asPosixFilePermissions();
 }
 
 final class PosixPermissions extends UnixPermissions {
@@ -40,5 +42,10 @@ final class PosixPermissions extends UnixPermissions {
 
     PosixPermissions(Set<PosixFilePermission> permissions) {
         this.permissions = Set.copyOf(Objects.requireNonNull(permissions, "permissions"));
+    }
+
+    @Override
+    public Set<PosixFilePermission> asPosixFilePermissions() {
+        return permissions;
     }
 }

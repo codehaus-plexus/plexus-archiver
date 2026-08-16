@@ -19,9 +19,7 @@ package org.codehaus.plexus.archivers.spi;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 
-import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
@@ -30,42 +28,18 @@ import org.codehaus.plexus.components.io.fileselectors.FileSelector;
  *
  * @since 5.0.0
  */
-public final class UnArchiverConfigurer {
-    private final UnArchiver unarchiver;
+public interface UnArchiverConfigurer {
+    void setSource(Path source);
 
-    UnArchiverConfigurer(UnArchiver unarchiver) {
-        this.unarchiver = unarchiver;
-    }
+    void setDestinationDirectory(Path destinationDirectory);
 
-    public void setSource(Path source) {
-        unarchiver.setSourceFile(Objects.requireNonNull(source, "source").toFile());
-    }
+    void setDestinationFile(Path destinationFile);
 
-    public void setDestinationDirectory(Path destinationDirectory) {
-        unarchiver.setDestDirectory(Objects.requireNonNull(destinationDirectory, "destinationDirectory")
-                .toFile());
-    }
+    void setExistingFileHandling(ExistingFileHandling existingFileHandling);
 
-    public void setDestinationFile(Path destinationFile) {
-        unarchiver.setDestFile(
-                Objects.requireNonNull(destinationFile, "destinationFile").toFile());
-    }
+    void setFileMappers(List<FileMapper> fileMappers);
 
-    public void setExistingFileHandling(ExistingFileHandling existingFileHandling) {
-        Objects.requireNonNull(existingFileHandling, "existingFileHandling");
-        unarchiver.setOverwrite(((FixedExistingFileHandling) existingFileHandling).overwrite);
-    }
+    void setFileSelectors(List<FileSelector> fileSelectors);
 
-    public void setFileMappers(List<FileMapper> fileMappers) {
-        unarchiver.setFileMappers(List.copyOf(fileMappers).toArray(FileMapper[]::new));
-    }
-
-    public void setFileSelectors(List<FileSelector> fileSelectors) {
-        unarchiver.setFileSelectors(List.copyOf(fileSelectors).toArray(FileSelector[]::new));
-    }
-
-    public void setPermissionHandling(PermissionHandling permissionHandling) {
-        Objects.requireNonNull(permissionHandling, "permissionHandling");
-        unarchiver.setIgnorePermissions(((FixedPermissionHandling) permissionHandling).ignored);
-    }
+    void setPermissionHandling(PermissionHandling permissionHandling);
 }

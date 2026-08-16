@@ -17,6 +17,7 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,11 @@ class UnArchiverProviderTest {
                         .filter(method -> method.getName().equals("newUnarchiver"))
                         .map(method -> method.getParameterCount()))
                 .containsExactly(1);
+        assertThat(Arrays.stream(AbstractUnArchiverProvider.class.getMethods()).map(method -> method.getName()))
+                .doesNotContain("create");
+        assertThat(Arrays.stream(UnArchiverConfigurer.class.getMethods())
+                        .filter(method -> Modifier.isStatic(method.getModifiers())))
+                .isEmpty();
     }
 
     @Test

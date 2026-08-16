@@ -17,6 +17,25 @@ There is no public no-argument creation method.
 Providers use the same format names listed on the [introduction](index.html). Resolve one with `ServiceLoader` and
 select it by `getName()`.
 
+Applications that already use `ArchiverManager` can apply the same configuration without resolving a provider
+directly:
+
+```java
+Archiver archiver = manager.getArchiverFactory("zip").create(configurer -> {
+    configurer.setDestFile(Path.of("target/archive.zip"));
+    configurer.addFileSet(FileSet.of(Path.of("src/main/resources")));
+});
+
+UnArchiver unarchiver = manager.getUnArchiverFactory(Path.of("archive.zip").toFile()).create(configurer -> {
+    configurer.setSource(Path.of("archive.zip"));
+    configurer.setDestinationDirectory(Path.of("target/unpacked"));
+});
+```
+
+Factory lookups are available by format name and by file for archivers, unarchivers, and resource collections. A
+resolved factory can create multiple independently configured instances. The existing object-returning manager methods
+remain unchanged and are equivalent to creating from the corresponding factory with an empty configuration.
+
 ## Creating an archive
 
 ```java

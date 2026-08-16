@@ -15,28 +15,27 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archiver.manager;
+
+import javax.inject.Provider;
 
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archivers.internal.DefaultPlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-/**
- * Base implementation that keeps unconfigured collection creation internal to service providers.
- *
- * @since 5.0.0
- */
-public abstract non-sealed class AbstractPlexusIoResourceCollectionProvider
-        implements PlexusIoResourceCollectionProvider {
+final class CdiPlexusIoResourceCollectionFactory implements PlexusIoResourceCollectionFactory {
+    private final Provider<PlexusIoResourceCollection> provider;
 
-    protected abstract PlexusIoResourceCollection createResourceCollection();
+    CdiPlexusIoResourceCollectionFactory(Provider<PlexusIoResourceCollection> provider) {
+        this.provider = Objects.requireNonNull(provider, "provider");
+    }
 
     @Override
-    public final PlexusIoResourceCollection newPlexusIoResourceCollection(
-            Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-        PlexusIoResourceCollection collection = createResourceCollection();
+    public PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
+        PlexusIoResourceCollection collection = provider.get();
         Objects.requireNonNull(configurer, "configurer")
                 .accept(new DefaultPlexusIoResourceCollectionConfigurer(collection));
         return collection;
