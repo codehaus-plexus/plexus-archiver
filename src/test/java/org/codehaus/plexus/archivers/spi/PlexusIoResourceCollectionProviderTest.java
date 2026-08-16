@@ -17,6 +17,7 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -47,6 +48,12 @@ class PlexusIoResourceCollectionProviderTest {
                         .filter(method -> method.getName().equals("newPlexusIoResourceCollection"))
                         .map(method -> method.getParameterCount()))
                 .containsExactly(1);
+        assertThat(Arrays.stream(AbstractPlexusIoResourceCollectionProvider.class.getMethods())
+                        .map(method -> method.getName()))
+                .doesNotContain("create");
+        assertThat(Arrays.stream(PlexusIoResourceCollectionConfigurer.class.getMethods())
+                        .filter(method -> Modifier.isStatic(method.getModifiers())))
+                .isEmpty();
     }
 
     @Test

@@ -23,7 +23,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -34,16 +33,16 @@ import static java.util.Objects.requireNonNull;
 
 abstract class AbstractArchiverManager implements ArchiverManager {
 
-    private final Map<String, Supplier<Archiver>> archivers;
+    private final Map<String, ArchiverFactory> archivers;
 
-    private final Map<String, Supplier<UnArchiver>> unArchivers;
+    private final Map<String, UnArchiverFactory> unArchivers;
 
-    private final Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections;
+    private final Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections;
 
     protected AbstractArchiverManager(
-            Map<String, Supplier<Archiver>> archivers,
-            Map<String, Supplier<UnArchiver>> unArchivers,
-            Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections) {
+            Map<String, ArchiverFactory> archivers,
+            Map<String, UnArchiverFactory> unArchivers,
+            Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections) {
         this.archivers = Map.copyOf(archivers);
         this.unArchivers = Map.copyOf(unArchivers);
         this.plexusIoResourceCollections = Map.copyOf(plexusIoResourceCollections);
@@ -52,42 +51,66 @@ abstract class AbstractArchiverManager implements ArchiverManager {
     @Override
     @Nonnull
     public final Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException {
+        return getArchiverFactory(archiverName).create(configurer -> {});
+    }
+
+    @Override
+    @Nonnull
+    public final ArchiverFactory getArchiverFactory(@Nonnull String archiverName) throws NoSuchArchiverException {
         requireNonNull(archiverName);
-        Supplier<Archiver> archiver = archivers.get(archiverName);
+        ArchiverFactory archiver = archivers.get(archiverName);
         if (archiver == null) {
             throw new NoSuchArchiverException(archiverName);
         }
-        return archiver.get();
+        return archiver;
     }
 
     @Override
     @Nonnull
     public final UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException {
+        return getUnArchiverFactory(unArchiverName).create(configurer -> {});
+    }
+
+    @Override
+    @Nonnull
+    public final UnArchiverFactory getUnArchiverFactory(@Nonnull String unArchiverName) throws NoSuchArchiverException {
         requireNonNull(unArchiverName);
-        Supplier<UnArchiver> unArchiver = unArchivers.get(unArchiverName);
+        UnArchiverFactory unArchiver = unArchivers.get(unArchiverName);
         if (unArchiver == null) {
             throw new NoSuchArchiverException(unArchiverName);
         }
-        return unArchiver.get();
+        return unArchiver;
     }
 
     @Override
     @Nonnull
     public final PlexusIoResourceCollection getResourceCollection(String resourceCollectionName)
             throws NoSuchArchiverException {
+        return getResourceCollectionFactory(resourceCollectionName).create(configurer -> {});
+    }
+
+    @Override
+    @Nonnull
+    public final PlexusIoResourceCollectionFactory getResourceCollectionFactory(String resourceCollectionName)
+            throws NoSuchArchiverException {
         requireNonNull(resourceCollectionName);
-        Supplier<PlexusIoResourceCollection> resourceCollection =
-                plexusIoResourceCollections.get(resourceCollectionName);
+        PlexusIoResourceCollectionFactory resourceCollection = plexusIoResourceCollections.get(resourceCollectionName);
         if (resourceCollection == null) {
             throw new NoSuchArchiverException(resourceCollectionName);
         }
-        return resourceCollection.get();
+        return resourceCollection;
     }
 
     @Override
     @Nonnull
     public final Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException {
         return getArchiver(getFileExtension(file));
+    }
+
+    @Override
+    @Nonnull
+    public final ArchiverFactory getArchiverFactory(@Nonnull File file) throws NoSuchArchiverException {
+        return getArchiverFactory(getFileExtension(file));
     }
 
     @Override
@@ -101,6 +124,12 @@ abstract class AbstractArchiverManager implements ArchiverManager {
         return getUnArchiver(getFileExtension(file));
     }
 
+    @Override
+    @Nonnull
+    public final UnArchiverFactory getUnArchiverFactory(@Nonnull File file) throws NoSuchArchiverException {
+        return getUnArchiverFactory(getFileExtension(file));
+    }
+
     @Nonnull
     @Override
     public final Collection<String> getAvailableUnArchivers() {
@@ -111,6 +140,13 @@ abstract class AbstractArchiverManager implements ArchiverManager {
     @Nonnull
     public final PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException {
         return getResourceCollection(getFileExtension(file));
+    }
+
+    @Override
+    @Nonnull
+    public final PlexusIoResourceCollectionFactory getResourceCollectionFactory(@Nonnull File file)
+            throws NoSuchArchiverException {
+        return getResourceCollectionFactory(getFileExtension(file));
     }
 
     @Nonnull

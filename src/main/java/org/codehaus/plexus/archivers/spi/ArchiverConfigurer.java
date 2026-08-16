@@ -19,13 +19,10 @@ package org.codehaus.plexus.archivers.spi;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.Comparator;
-import java.util.Objects;
 
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.ArchivedFileSetSpec;
-import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
 import org.codehaus.plexus.archiver.FileSet;
 import org.codehaus.plexus.archiver.FileSetSpec;
@@ -35,130 +32,48 @@ import org.codehaus.plexus.archiver.FileSetSpec;
  *
  * @since 5.0.0
  */
-public final class ArchiverConfigurer {
+public interface ArchiverConfigurer {
+    void addFileSet(FileSet fileSet);
 
-    private final Archiver archiver;
+    void addFileSet(FileSetSpec fileSetSpec);
 
-    ArchiverConfigurer(Archiver archiver) {
-        this.archiver = archiver;
-    }
+    void addArchivedFileSet(ArchivedFileSet fileSet);
 
-    public void addFileSet(FileSet fileSet) {
-        archiver.addFileSet(Objects.requireNonNull(fileSet, "fileSet"));
-    }
+    void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec);
 
-    public void addFileSet(FileSetSpec fileSetSpec) {
-        archiver.addFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec"));
-    }
+    void setDestFile(Path destFile);
 
-    public void addArchivedFileSet(ArchivedFileSet fileSet) {
-        archiver.addArchivedFileSet(Objects.requireNonNull(fileSet, "fileSet"));
-    }
+    void setFileMode(UnixPermissions permissions);
 
-    public void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec) {
-        archiver.addArchivedFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec"));
-    }
+    void setDefaultFileMode(UnixPermissions permissions);
 
-    public void setDestFile(Path destFile) {
-        archiver.setDestFile(Objects.requireNonNull(destFile, "destFile").toFile());
-    }
+    void setDirectoryMode(UnixPermissions permissions);
 
-    public void setFileMode(UnixPermissions permissions) {
-        archiver.setFileMode(toMode(permissions));
-    }
+    void setDefaultDirectoryMode(UnixPermissions permissions);
 
-    public void setDefaultFileMode(UnixPermissions permissions) {
-        archiver.setDefaultFileMode(toMode(permissions));
-    }
+    void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling);
 
-    public void setDirectoryMode(UnixPermissions permissions) {
-        archiver.setDirectoryMode(toMode(permissions));
-    }
+    void setDotFileDirectory(Path dotFileDirectory);
 
-    public void setDefaultDirectoryMode(UnixPermissions permissions) {
-        archiver.setDefaultDirectoryMode(toMode(permissions));
-    }
+    void setForced(ArchiveCreation archiveCreation);
 
-    public void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling) {
-        Objects.requireNonNull(emptyDirectoryHandling, "emptyDirectoryHandling");
-        archiver.setIncludeEmptyDirs(emptyDirectoryHandling == EmptyDirectoryHandling.INCLUDE);
-    }
+    void setDuplicateBehavior(DuplicateHandling duplicateHandling);
 
-    public void setDotFileDirectory(Path dotFileDirectory) {
-        archiver.setDotFileDirectory(
-                Objects.requireNonNull(dotFileDirectory, "dotFileDirectory").toFile());
-    }
+    void setIgnorePermissions(PermissionHandling permissionHandling);
 
-    public void setForced(ArchiveCreation archiveCreation) {
-        Objects.requireNonNull(archiveCreation, "archiveCreation");
-        archiver.setForced(((FixedArchiveCreation) archiveCreation).forced);
-    }
+    void setLastModifiedTime(FileTime lastModifiedTime);
 
-    public void setDuplicateBehavior(DuplicateHandling duplicateHandling) {
-        Objects.requireNonNull(duplicateHandling, "duplicateHandling");
-        archiver.setDuplicateBehavior(((FixedDuplicateHandling) duplicateHandling).value);
-    }
+    void setFilenameComparator(Comparator<String> filenameComparator);
 
-    public void setIgnorePermissions(PermissionHandling permissionHandling) {
-        Objects.requireNonNull(permissionHandling, "permissionHandling");
-        archiver.setIgnorePermissions(((FixedPermissionHandling) permissionHandling).ignored);
-    }
+    void setOverrideUid(int uid);
 
-    public void setLastModifiedTime(FileTime lastModifiedTime) {
-        archiver.setLastModifiedTime(Objects.requireNonNull(lastModifiedTime, "lastModifiedTime"));
-    }
+    void setOverrideUserName(String userName);
 
-    public void setFilenameComparator(Comparator<String> filenameComparator) {
-        archiver.setFilenameComparator(Objects.requireNonNull(filenameComparator, "filenameComparator"));
-    }
+    void setOverrideGid(int gid);
 
-    public void setOverrideUid(int uid) {
-        if (uid < 0) {
-            throw new IllegalArgumentException("uid must not be negative");
-        }
-        archiver.setOverrideUid(uid);
-    }
+    void setOverrideGroupName(String groupName);
 
-    public void setOverrideUserName(String userName) {
-        archiver.setOverrideUserName(Objects.requireNonNull(userName, "userName"));
-    }
+    void setUmask(UnixPermissions permissions);
 
-    public void setOverrideGid(int gid) {
-        if (gid < 0) {
-            throw new IllegalArgumentException("gid must not be negative");
-        }
-        archiver.setOverrideGid(gid);
-    }
-
-    public void setOverrideGroupName(String groupName) {
-        archiver.setOverrideGroupName(Objects.requireNonNull(groupName, "groupName"));
-    }
-
-    public void setUmask(UnixPermissions permissions) {
-        archiver.setUmask(toMode(permissions));
-    }
-
-    public void configureReproducibleBuild(FileTime lastModifiedTime) {
-        archiver.configureReproducibleBuild(Objects.requireNonNull(lastModifiedTime, "lastModifiedTime"));
-    }
-
-    private static int toMode(UnixPermissions unixPermissions) {
-        Objects.requireNonNull(unixPermissions, "unixPermissions");
-        PosixPermissions posixPermissions = (PosixPermissions) unixPermissions;
-        int mode = 0;
-        for (PosixFilePermission permission : posixPermissions.permissions) {
-            mode |= switch (permission) {
-                case OWNER_READ -> 0_400;
-                case OWNER_WRITE -> 0_200;
-                case OWNER_EXECUTE -> 0_100;
-                case GROUP_READ -> 0_040;
-                case GROUP_WRITE -> 0_020;
-                case GROUP_EXECUTE -> 0_010;
-                case OTHERS_READ -> 0_004;
-                case OTHERS_WRITE -> 0_002;
-                case OTHERS_EXECUTE -> 0_001;
-            };
-        }
-        return mode;
-    }
+    void configureReproducibleBuild(FileTime lastModifiedTime);
 }

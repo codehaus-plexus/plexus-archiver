@@ -22,7 +22,6 @@ import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.codehaus.plexus.archiver.Archiver;
@@ -44,19 +43,22 @@ public class DefaultArchiverManager extends AbstractArchiverManager {
         super(archivers(archivers), unarchivers(unArchivers), plexusIoResourceCollections(plexusIoResourceCollections));
     }
 
-    private static Map<String, Supplier<Archiver>> archivers(Map<String, Provider<Archiver>> archivers) {
+    private static Map<String, ArchiverFactory> archivers(Map<String, Provider<Archiver>> archivers) {
         return archivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+                .collect(Collectors.toUnmodifiableMap(
+                        Map.Entry::getKey, entry -> new CdiArchiverFactory(entry.getValue())));
     }
 
-    private static Map<String, Supplier<UnArchiver>> unarchivers(Map<String, Provider<UnArchiver>> unArchivers) {
+    private static Map<String, UnArchiverFactory> unarchivers(Map<String, Provider<UnArchiver>> unArchivers) {
         return unArchivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+                .collect(Collectors.toUnmodifiableMap(
+                        Map.Entry::getKey, entry -> new CdiUnArchiverFactory(entry.getValue())));
     }
 
-    private static Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections(
+    private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections(
             Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections) {
         return plexusIoResourceCollections.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+                .collect(Collectors.toUnmodifiableMap(
+                        Map.Entry::getKey, entry -> new CdiPlexusIoResourceCollectionFactory(entry.getValue())));
     }
 }

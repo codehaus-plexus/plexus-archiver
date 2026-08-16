@@ -17,6 +17,7 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.lang.reflect.Modifier;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -46,6 +47,11 @@ class ArchiverProviderTest {
                         .filter(method -> method.getName().equals("newArchiver"))
                         .map(method -> method.getParameterCount()))
                 .containsExactly(1);
+        assertThat(Arrays.stream(AbstractArchiverProvider.class.getMethods()).map(method -> method.getName()))
+                .doesNotContain("create");
+        assertThat(Arrays.stream(ArchiverConfigurer.class.getMethods())
+                        .filter(method -> Modifier.isStatic(method.getModifiers())))
+                .isEmpty();
     }
 
     @Test

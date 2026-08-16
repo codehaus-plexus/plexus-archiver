@@ -20,15 +20,11 @@ package org.codehaus.plexus.archiver.manager;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.ServiceLoader.Provider;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.spi.ArchiverProvider;
 import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.archivers.spi.UnArchiverProvider;
-import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 public class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 
@@ -36,24 +32,23 @@ public class ServiceLoaderArchiverManager extends AbstractArchiverManager {
         super(archivers(), unarchivers(), plexusIoResourceCollections());
     }
 
-    private static Map<String, Supplier<Archiver>> archivers() {
+    private static Map<String, ArchiverFactory> archivers() {
         return ServiceLoader.load(ArchiverProvider.class).stream()
                 .map(Provider::get)
-                .collect(Collectors.toMap(ArchiverProvider::getName, provider -> () -> provider.newArchiver(c -> {})));
+                .collect(Collectors.toMap(ArchiverProvider::getName, provider -> provider::newArchiver));
     }
 
-    private static Map<String, Supplier<UnArchiver>> unarchivers() {
+    private static Map<String, UnArchiverFactory> unarchivers() {
         return ServiceLoader.load(UnArchiverProvider.class).stream()
                 .map(Provider::get)
-                .collect(Collectors.toMap(
-                        UnArchiverProvider::getName, provider -> () -> provider.newUnarchiver(c -> {})));
+                .collect(Collectors.toMap(UnArchiverProvider::getName, provider -> provider::newUnarchiver));
     }
 
-    private static Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections() {
+    private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections() {
         return ServiceLoader.load(PlexusIoResourceCollectionProvider.class).stream()
                 .map(Provider::get)
                 .collect(Collectors.toMap(
                         PlexusIoResourceCollectionProvider::getName,
-                        provider -> () -> provider.newPlexusIoResourceCollection(c -> {})));
+                        provider -> provider::newPlexusIoResourceCollection));
     }
 }
