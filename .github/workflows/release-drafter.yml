@@ -1,12 +1,15 @@
-name: Release Drafter
+name: Release Drafter 4.x
 on:
   push:
     branches:
-      - master
+      - 4.x
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v7
+      - uses: release-drafter/release-drafter@v7.7.0
+        with:
+          # Resolved against .github/ on the branch this workflow runs on, not on the default branch.
+          config-name: 'release-drafter-4.x.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
