@@ -1,4 +1,4 @@
-name: Release Drafter
+name: Release Drafter Master
 on:
   push:
     branches:
@@ -8,5 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: release-drafter/release-drafter@v7.7.0
+        with:
+          config-name: 'release-drafter-master.yml'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

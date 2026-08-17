@@ -1,0 +1,5 @@
+_extends: .github:.github/release-drafter.yml
+tag-template: plexus-archiver-$NEXT_PATCH_VERSION
+version-template: 5.$MINOR.$PATCH
+commitish: master
+filter-by-commitish: true
