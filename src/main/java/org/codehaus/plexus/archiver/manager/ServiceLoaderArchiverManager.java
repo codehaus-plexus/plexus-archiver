@@ -19,8 +19,8 @@ package org.codehaus.plexus.archiver.manager;
 
 import java.util.Map;
 import java.util.ServiceLoader;
-import java.util.ServiceLoader.Provider;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.codehaus.plexus.archivers.spi.ArchiverProvider;
 import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
@@ -33,20 +33,20 @@ public class ServiceLoaderArchiverManager extends AbstractArchiverManager {
     }
 
     private static Map<String, ArchiverFactory> archivers() {
-        return ServiceLoader.load(ArchiverProvider.class).stream()
-                .map(Provider::get)
+        return StreamSupport.stream(ServiceLoader.load(ArchiverProvider.class).spliterator(), false)
                 .collect(Collectors.toMap(ArchiverProvider::getName, provider -> provider::newArchiver));
     }
 
     private static Map<String, UnArchiverFactory> unarchivers() {
-        return ServiceLoader.load(UnArchiverProvider.class).stream()
-                .map(Provider::get)
+        return StreamSupport.stream(ServiceLoader.load(UnArchiverProvider.class).spliterator(), false)
                 .collect(Collectors.toMap(UnArchiverProvider::getName, provider -> provider::newUnarchiver));
     }
 
     private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections() {
-        return ServiceLoader.load(PlexusIoResourceCollectionProvider.class).stream()
-                .map(Provider::get)
+        return StreamSupport.stream(
+                        ServiceLoader.load(PlexusIoResourceCollectionProvider.class)
+                                .spliterator(),
+                        false)
                 .collect(Collectors.toMap(
                         PlexusIoResourceCollectionProvider::getName,
                         provider -> provider::newPlexusIoResourceCollection));

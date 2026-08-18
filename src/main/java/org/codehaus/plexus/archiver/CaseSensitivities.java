@@ -31,8 +31,8 @@ public final class CaseSensitivities {
 
     public static boolean resolve(CaseSensitivity caseSensitivity) {
         Objects.requireNonNull(caseSensitivity, "caseSensitivity");
-        if (caseSensitivity instanceof FixedCaseSensitivity fixed) {
-            return fixed.caseSensitive;
+        if (caseSensitivity instanceof FixedCaseSensitivity) {
+            return ((FixedCaseSensitivity) caseSensitivity).caseSensitive;
         }
 
         String osName = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
