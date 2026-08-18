@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
@@ -43,9 +44,9 @@ abstract class AbstractArchiverManager implements ArchiverManager {
             Map<String, ArchiverFactory> archivers,
             Map<String, UnArchiverFactory> unArchivers,
             Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections) {
-        this.archivers = Map.copyOf(archivers);
-        this.unArchivers = Map.copyOf(unArchivers);
-        this.plexusIoResourceCollections = Map.copyOf(plexusIoResourceCollections);
+        this.archivers = Collections.unmodifiableMap(archivers);
+        this.unArchivers = Collections.unmodifiableMap(unArchivers);
+        this.plexusIoResourceCollections = Collections.unmodifiableMap(plexusIoResourceCollections);
     }
 
     @Override

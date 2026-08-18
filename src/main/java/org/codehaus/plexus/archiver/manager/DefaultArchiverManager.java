@@ -45,20 +45,18 @@ public class DefaultArchiverManager extends AbstractArchiverManager {
 
     private static Map<String, ArchiverFactory> archivers(Map<String, Provider<Archiver>> archivers) {
         return archivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(
-                        Map.Entry::getKey, entry -> new CdiArchiverFactory(entry.getValue())));
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new CdiArchiverFactory(entry.getValue())));
     }
 
     private static Map<String, UnArchiverFactory> unarchivers(Map<String, Provider<UnArchiver>> unArchivers) {
         return unArchivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(
-                        Map.Entry::getKey, entry -> new CdiUnArchiverFactory(entry.getValue())));
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> new CdiUnArchiverFactory(entry.getValue())));
     }
 
     private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections(
             Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections) {
         return plexusIoResourceCollections.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(
+                .collect(Collectors.toMap(
                         Map.Entry::getKey, entry -> new CdiPlexusIoResourceCollectionFactory(entry.getValue())));
     }
 }
