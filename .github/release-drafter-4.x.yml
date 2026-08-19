@@ -1,5 +1,10 @@
 _extends: .github:.github/release-drafter.yml
-tag-template: plexus-archiver-$NEXT_PATCH_VERSION
+
+# tag-prefix is what lets the drafter parse the version out of the last tag.
+# Without it the drafter reads what it can from the tag string, and plexus-i18n
+# once drafted 18.0.1 by finding the 18 in its own name.
+tag-prefix: plexus-archiver-
+tag-template: plexus-archiver-$RESOLVED_VERSION
 version-template: 4.$MINOR.$PATCH
 commitish: 4.x
 filter-by-commitish: true
