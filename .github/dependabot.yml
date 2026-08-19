@@ -11,6 +11,16 @@ updates:
     target-branch: "4.x"
     schedule:
       interval: "daily"
+    ignore:
+      # Maven 3.9.x exports slf4j 1.7.x from its core realm, so the 4.x line
+      # cannot compile against the 2.0.x API. See #463 and #469.
+      - dependency-name: "org.slf4j:*"
+        versions: ["[2.0.0,)"]
+      # Maven still embeds Guice 5.1.0 on javax.inject, and Guice 7 dropped
+      # javax.inject entirely. Testing against 6.x or 7.x exercises a
+      # container no consumer runs. See #460.
+      - dependency-name: "com.google.inject:guice"
+        versions: ["[6.0.0,)"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
