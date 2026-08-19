@@ -11,6 +11,8 @@
   <artifactId>plexus-archiver</artifactId>
   <version>4.12.1-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
+  <description>One API for creating and extracting archives - zip, jar, tar and their compressed
+    variants - regardless of format.</description>
 
   <url>https://codehaus-plexus.github.io/plexus-archiver/</url>
 
