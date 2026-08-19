@@ -15,27 +15,25 @@ Actively maintained. This is one of the most widely used artifacts in the Maven 
 
 ## Using it
 
-**pom.xml**
+**pom.xml** — the `5.x` line, which requires Java 17:
 
 ```xml
 <dependency>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-archiver</artifactId>
-  <!-- requires Java 17 -->
 </dependency>
 ```
 
-Check the badge above for the current version.
+The `4.x` line, still maintained, for Java 8:
 
 ```xml
 <dependency>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-archiver</artifactId>
-  <!-- requires Java 8 -->
 </dependency>
 ```
 
-Check the badge above for the current version.
+Take the current version of each line from the [releases page](https://github.com/codehaus-plexus/plexus-archiver/releases); the badge above tracks whichever is newest overall.
 
 **Java sourcecode**
 
