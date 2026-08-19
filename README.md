@@ -21,15 +21,17 @@ Actively maintained. This is one of the most widely used artifacts in the Maven 
 <dependency>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-archiver</artifactId>
-  <version>5.0.0</version> <!-- requires Java 17 -->
+  <!-- requires Java 17 -->
 </dependency>
 ```
+
+Check the badge above for the current version.
 
 ```xml
 <dependency>
   <groupId>org.codehaus.plexus</groupId>
   <artifactId>plexus-archiver</artifactId>
-  <version>4.12.0</version> <!-- requires Java 8 -->
+  <!-- requires Java 8 -->
 </dependency>
 ```
 
