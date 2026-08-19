@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.13.1-SNAPSHOT</version>
+  <version>4.13.0</version>
   <name>Plexus Archiver Component</name>
   <description>One API for creating and extracting archives - zip, jar, tar and their compressed
     variants - regardless of format.</description>
@@ -32,7 +32,7 @@
   <scm>
     <connection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</connection>
     <developerConnection>scm:git:https://github.com/codehaus-plexus/plexus-archiver.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>plexus-archiver-4.13.0</tag>
     <url>https://github.com/codehaus-plexus/plexus-archiver/tree/${project.scm.tag}/</url>
   </scm>
   <issueManagement>
@@ -49,7 +49,7 @@
   <properties>
     <slf4jVersion>1.7.36</slf4jVersion>
     <version.sisu>1.1.0</version.sisu>
-    <project.build.outputTimestamp>2026-08-19T18:52:51Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-08-19T19:12:37Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
