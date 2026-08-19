@@ -45,7 +45,7 @@
   </distributionManagement>
 
   <properties>
-    <slf4jVersion>2.0.18</slf4jVersion>
+    <slf4jVersion>1.7.36</slf4jVersion>
     <version.sisu>1.0.0</version.sisu>
     <project.build.outputTimestamp>2026-06-08T20:12:28Z</project.build.outputTimestamp>
   </properties>
