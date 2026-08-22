@@ -24,14 +24,14 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.FileSet;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archiver.util.DefaultFileSet;
-import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -107,7 +107,7 @@ class ArchiverManagerTest extends TestSupport {
         Archiver archiver = manager.getArchiver("jar");
         assertNotNull(archiver);
 
-        archiver.addFileSet(DefaultFileSet.fileSet(new File(getBasedir())));
+        archiver.addFileSet(FileSet.of(Paths.get(getBasedir())));
 
         Archiver newArchiver = manager.getArchiver("jar");
         assertNotNull(newArchiver);
@@ -166,33 +166,6 @@ class ArchiverManagerTest extends TestSupport {
         PlexusIoResourceCollection resourceCollection = manager.getResourceCollection(resourceName);
 
         assertThat(resourceCollection).isNotNull();
-    }
-
-    @Test
-    void configuredLookups() throws Exception {
-        ArchiverManager manager = lookup(ArchiverManager.class);
-        File archiveFile = getTestFile("target/configured-manager/archive.zip");
-        File outputDirectory = getTestFile("target/configured-manager/output");
-
-        ArchiverFactory archiverFactory = manager.getArchiverFactory("zip");
-        Archiver archiver = archiverFactory.create(configurer -> configurer.setDestFile(archiveFile.toPath()));
-        Archiver secondArchiver = archiverFactory.create(configurer -> {});
-        UnArchiver unarchiver = manager.getUnArchiverFactory(archiveFile).create(configurer -> {
-            configurer.setSource(archiveFile.toPath());
-            configurer.setDestinationDirectory(outputDirectory.toPath());
-        });
-        AbstractPlexusIoArchiveResourceCollection resourceCollection = (AbstractPlexusIoArchiveResourceCollection)
-                manager.getResourceCollectionFactory(archiveFile).create(configurer -> {
-                    configurer.setSource(archiveFile.toPath());
-                    configurer.setPrefix("content/");
-                });
-
-        assertThat(archiver.getDestFile()).isEqualTo(archiveFile);
-        assertThat(secondArchiver).isNotSameAs(archiver);
-        assertThat(unarchiver.getSourceFile()).isEqualTo(archiveFile);
-        assertThat(unarchiver.getDestDirectory()).isEqualTo(outputDirectory);
-        assertThat(resourceCollection.getFile()).isEqualTo(archiveFile);
-        assertThat(resourceCollection.getPrefix()).isEqualTo("content/");
     }
 
     @Test

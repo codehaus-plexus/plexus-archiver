@@ -20,11 +20,8 @@ package org.codehaus.plexus.archiver.manager;
 import javax.inject.Provider;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.internal.DefaultUnArchiverConfigurer;
-import org.codehaus.plexus.archivers.spi.UnArchiverConfigurer;
 
 final class CdiUnArchiverFactory implements UnArchiverFactory {
     private final Provider<UnArchiver> provider;
@@ -34,9 +31,7 @@ final class CdiUnArchiverFactory implements UnArchiverFactory {
     }
 
     @Override
-    public UnArchiver create(Consumer<UnArchiverConfigurer> configurer) {
-        UnArchiver unarchiver = provider.get();
-        Objects.requireNonNull(configurer, "configurer").accept(new DefaultUnArchiverConfigurer(unarchiver));
-        return unarchiver;
+    public UnArchiver create() {
+        return provider.get();
     }
 }

@@ -5,6 +5,8 @@ import javax.annotation.CheckForNull;
 import java.io.File;
 import java.nio.file.Path;
 
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+
 /**
  * A file set, which consists of the files and directories in
  * an archive.
@@ -13,15 +15,8 @@ import java.nio.file.Path;
  */
 public interface ArchivedFileSet extends BaseFileSet {
 
-    /**
-     * Creates a fluent archived file set specification.
-     *
-     * @param archive the source archive
-     * @return a file set for the archive
-     * @since 5.0.0
-     */
-    static ArchivedFileSetSpec of(Path archive) {
-        return ArchivedFileSetSpec.of(archive);
+    public static ArchivedFileSet of(Path path) {
+        return new DefaultArchivedFileSet(path.toFile());
     }
 
     /**

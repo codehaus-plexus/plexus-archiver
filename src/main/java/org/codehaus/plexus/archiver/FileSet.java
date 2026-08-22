@@ -3,6 +3,8 @@ package org.codehaus.plexus.archiver;
 import java.io.File;
 import java.nio.file.Path;
 
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
+
 /**
  * A file set, which consists of the files and directories in
  * a common base directory.
@@ -11,15 +13,8 @@ import java.nio.file.Path;
  */
 public interface FileSet extends BaseFileSet {
 
-    /**
-     * Creates a fluent file set specification.
-     *
-     * @param directory the file set base directory
-     * @return a file set for the directory
-     * @since 5.0.0
-     */
-    static FileSetSpec of(Path directory) {
-        return FileSetSpec.of(directory);
+    static FileSet of(Path path) {
+        return new DefaultFileSet(path.toFile());
     }
 
     /**
