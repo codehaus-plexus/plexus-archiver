@@ -47,7 +47,6 @@
   </distributionManagement>
 
   <properties>
-    <javaVersion>17</javaVersion>
     <slf4jVersion>1.7.36</slf4jVersion>
     <version.sisu>1.1.0</version.sisu>
     <project.build.outputTimestamp>2026-06-08T20:12:28Z</project.build.outputTimestamp>
@@ -201,4 +200,109 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>java17</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>java17-main</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>17</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java17</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>true</multiReleaseOutput>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- maven-compiler-plugin:testCompile always uses target/classes, where javac cannot resolve
+           META-INF/versions/17. Compile these tests against the packaged multi-release JAR instead. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>compile-java17-integration-tests</id>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <target>
+                    <delete dir="${project.build.directory}/it-classes" />
+                    <mkdir dir="${project.build.directory}/it-classes" />
+                    <javac destdir="${project.build.directory}/it-classes" encoding="${project.build.sourceEncoding}" includeantruntime="false" release="17" srcdir="${project.basedir}/src/it/java17">
+                      <classpath>
+                        <pathelement location="${project.build.directory}/${project.build.finalName}.jar" />
+                        <path refid="maven.test.classpath" />
+                      </classpath>
+                    </javac>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <classesDirectory>${project.build.directory}/${project.build.finalName}.jar</classesDirectory>
+              <testClassesDirectory>${project.build.directory}/it-classes</testClassesDirectory>
+              <failIfNoTests>true</failIfNoTests>
+              <includes>
+                <include>**/*IT.class</include>
+              </includes>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>plexus-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>enforce-java-17-for-release</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireJavaVersion>
+                      <version>[17,)</version>
+                      <message>To release this MultiRelease jar, use at least Java 17</message>
+                    </requireJavaVersion>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
