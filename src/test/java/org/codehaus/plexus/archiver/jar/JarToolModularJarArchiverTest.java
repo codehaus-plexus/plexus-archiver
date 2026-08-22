@@ -18,7 +18,8 @@ package org.codehaus.plexus.archiver.jar;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.module.ModuleDescriptor;
+import java.lang.reflect.Method;
+import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -29,11 +30,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.util.DefaultFileSet;
+import org.codehaus.plexus.archiver.FileSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
@@ -50,15 +54,16 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
 
         archiver = getJarArchiver();
         archiver.setDestFile(jarFile);
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-classes")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-classes")));
     }
 
     /*
      * Verify that the main class and the version are properly set for a modular JAR file.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void modularJarWithMainClassAndVersion() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         archiver.setModuleVersion("1.0.0");
         archiver.setModuleMainClass("com.example.app.Main");
 
@@ -75,8 +80,9 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * value is overridden
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void modularJarWithManifestAndModuleMainClass() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(new Manifest.Attribute("Main-Class", "com.example.app.Main2"));
         archiver.addConfiguredManifest(manifest);
@@ -96,8 +102,9 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * the manifest main class attribute (if present) is used instead
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void modularJarWithManifestMainClassAttribute() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(new Manifest.Attribute("Main-Class", "com.example.app.Main2"));
         archiver.addConfiguredManifest(manifest);
@@ -114,8 +121,9 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * Verify that a modular JAR file is created even when no additional attributes are set.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void modularJar() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         archiver.createArchive();
 
         // verify that the proper version and main class are set
@@ -126,8 +134,9 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * Verify that exception is thrown when the modular JAR is not valid.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void invalidModularJar() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         // Not a valid version
         archiver.setModuleVersion("notAValidVersion");
 
@@ -135,11 +144,31 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     }
 
     /*
+     * Verify that modular JAR files could be created even
+     * if the Java version does not support modules.
+     */
+    @Test
+    @DisabledIf("modulesAreSupported")
+    void modularJarPriorJava9() throws Exception {
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.setModuleVersion("1.0.0");
+        archiver.setModuleMainClass("com.example.app.Main");
+
+        archiver.createArchive();
+
+        // verify that the modular jar is created
+        try (ZipFile resultingArchive = new ZipFile(archiver.getDestFile())) {
+            assertNotNull(resultingArchive.getEntry("module-info.class"));
+        }
+    }
+
+    /*
      * Verify that the compression flag is respected.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void noCompression() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         archiver.setCompress(false);
 
         archiver.createArchive();
@@ -161,8 +190,9 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * is kept after it is updated to modular JAR file.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void compression() throws Exception {
-        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
         archiver.addFile(new File("src/test/jars/test.jar"), "META-INF/lib/test.jar");
         archiver.setRecompressAddedZips(false);
 
@@ -186,6 +216,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
      * Verify that a module descriptor in the versioned area is handled correctly.
      */
     @Test
+    @EnabledIf("modulesAreSupported")
     void modularMultiReleaseJar() throws Exception {
         // Add two module-info.class, one on the root and one on the multi-release dir.
         archiver.addFile(
@@ -271,11 +302,35 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
             String expectedMainClass,
             String... expectedPackages)
             throws Exception {
-        ModuleDescriptor moduleDescriptor = ModuleDescriptor.read(moduleDescriptorInputStream);
+        // ModuleDescriptor methods are available from Java 9 so let's get by reflection
+        Class<?> moduleDescriptorClass = Class.forName("java.lang.module.ModuleDescriptor");
+        Class<?> optionalClass = Class.forName("java.util.Optional");
+        Method readMethod = moduleDescriptorClass.getMethod("read", InputStream.class);
+        Method mainClassMethod = moduleDescriptorClass.getMethod("mainClass");
+        Method rawVersionMethod = moduleDescriptorClass.getMethod("rawVersion");
+        Method packagesMethod = moduleDescriptorClass.getMethod("packages");
+        Method isPresentMethod = optionalClass.getMethod("isPresent");
+        Method getMethod = optionalClass.getMethod("get");
 
-        String actualMainClass = moduleDescriptor.mainClass().orElse(null);
-        String actualVersion = moduleDescriptor.rawVersion().orElse(null);
-        Set<String> actualPackagesSet = moduleDescriptor.packages();
+        // Read the module from the input stream
+        Object moduleDescriptor = readMethod.invoke(null, moduleDescriptorInputStream);
+
+        // Get the module main class
+        Object mainClassOptional = mainClassMethod.invoke(moduleDescriptor);
+        String actualMainClass = null;
+        if ((boolean) isPresentMethod.invoke(mainClassOptional)) {
+            actualMainClass = (String) getMethod.invoke(mainClassOptional);
+        }
+
+        // Get the module version
+        Object versionOptional = rawVersionMethod.invoke(moduleDescriptor);
+        String actualVersion = null;
+        if ((boolean) isPresentMethod.invoke(versionOptional)) {
+            actualVersion = (String) getMethod.invoke(versionOptional);
+        }
+
+        // Get the module packages
+        Set<String> actualPackagesSet = (Set<String>) packagesMethod.invoke(moduleDescriptor);
         Set<String> expectedPackagesSet = new HashSet<>(Arrays.asList(expectedPackages));
 
         assertEquals(expectedMainClass, actualMainClass);
@@ -294,5 +349,18 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
 
             assertEquals(expectedMainClass, actualManifestMainClass);
         }
+    }
+
+    /*
+     * Returns true if the current version of Java does support modules.
+     */
+    private boolean modulesAreSupported() {
+        try {
+            Class.forName("java.lang.module.ModuleDescriptor");
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+
+        return true;
     }
 }
