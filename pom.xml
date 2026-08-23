@@ -145,6 +145,15 @@
       <version>5.1.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- Guice 5.1.0 drags in Guava 30.1-jre, which CVE-2023-2976 and
+         CVE-2020-8908 cover. Nothing here uses Guava; the pin only keeps
+         the flagged version off the test classpath. -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.7.1-jre</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
