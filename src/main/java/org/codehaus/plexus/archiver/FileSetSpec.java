@@ -39,6 +39,7 @@ public final class FileSetSpec {
     private CaseSensitivity caseSensitivity = CaseSensitivity.SENSITIVE;
     private DefaultExcludes defaultExcludes = DefaultExcludes.USE;
     private EmptyDirectoryHandling emptyDirectoryHandling = EmptyDirectoryHandling.INCLUDE;
+    private SymbolicLinkHandling symbolicLinkHandling = SymbolicLinkHandling.PRESERVE;
     private List<FileSelector> fileSelectors;
     private InputStreamTransformer streamTransformer;
     private List<FileMapper> fileMappers;
@@ -81,6 +82,11 @@ public final class FileSetSpec {
         return this;
     }
 
+    public FileSetSpec symbolicLinks(SymbolicLinkHandling symbolicLinkHandling) {
+        this.symbolicLinkHandling = Objects.requireNonNull(symbolicLinkHandling, "symbolicLinkHandling");
+        return this;
+    }
+
     public FileSetSpec selectedBy(List<FileSelector> fileSelectors) {
         this.fileSelectors = List.copyOf(fileSelectors);
         return this;
@@ -104,6 +110,7 @@ public final class FileSetSpec {
         fileSet.setCaseSensitive(isCaseSensitive());
         fileSet.setUsingDefaultExcludes(usesBuiltInDefaultExcludes());
         fileSet.setIncludingEmptyDirectories(includesEmptyDirectories());
+        fileSet.setFollowingSymLinks(followsSymbolicLinks());
         fileSet.setFileSelectors(fileSelectors == null ? null : fileSelectors.toArray(FileSelector[]::new));
         if (streamTransformer != null) {
             fileSet.setStreamTransformer(streamTransformer);
@@ -118,6 +125,10 @@ public final class FileSetSpec {
 
     private boolean usesBuiltInDefaultExcludes() {
         return defaultExcludes instanceof BuiltInDefaultExcludes builtIn && builtIn.use;
+    }
+
+    private boolean followsSymbolicLinks() {
+        return ((FixedSymbolicLinkHandling) symbolicLinkHandling).following;
     }
 
     private boolean includesEmptyDirectories() {
