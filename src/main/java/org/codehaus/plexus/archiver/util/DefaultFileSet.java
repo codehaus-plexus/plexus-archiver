@@ -15,6 +15,8 @@ public class DefaultFileSet extends AbstractFileSet<DefaultFileSet> implements F
 
     private File directory;
 
+    private boolean followingSymLinks;
+
     public DefaultFileSet(File directory) {
         this.directory = directory;
     }
@@ -31,6 +33,28 @@ public class DefaultFileSet extends AbstractFileSet<DefaultFileSet> implements F
     @Nonnull
     public File getDirectory() {
         return directory;
+    }
+
+    /**
+     * Sets whether symbolic links below the base directory are followed. Defaults to false.
+     *
+     * @since 4.14.0
+     */
+    public void setFollowingSymLinks(boolean followingSymLinks) {
+        this.followingSymLinks = followingSymLinks;
+    }
+
+    @Override
+    public boolean isFollowingSymLinks() {
+        return followingSymLinks;
+    }
+
+    /**
+     * @since 4.14.0
+     */
+    public DefaultFileSet followingSymLinks(boolean followingSymLinks) {
+        setFollowingSymLinks(followingSymLinks);
+        return this;
     }
 
     public static DefaultFileSet fileSet(File directory) {
