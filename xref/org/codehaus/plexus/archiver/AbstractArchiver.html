@@ -339,7 +339,7 @@
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>         <em class="jxr_comment">// The PlexusIoFileResourceCollection contains platform-specific File.separatorChar which</em>
 <a class="jxr_linenumber" name="L332" href="#L332">332</a>         <em class="jxr_comment">// is an interesting cause of grief, see PLXCOMP-192</em>
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>         <strong class="jxr_keyword">final</strong> PlexusIoFileResourceCollection collection = <strong class="jxr_keyword">new</strong> PlexusIoFileResourceCollection();
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>         collection.setFollowingSymLinks(false);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>         collection.setFollowingSymLinks(fileSet.isFollowingSymLinks());
 <a class="jxr_linenumber" name="L335" href="#L335">335</a> 
 <a class="jxr_linenumber" name="L336" href="#L336">336</a>         collection.setIncludes(fileSet.getIncludes());
 <a class="jxr_linenumber" name="L337" href="#L337">337</a>         collection.setExcludes(fileSet.getExcludes());
