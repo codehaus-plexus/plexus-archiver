@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.13.1-SNAPSHOT</version>
+  <version>4.14.0-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
   <description>One API for creating and extracting archives - zip, jar, tar and their compressed
     variants - regardless of format.</description>
