@@ -1,0 +1,60 @@
+# Release Drafter keeps the two lines' notes apart with filter-by-commitish,
+# which matches a published release's target_commitish against the branch named
+# in the drafter config. A release published by hand on an existing tag carries
+# the default branch instead, and the next draft on a maintenance line is then
+# left without a baseline: 4.13.0 landed that way and 4.14.0 first drafted as
+# "4.0.1 / No changes".
+#
+# Publishing the drafter's own draft already carries the right branch through.
+# This is the net under the other path.
+#
+# A release event only ever runs the workflow from the default branch, so this
+# one file covers every line and has no counterpart on 4.x.
+name: Point a release at its own branch
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  retarget:
+    name: Retarget
+    runs-on: ubuntu-latest
+    steps:
+      - name: Match target_commitish to the branch the tag was cut from
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
+          RELEASE_ID: ${{ github.event.release.id }}
+          TARGET: ${{ github.event.release.target_commitish }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+
+          branch="$DEFAULT_BRANCH"
+
+          # Maintenance lines are named after the major they carry: 4.14.0 is
+          # cut from 4.x. Anything else belongs to the default branch.
+          major=$(printf '%s' "$TAG" | sed -nE 's/.*-([0-9]+)\.[0-9]+.*/\1/p')
+          if [ -n "$major" ] && gh api "repos/$REPO/branches/$major.x" >/dev/null 2>&1; then
+            # "behind" or "identical" means the tag is reachable from that head,
+            # so a stray tag cannot drag a release onto the wrong line.
+            status=$(gh api "repos/$REPO/compare/$major.x...$TAG" --jq .status || echo none)
+            case "$status" in
+              behind | identical) branch="$major.x" ;;
+            esac
+          fi
+
+          if [ "${TARGET#refs/heads/}" = "$branch" ]; then
+            echo "$TAG already targets $branch."
+            exit 0
+          fi
+
+          echo "$TAG targets ${TARGET#refs/heads/}, but the tag was cut from $branch."
+          gh api -X PATCH "repos/$REPO/releases/$RELEASE_ID" \
+            -f target_commitish="$branch" > /dev/null
+          echo "Retargeted $TAG to $branch."
