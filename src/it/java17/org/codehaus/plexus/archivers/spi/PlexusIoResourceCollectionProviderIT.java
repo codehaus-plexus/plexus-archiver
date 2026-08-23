@@ -26,6 +26,8 @@ import java.util.List;
 import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archiver.SymbolicLinkHandling;
 import org.codehaus.plexus.archiver.gzip.PlexusIoGzipResourceCollectionProvider;
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.ArchiverConfigurer;
 import org.codehaus.plexus.archiver.CaseSensitivity;
 import org.codehaus.plexus.archiver.DefaultExcludes;
 import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
@@ -35,6 +37,7 @@ import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResour
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoFileResourceCollection;
+import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -55,7 +58,12 @@ class PlexusIoResourceCollectionProviderIT {
                 .doesNotContain("create");
         assertThat(Arrays.stream(PlexusIoResourceCollectionConfigurer.class.getMethods())
                         .filter(method -> Modifier.isStatic(method.getModifiers())))
-                .isEmpty();
+				.satisfiesExactly(m -> { 
+					assertThat(m.getName()).isEqualTo("of");
+					assertThat(m.getParameterCount()).isEqualTo(1);
+					assertThat(m.getParameterTypes()[0]).isEqualTo(PlexusIoResourceCollection.class);
+					assertThat(m.getReturnType()).isEqualTo(PlexusIoResourceCollectionConfigurer.class);
+				});
     }
 
     @Test

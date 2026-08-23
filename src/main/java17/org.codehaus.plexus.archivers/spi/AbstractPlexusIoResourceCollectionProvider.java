@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
-import org.codehaus.plexus.archivers.internal.DefaultPlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -39,7 +38,7 @@ public abstract non-sealed class AbstractPlexusIoResourceCollectionProvider
             Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
         PlexusIoResourceCollection collection = createResourceCollection();
         Objects.requireNonNull(configurer, "configurer")
-                .accept(new DefaultPlexusIoResourceCollectionConfigurer(collection));
+                .accept(PlexusIoResourceCollectionConfigurer.of(collection));
         return collection;
     }
 }

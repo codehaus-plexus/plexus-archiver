@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.UnArchiverConfigurer;
-import org.codehaus.plexus.archivers.internal.DefaultUnArchiverConfigurer;
 
 /**
  * Base implementation that keeps unconfigured unarchiver creation internal to service providers.
@@ -36,7 +35,7 @@ public abstract non-sealed class AbstractUnArchiverProvider implements UnArchive
     @Override
     public final UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer) {
         UnArchiver unarchiver = createUnarchiver();
-        Objects.requireNonNull(configurer, "configurer").accept(new DefaultUnArchiverConfigurer(unarchiver));
+        Objects.requireNonNull(configurer, "configurer").accept(UnArchiverConfigurer.of(unarchiver));
         return unarchiver;
     }
 }

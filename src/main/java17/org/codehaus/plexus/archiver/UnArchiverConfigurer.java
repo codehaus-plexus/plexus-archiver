@@ -29,6 +29,11 @@ import org.codehaus.plexus.components.io.fileselectors.FileSelector;
  * @since 5.0.0
  */
 public interface UnArchiverConfigurer {
+	
+	static UnArchiverConfigurer of(UnArchiver unArchiver) {
+		return new DefaultUnArchiverConfigurer(unArchiver);
+	}
+	
     void setSource(Path source);
 
     void setDestinationDirectory(Path destinationDirectory);

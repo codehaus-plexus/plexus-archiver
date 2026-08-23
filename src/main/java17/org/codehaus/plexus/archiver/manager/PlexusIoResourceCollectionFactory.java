@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.codehaus.plexus.archivers.internal.DefaultPlexusIoResourceCollectionConfigurer;
 
 /**
  * Creates configured Plexus IO resource collection instances.
@@ -34,7 +33,7 @@ public interface PlexusIoResourceCollectionFactory {
     
     default PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
     	PlexusIoResourceCollection resourceCollection = create();
-    	configurer.accept(new DefaultPlexusIoResourceCollectionConfigurer(resourceCollection));
+    	configurer.accept(PlexusIoResourceCollectionConfigurer.of(resourceCollection));
     	return resourceCollection;
     }
 }

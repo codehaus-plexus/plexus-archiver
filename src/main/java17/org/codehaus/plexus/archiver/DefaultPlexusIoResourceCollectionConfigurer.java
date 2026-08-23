@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.internal;
+package org.codehaus.plexus.archiver;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -38,10 +38,10 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
 import org.codehaus.plexus.components.io.resources.PlexusIoFileResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public final class DefaultPlexusIoResourceCollectionConfigurer implements PlexusIoResourceCollectionConfigurer {
+final class DefaultPlexusIoResourceCollectionConfigurer implements PlexusIoResourceCollectionConfigurer {
     private final PlexusIoResourceCollection collection;
 
-    public DefaultPlexusIoResourceCollectionConfigurer(PlexusIoResourceCollection collection) {
+    DefaultPlexusIoResourceCollectionConfigurer(PlexusIoResourceCollection collection) {
         this.collection = Objects.requireNonNull(collection, "collection");
     }
 

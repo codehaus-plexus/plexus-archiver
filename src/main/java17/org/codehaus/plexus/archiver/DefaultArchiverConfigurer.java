@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.internal;
+package org.codehaus.plexus.archiver;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
@@ -35,26 +35,16 @@ import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
 import org.codehaus.plexus.archiver.PermissionHandling;
 import org.codehaus.plexus.archiver.UnixPermissions;
 
-public final class DefaultArchiverConfigurer implements ArchiverConfigurer {
+final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     private final Archiver archiver;
 
-    public DefaultArchiverConfigurer(Archiver archiver) {
+    DefaultArchiverConfigurer(Archiver archiver) {
         this.archiver = Objects.requireNonNull(archiver, "archiver");
-    }
-
-    @Override
-    public void addFileSet(FileSet fileSet) {
-        archiver.addFileSet(Objects.requireNonNull(fileSet, "fileSet"));
     }
 
     @Override
     public void addFileSet(FileSetSpec fileSetSpec) {
         archiver.addFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec"));
-    }
-
-    @Override
-    public void addArchivedFileSet(ArchivedFileSet fileSet) {
-        archiver.addArchivedFileSet(Objects.requireNonNull(fileSet, "fileSet"));
     }
 
     @Override

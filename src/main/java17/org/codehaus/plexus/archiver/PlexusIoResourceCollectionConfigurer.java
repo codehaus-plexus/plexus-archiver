@@ -24,6 +24,7 @@ import java.util.List;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
+import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
  * Configures a Plexus IO resource collection before it is exposed to callers.
@@ -31,6 +32,11 @@ import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
  * @since 5.0.0
  */
 public interface PlexusIoResourceCollectionConfigurer {
+	
+	static PlexusIoResourceCollectionConfigurer of(PlexusIoResourceCollection resourceCollection) {
+		return new DefaultPlexusIoResourceCollectionConfigurer(resourceCollection);
+		
+	}
     void setSource(Path source);
 
     void setPrefix(String prefix);

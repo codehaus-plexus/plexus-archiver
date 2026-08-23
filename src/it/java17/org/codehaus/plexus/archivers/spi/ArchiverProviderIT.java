@@ -56,7 +56,12 @@ class ArchiverProviderIT {
                 .doesNotContain("create");
         assertThat(Arrays.stream(ArchiverConfigurer.class.getMethods())
                         .filter(method -> Modifier.isStatic(method.getModifiers())))
-                .isEmpty();
+        				.satisfiesExactly(m -> { 
+        					assertThat(m.getName()).isEqualTo("of");
+        					assertThat(m.getParameterCount()).isEqualTo(1);
+        					assertThat(m.getParameterTypes()[0]).isEqualTo(Archiver.class);
+        					assertThat(m.getReturnType()).isEqualTo(ArchiverConfigurer.class);
+        				});
     }
 
     @Test

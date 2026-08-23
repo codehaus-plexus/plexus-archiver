@@ -27,11 +27,12 @@ import java.util.Comparator;
  * @since 5.0.0
  */
 public interface ArchiverConfigurer {
-    void addFileSet(FileSet fileSet);
-
+	
+	static ArchiverConfigurer of(Archiver archiver) {
+		return new DefaultArchiverConfigurer(archiver);
+	}
+	
     void addFileSet(FileSetSpec fileSetSpec);
-
-    void addArchivedFileSet(ArchivedFileSet fileSet);
 
     void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec);
 

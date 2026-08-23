@@ -24,9 +24,11 @@ import java.util.List;
 
 import org.codehaus.plexus.archiver.ExistingFileHandling;
 import org.codehaus.plexus.archiver.PermissionHandling;
+import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.UnArchiverConfigurer;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiverProvider;
+import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -45,7 +47,12 @@ class UnArchiverProviderIT {
                 .doesNotContain("create");
         assertThat(Arrays.stream(UnArchiverConfigurer.class.getMethods())
                         .filter(method -> Modifier.isStatic(method.getModifiers())))
-                .isEmpty();
+				.satisfiesExactly(m -> { 
+					assertThat(m.getName()).isEqualTo("of");
+					assertThat(m.getParameterCount()).isEqualTo(1);
+					assertThat(m.getParameterTypes()[0]).isEqualTo(UnArchiver.class);
+					assertThat(m.getReturnType()).isEqualTo(UnArchiverConfigurer.class);
+				});
     }
 
     @Test

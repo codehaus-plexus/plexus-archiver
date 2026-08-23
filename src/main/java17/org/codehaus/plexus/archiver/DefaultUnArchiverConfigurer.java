@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.internal;
+package org.codehaus.plexus.archiver;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -28,10 +28,10 @@ import org.codehaus.plexus.archiver.UnArchiverConfigurer;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
-public final class DefaultUnArchiverConfigurer implements UnArchiverConfigurer {
+final class DefaultUnArchiverConfigurer implements UnArchiverConfigurer {
     private final UnArchiver unarchiver;
 
-    public DefaultUnArchiverConfigurer(UnArchiver unarchiver) {
+    DefaultUnArchiverConfigurer(UnArchiver unarchiver) {
         this.unarchiver = Objects.requireNonNull(unarchiver, "unarchiver");
     }
 

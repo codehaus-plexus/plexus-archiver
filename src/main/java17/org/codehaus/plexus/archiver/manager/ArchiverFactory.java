@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverConfigurer;
-import org.codehaus.plexus.archivers.internal.DefaultArchiverConfigurer;
 
 /**
  * Creates configured archiver instances.
@@ -34,7 +33,7 @@ public interface ArchiverFactory {
     
     default Archiver create(Consumer<ArchiverConfigurer> configurer) {
     	Archiver archiver = create();
-    	configurer.accept(new DefaultArchiverConfigurer(archiver));
+    	configurer.accept(ArchiverConfigurer.of(archiver));
     	return archiver;
     }
 }

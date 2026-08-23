@@ -22,7 +22,6 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverConfigurer;
-import org.codehaus.plexus.archivers.internal.DefaultArchiverConfigurer;
 
 /**
  * Base implementation that keeps unconfigured archiver creation internal to service providers.
@@ -36,7 +35,7 @@ public abstract non-sealed class AbstractArchiverProvider implements ArchiverPro
     @Override
     public final Archiver newArchiver(Consumer<ArchiverConfigurer> configurer) {
         Archiver archiver = createArchiver();
-        Objects.requireNonNull(configurer, "configurer").accept(new DefaultArchiverConfigurer(archiver));
+        Objects.requireNonNull(configurer, "configurer").accept(ArchiverConfigurer.of(archiver));
         return archiver;
     }
 }

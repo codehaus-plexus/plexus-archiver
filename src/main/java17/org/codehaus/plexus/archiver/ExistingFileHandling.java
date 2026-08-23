@@ -23,8 +23,8 @@ package org.codehaus.plexus.archiver;
  * @since 5.0.0
  */
 public sealed interface ExistingFileHandling permits FixedExistingFileHandling {
-    ExistingFileHandling OVERWRITE = new FixedExistingFileHandling(true);
-    ExistingFileHandling KEEP_NEWER = new FixedExistingFileHandling(false);
+	public static final ExistingFileHandling OVERWRITE = new FixedExistingFileHandling(true);
+	public static final ExistingFileHandling KEEP_NEWER = new FixedExistingFileHandling(false);
 }
 
 final class FixedExistingFileHandling implements ExistingFileHandling {

@@ -21,7 +21,6 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.UnArchiverConfigurer;
-import org.codehaus.plexus.archivers.internal.DefaultUnArchiverConfigurer;
 
 /**
  * Creates configured unarchiver instances.
@@ -34,7 +33,7 @@ public interface UnArchiverFactory {
     
     default UnArchiver create(Consumer<UnArchiverConfigurer> configurer) {
         UnArchiver unArchiver =  create();
-        configurer.accept(new DefaultUnArchiverConfigurer(unArchiver));
+        configurer.accept(UnArchiverConfigurer.of(unArchiver));
         return unArchiver;
     }
 }
