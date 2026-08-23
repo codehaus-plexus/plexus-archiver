@@ -107,4 +107,37 @@ class SymlinkTest extends TestSupport {
         symbolicLink = new File("target/output/dirarchiver-symlink/aDirWithALink/backOutsideToFileX");
         assertTrue(Files.isSymbolicLink(symbolicLink.toPath()));
     }
+
+    @Test
+    void fileSetDoesNotFollowSymLinksByDefault() {
+        assertFalse(new DefaultFileSet(getTestFile("src/test/resources/symlinks/src")).isFollowingSymLinks());
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void followingSymLinksResolvesLinkedDirectories() throws Exception {
+        DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
+
+        File dummyContent = getTestFile("src/test/resources/symlinks/src");
+        archiver.addFileSet(new DefaultFileSet(dummyContent).followingSymLinks(true));
+        final File archiveFile = new File("target/output/dirarchiver-followed-symlink");
+        archiveFile.mkdirs();
+        archiver.setDestFile(archiveFile);
+
+        archiver.createArchive();
+
+        // a link to a directory becomes the directory, and its target's contents are included
+        File linkedDir = new File(archiveFile, "symDir");
+        assertFalse(Files.isSymbolicLink(linkedDir.toPath()));
+        assertTrue(linkedDir.isDirectory());
+        assertTrue(new File(linkedDir, "targetFile.txt").isFile());
+
+        // including when the target lies outside the base directory
+        assertTrue(new File(archiveFile, "symLinkToDirOnTheOutside/FileInDirOnTheOutside.txt").isFile());
+
+        // a link to a file becomes the file
+        File linkedFile = new File(archiveFile, "symR");
+        assertFalse(Files.isSymbolicLink(linkedFile.toPath()));
+        assertTrue(linkedFile.isFile());
+    }
 }
