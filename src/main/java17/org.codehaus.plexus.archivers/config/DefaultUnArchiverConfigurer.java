@@ -28,6 +28,11 @@ import org.codehaus.plexus.archiver.UnArchiverConfigurer;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
+/**
+ * Applies the configuration to the applied unarchiver
+ * 
+ * @Since 5.0.0
+ */
 final class DefaultUnArchiverConfigurer implements UnArchiverConfigurer {
     private final UnArchiver unarchiver;
 

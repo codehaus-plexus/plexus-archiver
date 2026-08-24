@@ -1,7 +1,6 @@
 package org.codehaus.plexus.archiver;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 
@@ -12,10 +11,6 @@ import org.codehaus.plexus.archiver.util.DefaultFileSet;
  * @since 1.0-alpha-9
  */
 public interface FileSet extends BaseFileSet {
-
-    static FileSet of(Path path) {
-        return new DefaultFileSet(path.toFile());
-    }
 
     /**
      * Returns the file sets base directory.

@@ -22,6 +22,7 @@ import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.ArchivedFileSetSpec;
@@ -35,6 +36,11 @@ import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
 import org.codehaus.plexus.archiver.PermissionHandling;
 import org.codehaus.plexus.archiver.UnixPermissions;
 
+/**
+ * Applies the configuration to the applied archiver
+ *
+ * @since 5.0.0
+ */
 final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     private final Archiver archiver;
 
@@ -43,12 +49,12 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     }
 
     @Override
-    public void addFileSet(FileSetSpec fileSetSpec) {
+    public void addFileSetFromSpec(FileSetSpec fileSetSpec) {
         archiver.addFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec").toFileSet());
     }
 
     @Override
-    public void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec) {
+    public void addArchivedFileSetFromSpec(ArchivedFileSetSpec fileSetSpec) {
         archiver.addArchivedFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec").toArchivedFileSet());
     }
 
@@ -153,10 +159,12 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
         archiver.setUmask(toMode(permissions));
     }
 
-    @Override
-    public void configureReproducibleBuild(FileTime lastModifiedTime) {
-        archiver.configureReproducibleBuild(Objects.requireNonNull(lastModifiedTime, "lastModifiedTime"));
-    }
+    
+	@Override
+	public void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> spec) {
+		ReproducibleBuildConfigurer configurer = new DefaultReproducibleBuildConfigurer(archiver);
+		spec.accept(configurer);
+	}
 
     private static int toMode(UnixPermissions unixPermissions) {
         int mode = 0;
@@ -176,4 +184,5 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
         }
         return mode;
     }
+
 }

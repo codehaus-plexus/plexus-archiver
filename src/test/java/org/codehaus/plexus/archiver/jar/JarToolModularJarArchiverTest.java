@@ -19,7 +19,6 @@ package org.codehaus.plexus.archiver.jar;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -30,7 +29,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.FileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -54,7 +53,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
 
         archiver = getJarArchiver();
         archiver.setDestFile(jarFile);
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-classes")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-classes")));
     }
 
     /*
@@ -63,7 +62,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void modularJarWithMainClassAndVersion() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         archiver.setModuleVersion("1.0.0");
         archiver.setModuleMainClass("com.example.app.Main");
 
@@ -82,7 +81,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void modularJarWithManifestAndModuleMainClass() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(new Manifest.Attribute("Main-Class", "com.example.app.Main2"));
         archiver.addConfiguredManifest(manifest);
@@ -104,7 +103,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void modularJarWithManifestMainClassAttribute() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         Manifest manifest = new Manifest();
         manifest.addConfiguredAttribute(new Manifest.Attribute("Main-Class", "com.example.app.Main2"));
         archiver.addConfiguredManifest(manifest);
@@ -123,7 +122,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void modularJar() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         archiver.createArchive();
 
         // verify that the proper version and main class are set
@@ -136,7 +135,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void invalidModularJar() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         // Not a valid version
         archiver.setModuleVersion("notAValidVersion");
 
@@ -150,7 +149,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @DisabledIf("modulesAreSupported")
     void modularJarPriorJava9() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         archiver.setModuleVersion("1.0.0");
         archiver.setModuleMainClass("com.example.app.Main");
 
@@ -168,7 +167,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void noCompression() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         archiver.setCompress(false);
 
         archiver.createArchive();
@@ -192,7 +191,7 @@ class JarToolModularJarArchiverTest extends BaseJarArchiverTest {
     @Test
     @EnabledIf("modulesAreSupported")
     void compression() throws Exception {
-        archiver.addFileSet(FileSet.of(Paths.get("src/test/resources/java-module-descriptor")));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File("src/test/resources/java-module-descriptor")));
         archiver.addFile(new File("src/test/jars/test.jar"), "META-INF/lib/test.jar");
         archiver.setRecompressAddedZips(false);
 

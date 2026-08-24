@@ -18,6 +18,7 @@
 package org.codehaus.plexus.archiver;
 
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,21 +35,21 @@ import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
 public final class FileSetSpec {
     private final Path directory;
     private String prefix;
-    private List<String> includes;
-    private List<String> excludes;
+    private Collection<String> includes;
+    private Collection<String> excludes;
     private CaseSensitivity caseSensitivity = CaseSensitivity.SENSITIVE;
     private DefaultExcludes defaultExcludes = DefaultExcludes.USE;
     private EmptyDirectoryHandling emptyDirectoryHandling = EmptyDirectoryHandling.INCLUDE;
     private SymbolicLinkHandling symbolicLinkHandling = SymbolicLinkHandling.PRESERVE;
-    private List<FileSelector> fileSelectors;
+    private Collection<FileSelector> fileSelectors;
     private InputStreamTransformer streamTransformer;
-    private List<FileMapper> fileMappers;
+    private Collection<FileMapper> fileMappers;
 
     private FileSetSpec(Path directory) {
         this.directory = Objects.requireNonNull(directory, "directory");
     }
 
-    static FileSetSpec of(Path directory) {
+    public static FileSetSpec of(Path directory) {
         return new FileSetSpec(directory);
     }
 
@@ -57,12 +58,12 @@ public final class FileSetSpec {
         return this;
     }
 
-    public FileSetSpec including(List<String> includes) {
+    public FileSetSpec including(Collection<String> includes) {
         this.includes = List.copyOf(includes);
         return this;
     }
 
-    public FileSetSpec excluding(List<String> excludes) {
+    public FileSetSpec excluding(Collection<String> excludes) {
         this.excludes = List.copyOf(excludes);
         return this;
     }
@@ -87,7 +88,7 @@ public final class FileSetSpec {
         return this;
     }
 
-    public FileSetSpec selectedBy(List<FileSelector> fileSelectors) {
+    public FileSetSpec selectedBy(Collection<FileSelector> fileSelectors) {
         this.fileSelectors = List.copyOf(fileSelectors);
         return this;
     }
@@ -97,7 +98,7 @@ public final class FileSetSpec {
         return this;
     }
 
-    public FileSetSpec mappedBy(List<FileMapper> fileMappers) {
+    public FileSetSpec mappedBy(Collection<FileMapper> fileMappers) {
         this.fileMappers = List.copyOf(fileMappers);
         return this;
     }

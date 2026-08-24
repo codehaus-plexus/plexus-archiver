@@ -38,6 +38,11 @@ import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourc
 import org.codehaus.plexus.components.io.resources.PlexusIoFileResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
+/**
+ * Applies the configuration to the applied resourceCollection
+ *
+ * @since 5.0.0
+ */
 final class DefaultPlexusIoResourceCollectionConfigurer implements PlexusIoResourceCollectionConfigurer {
     private final PlexusIoResourceCollection collection;
 

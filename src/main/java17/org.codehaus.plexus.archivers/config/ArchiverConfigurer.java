@@ -20,6 +20,7 @@ package org.codehaus.plexus.archiver;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
+import java.util.function.Consumer;
 
 /**
  * Configures content on an archiver without exposing its file set implementations.
@@ -32,9 +33,9 @@ public interface ArchiverConfigurer {
 		return new DefaultArchiverConfigurer(archiver);
 	}
 	
-    void addFileSet(FileSetSpec fileSetSpec);
+    void addFileSetFromSpec(FileSetSpec fileSetSpec);
 
-    void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec);
+    void addArchivedFileSetFromSpec(ArchivedFileSetSpec fileSetSpec);
 
     void setDestFile(Path destFile);
 
@@ -70,5 +71,5 @@ public interface ArchiverConfigurer {
 
     void setUmask(UnixPermissions permissions);
 
-    void configureReproducibleBuild(FileTime lastModifiedTime);
+    void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> reproducibleBuildSpec);
 }

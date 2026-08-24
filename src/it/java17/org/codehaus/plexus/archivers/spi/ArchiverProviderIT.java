@@ -27,10 +27,12 @@ import java.util.List;
 
 import org.codehaus.plexus.archiver.ArchiveCreation;
 import org.codehaus.plexus.archiver.ArchivedFileSet;
+import org.codehaus.plexus.archiver.ArchivedFileSetSpec;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverConfigurer;
 import org.codehaus.plexus.archiver.DuplicateHandling;
 import org.codehaus.plexus.archiver.FileSet;
+import org.codehaus.plexus.archiver.FileSetSpec;
 import org.codehaus.plexus.archiver.PermissionHandling;
 import org.codehaus.plexus.archiver.UnixPermissions;
 import org.codehaus.plexus.archiver.diags.NoOpArchiver;
@@ -69,7 +71,7 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.of(directory)
+        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSetFromSpec(FileSetSpec.of(directory)
                 .prefixed("content/")
                 .including(List.of("**/*.txt"))
                 .excluding(List.of("**/ignored.txt"))
@@ -93,7 +95,7 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.of(archive)
+        provider.newArchiver(configurer -> configurer.addArchivedFileSetFromSpec(ArchivedFileSetSpec.of(archive)
                 .prefixed("lib/")
                 .including(List.of("**/*.class"))
                 .excluding(List.of("module-info.class"))
@@ -134,7 +136,7 @@ class ArchiverProviderIT {
             configurer.setOverrideGid(1000);
             configurer.setOverrideGroupName("group");
             configurer.setUmask(UnixPermissions.of(PosixFilePermissions.fromString("----w--w-")));
-            configurer.configureReproducibleBuild(timestamp);
+            configurer.configureReproducibleBuild(c -> c.setDefaultLastModifiedTime(timestamp));
         });
 
         assertThat(actual).isSameAs(expected);

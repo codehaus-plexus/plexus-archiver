@@ -24,14 +24,13 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.FileSet;
 import org.codehaus.plexus.archiver.TestSupport;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -107,7 +106,7 @@ class ArchiverManagerTest extends TestSupport {
         Archiver archiver = manager.getArchiver("jar");
         assertNotNull(archiver);
 
-        archiver.addFileSet(FileSet.of(Paths.get(getBasedir())));
+        archiver.addFileSet(DefaultFileSet.fileSet(new File(getBasedir())));
 
         Archiver newArchiver = manager.getArchiver("jar");
         assertNotNull(newArchiver);
