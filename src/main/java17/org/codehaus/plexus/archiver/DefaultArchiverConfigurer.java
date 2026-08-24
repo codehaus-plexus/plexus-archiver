@@ -44,12 +44,12 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
 
     @Override
     public void addFileSet(FileSetSpec fileSetSpec) {
-        archiver.addFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec"));
+        archiver.addFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec").toFileSet());
     }
 
     @Override
     public void addArchivedFileSet(ArchivedFileSetSpec fileSetSpec) {
-        archiver.addArchivedFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec"));
+        archiver.addArchivedFileSet(Objects.requireNonNull(fileSetSpec, "fileSetSpec").toArchivedFileSet());
     }
 
     @Override
