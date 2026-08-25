@@ -97,7 +97,7 @@ class PlexusIoResourceCollectionProviderIT {
         PlexusIoFileResourceCollection collection = (PlexusIoFileResourceCollection)
                 new PlexusIoFileResourceCollectionProvider().newPlexusIoResourceCollection(configurer -> {
                     configurer.setSource(directory);
-                    configurer.setSymbolicLinkHandling(SymbolicLinkHandling.DO_NOT_FOLLOW);
+                    configurer.setSymbolicLinkHandling(SymbolicLinkHandling.PRESERVE);
                 });
 
         assertThat(collection.getBaseDir()).isEqualTo(directory.toFile());

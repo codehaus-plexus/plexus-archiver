@@ -24,13 +24,13 @@ package org.codehaus.plexus.archivers.config;
  */
 public sealed interface SymbolicLinkHandling permits FixedSymbolicLinkHandling {
     SymbolicLinkHandling FOLLOW = new FixedSymbolicLinkHandling(true);
-    SymbolicLinkHandling DO_NOT_FOLLOW = new FixedSymbolicLinkHandling(false);
+    SymbolicLinkHandling PRESERVE = new FixedSymbolicLinkHandling(false);
 }
 
 final class FixedSymbolicLinkHandling implements SymbolicLinkHandling {
-    final boolean follow;
+    final boolean following;
 
-    FixedSymbolicLinkHandling(boolean follow) {
-        this.follow = follow;
+    FixedSymbolicLinkHandling(boolean following) {
+        this.following = following;
     }
 }
