@@ -14,25 +14,23 @@
  * limitations under the License.
  *
  */
-package org.codehaus.plexus.archiver;
 
-import java.nio.file.attribute.FileTime;
+package org.codehaus.plexus.archivers.config;
 
 /**
- * Applies the configuration to the applied archiver
- * 
+ * Controls whether a filesystem resource collection follows symbolic links.
+ *
  * @since 5.0.0
  */
-final class DefaultReproducibleBuildConfigurer implements ReproducibleBuildConfigurer {
+public sealed interface SymbolicLinkHandling permits FixedSymbolicLinkHandling {
+    SymbolicLinkHandling FOLLOW = new FixedSymbolicLinkHandling(true);
+    SymbolicLinkHandling DO_NOT_FOLLOW = new FixedSymbolicLinkHandling(false);
+}
 
-	private final Archiver archiver;
-	
-	DefaultReproducibleBuildConfigurer(Archiver archiver) {
-		this.archiver = archiver;
-	}
+final class FixedSymbolicLinkHandling implements SymbolicLinkHandling {
+    final boolean follow;
 
-	@Override
-	public void setDefaultLastModifiedTime(FileTime fileTime) {
-		archiver.configureReproducibleBuild(fileTime);
-	}
+    FixedSymbolicLinkHandling(boolean follow) {
+        this.follow = follow;
+    }
 }

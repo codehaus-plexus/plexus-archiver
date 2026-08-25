@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverConfigurer;
-import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archiver.UnArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.archivers.spi.ArchiverProvider;
 import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.archivers.spi.UnArchiverProvider;

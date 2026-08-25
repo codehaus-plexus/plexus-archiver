@@ -15,21 +15,22 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
-
-import java.nio.file.attribute.FileTime;
+package org.codehaus.plexus.archivers.config;
 
 /**
- * Configures reproducible build content on an archiver without exposing its implementations.
- * 
- * NOTE: Based on {@link AbstractArchiver#configureReproducibleBuild(FileTime)} this could be extended with more options.
- * 
- * The default-prefix is used to make clear this is applied to all non-explicit entries. This leaves room to extend this class with different values for explicit entries
- * 
+ * Controls whether empty directories are included in an archive.
+ *
  * @since 5.0.0
  */
-public interface ReproducibleBuildConfigurer {
+public sealed interface EmptyDirectoryHandling permits FixedEmptyDirectoryHandling {
+    EmptyDirectoryHandling INCLUDE = new FixedEmptyDirectoryHandling(true);
+    EmptyDirectoryHandling EXCLUDE = new FixedEmptyDirectoryHandling(false);
+}
 
-	void setDefaultLastModifiedTime(FileTime fileTime);
+final class FixedEmptyDirectoryHandling implements EmptyDirectoryHandling {
+    final boolean included;
 
+    FixedEmptyDirectoryHandling(boolean included) {
+        this.included = included;
+    }
 }

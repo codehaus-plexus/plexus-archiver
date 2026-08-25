@@ -15,19 +15,13 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import org.codehaus.plexus.archiver.CaseSensitivities;
-import org.codehaus.plexus.archiver.CaseSensitivity;
-import org.codehaus.plexus.archiver.DefaultExcludes;
-import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
-import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
-import org.codehaus.plexus.archiver.SymbolicLinkHandling;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;

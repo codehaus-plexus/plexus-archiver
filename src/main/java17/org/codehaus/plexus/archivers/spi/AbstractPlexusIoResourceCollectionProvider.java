@@ -20,7 +20,7 @@ package org.codehaus.plexus.archivers.spi;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**

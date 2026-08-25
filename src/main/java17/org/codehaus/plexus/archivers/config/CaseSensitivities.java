@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -31,8 +31,8 @@ public final class CaseSensitivities {
 
     public static boolean resolve(CaseSensitivity caseSensitivity) {
         Objects.requireNonNull(caseSensitivity, "caseSensitivity");
-        if (caseSensitivity instanceof FixedCaseSensitivity) {
-            return ((FixedCaseSensitivity) caseSensitivity).caseSensitive;
+        if (caseSensitivity instanceof FixedCaseSensitivity cs) {
+            return cs.caseSensitive;
         }
 
         String osName = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);

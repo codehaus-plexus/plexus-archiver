@@ -15,22 +15,21 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.spi;
+
+import java.util.function.Consumer;
+
+import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
- * Controls whether source permissions are preserved.
+ * Service provider for a named Plexus IO resource collection.
  *
  * @since 5.0.0
  */
-public sealed interface PermissionHandling permits FixedPermissionHandling {
-    PermissionHandling PRESERVE = new FixedPermissionHandling(false);
-    PermissionHandling IGNORE = new FixedPermissionHandling(true);
-}
+public sealed interface PlexusIoResourceCollectionProvider permits AbstractPlexusIoResourceCollectionProvider {
 
-final class FixedPermissionHandling implements PermissionHandling {
-    final boolean ignored;
+    String getName();
 
-    FixedPermissionHandling(boolean ignored) {
-        this.ignored = ignored;
-    }
+    PlexusIoResourceCollection newPlexusIoResourceCollection(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
 }

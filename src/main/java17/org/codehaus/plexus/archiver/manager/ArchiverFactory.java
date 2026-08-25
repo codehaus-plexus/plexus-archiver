@@ -20,7 +20,7 @@ package org.codehaus.plexus.archiver.manager;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 
 /**
  * Creates configured archiver instances.

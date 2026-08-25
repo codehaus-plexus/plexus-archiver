@@ -15,7 +15,9 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
+
+import org.codehaus.plexus.archiver.Archiver;
 
 /**
  * Controls how duplicate archive entries are handled.

@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
@@ -25,16 +25,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.ArchivedFileSet;
-import org.codehaus.plexus.archiver.ArchivedFileSetSpec;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.FileSet;
-import org.codehaus.plexus.archiver.FileSetSpec;
-import org.codehaus.plexus.archiver.ArchiverConfigurer;
-import org.codehaus.plexus.archiver.ArchiveCreation;
-import org.codehaus.plexus.archiver.DuplicateHandling;
-import org.codehaus.plexus.archiver.EmptyDirectoryHandling;
-import org.codehaus.plexus.archiver.PermissionHandling;
-import org.codehaus.plexus.archiver.UnixPermissions;
 
 /**
  * Applies the configuration to the applied archiver

@@ -2,8 +2,6 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 
-import org.codehaus.plexus.archiver.util.DefaultFileSet;
-
 /**
  * A file set, which consists of the files and directories in
  * a common base directory.

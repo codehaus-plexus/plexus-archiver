@@ -15,22 +15,22 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 /**
- * Controls whether empty directories are included in an archive.
+ * Controls how extraction handles existing destination files.
  *
  * @since 5.0.0
  */
-public sealed interface EmptyDirectoryHandling permits FixedEmptyDirectoryHandling {
-    EmptyDirectoryHandling INCLUDE = new FixedEmptyDirectoryHandling(true);
-    EmptyDirectoryHandling EXCLUDE = new FixedEmptyDirectoryHandling(false);
+public sealed interface ExistingFileHandling permits FixedExistingFileHandling {
+	public static final ExistingFileHandling OVERWRITE = new FixedExistingFileHandling(true);
+	public static final ExistingFileHandling KEEP_NEWER = new FixedExistingFileHandling(false);
 }
 
-final class FixedEmptyDirectoryHandling implements EmptyDirectoryHandling {
-    final boolean included;
+final class FixedExistingFileHandling implements ExistingFileHandling {
+    final boolean overwrite;
 
-    FixedEmptyDirectoryHandling(boolean included) {
-        this.included = included;
+    FixedExistingFileHandling(boolean overwrite) {
+        this.overwrite = overwrite;
     }
 }

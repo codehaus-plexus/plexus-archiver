@@ -22,12 +22,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-import org.codehaus.plexus.archiver.ExistingFileHandling;
-import org.codehaus.plexus.archiver.PermissionHandling;
-import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archiver.UnArchiverConfigurer;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiverProvider;
+import org.codehaus.plexus.archivers.config.ExistingFileHandling;
+import org.codehaus.plexus.archivers.config.PermissionHandling;
+import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

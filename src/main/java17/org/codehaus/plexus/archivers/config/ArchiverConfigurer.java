@@ -15,12 +15,14 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.function.Consumer;
+
+import org.codehaus.plexus.archiver.Archiver;
 
 /**
  * Configures content on an archiver without exposing its file set implementations.

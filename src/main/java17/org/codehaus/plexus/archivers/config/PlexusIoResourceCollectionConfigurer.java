@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;

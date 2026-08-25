@@ -15,11 +15,12 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.Path;
 import java.util.List;
 
+import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 

@@ -17,19 +17,25 @@
 
 package org.codehaus.plexus.archivers.spi;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archiver.UnArchiverConfigurer;
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 
 /**
- * Service provider for a named archive extraction format.
+ * Base implementation that keeps unconfigured archiver creation internal to service providers.
  *
  * @since 5.0.0
  */
-public sealed interface UnArchiverProvider permits AbstractUnArchiverProvider {
+public abstract non-sealed class AbstractArchiverProvider implements ArchiverProvider {
 
-    String getName();
+    protected abstract Archiver createArchiver();
 
-    UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer);
+    @Override
+    public final Archiver newArchiver(Consumer<ArchiverConfigurer> configurer) {
+        Archiver archiver = createArchiver();
+        Objects.requireNonNull(configurer, "configurer").accept(ArchiverConfigurer.of(archiver));
+        return archiver;
+    }
 }

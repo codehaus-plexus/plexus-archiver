@@ -15,21 +15,21 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archivers.config;
 
-import java.util.function.Consumer;
-
-import org.codehaus.plexus.archiver.PlexusIoResourceCollectionConfigurer;
-import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
+import java.nio.file.attribute.FileTime;
 
 /**
- * Service provider for a named Plexus IO resource collection.
- *
+ * Configures reproducible build content on an archiver without exposing its implementations.
+ * 
+ * NOTE: Based on {@link AbstractArchiver#configureReproducibleBuild(FileTime)} this could be extended with more options.
+ * 
+ * The default-prefix is used to make clear this is applied to all non-explicit entries. This leaves room to extend this class with different values for explicit entries
+ * 
  * @since 5.0.0
  */
-public sealed interface PlexusIoResourceCollectionProvider permits AbstractPlexusIoResourceCollectionProvider {
+public interface ReproducibleBuildConfigurer {
 
-    String getName();
+	void setDefaultLastModifiedTime(FileTime fileTime);
 
-    PlexusIoResourceCollection newPlexusIoResourceCollection(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
 }

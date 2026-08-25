@@ -15,22 +15,21 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.spi;
+
+import java.util.function.Consumer;
+
+import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 
 /**
- * Controls whether a filesystem resource collection follows symbolic links.
+ * Service provider for a named archive extraction format.
  *
  * @since 5.0.0
  */
-public sealed interface SymbolicLinkHandling permits FixedSymbolicLinkHandling {
-    SymbolicLinkHandling FOLLOW = new FixedSymbolicLinkHandling(true);
-    SymbolicLinkHandling DO_NOT_FOLLOW = new FixedSymbolicLinkHandling(false);
-}
+public sealed interface UnArchiverProvider permits AbstractUnArchiverProvider {
 
-final class FixedSymbolicLinkHandling implements SymbolicLinkHandling {
-    final boolean follow;
+    String getName();
 
-    FixedSymbolicLinkHandling(boolean follow) {
-        this.follow = follow;
-    }
+    UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer);
 }

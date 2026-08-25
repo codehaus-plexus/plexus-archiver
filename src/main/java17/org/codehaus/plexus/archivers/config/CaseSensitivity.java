@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 /**
  * Controls whether file set patterns are case-sensitive.

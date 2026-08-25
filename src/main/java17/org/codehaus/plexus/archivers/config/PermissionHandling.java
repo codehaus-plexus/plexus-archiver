@@ -15,22 +15,22 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 /**
- * Controls how extraction handles existing destination files.
+ * Controls whether source permissions are preserved.
  *
  * @since 5.0.0
  */
-public sealed interface ExistingFileHandling permits FixedExistingFileHandling {
-	public static final ExistingFileHandling OVERWRITE = new FixedExistingFileHandling(true);
-	public static final ExistingFileHandling KEEP_NEWER = new FixedExistingFileHandling(false);
+public sealed interface PermissionHandling permits FixedPermissionHandling {
+    PermissionHandling PRESERVE = new FixedPermissionHandling(false);
+    PermissionHandling IGNORE = new FixedPermissionHandling(true);
 }
 
-final class FixedExistingFileHandling implements ExistingFileHandling {
-    final boolean overwrite;
+final class FixedPermissionHandling implements PermissionHandling {
+    final boolean ignored;
 
-    FixedExistingFileHandling(boolean overwrite) {
-        this.overwrite = overwrite;
+    FixedPermissionHandling(boolean ignored) {
+        this.ignored = ignored;
     }
 }

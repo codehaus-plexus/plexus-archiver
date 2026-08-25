@@ -20,7 +20,7 @@ package org.codehaus.plexus.archivers.spi;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 
 /**
  * Service provider for a named archive format. Archivers are exposed only after their initial configuration has been

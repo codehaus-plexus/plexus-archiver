@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Objects;

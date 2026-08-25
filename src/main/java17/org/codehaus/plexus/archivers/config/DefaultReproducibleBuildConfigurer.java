@@ -14,28 +14,27 @@
  * limitations under the License.
  *
  */
+package org.codehaus.plexus.archivers.config;
 
-package org.codehaus.plexus.archivers.spi;
-
-import java.util.Objects;
-import java.util.function.Consumer;
+import java.nio.file.attribute.FileTime;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverConfigurer;
 
 /**
- * Base implementation that keeps unconfigured archiver creation internal to service providers.
- *
+ * Applies the configuration to the applied archiver
+ * 
  * @since 5.0.0
  */
-public abstract non-sealed class AbstractArchiverProvider implements ArchiverProvider {
+final class DefaultReproducibleBuildConfigurer implements ReproducibleBuildConfigurer {
 
-    protected abstract Archiver createArchiver();
+	private final Archiver archiver;
+	
+	DefaultReproducibleBuildConfigurer(Archiver archiver) {
+		this.archiver = archiver;
+	}
 
-    @Override
-    public final Archiver newArchiver(Consumer<ArchiverConfigurer> configurer) {
-        Archiver archiver = createArchiver();
-        Objects.requireNonNull(configurer, "configurer").accept(ArchiverConfigurer.of(archiver));
-        return archiver;
-    }
+	@Override
+	public void setDefaultLastModifiedTime(FileTime fileTime) {
+		archiver.configureReproducibleBuild(fileTime);
+	}
 }

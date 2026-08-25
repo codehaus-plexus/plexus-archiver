@@ -15,22 +15,22 @@
  *
  */
 
-package org.codehaus.plexus.archiver;
+package org.codehaus.plexus.archivers.config;
 
 /**
- * Controls whether an archive is always recreated or only when out of date.
+ * Controls whether standard version-control and temporary files are excluded.
  *
  * @since 5.0.0
  */
-public sealed interface ArchiveCreation permits FixedArchiveCreation {
-    ArchiveCreation ALWAYS = new FixedArchiveCreation(true);
-    ArchiveCreation WHEN_NEEDED = new FixedArchiveCreation(false);
+public sealed interface DefaultExcludes permits BuiltInDefaultExcludes {
+    DefaultExcludes USE = new BuiltInDefaultExcludes(true);
+    DefaultExcludes IGNORE = new BuiltInDefaultExcludes(false);
 }
 
-final class FixedArchiveCreation implements ArchiveCreation {
-    final boolean forced;
+final class BuiltInDefaultExcludes implements DefaultExcludes {
+    final boolean use;
 
-    FixedArchiveCreation(boolean forced) {
-        this.forced = forced;
+    BuiltInDefaultExcludes(boolean use) {
+        this.use = use;
     }
 }

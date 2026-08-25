@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archiver.UnArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 
 /**
  * Base implementation that keeps unconfigured unarchiver creation internal to service providers.
