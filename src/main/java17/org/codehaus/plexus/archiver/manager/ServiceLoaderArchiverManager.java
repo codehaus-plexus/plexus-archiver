@@ -33,27 +33,38 @@ import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.archivers.spi.UnArchiverProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
-public class ServiceLoaderArchiverManager extends AbstractArchiverManager {
+class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 
-    public ServiceLoaderArchiverManager() {
-        super(archivers(), unarchivers(), plexusIoResourceCollections());
+    ServiceLoaderArchiverManager() {
+        super(archivers(ServiceLoader.load(ArchiverProvider.class)), 
+        		unarchivers(ServiceLoader.load(UnArchiverProvider.class)), 
+        		plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class)));
     }
 
-    private static Map<String, ArchiverFactory> archivers() {
-        return StreamSupport.stream(ServiceLoader.load(ArchiverProvider.class).spliterator(), false)
+    ServiceLoaderArchiverManager(ClassLoader classLoader) {
+        super(archivers(ServiceLoader.load(ArchiverProvider.class, classLoader)), 
+        		unarchivers(ServiceLoader.load(UnArchiverProvider.class, classLoader)), 
+        		plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class, classLoader)));
+	}
+
+	ServiceLoaderArchiverManager(ModuleLayer moduleLayer) {
+		 super(archivers(ServiceLoader.load(moduleLayer, ArchiverProvider.class)), 
+	        		unarchivers(ServiceLoader.load(moduleLayer, UnArchiverProvider.class)), 
+	        		plexusIoResourceCollections(ServiceLoader.load(moduleLayer, PlexusIoResourceCollectionProvider.class)));
+	}
+
+	private static Map<String, ArchiverFactory> archivers(ServiceLoader<ArchiverProvider> serviceLoader) {
+        return StreamSupport.stream(serviceLoader.spliterator(), false)
                 .collect(Collectors.toMap(ArchiverProvider::getName, ServiceLoaderArchiverManager::toArchiverFactory));
     }
 
-    private static Map<String, UnArchiverFactory> unarchivers() {
+    private static Map<String, UnArchiverFactory> unarchivers(ServiceLoader<UnArchiverProvider> serviceLoader) {
         return StreamSupport.stream(ServiceLoader.load(UnArchiverProvider.class).spliterator(), false)
                 .collect(Collectors.toMap(UnArchiverProvider::getName, ServiceLoaderArchiverManager::toUnArchiverFactory));
     }
 
-    private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections() {
-        return StreamSupport.stream(
-                        ServiceLoader.load(PlexusIoResourceCollectionProvider.class)
-                                .spliterator(),
-                        false)
+    private static Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections(ServiceLoader<PlexusIoResourceCollectionProvider> serviceLoader) {
+        return StreamSupport.stream(serviceLoader.spliterator(),false)
                 .collect(Collectors.toMap(
                         PlexusIoResourceCollectionProvider::getName,
                         ServiceLoaderArchiverManager::toPlexusIoResourceCollectionFactory));

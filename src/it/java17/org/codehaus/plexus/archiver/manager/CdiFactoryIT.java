@@ -34,8 +34,8 @@ class CdiFactoryIT {
     void createsConfiguredArchivers(@TempDir Path directory) {
         CdiArchiverFactory factory = new CdiArchiverFactory(ZipArchiver::new);
 
-        var first = factory.create(configurer -> configurer.setDestFile(directory.resolve("first.zip")));
-        var second = factory.create(configurer -> configurer.setDestFile(directory.resolve("second.zip")));
+        var first = factory.configure(configurer -> configurer.setDestFile(directory.resolve("first.zip")));
+        var second = factory.configure(configurer -> configurer.setDestFile(directory.resolve("second.zip")));
 
         assertThat(first).isNotSameAs(second);
         assertThat(first.getDestFile()).isEqualTo(directory.resolve("first.zip").toFile());
@@ -47,7 +47,7 @@ class CdiFactoryIT {
     void createsConfiguredUnarchivers(@TempDir Path directory) {
         CdiUnArchiverFactory factory = new CdiUnArchiverFactory(ZipUnArchiver::new);
 
-        var unarchiver = factory.create(configurer -> configurer.setSource(directory.resolve("source.zip")));
+        var unarchiver = factory.configure(configurer -> configurer.setSource(directory.resolve("source.zip")));
 
         assertThat(unarchiver.getSourceFile())
                 .isEqualTo(directory.resolve("source.zip").toFile());
@@ -59,7 +59,7 @@ class CdiFactoryIT {
                 new CdiPlexusIoResourceCollectionFactory(PlexusArchiverZipFileResourceCollection::new);
 
         var collection = (AbstractPlexusIoArchiveResourceCollection)
-                factory.create(configurer -> configurer.setSource(directory.resolve("source.zip")));
+                factory.configure(configurer -> configurer.setSource(directory.resolve("source.zip")));
 
         assertThat(collection.getFile())
                 .isEqualTo(directory.resolve("source.zip").toFile());

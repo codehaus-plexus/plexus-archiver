@@ -31,7 +31,7 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 public interface PlexusIoResourceCollectionFactory {
     PlexusIoResourceCollection create();
     
-    default PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
+    default PlexusIoResourceCollection configure(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
     	PlexusIoResourceCollection resourceCollection = create();
     	configurer.accept(PlexusIoResourceCollectionConfigurer.of(resourceCollection));
     	return resourceCollection;

@@ -29,11 +29,45 @@ import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
  */
 @FunctionalInterface
 public interface ArchiverFactory {
+    /**
+     * Creates a new archiver instance for manual configuration.
+     * 
+     * In legacy code, consumers mutate the returned archiver directly:
+     * <pre>{@code
+     * Archiver archiver = factory.create();
+     * archiver.setDestFile(file);
+     * archiver.addFileSet(fileSet);
+     * archiver.createArchive();
+     * }</pre>
+     * 
+     * @return a new mutable archiver instance
+     */
     Archiver create();
     
-    default Archiver create(Consumer<ArchiverConfigurer> configurer) {
-    	Archiver archiver = create();
-    	configurer.accept(ArchiverConfigurer.of(archiver));
-    	return archiver;
+    /**
+     * Creates and configures an archiver using the configurer API.
+     * 
+     * <p>The returned archiver might be unmodifiable to prevent accidental mutations
+     * after configuration is complete. In that case calling mutation methods will throw
+     * {@link UnsupportedOperationException}.
+     * 
+     * Example:
+     * <pre>{@code
+     * Archiver configured = factory.configure(c -> c
+     *     .setDestFile(outputJar)
+     *     .addFileSetFromSpec(fileSetSpec));
+     * configured.createArchive(); // OK - read-only operation
+     * configured.addFileSet(other); // UnsupportedOperationException
+     * }</pre>
+     * 
+     * @param configurer configuration callback
+     * @return an unmodifiable archiver instance
+     * @throws UnsupportedOperationException if mutation methods are called
+     * @since 5.0.0
+     */
+    default Archiver configure(Consumer<ArchiverConfigurer> configurer) {
+        Archiver archiver = create();
+        configurer.accept(ArchiverConfigurer.of(archiver));
+        return archiver;
     }
 }

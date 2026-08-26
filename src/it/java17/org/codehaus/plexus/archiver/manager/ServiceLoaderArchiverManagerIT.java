@@ -193,14 +193,14 @@ class ServiceLoaderArchiverManagerIT {
         File outputDirectory = new File(tempDirectory, "output");
 
         ArchiverFactory archiverFactory = manager.getArchiverFactory("zip");
-        Archiver archiver = archiverFactory.create(configurer -> configurer.setDestFile(archiveFile.toPath()));
-        Archiver secondArchiver = archiverFactory.create(configurer -> {});
-        UnArchiver unarchiver = manager.getUnArchiverFactory(archiveFile).create(configurer -> {
+        Archiver archiver = archiverFactory.configure(configurer -> configurer.setDestFile(archiveFile.toPath()));
+        Archiver secondArchiver = archiverFactory.configure(configurer -> {});
+        UnArchiver unarchiver = manager.getUnArchiverFactory(archiveFile).configure(configurer -> {
             configurer.setSource(archiveFile.toPath());
             configurer.setDestinationDirectory(outputDirectory.toPath());
         });
         AbstractPlexusIoArchiveResourceCollection resourceCollection = (AbstractPlexusIoArchiveResourceCollection)
-                manager.getResourceCollectionFactory(archiveFile).create(configurer -> {
+                manager.getResourceCollectionFactory(archiveFile).configure(configurer -> {
                     configurer.setSource(archiveFile.toPath());
                     configurer.setPrefix("content/");
                 });
