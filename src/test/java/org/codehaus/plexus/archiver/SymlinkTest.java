@@ -140,4 +140,20 @@ class SymlinkTest extends TestSupport {
         assertFalse(Files.isSymbolicLink(linkedFile.toPath()));
         assertTrue(linkedFile.isFile());
     }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void fileSetSpecFollowsSymbolicLinksOnRequest() throws Exception {
+        DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
+
+        File dummyContent = getTestFile("src/test/resources/symlinks/src");
+        archiver.addFileSet(new DefaultFileSet(dummyContent).followingSymLinks(true));
+        final File archiveFile = new File("target/output/dirarchiver-spec-followed-symlink");
+        archiveFile.mkdirs();
+        archiver.setDestFile(archiveFile);
+
+        archiver.createArchive();
+
+        assertTrue(new File(archiveFile, "symDir/targetFile.txt").isFile());
+    }
 }
