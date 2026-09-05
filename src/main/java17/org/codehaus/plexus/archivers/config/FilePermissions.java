@@ -18,34 +18,53 @@
 package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * Unix permissions applied to archive entries or used as an archive umask.
+ * File permissions applied to archive entries or used as an archive umask.
  *
  * @since 5.0.0
  */
-public abstract sealed class UnixPermissions permits PosixPermissions {
+public abstract sealed class FilePermissions permits PosixPermissions, ModePermissions {
 
-    UnixPermissions() {}
+    FilePermissions() {}
 
-    public static UnixPermissions of(Set<PosixFilePermission> permissions) {
+    public static FilePermissions of(Set<PosixFilePermission> permissions) {
         return new PosixPermissions(permissions);
     }
 
-    public abstract Set<PosixFilePermission> asPosixFilePermissions();
+    public static FilePermissions parse(String pattern) {
+        return new PosixPermissions(PosixFilePermissions.fromString(pattern));
+    }
+    
+    public static FilePermissions ofMode(int mode) {
+        return new ModePermissions(mode);
+    }
 }
 
-final class PosixPermissions extends UnixPermissions {
+
+final class PosixPermissions extends FilePermissions {
     final Set<PosixFilePermission> permissions;
 
     PosixPermissions(Set<PosixFilePermission> permissions) {
         this.permissions = Set.copyOf(Objects.requireNonNull(permissions, "permissions"));
     }
 
-    @Override
-    public Set<PosixFilePermission> asPosixFilePermissions() {
+    public Set<PosixFilePermission> permissions() {
         return permissions;
     }
 }
+final class ModePermissions extends FilePermissions {
+    final int mode;
+
+    public ModePermissions(int mode) {
+    	this.mode = mode;
+	}
+    
+    int mode() {
+    	return mode;
+    }
+}
+

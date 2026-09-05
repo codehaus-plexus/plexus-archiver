@@ -39,7 +39,7 @@ import org.codehaus.plexus.archivers.config.DuplicateHandling;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
 import org.codehaus.plexus.archivers.config.FileSetSpec;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
-import org.codehaus.plexus.archivers.config.UnixPermissions;
+import org.codehaus.plexus.archivers.config.FilePermissions;
 import org.codehaus.plexus.archivers.provider.AbstractArchiverProvider;
 import org.codehaus.plexus.archivers.provider.ArchiverProvider;
 import org.junit.jupiter.api.Test;
@@ -122,10 +122,10 @@ class ArchiverProviderIT {
 
         Archiver actual = providerFor(expected).newArchiver(configurer -> {
             configurer.setDestFile(directory.resolve("archive.zip"));
-            configurer.setFileMode(UnixPermissions.of(PosixFilePermissions.fromString("rw-r--r--")));
-            configurer.setDefaultFileMode(UnixPermissions.of(PosixFilePermissions.fromString("rw-r-----")));
-            configurer.setDirectoryMode(UnixPermissions.of(PosixFilePermissions.fromString("rwxr-xr-x")));
-            configurer.setDefaultDirectoryMode(UnixPermissions.of(PosixFilePermissions.fromString("rwxr-x---")));
+            configurer.setFileMode(FilePermissions.parse("rw-r--r--"));
+            configurer.setDefaultFileMode(FilePermissions.parse("rw-r-----"));
+            configurer.setDirectoryMode(FilePermissions.parse("rwxr-xr-x"));
+            configurer.setDefaultDirectoryMode(FilePermissions.parse("rwxr-x---"));
             configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
             configurer.setDotFileDirectory(directory);
             configurer.setForced(ArchiveCreation.WHEN_NEEDED);
@@ -137,7 +137,7 @@ class ArchiverProviderIT {
             configurer.setOverrideUserName("user");
             configurer.setOverrideGid(1000);
             configurer.setOverrideGroupName("group");
-            configurer.setUmask(UnixPermissions.of(PosixFilePermissions.fromString("----w--w-")));
+            configurer.setUmask(FilePermissions.parse("----w--w-"));
             configurer.configureReproducibleBuild(c -> c.setDefaultLastModifiedTime(timestamp));
         });
 

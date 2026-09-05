@@ -56,22 +56,22 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     }
 
     @Override
-    public void setFileMode(UnixPermissions permissions) {
+    public void setFileMode(FilePermissions permissions) {
         archiver.setFileMode(toMode(permissions));
     }
 
     @Override
-    public void setDefaultFileMode(UnixPermissions permissions) {
+    public void setDefaultFileMode(FilePermissions permissions) {
         archiver.setDefaultFileMode(toMode(permissions));
     }
 
     @Override
-    public void setDirectoryMode(UnixPermissions permissions) {
+    public void setDirectoryMode(FilePermissions permissions) {
         archiver.setDirectoryMode(toMode(permissions));
     }
 
     @Override
-    public void setDefaultDirectoryMode(UnixPermissions permissions) {
+    public void setDefaultDirectoryMode(FilePermissions permissions) {
         archiver.setDefaultDirectoryMode(toMode(permissions));
     }
 
@@ -147,7 +147,7 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     }
 
     @Override
-    public void setUmask(UnixPermissions permissions) {
+    public void setUmask(FilePermissions permissions) {
         archiver.setUmask(toMode(permissions));
     }
 
@@ -158,23 +158,29 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
 		spec.accept(configurer);
 	}
 
-    private static int toMode(UnixPermissions unixPermissions) {
-        int mode = 0;
-        for (PosixFilePermission permission :
-                Objects.requireNonNull(unixPermissions, "unixPermissions").asPosixFilePermissions()) {
-            mode |= switch (permission) {
-                case OWNER_READ -> 0_400;
-                case OWNER_WRITE -> 0_200;
-                case OWNER_EXECUTE -> 0_100;
-                case GROUP_READ -> 0_040;
-                case GROUP_WRITE -> 0_020;
-                case GROUP_EXECUTE -> 0_010;
-                case OTHERS_READ -> 0_004;
-                case OTHERS_WRITE -> 0_002;
-                case OTHERS_EXECUTE -> 0_001;
-            };
-        }
-        return mode;
+    private static int toMode(FilePermissions filePermissions) {
+    	if(filePermissions instanceof PosixPermissions permissions) {
+        	int mode = 0;
+            for (PosixFilePermission permission :
+                    Objects.requireNonNull(permissions, "unixPermissions").permissions()) {
+                mode |= switch (permission) {
+                    case OWNER_READ -> 0_400;
+                    case OWNER_WRITE -> 0_200;
+                    case OWNER_EXECUTE -> 0_100;
+                    case GROUP_READ -> 0_040;
+                    case GROUP_WRITE -> 0_020;
+                    case GROUP_EXECUTE -> 0_010;
+                    case OTHERS_READ -> 0_004;
+                    case OTHERS_WRITE -> 0_002;
+                    case OTHERS_EXECUTE -> 0_001;
+                };
+            }
+            return mode;
+    	} else if(filePermissions instanceof ModePermissions permissions) {
+    		return permissions.mode();
+    	} else {
+    		throw new IncompatibleClassChangeError();
+    	}
     }
 
 }

@@ -41,13 +41,13 @@ public interface ArchiverConfigurer {
 
     void setDestFile(Path destFile);
 
-    void setFileMode(UnixPermissions permissions);
+    void setFileMode(FilePermissions permissions);
 
-    void setDefaultFileMode(UnixPermissions permissions);
+    void setDefaultFileMode(FilePermissions permissions);
 
-    void setDirectoryMode(UnixPermissions permissions);
+    void setDirectoryMode(FilePermissions permissions);
 
-    void setDefaultDirectoryMode(UnixPermissions permissions);
+    void setDefaultDirectoryMode(FilePermissions permissions);
 
     void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling);
 
@@ -71,7 +71,7 @@ public interface ArchiverConfigurer {
 
     void setOverrideGroupName(String groupName);
 
-    void setUmask(UnixPermissions permissions);
+    void setUmask(FilePermissions permissions);
 
     void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> reproducibleBuildSpec);
 }
