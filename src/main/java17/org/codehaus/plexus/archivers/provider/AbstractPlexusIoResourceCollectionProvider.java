@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archivers.provider;
 
 import java.util.Objects;
 import java.util.function.Consumer;

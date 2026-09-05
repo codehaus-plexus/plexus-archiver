@@ -18,7 +18,7 @@
 package org.codehaus.plexus.archiver.sar;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.spi.AbstractUnArchiverProvider;
+import org.codehaus.plexus.archivers.provider.AbstractUnArchiverProvider;
 
 /**
  * @since 5.0.0

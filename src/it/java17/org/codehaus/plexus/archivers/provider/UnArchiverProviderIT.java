@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archivers.provider;
 
 import java.lang.reflect.Modifier;
 import java.nio.file.Path;
@@ -28,6 +28,8 @@ import org.codehaus.plexus.archivers.config.ExistingFileHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
 import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
+import org.codehaus.plexus.archivers.provider.AbstractUnArchiverProvider;
+import org.codehaus.plexus.archivers.provider.UnArchiverProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

@@ -18,7 +18,7 @@
 package org.codehaus.plexus.archiver.jar;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archivers.spi.AbstractArchiverProvider;
+import org.codehaus.plexus.archivers.provider.AbstractArchiverProvider;
 
 /**
  * @since 5.0.0

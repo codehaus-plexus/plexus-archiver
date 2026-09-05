@@ -15,7 +15,7 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archivers.provider;
 
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
@@ -33,6 +33,8 @@ import org.codehaus.plexus.archivers.config.DefaultExcludes;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
 import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archivers.config.SymbolicLinkHandling;
+import org.codehaus.plexus.archivers.provider.AbstractPlexusIoResourceCollectionProvider;
+import org.codehaus.plexus.archivers.provider.PlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoCompressedFileResourceCollection;

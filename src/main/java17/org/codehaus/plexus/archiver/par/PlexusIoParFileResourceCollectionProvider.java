@@ -17,7 +17,7 @@
 
 package org.codehaus.plexus.archiver.par;
 
-import org.codehaus.plexus.archivers.spi.AbstractPlexusIoResourceCollectionProvider;
+import org.codehaus.plexus.archivers.provider.AbstractPlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**

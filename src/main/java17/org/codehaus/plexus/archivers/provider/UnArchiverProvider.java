@@ -15,21 +15,21 @@
  *
  */
 
-package org.codehaus.plexus.archivers.spi;
+package org.codehaus.plexus.archivers.provider;
 
 import java.util.function.Consumer;
 
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
-import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
+import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 
 /**
- * Service provider for a named Plexus IO resource collection.
+ * Service provider for a named archive extraction format.
  *
  * @since 5.0.0
  */
-public sealed interface PlexusIoResourceCollectionProvider permits AbstractPlexusIoResourceCollectionProvider {
+public sealed interface UnArchiverProvider permits AbstractUnArchiverProvider {
 
     String getName();
 
-    PlexusIoResourceCollection newPlexusIoResourceCollection(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
+    UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer);
 }

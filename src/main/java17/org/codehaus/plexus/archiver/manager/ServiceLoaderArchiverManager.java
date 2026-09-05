@@ -28,9 +28,9 @@ import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
-import org.codehaus.plexus.archivers.spi.ArchiverProvider;
-import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionProvider;
-import org.codehaus.plexus.archivers.spi.UnArchiverProvider;
+import org.codehaus.plexus.archivers.provider.ArchiverProvider;
+import org.codehaus.plexus.archivers.provider.PlexusIoResourceCollectionProvider;
+import org.codehaus.plexus.archivers.provider.UnArchiverProvider;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 class ServiceLoaderArchiverManager extends AbstractArchiverManager {
