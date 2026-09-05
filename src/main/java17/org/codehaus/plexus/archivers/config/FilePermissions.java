@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.attribute.PosixFilePermission;
@@ -23,28 +22,69 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * File permissions applied to archive entries or used as an archive umask.
+ * Represents archive file permissions or modes in a form suitable for archiver configuration.
+ * <p>
+ * This type provides a small, public abstraction over the underlying permission representation so consumers can
+ * configure archive entry permissions using either symbolic POSIX-style permissions or numeric mode values.
+ * </p>
  *
  * @since 5.0.0
  */
-public abstract sealed class FilePermissions permits PosixPermissions, ModePermissions {
+public sealed abstract class FilePermissions permits PosixPermissions, ModePermissions {
 
     FilePermissions() {}
 
+    /**
+     * Creates permissions from a set of POSIX file permissions.
+     *
+     * @param permissions the POSIX permissions
+     * @return a permission representation for archiver configuration
+     * @since 5.0.0
+     */
     public static FilePermissions of(Set<PosixFilePermission> permissions) {
         return new PosixPermissions(permissions);
     }
 
+    /**
+     * Parses a POSIX symbolic permission string.
+     * <p>
+     * The expected format is the standard symbolic representation understood by
+     * {@link java.nio.file.attribute.PosixFilePermissions#fromString(String)}, such as
+     * {@code rw-r--r--} or {@code rwxr-xr-x}.
+     * </p>
+     *
+     * @param symbolicPermissions the symbolic POSIX permission string
+     * @return a permission representation for archiver configuration
+     * @throws IllegalArgumentException if the string is not a valid symbolic POSIX permission value
+     * @since 5.0.0
+     */
     public static FilePermissions parse(String pattern) {
         return new PosixPermissions(PosixFilePermissions.fromString(pattern));
     }
     
+    /**
+     * Creates permissions from a numeric archive mode.
+     * <p>
+     * The mode should be expressed using the familiar octal form, for example {@code 0644} or {@code 0755}.
+     * </p>
+     *
+     * @param mode the numeric archive mode
+     * @return a permission representation for archiver configuration
+     * @since 5.0.0
+     */
     public static FilePermissions ofMode(int mode) {
         return new ModePermissions(mode);
     }
 }
 
-
+/**
+ * POSIX-style permissions represented as a set of {@link PosixFilePermission} values.
+ * <p>
+ * This representation is useful when consumers already have permissions in Java NIO form.
+ * </p>
+ *
+ * @since 5.0.0
+ */
 final class PosixPermissions extends FilePermissions {
     final Set<PosixFilePermission> permissions;
 
@@ -56,6 +96,17 @@ final class PosixPermissions extends FilePermissions {
         return permissions;
     }
 }
+
+/**
+ * Numeric archive permissions represented as a Unix-style mode value.
+ * <p>
+ * The mode is typically expressed using the familiar octal notation, such as {@code 0644} or {@code 0755}.
+ * This is the most convenient form for archive configuration because archive tools usually work with mode bits
+ * rather than full filesystem permission models.
+ * </p>
+ *
+ * @since 5.0.0
+ */
 final class ModePermissions extends FilePermissions {
     final int mode;
 
