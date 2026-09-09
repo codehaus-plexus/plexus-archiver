@@ -5,6 +5,10 @@ updates:
     target-branch: "master"
     schedule:
       interval: "daily"
+    ignore:
+      # Keep slf4j 1.7.x for Maven 3 compatibility
+      - dependency-name: "org.slf4j:*"
+        versions: ["[2.0.0,)"]
 
   - package-ecosystem: "maven"
     directory: "/"
