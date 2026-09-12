@@ -22,7 +22,9 @@ import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
+import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.FileSet;
 
 /**
  * Configures content on an archiver without exposing its file set implementations.
@@ -35,9 +37,9 @@ public interface ArchiverConfigurer {
 		return new DefaultArchiverConfigurer(archiver);
 	}
 	
-    void addFileSetFromSpec(FileSetSpec fileSetSpec);
+    void addFileSet(FileSet fileSet);
 
-    void addArchivedFileSetFromSpec(ArchivedFileSetSpec fileSetSpec);
+    void addArchivedFileSet(ArchivedFileSet archivedFileSet);
 
     void setDestFile(Path destFile);
 

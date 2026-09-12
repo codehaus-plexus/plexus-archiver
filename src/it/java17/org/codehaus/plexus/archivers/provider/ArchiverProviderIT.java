@@ -30,14 +30,12 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.FileSet;
 import org.codehaus.plexus.archiver.diags.NoOpArchiver;
 import org.codehaus.plexus.archivers.config.ArchiveCreation;
-import org.codehaus.plexus.archivers.config.ArchivedFileSetSpec;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
 import org.codehaus.plexus.archivers.config.DefaultExcludes;
 import org.codehaus.plexus.archivers.config.DuplicateHandling;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
-import org.codehaus.plexus.archivers.config.FileSetSpec;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
 import org.codehaus.plexus.archivers.config.FilePermissions;
 import org.codehaus.plexus.archivers.provider.AbstractArchiverProvider;
@@ -73,13 +71,14 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSetFromSpec(FileSetSpec.of(directory)
+        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.of(directory)
                 .prefixed("content/")
                 .including(List.of("**/*.txt"))
                 .excluding(List.of("**/ignored.txt"))
                 .caseSensitive(CaseSensitivity.INSENSITIVE)
                 .usingDefaultExcludes(DefaultExcludes.IGNORE)
-                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)));
+                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
+                .build()));
 
         assertThat(actual).isSameAs(expected);
         assertThat(expected.fileSet.getDirectory()).isEqualTo(directory.toFile());
@@ -97,13 +96,14 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        provider.newArchiver(configurer -> configurer.addArchivedFileSetFromSpec(ArchivedFileSetSpec.of(archive)
+        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.of(archive)
                 .prefixed("lib/")
                 .including(List.of("**/*.class"))
                 .excluding(List.of("module-info.class"))
                 .caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
                 .usingDefaultExcludes(DefaultExcludes.IGNORE)
-                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)));
+                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
+                .build()));
 
         assertThat(expected.archivedFileSet.getArchive()).isEqualTo(archive.toFile());
         assertThat(expected.archivedFileSet.getPrefix()).isEqualTo("lib/");
