@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Represents archive file permissions or modes in a form suitable for archiver configuration.
+ * Represents archive file permissions in a form suitable for archiver configuration.
  * <p>
  * This type provides a small, public abstraction over the underlying permission representation so consumers can
  * configure archive entry permissions using either symbolic POSIX-style permissions or numeric mode values.
@@ -39,7 +39,6 @@ public sealed abstract class FilePermissions permits PosixPermissions, ModePermi
      *
      * @param permissions the POSIX permissions
      * @return a permission representation for archiver configuration
-     * @since 5.0.0
      */
     public static FilePermissions of(Set<PosixFilePermission> permissions) {
         return new PosixPermissions(permissions);
@@ -53,13 +52,12 @@ public sealed abstract class FilePermissions permits PosixPermissions, ModePermi
      * {@code rw-r--r--} or {@code rwxr-xr-x}.
      * </p>
      *
-     * @param symbolicPermissions the symbolic POSIX permission string
+     * @param symbolicPermissions the POSIX symbolic permission string
      * @return a permission representation for archiver configuration
-     * @throws IllegalArgumentException if the string is not a valid symbolic POSIX permission value
-     * @since 5.0.0
+     * @throws IllegalArgumentException if the string is not a valid POSIX symbolic permission value
      */
-    public static FilePermissions parse(String pattern) {
-        return new PosixPermissions(PosixFilePermissions.fromString(pattern));
+    public static FilePermissions parse(String symbolicPermissions) {
+        return new PosixPermissions(PosixFilePermissions.fromString(symbolicPermissions));
     }
     
     /**
@@ -70,7 +68,6 @@ public sealed abstract class FilePermissions permits PosixPermissions, ModePermi
      *
      * @param mode the numeric archive mode
      * @return a permission representation for archiver configuration
-     * @since 5.0.0
      */
     public static FilePermissions ofMode(int mode) {
         return new ModePermissions(mode);
@@ -82,8 +79,6 @@ public sealed abstract class FilePermissions permits PosixPermissions, ModePermi
  * <p>
  * This representation is useful when consumers already have permissions in Java NIO form.
  * </p>
- *
- * @since 5.0.0
  */
 final class PosixPermissions extends FilePermissions {
     final Set<PosixFilePermission> permissions;
@@ -104,8 +99,6 @@ final class PosixPermissions extends FilePermissions {
  * This is the most convenient form for archive configuration because archive tools usually work with mode bits
  * rather than full filesystem permission models.
  * </p>
- *
- * @since 5.0.0
  */
 final class ModePermissions extends FilePermissions {
     final int mode;
