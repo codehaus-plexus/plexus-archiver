@@ -20,10 +20,7 @@ package org.codehaus.plexus.archiver.manager;
 import javax.inject.Provider;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
-import org.codehaus.plexus.archivers.internal.DefaultPlexusIoResourceCollectionConfigurer;
-import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 final class CdiPlexusIoResourceCollectionFactory implements PlexusIoResourceCollectionFactory {
@@ -34,10 +31,7 @@ final class CdiPlexusIoResourceCollectionFactory implements PlexusIoResourceColl
     }
 
     @Override
-    public PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-        PlexusIoResourceCollection collection = provider.get();
-        Objects.requireNonNull(configurer, "configurer")
-                .accept(new DefaultPlexusIoResourceCollectionConfigurer(collection));
-        return collection;
+    public PlexusIoResourceCollection create() {
+        return provider.get();
     }
 }
