@@ -52,7 +52,7 @@ public interface FileSet extends BaseFileSet {
      * @return
      * @since 5.0.0
      */
-    public static Builder of(Path directory) {
+    public static Builder fromDirectory(Path directory) {
         return new Builder(directory);
     }
 
@@ -76,17 +76,17 @@ public interface FileSet extends BaseFileSet {
             this.directory = Objects.requireNonNull(directory, "directory");
         }
 
-        public Builder prefixed(String prefix) {
+        public Builder prefix(String prefix) {
             this.prefix = prefix;
             return this;
         }
 
-        public Builder including(Collection<String> includes) {
+        public Builder includes(Collection<String> includes) {
             this.includes = List.copyOf(includes);
             return this;
         }
 
-        public Builder excluding(Collection<String> excludes) {
+        public Builder excludes(Collection<String> excludes) {
             this.excludes = List.copyOf(excludes);
             return this;
         }
@@ -96,7 +96,7 @@ public interface FileSet extends BaseFileSet {
             return this;
         }
 
-        public Builder usingDefaultExcludes(DefaultExcludes defaultExcludes) {
+        public Builder defaultExcludes(DefaultExcludes defaultExcludes) {
             this.defaultExcludes = Objects.requireNonNull(defaultExcludes, "defaultExcludes");
             return this;
         }
@@ -111,17 +111,17 @@ public interface FileSet extends BaseFileSet {
             return this;
         }
 
-        public Builder selectedBy(Collection<FileSelector> fileSelectors) {
+        public Builder fileSelectors(Collection<FileSelector> fileSelectors) {
             this.fileSelectors = List.copyOf(fileSelectors);
             return this;
         }
 
-        public Builder transformedBy(InputStreamTransformer streamTransformer) {
+        public Builder streamTransformer(InputStreamTransformer streamTransformer) {
             this.streamTransformer = Objects.requireNonNull(streamTransformer, "streamTransformer");
             return this;
         }
 
-        public Builder mappedBy(Collection<FileMapper> fileMappers) {
+        public Builder fileMappers(Collection<FileMapper> fileMappers) {
             this.fileMappers = List.copyOf(fileMappers);
             return this;
         }

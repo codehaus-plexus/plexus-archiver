@@ -71,12 +71,12 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.of(directory)
-                .prefixed("content/")
-                .including(List.of("**/*.txt"))
-                .excluding(List.of("**/ignored.txt"))
+        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.fromDirectory(directory)
+                .prefix("content/")
+                .includes(List.of("**/*.txt"))
+                .excludes(List.of("**/ignored.txt"))
                 .caseSensitive(CaseSensitivity.INSENSITIVE)
-                .usingDefaultExcludes(DefaultExcludes.IGNORE)
+                .defaultExcludes(DefaultExcludes.IGNORE)
                 .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
                 .build()));
 
@@ -96,12 +96,12 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.of(archive)
-                .prefixed("lib/")
-                .including(List.of("**/*.class"))
-                .excluding(List.of("module-info.class"))
+        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.fromArchive(archive)
+                .prefix("lib/")
+                .includes(List.of("**/*.class"))
+                .excludes(List.of("module-info.class"))
                 .caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
-                .usingDefaultExcludes(DefaultExcludes.IGNORE)
+                .defaultExcludes(DefaultExcludes.IGNORE)
                 .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
                 .build()));
 
