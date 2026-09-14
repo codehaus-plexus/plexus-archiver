@@ -15,6 +15,7 @@
  */
 package org.codehaus.plexus.archiver.tar;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -23,7 +24,10 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -52,6 +56,118 @@ class TarStreamingTest {
         return Arrays.stream(TarUnArchiver.UntarCompressionMethod.values())
                 .flatMap(method -> Stream.of(false, true).flatMap(links -> Stream.of(false, true)
                         .map(rejectTraversal -> Arguments.of(method, links, rejectTraversal))));
+    }
+
+    /** Subclass hooks see original arguments while stateful mapping is shared by checks, output and link targets. */
+    @ParameterizedTest
+    @MethodSource("extractionCases")
+    void preservesMappedExtractionHookArguments(
+            TarUnArchiver.UntarCompressionMethod method, boolean links, boolean rejectTraversal) throws Exception {
+        Path source = temp.resolve("hook.tar");
+        try (var out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
+            TarHardLinkTest.entry(out, "data", "payload", null);
+            TarHardLinkTest.entry(out, "ordinary", "skip this", null);
+            if (links) {
+                TarHardLinkTest.entry(out, "alias", "", "data");
+            }
+        }
+        Path output = Files.createDirectory(temp.resolve("hook-output"));
+        AtomicInteger mappings = new AtomicInteger();
+        FileMapper[] mappers = {name -> "mapped/" + name + "-" + mappings.incrementAndGet(), name -> "prefix/" + name};
+        List<String> names = new ArrayList<>();
+        List<FileMapper[]> mapperArguments = new ArrayList<>();
+        TarUnArchiver extractor = new TarUnArchiver(compress(source, method).toFile()) {
+            /** Models an existing subclass that selects by source name and delegates with the supplied mappers. */
+            @Override
+            protected void extractFile(
+                    File archive,
+                    File directory,
+                    InputStream contents,
+                    String name,
+                    Date date,
+                    boolean isDirectory,
+                    Integer mode,
+                    String symlink,
+                    FileMapper[] fileMappers)
+                    throws IOException {
+                names.add(name);
+                mapperArguments.add(fileMappers);
+                if (!name.equals("ordinary")) {
+                    super.extractFile(
+                            archive, directory, contents, name, date, isDirectory, mode, symlink, fileMappers);
+                }
+            }
+        };
+        extractor.setCompression(method);
+        extractor.setDestDirectory(output.toFile());
+        extractor.setFileMappers(mappers);
+        extractor.setFailOnSymlinkTraversal(rejectTraversal);
+        extractor.extract();
+
+        assertEquals(List.of("data", "ordinary"), names);
+        mapperArguments.forEach(argument -> assertSame(mappers, argument));
+        assertEquals(links ? 3 : 2, mappings.get(), "each selected occurrence must be mapped only once");
+        assertEquals("payload", Files.readString(output.resolve("prefix/mapped/data-1")));
+        assertFalse(Files.exists(output.resolve("prefix/mapped/ordinary-2")));
+        if (links) {
+            assertEquals("payload", Files.readString(output.resolve("prefix/mapped/alias-3")));
+            assertTrue(
+                    Files.isSameFile(output.resolve("prefix/mapped/data-1"), output.resolve("prefix/mapped/alias-3")));
+        }
+    }
+
+    /** A failed subclass hook must release its mapping before a later direct call to the protected method. */
+    @Test
+    void clearsMappedHookStateAfterFailure() throws Exception {
+        Path source = temp.resolve("failed-hook.tar");
+        try (var out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
+            TarHardLinkTest.entry(out, "ordinary", "payload", null);
+        }
+        Path output = Files.createDirectory(temp.resolve("failed-hook-output"));
+        AtomicInteger mappings = new AtomicInteger();
+        FileMapper[] mappers = {name -> name + "-" + mappings.incrementAndGet()};
+        class FailingExtractor extends TarUnArchiver {
+            /** Models a subclass that aborts extraction after the destination was mapped. */
+            @Override
+            protected void extractFile(
+                    File archive,
+                    File directory,
+                    InputStream contents,
+                    String name,
+                    Date date,
+                    boolean isDirectory,
+                    Integer mode,
+                    String symlink,
+                    FileMapper[] fileMappers)
+                    throws IOException {
+                throw new IOException("hook failure");
+            }
+
+            /** Exercises a super call outside the archive loop using the same original name and mapper array. */
+            void extractDirectly() throws IOException {
+                try (InputStream contents = new ByteArrayInputStream("direct".getBytes(StandardCharsets.UTF_8))) {
+                    super.extractFile(
+                            source.toFile(),
+                            output.toFile(),
+                            contents,
+                            "ordinary",
+                            new Date(),
+                            false,
+                            0644,
+                            null,
+                            mappers);
+                }
+            }
+        }
+        FailingExtractor extractor = new FailingExtractor();
+        extractor.setSourceFile(source.toFile());
+        extractor.setDestDirectory(output.toFile());
+        extractor.setFileMappers(mappers);
+        assertThrows(ArchiverException.class, extractor::extract);
+        extractor.extractDirectly();
+        assertEquals(2, mappings.get());
+        assertFalse(Files.exists(output.resolve("ordinary-1")));
+        assertEquals("direct", Files.readString(output.resolve("ordinary-2")));
     }
 
     /** A large later member detects an up-front scan even when buffered input reads ahead. */

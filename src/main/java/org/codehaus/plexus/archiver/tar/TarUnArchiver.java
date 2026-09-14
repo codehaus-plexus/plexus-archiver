@@ -28,6 +28,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -66,6 +67,12 @@ public class TarUnArchiver extends AbstractUnArchiver {
     private UntarCompressionMethod compression = UntarCompressionMethod.NONE;
 
     private boolean failOnSymlinkTraversal;
+
+    /** The destination already checked for the current call to a subclass extraction hook. */
+    private MappedEntry mappedEntry;
+
+    /** Retains original hook arguments alongside the destination computed for this occurrence. */
+    private record MappedEntry(String name, FileMapper[] mappers, String destination) {}
 
     /**
      * Controls rejection of intermediate symbolic links in selected, mapped extraction paths.
@@ -147,17 +154,22 @@ public class TarUnArchiver extends AbstractUnArchiver {
                 } else {
                     // Check the mapped path before opening contents or dispatching to subclass extraction hooks.
                     checkSymlinkTraversal(destDirectory, name, entry.getName(), false);
+                    MappedEntry previous = mappedEntry;
+                    mappedEntry = new MappedEntry(entry.getName(), fileMappers, name);
                     try (InputStream contents = archive.getInputStream(entry)) {
                         extractFile(
                                 sourceFile,
                                 destDirectory,
                                 contents,
-                                name,
+                                entry.getName(),
                                 entry.getModTime(),
                                 entry.isDirectory(),
                                 entry.getMode() != 0 ? entry.getMode() : null,
                                 entry.isSymbolicLink() ? entry.getLinkName() : null,
-                                null);
+                                fileMappers);
+                    } finally {
+                        // A failed, skipped or nested hook must not leak its mapped destination into another call.
+                        mappedEntry = previous;
                     }
                 }
             }
@@ -165,6 +177,44 @@ public class TarUnArchiver extends AbstractUnArchiver {
             throw new ArchiverException(
                     "Error while expanding " + sourceFile.getAbsolutePath() + ": " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Extracts an ordinary entry while preserving the original-name and mapper arguments seen by subclasses.
+     * Calls to {@code super.extractFile(...)} with those arguments reuse the already checked destination,
+     * so a stateful mapper is not invoked again. Subclasses supplying different arguments are mapped normally.
+     *
+     * @param source the source archive
+     * @param directory the extraction directory
+     * @param contents the entry contents
+     * @param name the original archive member name
+     * @param date the entry timestamp
+     * @param isDirectory whether the entry is a directory
+     * @param mode the entry permissions, or null
+     * @param symlink the symbolic-link target, or null
+     * @param fileMappers the configured file mappers
+     * @throws IOException if mapping checks or extraction fail
+     * @throws ArchiverException if the destination is rejected
+     */
+    @Override
+    protected void extractFile(
+            File source,
+            File directory,
+            InputStream contents,
+            String name,
+            Date date,
+            boolean isDirectory,
+            Integer mode,
+            String symlink,
+            FileMapper[] fileMappers)
+            throws IOException {
+        String destination =
+                mappedEntry != null && mappedEntry.name().equals(name) && mappedEntry.mappers() == fileMappers
+                        ? mappedEntry.destination()
+                        : applyFileMappers(name, fileMappers);
+        // A subclass can alter arguments or filesystem state before delegating, so recheck the actual destination.
+        checkSymlinkTraversal(directory, destination, name, false);
+        super.extractFile(source, directory, contents, destination, date, isDirectory, mode, symlink, null);
     }
 
     /**
@@ -185,15 +235,17 @@ public class TarUnArchiver extends AbstractUnArchiver {
     /** Maps each occurrence once, including an excluded target when a selected link needs its path. */
     private String mappedName(
             TarArchiveEntry entry, FileMapper[] fileMappers, Map<TarArchiveEntry, String> mappedNames) {
-        return mappedNames.computeIfAbsent(entry, ignored -> {
-            String name = entry.getName();
-            if (fileMappers != null) {
-                for (FileMapper mapper : fileMappers) {
-                    name = mapper.getMappedFileName(name);
-                }
+        return mappedNames.computeIfAbsent(entry, ignored -> applyFileMappers(entry.getName(), fileMappers));
+    }
+
+    /** Applies a mapper chain in order when no mapped result is available for these hook arguments. */
+    private static String applyFileMappers(String name, FileMapper[] fileMappers) {
+        if (fileMappers != null) {
+            for (FileMapper mapper : fileMappers) {
+                name = mapper.getMappedFileName(name);
             }
-            return name;
-        });
+        }
+        return name;
     }
 
     /**
