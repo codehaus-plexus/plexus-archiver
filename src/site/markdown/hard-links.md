@@ -1,6 +1,13 @@
 # TAR hard links
 
-`TarArchiver` can preserve hard links when explicitly enabled:
+A hard link is one more name for the same file. In a TAR archive, a hard-link
+member contains a reference to a target member. A data member contains the
+contents of a regular file.
+
+## Archive creation
+
+To enable hard-link preservation, call `TarArchiver.setPreserveHardLinks(true)`
+before you make the archive:
 
 ```java
 TarArchiver archiver = new TarArchiver();
@@ -10,62 +17,99 @@ archiver.setDestFile(outputArchive);
 archiver.createArchive();
 ```
 
-The default is `false`. Eligible entries share one data-bearing TAR member;
-subsequent aliases contain a hard-link header referring to its final archive name.
-The option also applies to the compressed TAR archivers.
+The default value is `false`. With this option enabled, resources with the same
+identity and output metadata share one data member. The archiver writes
+subsequent names as hard-link members that contain the target name in the
+archive. Compressed TAR archivers also have this option.
 
-Preservation requires a resource implementing Plexus IO's optional
-`HardLinkIdentitySupplier`. Local regular files provide an identity when they have
-unmodified filesystem contents and the filesystem exposes a file key. Arbitrary
-content suppliers, stream transformations, unavailable identities, and conflicting
-output metadata result in full regular entries. Transparent name mapping preserves
-identity; it changes the archive target name. Symbolic links retain their existing
-symbolic-link representation. Truncating long names disables hard-link creation
-because a truncated target name may be ambiguous.
+For hard-link preservation, the resource must implement the optional Plexus IO
+`HardLinkIdentitySupplier` interface. A local regular file gives an identity if
+it supplies the source file contents and the file system gives a file key. The
+archiver writes a full data member for each resource in these conditions:
 
-Subclasses of `PlexusIoFileResource` and `TarResource` must explicitly supply their
-own hard-link identity guarantee. Inheriting a backing file or archive occurrence
-does not establish that an overridden content stream contains the same bytes.
+- The resource uses a custom content supplier.
+- A stream transformation changes the contents.
+- The resource has no identity.
+- The output metadata is different from the target metadata.
 
-Like GNU tar and bsdtar, the writer continues preserving hard links when archive
-paths traverse symbolic links. Hard-link headers name paths, so extraction can
-link to contents replaced by an intervening write through a directory symlink.
-For example, writing `real/file`, `redirect -> real`, a replacement
-`redirect/file`, then `alias -> real/file` makes default extraction give `alias`
-the replacement contents. Disabling preservation instead stores each resource's
-own bytes. Unrelated subsequent hard links remain eligible for preservation.
+A name mapper that changes only the name does not change the identity. It
+changes the target name in the archive. The archiver writes symbolic links as
+symbolic-link members. If the archiver truncates long names, it disables
+hard-link preservation. A truncated target name can identify more than one
+member.
+
+To support hard-link preservation, a subclass of `PlexusIoFileResource` or
+`TarResource` must supply its own hard-link identity. Resources with that
+identity must have the same contents. A subclass can change the contents even if
+it uses the same source file or archive member.
+
+The archiver continues hard-link preservation when archive paths go through
+symbolic links. GNU tar and bsdtar do the same. A subsequent write through a
+directory symbolic link can replace the file at a hard-link target path.
+
+For example, an archive contains these members in this sequence:
+
+1. A data member named `real/file`.
+2. A symbolic-link member named `redirect`, with `real` as its target.
+3. A data member named `redirect/file`, with different contents.
+4. A hard-link member named `alias`, with `real/file` as its target.
+
+With the default extraction settings, `redirect/file` replaces `real/file`
+through the symbolic link. The hard link named `alias` then has the replacement
+contents. With hard-link preservation disabled, the archiver stores the contents
+of each resource in a different data member. The symbolic link does not disable
+hard-link preservation for other groups of resources.
 
 ## Streaming extraction
 
-Extraction reads the TAR in one forward pass, writing each selected member as it
-arrives. There is no preliminary header scan or payload staging. Hard links must
-refer to earlier regular members or valid backward-link chains. Selected forward
-references, missing source targets, self-links, non-regular targets, and escaping
-paths are rejected without scanning ahead or retrying later.
+The extractor reads the TAR archive one time in a forward direction. It writes
+each selected member when it reads that member. It does not scan the headers
+first or store file contents in temporary files before extraction.
 
-Source archive names are tracked separately from mapped destination paths. A link
-uses its target's current mapped regular file, as GNU tar and bsdtar do. If the
-target was excluded or retained by overwrite policy, that existing destination file
-supplies the inode and contents. If it is absent, extraction fails; it does not
-reread the archive to recover excluded payloads or create excluded target names.
+A hard-link member must reference a previous data member or a chain of previous
+hard-link members that ends at a data member. The extractor rejects a selected
+member in these conditions:
 
-Duplicate source names bind to the nearest preceding occurrence. Outputs are
-applied immediately in archive order. When mappers send different source names to
-one destination, later links use that destination's current contents. Link headers
-do not overwrite shared inode timestamps or permissions. A same-path link is
-rejected, following bsdtar where its behavior differs from GNU tar.
+- The link references a subsequent member.
+- The target member is missing.
+- The link references itself.
+- The target is not a regular file or a hard link to a regular file.
+- The path goes outside the destination directory.
 
-Hard-link creation errors are reported without silently copying a payload for each
-alias. Replacement links are created before replacing an existing output name.
-The protected `AbstractUnArchiver.extractFile` signature remains available for
-ordinary entries. An error can leave earlier members extracted, as in other
-streaming extractors; extraction is not transactional.
+The extractor does not search subsequent members or try the rejected members
+again.
 
-### Optional symlink-traversal rejection
+The extractor uses different records for source archive names and mapped
+destination paths. A hard link uses the regular file at the mapped target path.
+GNU tar and bsdtar do the same. If a selection rule excludes the target, the
+hard link uses the target file in the destination directory. If the overwrite
+policy keeps that file, the hard link also uses it. If that file is missing,
+extraction stops with an error.
 
-By default, extraction permits directory symlinks that lead to locations inside
-the destination directory, as GNU tar does. To reject traversal through such
-links, configure the TAR extractor before calling `extract()`:
+The extractor does not read the archive again to get the contents of an excluded
+target. It does not make a destination file for an excluded target.
+
+If a source name occurs more than one time, a hard link references the last
+member with that name before the link. The extractor writes members in archive
+sequence. If mappers send different names to one destination path, subsequent
+hard links use the contents at that path at that time. The extractor does not
+change the timestamps or permissions of the target inode when it makes a hard
+link. It rejects a hard link with the same destination path as its target. This
+is the bsdtar behavior, which is different from GNU tar.
+
+If the extractor cannot make a hard link, it gives an error. It does not copy
+the file contents as an alternative. It makes a replacement hard link before it
+replaces an output name. After an error, previous output files can stay in the
+destination directory.
+
+The protected `AbstractUnArchiver.extractFile` method signature stays available
+for members that are not hard links.
+
+### Optional checks for symbolic links
+
+By default, the extractor lets paths go through directory symbolic links to
+locations inside the destination directory. GNU tar does the same. To reject
+these paths, set `failOnSymlinkTraversal` to `true` before you call `extract()`:
 
 ```java
 TarUnArchiver extractor = new TarUnArchiver(inputArchive);
@@ -74,64 +118,93 @@ extractor.setFailOnSymlinkTraversal(true);
 extractor.extract();
 ```
 
-`failOnSymlinkTraversal` defaults to `false` and is inherited by the compressed
-TAR extractors. This is an extractor setting; Assembly's writer-side
-`archiverConfig` does not configure it. The common `UnArchiver` and provider
-configuration interfaces do not expose this TAR-specific option.
+The default value of `failOnSymlinkTraversal` is `false`. Compressed TAR
+extractors also have this setting. Assembly's `archiverConfig` configures the
+archiver, not the extractor. The `UnArchiver` interface and the provider
+configuration interfaces do not have this TAR option.
 
-When enabled, selected, mapped output paths and hard-link target paths cannot
-traverse intermediate symbolic links. Checks include pre-existing symlinks and
-links created by earlier entries, and occur before overwrite decisions or
-filesystem changes. Excluded entries are skipped, but a selected hard link still
-checks its excluded target's mapped destination. An offending entry throws
-`ArchiverException` immediately with the member and symlink paths; earlier outputs
-remain in place. This follows bsdtar's rejection of intermediate symlinks, without
-its delayed error reporting or its other pathname policies.
+With this setting enabled, the extractor rejects intermediate symbolic links in
+selected, mapped output paths and hard-link target paths. An intermediate
+symbolic link is a symbolic link before the last component of a path. The checks
+include symbolic links from before extraction and those that previous members
+added. The extractor does these checks before overwrite decisions or file system
+changes.
 
-The configured destination directory is trusted even if it is itself reached
-through a symlink. The directory is resolved before checking its children, including
-when its configured path contains a symlink followed by `..`, as with the utilities'
-`-C` directory. Harmless `.` components in the configured root or its absolute
-mapped spelling do not change which directory is trusted. Parent components in
-member paths remain subject to the intermediate-symlink checks.
-Ordinary symlink entries remain allowed; existing rules govern
-replacement of final path components. Both settings retain the checks preventing
-extraction outside the destination directory. The policy checks encountered
-filesystem paths without an archive prescan, replay, or payload staging.
+The extractor skips excluded members. For a selected hard link, it checks the
+mapped target path even if a selection rule excludes the target. If a path has
+an intermediate symbolic link, the extractor immediately throws
+`ArchiverException`. The error message gives the member path and the symbolic
+link path. Previous output files stay at their destination paths.
+
+This setting rejects intermediate symbolic links. This is also the default
+bsdtar behavior. Unlike bsdtar, the extractor gives the error immediately. The
+extractor does not use the other bsdtar path policies with this setting.
+
+The extractor trusts the configured destination directory, even if its path goes
+through a symbolic link. It resolves that directory before it checks paths
+inside the directory. This is also true when the configured path contains a
+symbolic link followed by `..`. GNU tar and bsdtar also resolve their `-C`
+directory before they extract members.
+
+More `.` components do not change the trusted directory. This is true for the
+configured root path and for absolute mapped paths that start at that root. The
+extractor also checks intermediate symbolic links before parent components in
+member paths.
+
+The extractor accepts symbolic-link members when the setting is `true` or
+`false`. The existing rules control replacement of the last path component. The
+two settings prevent extraction outside the destination directory. The checks
+use the file system paths that the extractor finds as it reads each member. An
+archive scan, a second read, and temporary storage of file contents are not
+necessary for these checks.
 
 ## Archived file sets and content access
 
-`TarFile` enumerates lazily and records header occurrences as they are encountered.
-Reading the current ordinary member consumes that same stream. Metadata access
-for backward links uses the recorded headers without reading their payloads.
+`TarFile` reads members as the caller requests them. It records each header when
+it reads that header. For the current member, it reads contents from the same
+stream unless the member is a hard link. For backward hard links, it gets
+metadata from the recorded headers without a read of the file contents.
 
-An explicit request for earlier or already-consumed contents may open a separate
-replay cursor, including decompression for compressed archives. It does not advance
-the entry enumeration. Requested hard-link payloads are cached once per data-bearing
-occurrence so subsequent aliases do not each rescan the source. Content-reading
-selectors use this same on-demand behavior; ordinary extraction without such
-requests needs no replay or payload cache.
+To read contents from a previous member, `TarFile` can open a different cursor
+that reads the archive again. The same mechanism can read contents that a caller
+read before. For a compressed archive, the cursor also decompresses the data
+again. The cursor does not change the position of the member enumeration.
 
-`TarResource` exposes a valid backward alias's logical size, bytes, and data-bearing
-metadata. This permits selecting an alias alone from an archived file set, repacking
-TAR members, or converting them to ZIP. Unlike filesystem extraction, these explicit
-content requests obtain bytes from the archive. Low-level TAR link headers still
-have size zero. Concurrent content streams and simultaneous enumerations on one
-`TarFile` are not supported.
+`TarFile` caches one copy of the requested hard-link contents for each data
+member. Subsequent hard-link members that reference the same data member use the
+same cache. Selectors that read file contents use this mechanism. During
+extraction, a second read or file contents cache is necessary only if a caller
+requests these contents.
+
+`TarResource` gives the size, bytes, and metadata of the data member for a
+backward hard link that meets the target requirements. A caller can select only
+the hard-link member from an archived file set. A caller can also copy TAR
+members to a different TAR archive or to a ZIP archive. These content requests
+get bytes from the archive, not from the destination file system. The size in
+the TAR hard-link header stays zero.
+
+Do not open more than one content stream on the same `TarFile` at a time. Do not
+use more than one member enumeration on the same `TarFile` at a time.
 
 ## Temporary storage
 
-Requested hard-link contents are cached once per data-bearing occurrence,
-regardless of alias count. Temporary cached payloads are released on `close()`;
-callers must close readers and resource collections after use.
-For `addArchivedFileSet()` and `addResources()`, the archiver owns the registered
-collections and closes them, including their underlying archive readers, when
-`createArchive()` finishes or fails. Iterators and wrapped collections are released
-even when another resource reports a close failure.
+The cache stores one copy of the requested hard-link contents for each data
+member. The number of hard links to that data member does not change this rule.
+The `close()` method deletes temporary files from the cache.
+
+After you use a reader or resource collection that you manage directly, close
+it.
+
+The archiver owns resource collections that a caller adds through
+`addArchivedFileSet()` or `addResources()`. It closes these collections and
+their archive readers when `createArchive()` completes or stops with an error.
+It tries to close each iterator and wrapped collection even if a different close
+operation gives an error.
 
 ## Maven Assembly configuration
 
-The writer option can be passed through Assembly's existing archiver configuration:
+To enable hard-link preservation in Maven Assembly, use this archiver
+configuration:
 
 ```xml
 <archiverConfig>
@@ -139,8 +212,9 @@ The writer option can be passed through Assembly's existing archiver configurati
 </archiverConfig>
 ```
 
-This development change depends on the companion Plexus IO `3.7.1-SNAPSHOT`
-identity API. When testing an Assembly version that directly depends on an older
-Plexus IO, override both `plexus-archiver` and `plexus-io` in the plugin's dependencies.
-Use released versions containing both changes once available; the companion
-snapshot must be built locally until then.
+The identity API released in Plexus IO `3.8.0` is necessary for hard-link
+preservation. If Assembly directly depends on a
+previous Plexus IO version, override `plexus-archiver` and `plexus-io` in the
+plugin dependencies.
+
+Use a Plexus Archiver version containing this change and Plexus IO `3.8.0` or later.
