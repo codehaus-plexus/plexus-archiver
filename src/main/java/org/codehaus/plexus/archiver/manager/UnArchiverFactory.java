@@ -17,10 +17,7 @@
 
 package org.codehaus.plexus.archiver.manager;
 
-import java.util.function.Consumer;
-
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.spi.UnArchiverConfigurer;
 
 /**
  * Creates configured unarchiver instances.
@@ -29,5 +26,5 @@ import org.codehaus.plexus.archivers.spi.UnArchiverConfigurer;
  */
 @FunctionalInterface
 public interface UnArchiverFactory {
-    UnArchiver create(Consumer<UnArchiverConfigurer> configurer);
+    UnArchiver create();
 }

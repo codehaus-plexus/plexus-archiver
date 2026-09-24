@@ -395,7 +395,8 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         final String destFileName = collection.resources.getName(resource);
 
         int fromResource = PlexusIoResourceAttributes.UNKNOWN_OCTAL_MODE;
-        if (resource instanceof ResourceAttributeSupplier supplier) {
+        if (resource instanceof ResourceAttributeSupplier) {
+            ResourceAttributeSupplier supplier = (ResourceAttributeSupplier) resource;
             final PlexusIoResourceAttributes attrs = supplier.getAttributes();
 
             if (attrs != null) {
@@ -466,9 +467,10 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
                         if (ioResourceIter == null) {
                             if (addedResourceIter.hasNext()) {
                                 final Object o = addedResourceIter.next();
-                                if (o instanceof ArchiveEntry entry) {
-                                    nextEntry = entry;
-                                } else if (o instanceof AddedResourceCollection collection) {
+                                if (o instanceof ArchiveEntry) {
+                                    nextEntry = (ArchiveEntry) o;
+                                } else if (o instanceof AddedResourceCollection) {
+                                    AddedResourceCollection collection = (AddedResourceCollection) o;
                                     currentResourceCollection = collection;
 
                                     try {
@@ -553,8 +555,8 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     private static void closeIfCloseable(Object resource) throws IOException {
-        if (resource instanceof Closeable closeable) {
-            closeable.close();
+        if (resource instanceof Closeable) {
+            ((Closeable) resource).close();
         }
     }
 
@@ -592,19 +594,19 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
                     "Error adding archived file-set. PlexusIoResourceCollection not found for: " + archiveFile, e);
         }
 
-        if (resources instanceof EncodingSupported supported) {
-            supported.setEncoding(charset);
+        if (resources instanceof EncodingSupported) {
+            ((EncodingSupported) resources).setEncoding(charset);
         }
 
-        if (resources instanceof PlexusIoArchivedResourceCollection collection) {
-            collection.setFile(fileSet.getArchive());
+        if (resources instanceof PlexusIoArchivedResourceCollection) {
+            ((PlexusIoArchivedResourceCollection) resources).setFile(fileSet.getArchive());
         } else {
             throw new ArchiverException("Expected " + PlexusIoArchivedResourceCollection.class.getName() + ", got "
                     + resources.getClass().getName());
         }
 
-        if (resources instanceof AbstractPlexusIoResourceCollection collection1) {
-            collection1.setStreamTransformer(fileSet.getStreamTransformer());
+        if (resources instanceof AbstractPlexusIoResourceCollection) {
+            ((AbstractPlexusIoResourceCollection) resources).setStreamTransformer(fileSet.getStreamTransformer());
         }
         final PlexusIoProxyResourceCollection proxy = new PlexusIoProxyResourceCollection(resources);
 
@@ -699,9 +701,10 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         while (it.hasNext()) {
             final Object o = it.next();
             final long l;
-            if (o instanceof ArchiveEntry entry) {
-                l = entry.getResource().getLastModified();
-            } else if (o instanceof AddedResourceCollection collection) {
+            if (o instanceof ArchiveEntry) {
+                l = ((ArchiveEntry) o).getResource().getLastModified();
+            } else if (o instanceof AddedResourceCollection) {
+                AddedResourceCollection collection = (AddedResourceCollection) o;
                 try {
                     l = collection.resources.getLastModified();
                 } catch (final IOException e) {
@@ -827,8 +830,8 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     protected abstract String getArchiveType();
 
     private void addCloseable(Object maybeCloseable) {
-        if (maybeCloseable instanceof Closeable closeable) {
-            closeables.add(closeable);
+        if (maybeCloseable instanceof Closeable) {
+            closeables.add((Closeable) maybeCloseable);
         }
     }
 
@@ -844,8 +847,8 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         closeIterators();
 
         for (Object resource : resources) {
-            if (resource instanceof PlexusIoProxyResourceCollection collection) {
-                resource = collection.getSrc();
+            if (resource instanceof PlexusIoProxyResourceCollection) {
+                resource = ((PlexusIoProxyResourceCollection) resource).getSrc();
             }
 
             closeIfCloseable(resource);

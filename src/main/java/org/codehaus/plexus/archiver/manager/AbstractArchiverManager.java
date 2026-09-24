@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
@@ -43,15 +44,15 @@ abstract class AbstractArchiverManager implements ArchiverManager {
             Map<String, ArchiverFactory> archivers,
             Map<String, UnArchiverFactory> unArchivers,
             Map<String, PlexusIoResourceCollectionFactory> plexusIoResourceCollections) {
-        this.archivers = Map.copyOf(archivers);
-        this.unArchivers = Map.copyOf(unArchivers);
-        this.plexusIoResourceCollections = Map.copyOf(plexusIoResourceCollections);
+        this.archivers = Collections.unmodifiableMap(archivers);
+        this.unArchivers = Collections.unmodifiableMap(unArchivers);
+        this.plexusIoResourceCollections = Collections.unmodifiableMap(plexusIoResourceCollections);
     }
 
     @Override
     @Nonnull
     public final Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException {
-        return getArchiverFactory(archiverName).create(configurer -> {});
+        return getArchiverFactory(archiverName).create();
     }
 
     @Override
@@ -68,7 +69,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
     @Override
     @Nonnull
     public final UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException {
-        return getUnArchiverFactory(unArchiverName).create(configurer -> {});
+        return getUnArchiverFactory(unArchiverName).create();
     }
 
     @Override
@@ -86,7 +87,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
     @Nonnull
     public final PlexusIoResourceCollection getResourceCollection(String resourceCollectionName)
             throws NoSuchArchiverException {
-        return getResourceCollectionFactory(resourceCollectionName).create(configurer -> {});
+        return getResourceCollectionFactory(resourceCollectionName).create();
     }
 
     @Override
