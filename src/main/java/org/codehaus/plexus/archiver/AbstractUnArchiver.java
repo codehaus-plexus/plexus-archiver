@@ -33,8 +33,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Deque;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
@@ -71,6 +73,11 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     private FileMapper[] fileMappers;
 
     private List<ArchiveFinalizer> finalizers;
+
+    /** Directory spellings are reused only after a fresh NOFOLLOW identity check, within one extraction. */
+    private Map<Path, ResolvedDirectory> resolvedDirectories;
+
+    private record ResolvedDirectory(Object fileKey, Path path) {}
 
     private FileSelector[] fileSelectors;
 
@@ -139,16 +146,26 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
 
     @Override
     public final void extract() throws ArchiverException {
-        validate();
-        execute();
-        runArchiveFinalizers();
+        resolvedDirectories = new LinkedHashMap<>(128, 0.75f, true);
+        try {
+            validate();
+            execute();
+            runArchiveFinalizers();
+        } finally {
+            resolvedDirectories = null;
+        }
     }
 
     @Override
     public final void extract(final String path, final File outputDirectory) throws ArchiverException {
-        validate(path, outputDirectory);
-        execute(path, outputDirectory);
-        runArchiveFinalizers();
+        resolvedDirectories = new LinkedHashMap<>(128, 0.75f, true);
+        try {
+            validate(path, outputDirectory);
+            execute(path, outputDirectory);
+            runArchiveFinalizers();
+        } finally {
+            resolvedDirectories = null;
+        }
     }
 
     @Override
@@ -353,8 +370,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         Path root = resolveExtractionRoot(directory);
         // Preserve the previous resolver's portable absolute names and platform-native relative names.
         Path portable = Path.of(name.replace('/', File.separatorChar).replace('\\', File.separatorChar));
-        Path path = portable.isAbsolute() ? portable : root.resolve(Path.of(name));
-        Path destination = resolvePath(path, false);
+        // The root was just resolved above. Relative entries need only walk their own components.
+        Path destination =
+                portable.isAbsolute() ? resolvePath(portable, false) : resolvePath(root, Path.of(name), false);
         if (!destination.startsWith(root)) {
             throw new ArchiverException("Entry is outside of the target directory (" + name + ")");
         }
@@ -365,11 +383,15 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      * Resolves existing components individually: Windows canonicalization of a missing leaf can leave its
      * symlinked parents unresolved, and whole-path normalization can erase a link before a later {@code ..}.
      */
-    private static Path resolvePath(Path path, boolean followLastLink) throws IOException {
+    private Path resolvePath(Path path, boolean followLastLink) throws IOException {
         Path absolute = path.toAbsolutePath();
-        Path current = absolute.getRoot();
+        return resolvePath(absolute.getRoot(), absolute, followLastLink);
+    }
+
+    /** Starts at a prefix already resolved during this check, without repeating its filesystem operations. */
+    private Path resolvePath(Path current, Path path, boolean followLastLink) throws IOException {
         Deque<Path> remaining = new ArrayDeque<>();
-        absolute.forEach(remaining::addLast);
+        path.forEach(remaining::addLast);
         int links = 0;
         while (!remaining.isEmpty()) {
             Path name = remaining.removeFirst();
@@ -408,10 +430,36 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                     throw new NotDirectoryException(candidate.toString());
                 }
                 // With no unresolved parent links or dots, this also handles Windows casing and short names.
-                current = candidate.toRealPath();
+                current = resolveDirectory(candidate, attributes);
             }
         }
         return current;
+    }
+
+    /** Avoids repeated real-path walks while still observing replacements and links on every visit. */
+    private Path resolveDirectory(Path candidate, BasicFileAttributes attributes) throws IOException {
+        Object key = attributes.fileKey();
+        // Reparse points and providers without file identities need fresh resolution. Do not cache file leaves.
+        if (resolvedDirectories == null || !attributes.isDirectory() || attributes.isOther() || key == null) {
+            return candidate.toRealPath();
+        }
+        ResolvedDirectory cached = resolvedDirectories.get(candidate);
+        if (cached != null && key.equals(cached.fileKey())) {
+            return cached.path();
+        }
+        Path resolved = candidate.toRealPath();
+        // Only retain spellings that already match the resolved path; aliases still need fresh resolution.
+        if (candidate.equals(resolved)) {
+            resolvedDirectories.put(candidate, new ResolvedDirectory(key, resolved));
+            if (resolvedDirectories.size() > 1024) {
+                var oldest = resolvedDirectories.keySet().iterator();
+                oldest.next();
+                oldest.remove();
+            }
+        } else {
+            resolvedDirectories.remove(candidate);
+        }
+        return resolved;
     }
 
     /**
