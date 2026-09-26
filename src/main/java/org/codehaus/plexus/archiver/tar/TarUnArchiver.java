@@ -272,9 +272,12 @@ public class TarUnArchiver extends AbstractUnArchiver {
             }
         }
         Path component = path.getRoot();
+        boolean reachedRoot = canonicalRoot.equals(component);
         for (int i = 0; i < path.getNameCount() - 1; i++) {
             // Normalize one component at a time: any preceding symlink was checked before a parent can erase it.
             component = component.resolve(path.getName(i)).normalize();
+            // A later '..' must not restore ancestor exemptions for the untrusted suffix.
+            reachedRoot |= canonicalRoot.equals(component);
             // Only the actual trusted root and its ancestors are exempt from traversal checks.
             if (canonicalRoot.startsWith(component)) {
                 continue;
@@ -282,6 +285,15 @@ public class TarUnArchiver extends AbstractUnArchiver {
             try {
                 if (Files.readAttributes(component, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS)
                         .isSymbolicLink()) {
+                    if (!reachedRoot) {
+                        Path resolved = component.toFile().getCanonicalFile().toPath();
+                        // Accept ancestor aliases such as macOS /var, but not a separate alias of the root itself.
+                        // Resolve only this prefix so symlinks and parent components in the suffix remain visible.
+                        if (!resolved.equals(canonicalRoot) && canonicalRoot.startsWith(resolved)) {
+                            component = resolved;
+                            continue;
+                        }
+                    }
                     throw new ArchiverException("Cannot extract TAR entry '" + entryName + "': "
                             + (linkTarget ? "hard-link target" : "destination") + " '" + name
                             + "' traverses symbolic link '" + component + "'");

@@ -146,6 +146,17 @@ inside the directory. This is also true when the configured path contains a
 symbolic link followed by `..`. GNU tar and bsdtar also resolve their `-C`
 directory before they extract members.
 
+An absolute mapped path can reach the root through a symbolic link to an
+ancestor directory. For example, macOS uses `/var` as an alias for
+`/private/var`. The extractor resolves these ancestor aliases before it reaches
+the root. A separate symbolic link to the root itself is accepted only in the
+configured root spelling.
+
+After the path reaches the root, the extractor rejects subsequent intermediate
+symbolic links. A later `..` component does not restore the ancestor exception.
+The checks preserve the remaining path components when they resolve an ancestor
+alias.
+
 More `.` components do not change the trusted directory. This is true for the
 configured root path and for absolute mapped paths that start at that root. The
 extractor also checks intermediate symbolic links before parent components in
