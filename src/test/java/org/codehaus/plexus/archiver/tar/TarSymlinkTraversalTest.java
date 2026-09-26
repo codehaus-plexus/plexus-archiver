@@ -34,6 +34,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -145,7 +146,8 @@ class TarSymlinkTraversalTest {
             assertTrue(extractor.isFailOnSymlinkTraversal());
             ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
             assertTrue(error.getMessage().contains("destination 'redirect/file'"));
-            assertTrue(error.getMessage().contains("symbolic link '" + output.resolve("redirect") + "'"));
+            assertTrue(error.getMessage()
+                    .contains("symbolic link '" + output.toRealPath().resolve("redirect") + "'"));
             assertEquals("original", Files.readString(output.resolve("real/file")));
             assertFalse(Files.exists(output.resolve("alias")));
         } else {
@@ -423,7 +425,8 @@ class TarSymlinkTraversalTest {
                 new FileMapper[] {name -> temp.resolve("output").resolve(suffix).toString()});
         ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
         // Rejection must identify the symlink beneath the trusted root, not the root alias itself.
-        assertTrue(error.getMessage().contains("symbolic link '" + actual.resolve("redirect") + "'"));
+        assertTrue(error.getMessage()
+                .contains("symbolic link '" + actual.toRealPath().resolve("redirect") + "'"));
         assertFalse(Files.exists(actual.resolve("file")));
         assertFalse(Files.exists(actual.resolve("real/file")));
     }
@@ -454,10 +457,144 @@ class TarSymlinkTraversalTest {
         });
         ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
         assertTrue(error.getMessage().contains(targetTraversal ? "hard-link target" : "destination"));
-        assertTrue(error.getMessage().contains("symbolic link '" + actual.resolve("redirect") + "'"));
+        assertTrue(error.getMessage()
+                .contains("symbolic link '" + actual.toRealPath().resolve("redirect") + "'"));
         assertEquals("existing", Files.readString(actual.resolve("real/file")));
         assertFalse(Files.exists(actual.resolve("alias")));
         assertFalse(Files.exists(actual.resolve("file")));
+    }
+
+    /** Models a temporary directory reached through an ancestor symlink, such as /var on macOS. */
+    private Path rootUnderSymlinkedParent() throws IOException {
+        Path parent = Files.createDirectory(temp.resolve("parent"));
+        Files.createDirectory(parent.resolve("actual"));
+        symlink(temp.resolve("parent-alias"), parent);
+        symlink(parent.resolve("output"), Path.of("actual"));
+        return temp.resolve("parent-alias/actual");
+    }
+
+    /** Absolute mappings may name the actual root through an ancestor alias rather than the configured root alias. */
+    @ParameterizedTest
+    @EnumSource(TarUnArchiver.UntarCompressionMethod.class)
+    void acceptsRootUnderSymlinkedParent(TarUnArchiver.UntarCompressionMethod compression) throws Exception {
+        requireLinks();
+        Path mappedRoot = rootUnderSymlinkedParent();
+        Path actual = mappedRoot.toRealPath();
+        Path source = archive(compression, new Member("file", '0', "content"), new Member("alias", '1', "file"));
+        TarUnArchiver extractor = extractor(source, mappedRoot.resolveSibling("output"), compression);
+        extractor.setFailOnSymlinkTraversal(true);
+        extractor.setFileMappers(
+                new FileMapper[] {name -> mappedRoot.resolve(name).toString()});
+        extractor.extract();
+        assertEquals("content", Files.readString(actual.resolve("file")));
+        assertTrue(Files.isSameFile(actual.resolve("file"), actual.resolve("alias")));
+    }
+
+    /** Resolving an ancestor alias must not conceal symlinks in the remaining mapped path. */
+    @ParameterizedTest
+    @ValueSource(
+            strings = {
+                "./redirect/file",
+                "redirect/../file",
+                "redirect/./../file",
+                "redirect/.",
+                "missing/../redirect/file"
+            })
+    void checksEntrySuffixUnderSymlinkedParent(String suffix) throws Exception {
+        Path mappedRoot = rootUnderSymlinkedParent();
+        Path actual = mappedRoot.toRealPath();
+        Files.createDirectory(actual.resolve("real"));
+        Files.writeString(actual.resolve("real/file"), "existing");
+        Files.writeString(actual.resolve("file"), "existing");
+        symlink(actual.resolve("redirect"), Path.of("real"));
+        Path source = archive(TarUnArchiver.UntarCompressionMethod.NONE, new Member("logical", '0', "changed"));
+        TarUnArchiver extractor =
+                extractor(source, mappedRoot.resolveSibling("output"), TarUnArchiver.UntarCompressionMethod.NONE);
+        extractor.setFailOnSymlinkTraversal(true);
+        extractor.setFileMappers(
+                new FileMapper[] {name -> mappedRoot.resolve(suffix).toString()});
+        ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
+        assertTrue(
+                error.getMessage().contains("symbolic link '" + actual.resolve("redirect") + "'"), error::getMessage);
+        assertEquals("existing", Files.readString(actual.resolve("file")));
+        assertEquals("existing", Files.readString(actual.resolve("real/file")));
+        assertTrue(Files.isSymbolicLink(actual.resolve("redirect")));
+        assertFalse(Files.exists(actual.resolve("missing")));
+    }
+
+    /** Both hard-link paths must retain suffix checks after an ancestor alias is resolved. */
+    @ParameterizedTest
+    @CsvSource({"false, redirect/alias", "true, redirect/file", "false, redirect/../alias", "true, redirect/../file"})
+    void checksHardLinkPathsUnderSymlinkedParent(boolean targetTraversal, String suffix) throws Exception {
+        requireLinks();
+        Path mappedRoot = rootUnderSymlinkedParent();
+        Path actual = mappedRoot.toRealPath();
+        Files.createDirectory(actual.resolve("real"));
+        Files.writeString(actual.resolve("real/file"), "existing");
+        Files.writeString(actual.resolve("file"), "existing");
+        symlink(actual.resolve("redirect"), Path.of("real"));
+        String unsafe = mappedRoot.resolve(suffix).toString();
+        Path source = archive(
+                TarUnArchiver.UntarCompressionMethod.NONE,
+                new Member("source", '0', "archive"),
+                new Member("alias", '1', "source"));
+        TarUnArchiver extractor =
+                extractor(source, mappedRoot.resolveSibling("output"), TarUnArchiver.UntarCompressionMethod.NONE);
+        extractor.setFailOnSymlinkTraversal(true);
+        extractor.setFileSelectors(new FileSelector[] {file -> !file.getName().equals("source")});
+        extractor.setFileMappers(new FileMapper[] {
+            name -> name.equals("source")
+                    ? (targetTraversal ? unsafe : "real/file")
+                    : (targetTraversal ? "alias" : unsafe)
+        });
+        ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
+        assertTrue(error.getMessage().contains(targetTraversal ? "hard-link target" : "destination"));
+        assertTrue(
+                error.getMessage().contains("symbolic link '" + actual.resolve("redirect") + "'"), error::getMessage);
+        assertEquals("existing", Files.readString(actual.resolve("file")));
+        assertEquals("existing", Files.readString(actual.resolve("real/file")));
+        assertFalse(Files.exists(actual.resolve("alias")));
+        assertFalse(Files.exists(actual.resolve("real/alias")));
+    }
+
+    /** An ancestor alias is trusted, but a separate alias pointing directly at the root is not. */
+    @Test
+    void rejectsUnconfiguredRootAlias() throws Exception {
+        Path mappedRoot = rootUnderSymlinkedParent();
+        Path actual = mappedRoot.toRealPath();
+        Path alternate = mappedRoot.resolveSibling("alternate");
+        symlink(alternate, Path.of("actual"));
+        Path source = archive(TarUnArchiver.UntarCompressionMethod.NONE, new Member("file", '0', "content"));
+        TarUnArchiver extractor =
+                extractor(source, mappedRoot.resolveSibling("output"), TarUnArchiver.UntarCompressionMethod.NONE);
+        extractor.setFailOnSymlinkTraversal(true);
+        extractor.setFileMappers(
+                new FileMapper[] {name -> alternate.resolve(name).toString()});
+        ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
+        assertTrue(
+                error.getMessage().contains("symbolic link '" + actual.resolveSibling("alternate") + "'"),
+                error::getMessage);
+        assertFalse(Files.exists(actual.resolve("file")));
+    }
+
+    /** Reaching the root ends ancestor exemptions, even if a later parent component leaves the root again. */
+    @ParameterizedTest
+    @ValueSource(strings = {"back/actual/file", "../back/actual/file"})
+    void rejectsAncestorAliasAfterReachingRoot(String suffix) throws Exception {
+        Path mappedRoot = rootUnderSymlinkedParent();
+        Path actual = mappedRoot.toRealPath();
+        Files.writeString(actual.resolve("file"), "existing");
+        Path link = (suffix.startsWith("../") ? actual.getParent() : actual).resolve("back");
+        symlink(link, actual.getParent());
+        Path source = archive(TarUnArchiver.UntarCompressionMethod.NONE, new Member("file", '0', "changed"));
+        TarUnArchiver extractor =
+                extractor(source, mappedRoot.resolveSibling("output"), TarUnArchiver.UntarCompressionMethod.NONE);
+        extractor.setFailOnSymlinkTraversal(true);
+        extractor.setFileMappers(
+                new FileMapper[] {name -> mappedRoot.resolve(suffix).toString()});
+        ArchiverException error = assertThrows(ArchiverException.class, extractor::extract);
+        assertTrue(error.getMessage().contains("symbolic link '" + link + "'"), error::getMessage);
+        assertEquals("existing", Files.readString(actual.resolve("file")));
     }
 
     /** Absolute mappings must be checked before FileUtils canonicalization erases the symlink components. */
