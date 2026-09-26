@@ -370,9 +370,10 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         Path root = resolveExtractionRoot(directory);
         // Preserve the previous resolver's portable absolute names and platform-native relative names.
         Path portable = Path.of(name.replace('/', File.separatorChar).replace('\\', File.separatorChar));
-        // The root was just resolved above. Relative entries need only walk their own components.
+        Path entry = portable.isAbsolute() ? portable : Path.of(name);
+        // Only rootless entries can start at the resolved root. Windows rooted paths can be non-absolute.
         Path destination =
-                portable.isAbsolute() ? resolvePath(portable, false) : resolvePath(root, Path.of(name), false);
+                entry.getRoot() == null ? resolvePath(root, entry, false) : resolvePath(root.resolve(entry), false);
         if (!destination.startsWith(root)) {
             throw new ArchiverException("Entry is outside of the target directory (" + name + ")");
         }

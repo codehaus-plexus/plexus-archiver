@@ -72,6 +72,12 @@ class ExtractionPathTest {
                 .map(target -> Arguments.of(arguments.get()[0], arguments.get()[1], target)));
     }
 
+    private static Stream<Arguments> windowsRootedMappings() {
+        return Arrays.stream(Format.values()).flatMap(format -> Stream.of("rooted", "rooted-forward", "drive-relative")
+                .flatMap(spelling ->
+                        Stream.of(false, true).map(contained -> Arguments.of(format, spelling, contained))));
+    }
+
     private void symlink(Path link, Path target) throws IOException {
         try {
             Files.createSymbolicLink(link, target);
@@ -171,6 +177,47 @@ class ExtractionPathTest {
         symlink(root.resolve("redirect"), outside);
         assertThrows(ArchiverException.class, () -> extract(format, root, "redirect/file", Kind.FILE, "replacement"));
         assertEquals("original", Files.readString(file));
+    }
+
+    /** Windows rooted paths can be non-absolute and must retain Path.resolve semantics through mappers. */
+    @ParameterizedTest
+    @MethodSource("windowsRootedMappings")
+    void preservesWindowsRootedMappings(Format format, String spelling, boolean contained) throws Exception {
+        assumeTrue(File.separatorChar == '\\', "Requires Windows path syntax");
+        Path root = Files.createDirectory(temp.resolve("root")).toAbsolutePath();
+        Path outside = Files.createDirectory(temp.resolve("outside")).toAbsolutePath();
+        Path expected = (contained ? root : outside).resolve("file.txt");
+        String mapped;
+        if (spelling.equals("drive-relative")) {
+            String drive = root.getRoot().toString();
+            assumeTrue(drive.length() == 3 && drive.charAt(1) == ':', "Requires a drive-letter destination");
+            mapped = drive.substring(0, 2) + (contained ? "file.txt" : "..\\outside\\file.txt");
+        } else {
+            mapped = "\\" + root.getRoot().relativize(expected);
+            if (spelling.equals("rooted-forward")) {
+                mapped = mapped.replace('\\', '/');
+            }
+        }
+        Path path = Path.of(mapped);
+        assertFalse(path.isAbsolute());
+        assertNotNull(path.getRoot());
+        String name = mapped;
+        if (contained) {
+            extract(format, root, name, Kind.FILE, "content");
+            assertEquals("content", Files.readString(expected));
+            try (var files = Files.list(root)) {
+                assertEquals(1, files.count());
+            }
+        } else {
+            assertThrows(ArchiverException.class, () -> extract(format, root, name, Kind.FILE, "content"));
+            assertFalse(Files.exists(expected));
+            try (var files = Files.list(root)) {
+                assertEquals(0, files.count());
+            }
+        }
+        try (var files = Files.list(outside)) {
+            assertEquals(0, files.count());
+        }
     }
 
     /** Both a safe root alias and a contained directory link must work with nonexistent descendants. */
