@@ -44,7 +44,6 @@ import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.codehaus.plexus.util.FileUtils;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
@@ -258,8 +257,8 @@ public class TarUnArchiver extends AbstractUnArchiver {
             return;
         }
         Path root = directory.toPath().toAbsolutePath();
-        Path canonicalRoot = directory.getCanonicalFile().toPath();
-        // FileUtils accepts either separator in absolute names, but keeps relative names platform-native.
+        Path canonicalRoot = resolveExtractionRoot(directory);
+        // Extraction accepts either separator in absolute names, but keeps relative names platform-native.
         Path portable = Path.of(name.replace('/', File.separatorChar).replace('\\', File.separatorChar));
         // Resolve the trusted directory first: a symlink followed by '..' can change which tree owns its children.
         Path path = portable.isAbsolute() ? portable : canonicalRoot.resolve(Path.of(name));
@@ -286,7 +285,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
                 if (Files.readAttributes(component, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS)
                         .isSymbolicLink()) {
                     if (!reachedRoot) {
-                        Path resolved = component.toFile().getCanonicalFile().toPath();
+                        Path resolved = resolveExtractionRoot(component.toFile());
                         // Accept ancestor aliases such as macOS /var, but not a separate alias of the root itself.
                         // Resolve only this prefix so symlinks and parent components in the suffix remain visible.
                         if (!resolved.equals(canonicalRoot) && canonicalRoot.startsWith(resolved)) {
@@ -333,18 +332,10 @@ public class TarUnArchiver extends AbstractUnArchiver {
         return next;
     }
 
-    /** Checks the traversal policy and both lexical and resolved containment before hard-link operations. */
+    /** Checks the traversal policy and physical containment before hard-link operations. */
     private Path checkedOutput(File directory, String name, String entryName, boolean linkTarget) throws IOException {
         checkSymlinkTraversal(directory, name, entryName, linkTarget);
-        Path root = directory.getCanonicalFile().toPath();
-        Path path =
-                FileUtils.resolveFile(directory, name).toPath().toAbsolutePath().normalize();
-        Path resolved = path.toFile().getCanonicalFile().toPath();
-        // FileUtils resolves the output against the actual root, including symlinks in the configured directory.
-        if (!path.startsWith(root) || !resolved.startsWith(root)) {
-            throw new ArchiverException("Entry is outside of the target directory (" + name + ")");
-        }
-        return path;
+        return resolveExtractionPath(directory, name);
     }
 
     /** Links the current mapped target, following the filesystem semantics of command-line tar. */
@@ -352,8 +343,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
             throws IOException {
         Path output = checkedOutput(directory, name, entry.getName(), false);
         Path target = checkedOutput(directory, targetName, entry.getName(), true);
-        if (output.equals(target)
-                || output.toFile().getCanonicalFile().equals(target.toFile().getCanonicalFile())) {
+        if (output.equals(target)) {
             throw new IOException("Self-referencing TAR hard-link output: " + name);
         }
         if (Files.isSymbolicLink(output) || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)) {
@@ -367,8 +357,14 @@ public class TarUnArchiver extends AbstractUnArchiver {
             throw new IOException("TAR hard-link target is not an existing regular file: " + targetName);
         }
         Files.createDirectories(output.getParent());
-        checkedOutput(directory, name, entry.getName(), false);
-        checkedOutput(directory, targetName, entry.getName(), true);
+        output = checkedOutput(directory, name, entry.getName(), false);
+        target = checkedOutput(directory, targetName, entry.getName(), true);
+        if (output.equals(target)
+                || Files.isSymbolicLink(output)
+                || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)
+                || !Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS)) {
+            throw new IOException("TAR hard-link paths changed during extraction: " + name);
+        }
         Path temporary = output.getParent().resolve(".plexus-link-" + UUID.randomUUID());
         try {
             // Build the replacement first so link-creation failure leaves an existing output untouched.

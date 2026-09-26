@@ -146,6 +146,13 @@ inside the directory. This is also true when the configured path contains a
 symbolic link followed by `..`. GNU tar and bsdtar also resolve their `-C`
 directory before they extract members.
 
+Path resolution follows each existing symbolic link before processing the next
+component, including `..`, on all operating systems. It also resolves existing
+parents when the destination file does not exist yet. This avoids differences
+between Windows JDK versions when canonicalizing a complete path. Resolution
+fails after 64 symbolic-link expansions to bound cyclic or excessively long
+paths.
+
 An absolute mapped path can reach the root through a symbolic link to an
 ancestor directory. For example, macOS uses `/var` as an alias for
 `/private/var`. The extractor resolves these ancestor aliases before it reaches
@@ -163,8 +170,12 @@ extractor also checks intermediate symbolic links before parent components in
 member paths.
 
 The extractor accepts symbolic-link members when the setting is `true` or
-`false`. The existing rules control replacement of the last path component. The
-two settings prevent extraction outside the destination directory. The checks
+`false`, preserving their target text and creating them only if the destination
+does not already exist. It does not change the target's permissions or timestamps.
+Regular-file, directory, and hard-link entries reject a symbolic link at their
+destination's last component, including a dangling link. Hard-link targets must
+also be regular files, rather than symbolic links. Both traversal settings check
+physical containment before creating directories or writing files. The checks
 use the file system paths that the extractor finds as it reads each member. An
 archive scan, a second read, and temporary storage of file contents are not
 necessary for these checks.
