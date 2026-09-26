@@ -297,14 +297,14 @@ class TarHardLinkTest {
         assertFalse(Files.isSameFile(output.resolve("old-link"), output.resolve("new-link")));
     }
 
-    /** Thousands of backward aliases link in one pass without staging their payload. */
+    /** Backward aliases share an inode while staying below NTFS's limit of 1024 names per file. */
     @Test
     void longChainsUseOnePayloadAndDataMetadata() throws Exception {
         requireHardLinks();
         Path source = Files.createTempFile(temp, "many", ".tar");
         try (TarArchiveOutputStream out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
             entry(out, "link0", "data", null);
-            for (int i = 1; i <= 2000; i++) {
+            for (int i = 1; i <= 512; i++) {
                 entry(out, "link" + i, "", "link" + (i - 1));
             }
         }
@@ -312,7 +312,39 @@ class TarHardLinkTest {
         TarUnArchiver unarchiver = unarchiver(source, output);
         unarchiver.extract();
         assertEquals("data", Files.readString(output.resolve("link0")));
-        assertTrue(Files.isSameFile(output.resolve("link0"), output.resolve("link2000")));
+        assertTrue(Files.isSameFile(output.resolve("link0"), output.resolve("link512")));
+        assertEquals(
+                1234567000000L,
+                Files.getLastModifiedTime(output.resolve("link512")).toMillis());
+    }
+
+    /** Large logical chains exercise iterative content resolution without requiring thousands of NTFS links. */
+    @Test
+    void resolvesThousandsOfLinksWithoutFilesystemLinks() throws Exception {
+        Path source = Files.createTempFile(temp, "logical-chain", ".tar");
+        try (TarArchiveOutputStream out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
+            entry(out, "link0", "data", null);
+            for (int i = 1; i <= 2000; i++) {
+                entry(out, "link" + i, "", "link" + (i - 1));
+            }
+        }
+        try (TarFile file = new TarFile(source.toFile())) {
+            Enumeration<ArchiveEntry> entries = file.getEntries();
+            TarArchiveEntry last = null;
+            int count = 0;
+            while (entries.hasMoreElements()) {
+                last = (TarArchiveEntry) entries.nextElement();
+                count++;
+            }
+            assertEquals(2001, count);
+            assertEquals("link2000", last.getName());
+            assertEquals(0, last.getSize());
+            TarResource resource = new TarResource(file, last);
+            assertEquals(4, resource.getSize());
+            try (var contents = resource.getContents()) {
+                assertEquals("data", new String(contents.readAllBytes(), StandardCharsets.UTF_8));
+            }
+        }
     }
 
     /** Content-reading selectors use the configured decoder without disrupting streaming extraction. */
