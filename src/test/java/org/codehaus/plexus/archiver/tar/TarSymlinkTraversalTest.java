@@ -299,7 +299,7 @@ class TarSymlinkTraversalTest {
     @ValueSource(strings = {"relative", "configured-absolute", "canonical-absolute"})
     void checksChildrenOfRootThroughSymlinkAndParent(String spelling) throws Exception {
         Path output = rootThroughSymlinkAndParent();
-        Path actual = output.toFile().getCanonicalFile().toPath();
+        Path actual = temp.resolve("actual").toRealPath();
         Files.createDirectory(actual.resolve("real"));
         symlink(actual.resolve("redirect"), Path.of("real"));
         String mapped =
@@ -325,7 +325,7 @@ class TarSymlinkTraversalTest {
     void checksHardLinksUnderRootThroughSymlinkAndParent(boolean targetTraversal) throws Exception {
         requireLinks();
         Path output = rootThroughSymlinkAndParent();
-        Path actual = output.toFile().getCanonicalFile().toPath();
+        Path actual = temp.resolve("actual").toRealPath();
         Files.createDirectory(actual.resolve("real"));
         Files.writeString(actual.resolve("real/file"), "existing");
         symlink(actual.resolve("redirect"), Path.of("real"));
@@ -355,7 +355,7 @@ class TarSymlinkTraversalTest {
     void acceptsSafeChildrenOfRootThroughSymlinkAndParent(boolean reject) throws Exception {
         requireLinks();
         Path output = rootThroughSymlinkAndParent();
-        Path actual = output.toFile().getCanonicalFile().toPath();
+        Path actual = temp.resolve("actual").toRealPath();
         symlink(temp.resolve("lexical/real"), Path.of("elsewhere"));
         Path source = archive(
                 TarUnArchiver.UntarCompressionMethod.NONE,
