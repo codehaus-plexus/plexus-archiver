@@ -19,9 +19,13 @@ package org.codehaus.plexus.archivers.config;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.functions.InputStreamTransformer;
@@ -45,69 +49,41 @@ final class DefaultPlexusIoResourceCollectionConfigurer implements PlexusIoResou
     }
 
     @Override
-    public void setSource(Path source) {
-        Objects.requireNonNull(source, "source");
-        if (collection instanceof AbstractPlexusIoArchiveResourceCollection archiveCollection) {
-            archiveCollection.setFile(source.toFile());
-        } else if (collection instanceof PlexusIoCompressedFileResourceCollection compressedCollection) {
-            compressedCollection.setFile(source.toFile());
-        } else if (collection instanceof PlexusIoFileResourceCollection fileCollection) {
-            fileCollection.setBaseDir(source.toFile());
-        } else {
-            throw unsupported("source paths");
-        }
+    public void matcher(PathPatternMatcher matcher) {
+    	// TODO Auto-generated method stub
+    	
     }
-
+    
     @Override
-    public void setPrefix(String prefix) {
+    public void prefix(String prefix) {
         configurableCollection().setPrefix(Objects.requireNonNull(prefix, "prefix"));
     }
 
-    @Override
-    public void setIncludes(List<String> includes) {
-        configurableCollection().setIncludes(List.copyOf(includes).toArray(String[]::new));
-    }
-
-    @Override
-    public void setExcludes(List<String> excludes) {
-        configurableCollection().setExcludes(List.copyOf(excludes).toArray(String[]::new));
-    }
-
-    @Override
     public void setFileSelectors(List<FileSelector> fileSelectors) {
         configurableCollection().setFileSelectors(List.copyOf(fileSelectors).toArray(FileSelector[]::new));
     }
 
-    @Override
-    public void setFileMappers(List<FileMapper> fileMappers) {
+//    @Override
+    public void setFileMappers(Collection<FileMapper> fileMappers) {
         configurableCollection().setFileMappers(List.copyOf(fileMappers).toArray(FileMapper[]::new));
     }
 
-    @Override
+//    @Override
     public void setStreamTransformer(InputStreamTransformer streamTransformer) {
         configurableCollection().setStreamTransformer(Objects.requireNonNull(streamTransformer, "streamTransformer"));
     }
 
-    @Override
     public void setCaseSensitivity(CaseSensitivity caseSensitivity) {
         configurableCollection().setCaseSensitive(CaseSensitivities.resolve(caseSensitivity));
     }
 
-    @Override
-    public void setDefaultExcludes(DefaultExcludes defaultExcludes) {
-        configurableCollection()
-                .setUsingDefaultExcludes(
-                        Objects.requireNonNull(defaultExcludes, "defaultExcludes") == DefaultExcludes.USE);
-    }
-
-    @Override
+//    @Override
     public void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling) {
         configurableCollection()
                 .setIncludingEmptyDirectories(Objects.requireNonNull(emptyDirectoryHandling, "emptyDirectoryHandling")
                         == EmptyDirectoryHandling.INCLUDE);
     }
 
-    @Override
     public void setEncoding(Charset charset) {
         if (!(collection instanceof EncodingSupported encodingSupported)) {
             throw unsupported("filename encoding");

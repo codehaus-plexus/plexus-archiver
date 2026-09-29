@@ -26,7 +26,12 @@ import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.BaseFileSet;
 import org.codehaus.plexus.archiver.FileSet;
+import org.codehaus.plexus.archiver.util.AbstractFileSet;
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
+import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 
 /**
  * Applies the configuration to the applied archiver
@@ -39,18 +44,36 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     DefaultArchiverConfigurer(Archiver archiver) {
         this.archiver = Objects.requireNonNull(archiver, "archiver");
     }
-
+    
     @Override
-    public void addFileSet(FileSet fileSet) {
-        archiver.addFileSet(Objects.requireNonNull(fileSet, "fileSet"));
-    }
+	public ArchiverConfigurer resource(
+            ResourceScan scan,
+            Consumer<ResourceEmitConfigurer> emit) {
 
-    @Override
-    public void addArchivedFileSet(ArchivedFileSet fileSet) {
-        archiver.addArchivedFileSet(Objects.requireNonNull(fileSet, "fileSet"));
-    }
+        if (scan instanceof DefaultDirectoryResourceScan directoryScan) {
+            DefaultFileSet fileSet = directoryScan.toFileSet();
 
-    @Override
+            emit.accept(new FileSetResourceEmitConfigurer(fileSet));
+            archiver.addFileSet(fileSet);
+
+            return this;
+        }
+
+        if (scan instanceof DefaultArchiveResourceScan archiveScan) {
+            DefaultArchivedFileSet fileSet = archiveScan.toArchivedFileSet();
+
+            emit.accept(new FileSetResourceEmitConfigurer(fileSet));
+            archiver.addArchivedFileSet(fileSet);
+
+            return this;
+        }
+
+        throw new IncompatibleClassChangeError(
+                "Unsupported ResourceScan implementation: "
+                        + scan.getClass().getName());
+	}
+
+	@Override
     public void setDestFile(Path destFile) {
         archiver.setDestFile(Objects.requireNonNull(destFile, "destFile").toFile());
     }
@@ -182,5 +205,4 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     		throw new IncompatibleClassChangeError();
     	}
     }
-
 }

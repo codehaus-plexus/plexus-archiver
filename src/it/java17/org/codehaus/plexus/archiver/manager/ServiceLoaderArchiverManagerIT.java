@@ -41,11 +41,13 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -187,29 +189,29 @@ class ServiceLoaderArchiverManagerIT {
     }
 
     @Test
-    void configuredLookups(@TempDir File tempDirectory) throws Exception {
+    void configuredLookups(@TempDir Path tempDirectory) throws Exception {
         ArchiverManager manager = new ServiceLoaderArchiverManager();
-        File archiveFile = new File(tempDirectory, "archive.zip");
-        File outputDirectory = new File(tempDirectory, "output");
+        Path archiveFile = tempDirectory.resolve("archive.zip");
+        Path outputDirectory = tempDirectory.resolve("output");
 
         ArchiverFactory archiverFactory = manager.getArchiverFactory("zip");
-        Archiver archiver = archiverFactory.configure(configurer -> configurer.setDestFile(archiveFile.toPath()));
-        Archiver secondArchiver = archiverFactory.configure(configurer -> {});
-        UnArchiver unarchiver = manager.getUnArchiverFactory(archiveFile).configure(configurer -> {
-            configurer.setSource(archiveFile.toPath());
-            configurer.setDestinationDirectory(outputDirectory.toPath());
+        Archiver archiver = archiverFactory.create(archiveFile, configurer -> {});
+        Archiver secondArchiver = archiverFactory.create(archiveFile, configurer -> {});
+        UnArchiver unarchiver = manager.createUnArchiver(archiveFile, configurer -> {
+            configurer.setDestinationDirectory(outputDirectory);
         });
         AbstractPlexusIoArchiveResourceCollection resourceCollection = (AbstractPlexusIoArchiveResourceCollection)
-                manager.getResourceCollectionFactory(archiveFile).configure(configurer -> {
-                    configurer.setSource(archiveFile.toPath());
-                    configurer.setPrefix("content/");
-                });
+                manager.createResourceCollection(
+                		archiveFile,
+                		configurer -> {
+				            configurer.prefix("content/");
+				        });
 
-        assertThat(archiver.getDestFile()).isEqualTo(archiveFile);
+        assertThat(archiver.getDestFile()).isEqualTo(archiveFile.toFile());
         assertThat(secondArchiver).isNotSameAs(archiver);
-        assertThat(unarchiver.getSourceFile()).isEqualTo(archiveFile);
-        assertThat(unarchiver.getDestDirectory()).isEqualTo(outputDirectory);
-        assertThat(resourceCollection.getFile()).isEqualTo(archiveFile);
+        assertThat(unarchiver.getSourceFile()).isEqualTo(archiveFile.toFile());
+        assertThat(unarchiver.getDestDirectory()).isEqualTo(outputDirectory.toFile());
+        assertThat(resourceCollection.getFile()).isEqualTo(archiveFile.toFile());
         assertThat(resourceCollection.getPrefix()).isEqualTo("content/");
     }
 

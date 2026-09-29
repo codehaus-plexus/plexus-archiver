@@ -17,6 +17,7 @@
 
 package org.codehaus.plexus.archiver.manager;
 
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.function.Consumer;
@@ -26,11 +27,14 @@ import java.util.stream.StreamSupport;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.archivers.provider.ArchiverProvider;
 import org.codehaus.plexus.archivers.provider.PlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.archivers.provider.UnArchiverProvider;
+import org.codehaus.plexus.components.io.resources.PlexusIoArchivedResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 class ServiceLoaderArchiverManager extends AbstractArchiverManager {
@@ -67,7 +71,7 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
         return StreamSupport.stream(serviceLoader.spliterator(),false)
                 .collect(Collectors.toMap(
                         PlexusIoResourceCollectionProvider::getName,
-                        ServiceLoaderArchiverManager::toPlexusIoResourceCollectionFactory));
+                        provider -> provider));
     }
     
     
@@ -76,11 +80,14 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 			
 			@Override
 			public Archiver create() {
-				return create(c -> {});
+				return provider.newArchiver(c -> {});
 			}
 			
-		    public Archiver create(Consumer<ArchiverConfigurer> configurer) {
-		    	return provider.newArchiver(configurer);
+			@Override
+		    public Archiver create(Path path, Consumer<ArchiverConfigurer> configurer) {
+				Archiver archiver = provider.newArchiver(configurer);
+				archiver.setDestFile(path.toFile());
+		    	return archiver;
 		    }
 		};
     } 
@@ -90,11 +97,14 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 			
 			@Override
 			public UnArchiver create() {
-				return create(c -> {});
+				return provider.newUnArchiver(c -> {});
 			}
 			
-		    public UnArchiver create(Consumer<UnArchiverConfigurer> configurer) {
-		    	return provider.newUnArchiver(configurer);
+			@Override
+		    public UnArchiver create(Path path, Consumer<UnArchiverConfigurer> configurer) {
+		    	UnArchiver unarchiver = provider.newUnArchiver(configurer);
+		    	unarchiver.setSourceFile(path.toFile());
+		    	return unarchiver;
 		    }
 		};
     } 
@@ -104,11 +114,13 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 			
 			@Override
 			public PlexusIoResourceCollection create() {
-				return create(c -> {});
+				return provider.create();
 			}
 			
-		    public PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-		    	return provider.newPlexusIoResourceCollection(configurer);
+			@Override
+		    public PlexusIoResourceCollection create(Path path,
+		            Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
+				return provider.create(path, configurer);
 		    }
 		};
     } 

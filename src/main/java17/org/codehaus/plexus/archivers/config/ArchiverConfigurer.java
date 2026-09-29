@@ -22,25 +22,23 @@ import java.nio.file.attribute.FileTime;
 import java.util.Comparator;
 import java.util.function.Consumer;
 
-import org.codehaus.plexus.archiver.ArchivedFileSet;
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.FileSet;
 
 /**
  * Configures content on an archiver without exposing its file set implementations.
  *
  * @since 5.0.0
  */
-public interface ArchiverConfigurer {
+public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
 	
 	static ArchiverConfigurer of(Archiver archiver) {
 		return new DefaultArchiverConfigurer(archiver);
 	}
 	
-    void addFileSet(FileSet fileSet);
-
-    void addArchivedFileSet(ArchivedFileSet archivedFileSet);
-
+	ArchiverConfigurer resource(
+            ResourceScan scan,
+            Consumer<ResourceEmitConfigurer> emit);
+	
     void setDestFile(Path destFile);
 
     /**

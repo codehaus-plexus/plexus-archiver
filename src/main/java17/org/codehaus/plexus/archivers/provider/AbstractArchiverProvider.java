@@ -17,6 +17,7 @@
 
 package org.codehaus.plexus.archivers.provider;
 
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Consumer;
 

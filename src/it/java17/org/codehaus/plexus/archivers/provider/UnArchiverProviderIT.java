@@ -26,11 +26,9 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiverProvider;
 import org.codehaus.plexus.archivers.config.ExistingFileHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.archivers.provider.AbstractUnArchiverProvider;
 import org.codehaus.plexus.archivers.provider.UnArchiverProvider;
-import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

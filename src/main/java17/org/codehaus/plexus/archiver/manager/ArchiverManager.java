@@ -19,10 +19,18 @@ package org.codehaus.plexus.archiver.manager;
 import javax.annotation.Nonnull;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -32,16 +40,16 @@ public interface ArchiverManager {
     @Nonnull
     Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException;
 
-    @Nonnull
-    Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException;
-
     /**
-     * Returns an unarchiver factory selected from the file extension.
+     * Returns a factory for the named archive format.
      *
      * @since 5.0.0
      */
     @Nonnull
     ArchiverFactory getArchiverFactory(@Nonnull String archiverName) throws NoSuchArchiverException;
+
+    @Nonnull
+    Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
     Collection<String> getAvailableArchivers();
@@ -80,4 +88,47 @@ public interface ArchiverManager {
 
     @Nonnull
     Collection<String> getAvailableResourceCollections();
+    
+    // 
+    // Methods below are default methods added on top of original interface
+    //
+    
+    /**
+     * Returns an archiver factory selected from the file extension.
+     *
+     * @since 5.0.0
+     */
+    @Nonnull
+    default Archiver createArchiver(@Nonnull Path destFile, Consumer<ArchiverConfigurer> configurer) throws NoSuchArchiverException {
+    	Objects.requireNonNull(destFile, "destFile");
+        Objects.requireNonNull(configurer, "configurer");
+
+        String format = FileNames.getFileExtension(destFile);
+
+        return getArchiverFactory(format).create(destFile, configurer);
+    }
+    
+    /**
+     * Returns an unarchiver factory selected from the file extension.
+     *
+     * @since 5.0.0
+     */
+    @Nonnull
+    default UnArchiver createUnArchiver(@Nonnull Path srcFile, Consumer<UnArchiverConfigurer> configurer) throws NoSuchArchiverException {
+    	Objects.requireNonNull(srcFile, "srcFile");
+        Objects.requireNonNull(configurer, "configurer");
+
+        String format = FileNames.getFileExtension(srcFile);
+
+        return getUnArchiverFactory(format).create(srcFile, configurer);
+    }
+    
+    default PlexusIoResourceCollection createResourceCollection(@Nonnull Path srcFile, Consumer<PlexusIoResourceCollectionConfigurer> configurer) throws NoSuchArchiverException {
+    	Objects.requireNonNull(srcFile, "srcFile");
+        Objects.requireNonNull(configurer, "configurer");
+
+        String format = FileNames.getFileExtension(srcFile);
+
+        return getResourceCollectionFactory(format).create(srcFile, configurer);
+    }
 }

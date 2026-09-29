@@ -17,10 +17,6 @@
 
 package org.codehaus.plexus.archivers.provider;
 
-import java.util.Objects;
-import java.util.function.Consumer;
-
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -34,11 +30,7 @@ public abstract non-sealed class AbstractPlexusIoResourceCollectionProvider
     protected abstract PlexusIoResourceCollection createResourceCollection();
 
     @Override
-    public final PlexusIoResourceCollection newPlexusIoResourceCollection(
-            Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-        PlexusIoResourceCollection collection = createResourceCollection();
-        Objects.requireNonNull(configurer, "configurer")
-                .accept(PlexusIoResourceCollectionConfigurer.of(collection));
-        return collection;
+    public final PlexusIoResourceCollection create() {
+        return createResourceCollection();
     }
 }

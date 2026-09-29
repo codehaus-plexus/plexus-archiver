@@ -17,9 +17,12 @@
 
 package org.codehaus.plexus.archiver.manager;
 
+import java.nio.file.Path;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.components.io.resources.PlexusIoArchivedResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -31,9 +34,20 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 public interface PlexusIoResourceCollectionFactory {
     PlexusIoResourceCollection create();
     
-    default PlexusIoResourceCollection configure(Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-    	PlexusIoResourceCollection resourceCollection = create();
-    	configurer.accept(PlexusIoResourceCollectionConfigurer.of(resourceCollection));
-    	return resourceCollection;
+    default PlexusIoResourceCollection create(
+            Path path,
+            Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
+
+        Objects.requireNonNull(path, "scan");
+        Objects.requireNonNull(configurer, "configurer");
+
+        PlexusIoResourceCollection collection = create();
+        if(collection instanceof PlexusIoArchivedResourceCollection coll) {
+        	coll.setFile(path.toFile());
+        }
+
+        configurer.accept(PlexusIoResourceCollectionConfigurer.of(collection));
+
+        return collection;
     }
 }

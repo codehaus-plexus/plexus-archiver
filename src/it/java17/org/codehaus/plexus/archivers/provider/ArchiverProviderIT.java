@@ -33,11 +33,14 @@ import org.codehaus.plexus.archivers.config.ArchiveCreation;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
-import org.codehaus.plexus.archivers.config.DefaultExcludes;
 import org.codehaus.plexus.archivers.config.DuplicateHandling;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
 import org.codehaus.plexus.archivers.config.FilePermissions;
+import org.codehaus.plexus.archivers.config.PathMatchers;
+import org.codehaus.plexus.archivers.config.PathPatternMatcher;
+import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.StandardExcludes;
 import org.codehaus.plexus.archivers.provider.AbstractArchiverProvider;
 import org.codehaus.plexus.archivers.provider.ArchiverProvider;
 import org.junit.jupiter.api.Test;
@@ -70,24 +73,36 @@ class ArchiverProviderIT {
     void configuresNewArchiverWithoutExposingFileSetImplementations(@TempDir Path directory) {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
-
-        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.fromDirectory(directory)
-                .prefix("content/")
-                .includes(List.of("**/*.txt"))
-                .excludes(List.of("**/ignored.txt"))
-                .caseSensitive(CaseSensitivity.INSENSITIVE)
-                .defaultExcludes(DefaultExcludes.IGNORE)
-                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
-                .build()));
+        
+        Archiver actual = provider.newArchiver(configurer -> configurer
+        		.resource(ResourceScan.fromDirectory(directory).matcher(PathPatternMatcher
+        				.includes("**/*.txt")
+        				.excludes("**/ignored.txt")
+        				.caseSensitive(CaseSensitivity.INSENSITIVE)
+        				.standardExcludes(StandardExcludes.NONE)), 
+        				emit -> { 
+        					emit.prefix("content/");
+        					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
+        				}));
+        
+//        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.fromDirectory(directory)
+//                .prefix("content/")
+//                .includes(List.of("**/*.txt"))
+//                .excludes(List.of("**/ignored.txt"))
+//                .caseSensitive(CaseSensitivity.INSENSITIVE)
+//                .defaultExcludes(DefaultExcludes.IGNORE)
+//                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
+//                .build()));
 
         assertThat(actual).isSameAs(expected);
-        assertThat(expected.fileSet.getDirectory()).isEqualTo(directory.toFile());
-        assertThat(expected.fileSet.getPrefix()).isEqualTo("content/");
-        assertThat(expected.fileSet.getIncludes()).containsExactly("**/*.txt");
-        assertThat(expected.fileSet.getExcludes()).containsExactly("**/ignored.txt");
-        assertThat(expected.fileSet.isCaseSensitive()).isFalse();
-        assertThat(expected.fileSet.isUsingDefaultExcludes()).isFalse();
-        assertThat(expected.fileSet.isIncludingEmptyDirectories()).isFalse();
+        
+        assertThat(expected.fileSet.getDirectory()).as("getDirectory").isEqualTo(directory.toFile());
+        assertThat(expected.fileSet.getPrefix()).as("getPrefix").isEqualTo("content/");
+        assertThat(expected.fileSet.getIncludes()).as("getIncludes").containsExactly("**/*.txt");
+        assertThat(expected.fileSet.getExcludes()).as("getExcludes").containsExactly("**/ignored.txt");
+        assertThat(expected.fileSet.isCaseSensitive()).as("isCaseSensitive").isFalse();
+        assertThat(expected.fileSet.isUsingDefaultExcludes()).as("isUsingDefaultExcludes").isFalse();
+        assertThat(expected.fileSet.isIncludingEmptyDirectories()).as("isIncludingEmptyDirectories").isFalse();
     }
 
     @Test
@@ -96,23 +111,34 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.fromArchive(archive)
-                .prefix("lib/")
-                .includes(List.of("**/*.class"))
-                .excludes(List.of("module-info.class"))
-                .caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
-                .defaultExcludes(DefaultExcludes.IGNORE)
-                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
-                .build()));
+        Archiver actual = provider.newArchiver(configurer -> configurer
+        		.resource(ResourceScan.fromArchive(archive).matcher(PathPatternMatcher
+        				.includes("**/*.class")
+        				.excludes("module-info.class")
+        				.caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
+        				.standardExcludes(StandardExcludes.NONE)), 
+        				emit -> {
+        					emit.prefix("lib/");
+        					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
+        				}));
 
-        assertThat(expected.archivedFileSet.getArchive()).isEqualTo(archive.toFile());
-        assertThat(expected.archivedFileSet.getPrefix()).isEqualTo("lib/");
-        assertThat(expected.archivedFileSet.getIncludes()).containsExactly("**/*.class");
-        assertThat(expected.archivedFileSet.getExcludes()).containsExactly("module-info.class");
-        assertThat(expected.archivedFileSet.isCaseSensitive())
+//        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.fromArchive(archive)
+//                .prefix("lib/")
+//                .includes(List.of("**/*.class"))
+//                .excludes(List.of("module-info.class"))
+//                .caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
+//                .defaultExcludes(DefaultExcludes.IGNORE)
+//                .emptyDirectories(EmptyDirectoryHandling.EXCLUDE)
+//                .build()));
+
+        assertThat(expected.archivedFileSet.getArchive()).as("getArchive").isEqualTo(archive.toFile());
+        assertThat(expected.archivedFileSet.getPrefix()).as("getPrefix").isEqualTo("lib/");
+        assertThat(expected.archivedFileSet.getIncludes()).as("getIncludes").containsExactly("**/*.class");
+        assertThat(expected.archivedFileSet.getExcludes()).as("getExcludes").containsExactly("module-info.class");
+        assertThat(expected.archivedFileSet.isCaseSensitive()).as("isCaseSensitive")
                 .isEqualTo(CaseSensitivities.resolve(CaseSensitivity.PLATFORM_DEFAULT));
-        assertThat(expected.archivedFileSet.isUsingDefaultExcludes()).isFalse();
-        assertThat(expected.archivedFileSet.isIncludingEmptyDirectories()).isFalse();
+        assertThat(expected.archivedFileSet.isUsingDefaultExcludes()).as("isUsingDefaultExcludes").isFalse();
+        assertThat(expected.archivedFileSet.isIncludingEmptyDirectories()).as("isIncludingEmptyDirectories").isFalse();
     }
 
     @Test

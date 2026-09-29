@@ -19,7 +19,9 @@ package org.codehaus.plexus.archivers.provider;
 
 import java.util.function.Consumer;
 
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archiver.manager.PlexusIoResourceCollectionFactory;
+import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -27,9 +29,8 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
  *
  * @since 5.0.0
  */
-public sealed interface PlexusIoResourceCollectionProvider permits AbstractPlexusIoResourceCollectionProvider {
+public sealed interface PlexusIoResourceCollectionProvider extends PlexusIoResourceCollectionFactory permits AbstractPlexusIoResourceCollectionProvider {
 
     String getName();
 
-    PlexusIoResourceCollection newPlexusIoResourceCollection(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
 }

@@ -29,9 +29,10 @@ import org.codehaus.plexus.archiver.resources.PlexusIoFileResourceCollectionProv
 import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollectionProvider;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
-import org.codehaus.plexus.archivers.config.DefaultExcludes;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
+import org.codehaus.plexus.archivers.config.PathPatternMatcher;
+import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.StandardExcludes;
 import org.codehaus.plexus.archivers.config.SymbolicLinkHandling;
 import org.codehaus.plexus.archivers.provider.AbstractPlexusIoResourceCollectionProvider;
 import org.codehaus.plexus.archivers.provider.PlexusIoResourceCollectionProvider;
@@ -43,77 +44,61 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import net.bytebuddy.build.ToStringPlugin.Exclude;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PlexusIoResourceCollectionProviderIT {
 
-    @Test
-    void exposesOnlyConfiguredCreation() {
-        assertThat(PlexusIoResourceCollectionProvider.class.getPermittedSubclasses())
-                .containsExactly(AbstractPlexusIoResourceCollectionProvider.class);
-        assertThat(Arrays.stream(PlexusIoResourceCollectionProvider.class.getMethods())
-                        .filter(method -> method.getName().equals("newPlexusIoResourceCollection"))
-                        .map(method -> method.getParameterCount()))
-                .containsExactly(1);
-        assertThat(Arrays.stream(AbstractPlexusIoResourceCollectionProvider.class.getMethods())
-                        .map(method -> method.getName()))
-                .doesNotContain("create");
-        assertThat(Arrays.stream(PlexusIoResourceCollectionConfigurer.class.getMethods())
-                        .filter(method -> Modifier.isStatic(method.getModifiers())))
-				.satisfiesExactly(m -> { 
-					assertThat(m.getName()).isEqualTo("of");
-					assertThat(m.getParameterCount()).isEqualTo(1);
-					assertThat(m.getParameterTypes()[0]).isEqualTo(PlexusIoResourceCollection.class);
-					assertThat(m.getReturnType()).isEqualTo(PlexusIoResourceCollectionConfigurer.class);
+	@Test
+	void exposesOnlyConfiguredCreation() {
+		assertThat(PlexusIoResourceCollectionProvider.class.getPermittedSubclasses())
+				.containsExactly(AbstractPlexusIoResourceCollectionProvider.class);
+	}
+
+	@Test
+	void configuresArchiveResourceCollection(@TempDir Path directory) {
+		Path source = directory.resolve("source.zip");
+
+		AbstractPlexusIoResourceCollection collection = (AbstractPlexusIoResourceCollection) new PlexusArchiverZipFileResourceCollectionProvider()
+				.create(source, configurer -> {
+							configurer.prefix("content/");
+							configurer.matcher(PathPatternMatcher
+									.includes("**/*.txt")
+									.excludes("**/ignored.txt")
+									.standardExcludes(StandardExcludes.NONE)
+									.caseSensitive(CaseSensitivity.INSENSITIVE));
+//							configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
+//							configurer.setEncoding(StandardCharsets.UTF_8);
+						});
+
+		assertThat(((AbstractPlexusIoArchiveResourceCollection) collection).getFile()).isEqualTo(source.toFile());
+		assertThat(collection.getPrefix()).isEqualTo("content/");
+		assertThat(collection.getIncludes()).containsExactly("**/*.txt");
+		assertThat(collection.getExcludes()).containsExactly("**/ignored.txt");
+		assertThat(collection.isCaseSensitive()).isFalse();
+		assertThat(collection.isUsingDefaultExcludes()).isFalse();
+		assertThat(collection.isIncludingEmptyDirectories()).isFalse();
+	}
+
+	@Test
+	void configuresFilesystemResourceCollection(@TempDir Path directory) {
+		PlexusIoFileResourceCollection collection = (PlexusIoFileResourceCollection) new PlexusIoFileResourceCollectionProvider()
+				.create(directory, configurer -> {
+					configurer.setSymbolicLinkHandling(SymbolicLinkHandling.PRESERVE);
 				});
-    }
 
-    @Test
-    void configuresArchiveResourceCollection(@TempDir Path directory) {
-        Path source = directory.resolve("source.zip");
+		assertThat(collection.getBaseDir()).isEqualTo(directory.toFile());
+		assertThat(collection.isFollowingSymLinks()).isFalse();
+	}
 
-        AbstractPlexusIoResourceCollection collection = (AbstractPlexusIoResourceCollection)
-                new PlexusArchiverZipFileResourceCollectionProvider().newPlexusIoResourceCollection(configurer -> {
-                    configurer.setSource(source);
-                    configurer.setPrefix("content/");
-                    configurer.setIncludes(List.of("**/*.txt"));
-                    configurer.setExcludes(List.of("**/ignored.txt"));
-                    configurer.setCaseSensitivity(CaseSensitivity.INSENSITIVE);
-                    configurer.setDefaultExcludes(DefaultExcludes.IGNORE);
-                    configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
-                    configurer.setEncoding(StandardCharsets.UTF_8);
-                });
+	@Test
+	void configuresCompressedResourceCollectionSource(@TempDir Path directory) {
+		Path source = directory.resolve("source.gz");
 
-        assertThat(((AbstractPlexusIoArchiveResourceCollection) collection).getFile())
-                .isEqualTo(source.toFile());
-        assertThat(collection.getPrefix()).isEqualTo("content/");
-        assertThat(collection.getIncludes()).containsExactly("**/*.txt");
-        assertThat(collection.getExcludes()).containsExactly("**/ignored.txt");
-        assertThat(collection.isCaseSensitive()).isFalse();
-        assertThat(collection.isUsingDefaultExcludes()).isFalse();
-        assertThat(collection.isIncludingEmptyDirectories()).isFalse();
-    }
+		PlexusIoCompressedFileResourceCollection collection = (PlexusIoCompressedFileResourceCollection) new PlexusIoGzipResourceCollectionProvider()
+				.create(source, configurer -> {});
 
-    @Test
-    void configuresFilesystemResourceCollection(@TempDir Path directory) {
-        PlexusIoFileResourceCollection collection = (PlexusIoFileResourceCollection)
-                new PlexusIoFileResourceCollectionProvider().newPlexusIoResourceCollection(configurer -> {
-                    configurer.setSource(directory);
-                    configurer.setSymbolicLinkHandling(SymbolicLinkHandling.PRESERVE);
-                });
-
-        assertThat(collection.getBaseDir()).isEqualTo(directory.toFile());
-        assertThat(collection.isFollowingSymLinks()).isFalse();
-    }
-
-    @Test
-    void configuresCompressedResourceCollectionSource(@TempDir Path directory) {
-        Path source = directory.resolve("source.gz");
-
-        PlexusIoCompressedFileResourceCollection collection =
-                (PlexusIoCompressedFileResourceCollection) new PlexusIoGzipResourceCollectionProvider()
-                        .newPlexusIoResourceCollection(configurer -> configurer.setSource(source));
-
-        assertThat(collection.getFile()).isEqualTo(source.toFile());
-    }
+		assertThat(collection.getFile()).isEqualTo(source.toFile());
+	}
 }

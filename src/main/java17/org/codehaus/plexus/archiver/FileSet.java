@@ -3,15 +3,17 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.codehaus.plexus.archiver.ArchivedFileSet.Builder;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
-import org.codehaus.plexus.archivers.config.DefaultExcludes;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
+import org.codehaus.plexus.archivers.config.StandardExcludes;
 import org.codehaus.plexus.archivers.config.SymbolicLinkHandling;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -65,7 +67,7 @@ public interface FileSet extends BaseFileSet {
         private Collection<String> includes;
         private Collection<String> excludes;
         private CaseSensitivity caseSensitivity = CaseSensitivity.SENSITIVE;
-        private DefaultExcludes defaultExcludes = DefaultExcludes.USE;
+        private Collection<StandardExcludes> standardExcludes = List.of();
         private EmptyDirectoryHandling emptyDirectoryHandling = EmptyDirectoryHandling.INCLUDE;
         private SymbolicLinkHandling symbolicLinkHandling = SymbolicLinkHandling.PRESERVE;
         private Collection<FileSelector> fileSelectors;
@@ -96,8 +98,13 @@ public interface FileSet extends BaseFileSet {
             return this;
         }
 
-        public Builder defaultExcludes(DefaultExcludes defaultExcludes) {
-            this.defaultExcludes = Objects.requireNonNull(defaultExcludes, "defaultExcludes");
+        public Builder standardExcludes(StandardExcludes.ExcludeMode mode) {
+        	this.standardExcludes = List.of(mode);
+            return this;
+        }
+
+        public Builder standardExcludes(StandardExcludes.ExcludeGroup... groups) {
+        	this.standardExcludes = Arrays.asList(groups);
             return this;
         }
 
@@ -132,7 +139,6 @@ public interface FileSet extends BaseFileSet {
             fileSet.setIncludes(includes == null ? null : includes.toArray(String[]::new));
             fileSet.setExcludes(excludes == null ? null : excludes.toArray(String[]::new));
             fileSet.setCaseSensitive(isCaseSensitive());
-            fileSet.setUsingDefaultExcludes(usesBuiltInDefaultExcludes());
             fileSet.setIncludingEmptyDirectories(includesEmptyDirectories());
             fileSet.setFollowingSymLinks(followsSymbolicLinks());
             fileSet.setFileSelectors(fileSelectors == null ? null : fileSelectors.toArray(FileSelector[]::new));
@@ -140,15 +146,16 @@ public interface FileSet extends BaseFileSet {
                 fileSet.setStreamTransformer(streamTransformer);
             }
             fileSet.setFileMappers(fileMappers == null ? null : fileMappers.toArray(FileMapper[]::new));
+            if (standardExcludes.contains(StandardExcludes.NONE)) {
+            	fileSet.usingDefaultExcludes(false);
+            } else if (standardExcludes.contains(StandardExcludes.PLEXUS)) {
+            	fileSet.usingDefaultExcludes(true);
+            }
             return fileSet;
         }
 
         private boolean isCaseSensitive() {
             return CaseSensitivities.resolve(caseSensitivity);
-        }
-
-        private boolean usesBuiltInDefaultExcludes() {
-            return defaultExcludes == DefaultExcludes.USE;
         }
 
         private boolean followsSymbolicLinks() {

@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver.manager;
 
 import java.nio.file.Path;
 
+import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
@@ -34,20 +35,19 @@ class CdiFactoryIT {
     void createsConfiguredArchivers(@TempDir Path directory) {
         CdiArchiverFactory factory = new CdiArchiverFactory(ZipArchiver::new);
 
-        var first = factory.configure(configurer -> configurer.setDestFile(directory.resolve("first.zip")));
-        var second = factory.configure(configurer -> configurer.setDestFile(directory.resolve("second.zip")));
+        var first = factory.create(directory.resolve("first.zip"), configurer -> {});
+        var second = factory.create(directory.resolve("second.zip"), configurer -> {});
 
         assertThat(first).isNotSameAs(second);
         assertThat(first.getDestFile()).isEqualTo(directory.resolve("first.zip").toFile());
-        assertThat(second.getDestFile())
-                .isEqualTo(directory.resolve("second.zip").toFile());
+        assertThat(second.getDestFile()).isEqualTo(directory.resolve("second.zip").toFile());
     }
 
     @Test
     void createsConfiguredUnarchivers(@TempDir Path directory) {
         CdiUnArchiverFactory factory = new CdiUnArchiverFactory(ZipUnArchiver::new);
 
-        var unarchiver = factory.configure(configurer -> configurer.setSource(directory.resolve("source.zip")));
+        var unarchiver = factory.create(directory.resolve("source.zip"), c -> {});
 
         assertThat(unarchiver.getSourceFile())
                 .isEqualTo(directory.resolve("source.zip").toFile());
@@ -58,10 +58,11 @@ class CdiFactoryIT {
         CdiPlexusIoResourceCollectionFactory factory =
                 new CdiPlexusIoResourceCollectionFactory(PlexusArchiverZipFileResourceCollection::new);
 
+        var archive = directory.resolve("source.zip");
         var collection = (AbstractPlexusIoArchiveResourceCollection)
-                factory.configure(configurer -> configurer.setSource(directory.resolve("source.zip")));
+                factory.create(archive, c -> {});
 
         assertThat(collection.getFile())
-                .isEqualTo(directory.resolve("source.zip").toFile());
+                .isEqualTo(archive.toFile());
     }
 }

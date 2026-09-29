@@ -33,12 +33,6 @@ public sealed interface CaseSensitivity permits FixedCaseSensitivity, PlatformDe
     CaseSensitivity PLATFORM_DEFAULT = new PlatformDefaultCaseSensitivity();
 }
 
-final class FixedCaseSensitivity implements CaseSensitivity {
-    final boolean caseSensitive;
-
-    FixedCaseSensitivity(boolean caseSensitive) {
-        this.caseSensitive = caseSensitive;
-    }
-}
+final record FixedCaseSensitivity(boolean caseSensitive) implements CaseSensitivity {}
 
 final class PlatformDefaultCaseSensitivity implements CaseSensitivity {}

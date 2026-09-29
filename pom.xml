@@ -252,7 +252,7 @@
                   <target>
                     <delete dir="${project.build.directory}/it-classes" />
                     <mkdir dir="${project.build.directory}/it-classes" />
-                    <javac destdir="${project.build.directory}/it-classes" encoding="${project.build.sourceEncoding}" includeantruntime="false" release="17" srcdir="${project.basedir}/src/it/java17">
+                    <javac debug="true" destdir="${project.build.directory}/it-classes" encoding="${project.build.sourceEncoding}" includeantruntime="false" release="17" srcdir="${project.basedir}/src/it/java17">
                       <classpath>
                         <pathelement location="${project.build.directory}/${project.build.finalName}.jar" />
                         <path refid="maven.test.classpath" />
