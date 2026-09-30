@@ -43,9 +43,12 @@ package org.codehaus.plexus.archiver.manager;
 import java.io.File;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -132,6 +135,21 @@ class ServiceLoaderArchiverManagerTest {
         assertNotEquals(newArchiver, archiver);
 
         assertFalse(newArchiver.getResources().hasNext());
+    }
+
+    @Test
+    void archiverAddsArchivedFileSetWithoutContainer(@TempDir File tempDir) throws Exception {
+        ArchiverManager manager = new ServiceLoaderArchiverManager();
+        File archiveFile = new File(tempDir, "repacked.zip");
+
+        Archiver archiver = manager.getArchiver("zip");
+        archiver.setDestFile(archiveFile);
+        archiver.addArchivedFileSet(DefaultArchivedFileSet.archivedFileSet(new File("src/test/resources/test.zip")));
+        archiver.createArchive();
+
+        try (ZipFile zipFile = new ZipFile(archiveFile)) {
+            assertThat(zipFile.stream().map(ZipEntry::getName)).anyMatch(name -> name.endsWith("ZipUnArchiver.java"));
+        }
     }
 
     @Test
