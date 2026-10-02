@@ -23,7 +23,6 @@ import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
-import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -51,18 +50,5 @@ class CdiFactoryIT {
 
         assertThat(unarchiver.getSourceFile())
                 .isEqualTo(directory.resolve("source.zip").toFile());
-    }
-
-    @Test
-    void createsConfiguredResourceCollections(@TempDir Path directory) {
-        CdiPlexusIoResourceCollectionFactory factory =
-                new CdiPlexusIoResourceCollectionFactory(PlexusArchiverZipFileResourceCollection::new);
-
-        var archive = directory.resolve("source.zip");
-        var collection = (AbstractPlexusIoArchiveResourceCollection)
-                factory.create(archive, c -> {});
-
-        assertThat(collection.getFile())
-                .isEqualTo(archive.toFile());
     }
 }

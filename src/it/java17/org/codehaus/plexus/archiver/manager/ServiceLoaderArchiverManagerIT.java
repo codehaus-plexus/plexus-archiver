@@ -200,19 +200,11 @@ class ServiceLoaderArchiverManagerIT {
         UnArchiver unarchiver = manager.createUnArchiver(archiveFile, configurer -> {
             configurer.setDestinationDirectory(outputDirectory);
         });
-        AbstractPlexusIoArchiveResourceCollection resourceCollection = (AbstractPlexusIoArchiveResourceCollection)
-                manager.createResourceCollection(
-                		archiveFile,
-                		configurer -> {
-				            configurer.prefix("content/");
-				        });
 
         assertThat(archiver.getDestFile()).isEqualTo(archiveFile.toFile());
         assertThat(secondArchiver).isNotSameAs(archiver);
         assertThat(unarchiver.getSourceFile()).isEqualTo(archiveFile.toFile());
         assertThat(unarchiver.getDestDirectory()).isEqualTo(outputDirectory.toFile());
-        assertThat(resourceCollection.getFile()).isEqualTo(archiveFile.toFile());
-        assertThat(resourceCollection.getPrefix()).isEqualTo("content/");
     }
 
     @Test

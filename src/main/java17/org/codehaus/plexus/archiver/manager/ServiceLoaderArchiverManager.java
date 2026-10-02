@@ -26,7 +26,6 @@ import java.util.stream.StreamSupport;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -116,12 +115,6 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 			public PlexusIoResourceCollection create() {
 				return provider.create();
 			}
-			
-			@Override
-		    public PlexusIoResourceCollection create(Path path,
-		            Consumer<PlexusIoResourceCollectionConfigurer> configurer) {
-				return provider.create(path, configurer);
-		    }
 		};
     } 
 

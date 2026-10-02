@@ -27,7 +27,6 @@ import java.util.function.Consumer;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
-import org.codehaus.plexus.archivers.config.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
@@ -121,14 +120,5 @@ public interface ArchiverManager {
         String format = FileNames.getFileExtension(srcFile);
 
         return getUnArchiverFactory(format).create(srcFile, configurer);
-    }
-    
-    default PlexusIoResourceCollection createResourceCollection(@Nonnull Path srcFile, Consumer<PlexusIoResourceCollectionConfigurer> configurer) throws NoSuchArchiverException {
-    	Objects.requireNonNull(srcFile, "srcFile");
-        Objects.requireNonNull(configurer, "configurer");
-
-        String format = FileNames.getFileExtension(srcFile);
-
-        return getResourceCollectionFactory(format).create(srcFile, configurer);
     }
 }
