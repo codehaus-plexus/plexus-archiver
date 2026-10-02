@@ -37,6 +37,7 @@ import java.util.Set;
 
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
+import org.codehaus.plexus.archiver.manager.ServiceLoaderArchiverManager;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributeUtils;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.attributes.SimpleResourceAttributes;
@@ -130,6 +131,12 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
      */
     @Inject
     private Provider<ArchiverManager> archiverManagerProvider;
+
+    /**
+     * Used instead of {@link #archiverManagerProvider} when this archiver was not created by a JSR-330 container,
+     * for example through {@link ServiceLoaderArchiverManager} or its constructor.
+     */
+    private ArchiverManager serviceLoaderArchiverManager;
 
     private static class AddedResourceCollection {
 
@@ -582,13 +589,23 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         }
     }
 
+    private ArchiverManager getArchiverManager() {
+        if (archiverManagerProvider != null) {
+            return archiverManagerProvider.get();
+        }
+        if (serviceLoaderArchiverManager == null) {
+            serviceLoaderArchiverManager = new ServiceLoaderArchiverManager();
+        }
+        return serviceLoaderArchiverManager;
+    }
+
     protected PlexusIoResourceCollection asResourceCollection(final ArchivedFileSet fileSet, Charset charset)
             throws ArchiverException {
         final File archiveFile = fileSet.getArchive();
 
         final PlexusIoResourceCollection resources;
         try {
-            resources = archiverManagerProvider.get().getResourceCollection(archiveFile);
+            resources = getArchiverManager().getResourceCollection(archiveFile);
         } catch (final NoSuchArchiverException e) {
             throw new ArchiverException(
                     "Error adding archived file-set. PlexusIoResourceCollection not found for: " + archiveFile, e);
