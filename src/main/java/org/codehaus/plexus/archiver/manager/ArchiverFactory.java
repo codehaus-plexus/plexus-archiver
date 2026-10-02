@@ -17,10 +17,7 @@
 
 package org.codehaus.plexus.archiver.manager;
 
-import java.util.function.Consumer;
-
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archivers.spi.ArchiverConfigurer;
 
 /**
  * Creates configured archiver instances.
@@ -29,5 +26,5 @@ import org.codehaus.plexus.archivers.spi.ArchiverConfigurer;
  */
 @FunctionalInterface
 public interface ArchiverFactory {
-    Archiver create(Consumer<ArchiverConfigurer> configurer);
+    Archiver create();
 }
