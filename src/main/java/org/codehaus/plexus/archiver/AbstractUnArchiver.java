@@ -20,12 +20,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileSystemLoopException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.NotDirectoryException;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Deque;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
@@ -33,7 +44,6 @@ import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +73,11 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     private FileMapper[] fileMappers;
 
     private List<ArchiveFinalizer> finalizers;
+
+    /** Directory spellings are reused only after a fresh NOFOLLOW identity check, within one extraction. */
+    private Map<Path, ResolvedDirectory> resolvedDirectories;
+
+    private record ResolvedDirectory(Object fileKey, Path path) {}
 
     private FileSelector[] fileSelectors;
 
@@ -131,16 +146,26 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
 
     @Override
     public final void extract() throws ArchiverException {
-        validate();
-        execute();
-        runArchiveFinalizers();
+        resolvedDirectories = new LinkedHashMap<>(128, 0.75f, true);
+        try {
+            validate();
+            execute();
+            runArchiveFinalizers();
+        } finally {
+            resolvedDirectories = null;
+        }
     }
 
     @Override
     public final void extract(final String path, final File outputDirectory) throws ArchiverException {
-        validate(path, outputDirectory);
-        execute(path, outputDirectory);
-        runArchiveFinalizers();
+        resolvedDirectories = new LinkedHashMap<>(128, 0.75f, true);
+        try {
+            validate(path, outputDirectory);
+            execute(path, outputDirectory);
+            runArchiveFinalizers();
+        } finally {
+            resolvedDirectories = null;
+        }
     }
 
     @Override
@@ -188,14 +213,19 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             throw new ArchiverException("You must choose between a destination directory and a destination file.");
         }
 
-        if (destDirectory != null && !destDirectory.isDirectory()) {
-            destFile = destDirectory;
-            destDirectory = null;
-        }
+        try {
+            // Use the same link/.. semantics for classification and extraction, retaining the configured spelling.
+            if (destDirectory != null && !Files.isDirectory(resolveExtractionRoot(destDirectory))) {
+                destFile = destDirectory;
+                destDirectory = null;
+            }
 
-        if (destFile != null && destFile.isDirectory()) {
-            destDirectory = destFile;
-            destFile = null;
+            if (destFile != null && Files.isDirectory(resolveExtractionRoot(destFile))) {
+                destDirectory = destFile;
+                destFile = null;
+            }
+        } catch (IOException e) {
+            throw new ArchiverException("Cannot resolve extraction destination", e);
         }
     }
 
@@ -263,23 +293,10 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
         }
 
-        // Hmm. Symlinks re-evaluate back to the original file here. Unsure if this is a good thing...
-        final File targetFileName = FileUtils.resolveFile(dir, entryName);
-
-        // Make sure that the resolved path of the extracted file doesn't escape the destination directory
-        // getCanonicalFile().toPath() is used instead of getCanonicalPath() (returns String),
-        // because "/opt/directory".startsWith("/opt/dir") would return false negative.
-        Path canonicalDirPath = dir.getCanonicalFile().toPath();
-        Path canonicalDestPath = targetFileName.getCanonicalFile().toPath();
-
-        if (!canonicalDestPath.startsWith(canonicalDirPath)) {
-            throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
-        }
-
-        // don't allow override target symlink by standard file
-        if (StringUtils.isEmpty(symlinkDestination) && Files.isSymbolicLink(canonicalDestPath)) {
-            throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
-        }
+        final boolean symlink = !StringUtils.isEmpty(symlinkDestination);
+        Path destination = resolveExtractionPath(dir, entryName);
+        checkFinalSymlink(destination, entryName, symlink);
+        File targetFileName = destination.toFile();
 
         try {
             if (!shouldExtractEntry(dir, targetFileName, entryName, entryDate)) {
@@ -287,27 +304,163 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
 
             // create intermediary directories - sometimes zip don't add them
-            final File dirF = targetFileName.getParentFile();
-            if (dirF != null) {
-                dirF.mkdirs();
+            if (destination.getParent() != null) {
+                Files.createDirectories(destination.getParent());
             }
+            destination = resolveExtractionPath(dir, entryName);
+            checkFinalSymlink(destination, entryName, symlink);
+            targetFileName = destination.toFile();
 
-            if (!StringUtils.isEmpty(symlinkDestination)) {
+            if (symlink) {
                 SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
             } else if (isDirectory) {
-                targetFileName.mkdirs();
+                Files.createDirectories(destination);
             } else {
-                Files.copy(compressedInputStream, targetFileName.toPath(), REPLACE_EXISTING);
+                Files.copy(compressedInputStream, destination, REPLACE_EXISTING);
             }
 
-            targetFileName.setLastModified(entryDate.getTime());
+            if (symlink) {
+                // A link can point outside the extraction root. Never change its target's metadata.
+                if (Files.isSymbolicLink(destination)) {
+                    try {
+                        BasicFileAttributeView attributes = Files.getFileAttributeView(
+                                destination, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+                        attributes.setTimes(FileTime.fromMillis(entryDate.getTime()), null, null);
+                    } catch (IOException | UnsupportedOperationException ignored) {
+                        // Link timestamps are best effort, like File.setLastModified for ordinary entries.
+                    }
+                }
+            } else {
+                targetFileName.setLastModified(entryDate.getTime());
+            }
 
-            if (!isIgnorePermissions() && mode != null && !isDirectory) {
+            if (!symlink && !isIgnorePermissions() && mode != null && !isDirectory) {
                 ArchiveEntryUtils.chmod(targetFileName, mode);
             }
         } catch (final FileNotFoundException ex) {
             getLogger().warn("Unable to expand to file " + targetFileName.getPath());
         }
+    }
+
+    private static void checkFinalSymlink(Path destination, String entryName, boolean symlink) {
+        if (!symlink && Files.isSymbolicLink(destination)) {
+            throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
+        }
+    }
+
+    /**
+     * Resolves the trusted root, following each link before processing subsequent parent components.
+     * @param directory the configured root, whose original spelling remains available to extraction hooks
+     * @return the physical root, including any not-yet-existing suffix
+     * @throws IOException if an existing component cannot be resolved
+     */
+    protected final Path resolveExtractionRoot(File directory) throws IOException {
+        return resolvePath(directory.toPath(), true);
+    }
+
+    /**
+     * Resolves an entry's parents and checks containment, leaving a final symlink for entry-type validation.
+     * @param directory the trusted extraction root
+     * @param name the mapped destination name
+     * @return a contained physical path without following its final symbolic link
+     * @throws IOException if an existing component cannot be resolved
+     * @throws ArchiverException if the destination is outside the root
+     */
+    protected final Path resolveExtractionPath(File directory, String name) throws IOException {
+        Path root = resolveExtractionRoot(directory);
+        // Preserve the previous resolver's portable absolute names and platform-native relative names.
+        Path portable = Path.of(name.replace('/', File.separatorChar).replace('\\', File.separatorChar));
+        Path entry = portable.isAbsolute() ? portable : Path.of(name);
+        // Only rootless entries can start at the resolved root. Windows rooted paths can be non-absolute.
+        Path destination =
+                entry.getRoot() == null ? resolvePath(root, entry, false) : resolvePath(root.resolve(entry), false);
+        if (!destination.startsWith(root)) {
+            throw new ArchiverException("Entry is outside of the target directory (" + name + ")");
+        }
+        return destination;
+    }
+
+    /**
+     * Resolves existing components individually: Windows canonicalization of a missing leaf can leave its
+     * symlinked parents unresolved, and whole-path normalization can erase a link before a later {@code ..}.
+     */
+    private Path resolvePath(Path path, boolean followLastLink) throws IOException {
+        Path absolute = path.toAbsolutePath();
+        return resolvePath(absolute.getRoot(), absolute, followLastLink);
+    }
+
+    /** Starts at a prefix already resolved during this check, without repeating its filesystem operations. */
+    private Path resolvePath(Path current, Path path, boolean followLastLink) throws IOException {
+        Deque<Path> remaining = new ArrayDeque<>();
+        path.forEach(remaining::addLast);
+        int links = 0;
+        while (!remaining.isEmpty()) {
+            Path name = remaining.removeFirst();
+            if (name.toString().isEmpty() || name.toString().equals(".")) {
+                continue;
+            }
+            if (name.toString().equals("..")) {
+                if (current.getParent() != null) {
+                    current = current.getParent();
+                }
+                continue;
+            }
+            Path candidate = current.resolve(name);
+            BasicFileAttributes attributes;
+            try {
+                attributes = Files.readAttributes(candidate, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+            } catch (NoSuchFileException ignored) {
+                current = candidate;
+                continue;
+            }
+            if (attributes.isSymbolicLink()) {
+                if (remaining.isEmpty() && !followLastLink) {
+                    return candidate;
+                }
+                if (++links > 64) {
+                    throw new FileSystemLoopException(path.toString());
+                }
+                // Resolve the target against the physical parent. Do not normalize away link/.. components.
+                Path target = current.resolve(Files.readSymbolicLink(candidate)).toAbsolutePath();
+                for (int i = target.getNameCount() - 1; i >= 0; i--) {
+                    remaining.addFirst(target.getName(i));
+                }
+                current = target.getRoot();
+            } else {
+                if (!remaining.isEmpty() && !attributes.isDirectory()) {
+                    throw new NotDirectoryException(candidate.toString());
+                }
+                // With no unresolved parent links or dots, this also handles Windows casing and short names.
+                current = resolveDirectory(candidate, attributes);
+            }
+        }
+        return current;
+    }
+
+    /** Avoids repeated real-path walks while still observing replacements and links on every visit. */
+    private Path resolveDirectory(Path candidate, BasicFileAttributes attributes) throws IOException {
+        Object key = attributes.fileKey();
+        // Reparse points and providers without file identities need fresh resolution. Do not cache file leaves.
+        if (resolvedDirectories == null || !attributes.isDirectory() || attributes.isOther() || key == null) {
+            return candidate.toRealPath();
+        }
+        ResolvedDirectory cached = resolvedDirectories.get(candidate);
+        if (cached != null && key.equals(cached.fileKey())) {
+            return cached.path();
+        }
+        Path resolved = candidate.toRealPath();
+        // Only retain spellings that already match the resolved path; aliases still need fresh resolution.
+        if (candidate.equals(resolved)) {
+            resolvedDirectories.put(candidate, new ResolvedDirectory(key, resolved));
+            if (resolvedDirectories.size() > 1024) {
+                var oldest = resolvedDirectories.keySet().iterator();
+                oldest.next();
+                oldest.remove();
+            }
+        } else {
+            resolvedDirectories.remove(candidate);
+        }
+        return resolved;
     }
 
     /**
@@ -341,10 +494,10 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
 
         boolean entryIsDirectory =
                 entryName.endsWith("/"); // directory entries always end with '/', regardless of the OS.
-        String canonicalDestPath = targetFileName.getCanonicalPath();
+        String canonicalDestPath = resolvePath(targetFileName.toPath(), false).toString();
         String suffix = (entryIsDirectory ? "/" : "");
         String relativeCanonicalDestPath =
-                canonicalDestPath.replace(targetDirectory.getCanonicalPath() + File.separatorChar, "") + suffix;
+                canonicalDestPath.replace(resolveExtractionRoot(targetDirectory) + File.separator, "") + suffix;
         boolean fileOnDiskIsOlderThanEntry = targetFileName.lastModified() < entryDate.getTime();
         boolean differentCasing =
                 !normalizedFileSeparator(entryName).equals(normalizedFileSeparator(relativeCanonicalDestPath));
