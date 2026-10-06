@@ -432,7 +432,7 @@ public class TarArchiver extends AbstractArchiver {
             return new ZstdCompressorOutputStream(bufferedOutputStream(ostream));
         }
 
-        return ostream;
+        return bufferedOutputStream(ostream);
     }
 
     @Override
