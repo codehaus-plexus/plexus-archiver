@@ -39,26 +39,26 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 
     ServiceLoaderArchiverManager() {
-        super(archivers(ServiceLoader.load(ArchiverProvider.class)), 
+        super(archivers(ServiceLoader.load(ArchiverProvider.class), plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class))), 
         		unarchivers(ServiceLoader.load(UnArchiverProvider.class)), 
         		plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class)));
     }
 
     ServiceLoaderArchiverManager(ClassLoader classLoader) {
-        super(archivers(ServiceLoader.load(ArchiverProvider.class, classLoader)), 
+        super(archivers(ServiceLoader.load(ArchiverProvider.class, classLoader), plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class, classLoader))), 
         		unarchivers(ServiceLoader.load(UnArchiverProvider.class, classLoader)), 
         		plexusIoResourceCollections(ServiceLoader.load(PlexusIoResourceCollectionProvider.class, classLoader)));
 	}
 
 	ServiceLoaderArchiverManager(ModuleLayer moduleLayer) {
-		 super(archivers(ServiceLoader.load(moduleLayer, ArchiverProvider.class)), 
+		 super(archivers(ServiceLoader.load(moduleLayer, ArchiverProvider.class), plexusIoResourceCollections(ServiceLoader.load(moduleLayer, PlexusIoResourceCollectionProvider.class))), 
 	        		unarchivers(ServiceLoader.load(moduleLayer, UnArchiverProvider.class)), 
 	        		plexusIoResourceCollections(ServiceLoader.load(moduleLayer, PlexusIoResourceCollectionProvider.class)));
 	}
 
-	private static Map<String, ArchiverFactory> archivers(ServiceLoader<ArchiverProvider> serviceLoader) {
+	private static Map<String, ArchiverFactory> archivers(ServiceLoader<ArchiverProvider> serviceLoader, Map<String, PlexusIoResourceCollectionFactory> resourceCollectionFactories) {
         return StreamSupport.stream(serviceLoader.spliterator(), false)
-                .collect(Collectors.toMap(ArchiverProvider::getName, ServiceLoaderArchiverManager::toArchiverFactory));
+                .collect(Collectors.toMap(ArchiverProvider::getName, p -> ServiceLoaderArchiverManager.toArchiverFactory(p, resourceCollectionFactories)));
     }
 
     private static Map<String, UnArchiverFactory> unarchivers(ServiceLoader<UnArchiverProvider> serviceLoader) {
@@ -74,21 +74,8 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
     }
     
     
-    private static ArchiverFactory toArchiverFactory(ArchiverProvider provider) {
-    	return new ArchiverFactory() {
-			
-			@Override
-			public Archiver create() {
-				return provider.newArchiver(c -> {});
-			}
-			
-			@Override
-		    public Archiver create(Path path, Consumer<ArchiverConfigurer> configurer) {
-				Archiver archiver = provider.newArchiver(configurer);
-				archiver.setDestFile(path.toFile());
-		    	return archiver;
-		    }
-		};
+    private static ArchiverFactory toArchiverFactory(ArchiverProvider provider, Map<String, PlexusIoResourceCollectionFactory> resourceCollectionFactories) {
+    	return new ServiceLoaderArchiverFactory(provider, resourceCollectionFactories);
     } 
 
     private static UnArchiverFactory toUnArchiverFactory(UnArchiverProvider provider) {
