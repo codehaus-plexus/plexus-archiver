@@ -226,15 +226,16 @@ public class TrackingArchiver implements Archiver {
                 final String[] excludes,
                 final int permissions) {
             this.resource = resource;
-            if (resource instanceof FileSet fs) {
-                directory = fs.getDirectory();
-                this.destination = fs.getPrefix();
-                this.includes = fs.getIncludes();
-                this.excludes = fs.getExcludes();
+            if (resource instanceof FileSet) {
+                FileSet fileSet = (FileSet) resource;
+                directory = fileSet.getDirectory();
+                this.destination = fileSet.getPrefix();
+                this.includes = fileSet.getIncludes();
+                this.excludes = fileSet.getExcludes();
                 this.permissions = permissions;
             } else {
-                if (resource instanceof File file && file.isDirectory()) {
-                    directory = file;
+                if (resource instanceof File && ((File) resource).isDirectory()) {
+                    directory = (File) resource;
                 } else {
                     directory = null;
                 }
