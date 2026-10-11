@@ -55,18 +55,6 @@ public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
 
     void setIgnorePermissions(PermissionHandling permissionHandling);
 
-    void setLastModifiedTime(FileTime lastModifiedTime);
-
-    void setFilenameComparator(Comparator<String> filenameComparator);
-
-    void setOverrideUid(int uid);
-
-    void setOverrideUserName(String userName);
-
-    void setOverrideGid(int gid);
-
-    void setOverrideGroupName(String groupName);
-
     void setUmask(FilePermissions permissions);
 
     void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> reproducibleBuildSpec);

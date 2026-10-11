@@ -17,6 +17,7 @@
 package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.attribute.FileTime;
+import java.util.Comparator;
 
 import org.codehaus.plexus.archiver.Archiver;
 
@@ -36,5 +37,30 @@ final class DefaultReproducibleBuildConfigurer implements ReproducibleBuildConfi
 	@Override
 	public void setDefaultLastModifiedTime(FileTime fileTime) {
 		archiver.configureReproducibleBuild(fileTime);
+	}
+
+	@Override
+	public void setDefaultUid(int uid) {
+		archiver.setOverrideUid(uid);
+	}
+
+	@Override
+	public void setDefaultUserName(String userName) {
+		archiver.setOverrideUserName(userName);
+	}
+
+	@Override
+	public void setDefaultGid(int gid) {
+		archiver.setOverrideGid(gid);
+	}
+
+	@Override
+	public void setDefaultGroupName(String groupName) {
+		archiver.setOverrideGroupName(groupName);
+	}
+
+	@Override
+	public void setFilenameComparator(Comparator<String> filenameComparator) {
+		archiver.setFilenameComparator(filenameComparator);
 	}
 }

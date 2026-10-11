@@ -132,42 +132,6 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     }
 
     @Override
-    public void setLastModifiedTime(FileTime lastModifiedTime) {
-        archiver.setLastModifiedTime(Objects.requireNonNull(lastModifiedTime, "lastModifiedTime"));
-    }
-
-    @Override
-    public void setFilenameComparator(Comparator<String> filenameComparator) {
-        archiver.setFilenameComparator(Objects.requireNonNull(filenameComparator, "filenameComparator"));
-    }
-
-    @Override
-    public void setOverrideUid(int uid) {
-        if (uid < 0) {
-            throw new IllegalArgumentException("uid must not be negative");
-        }
-        archiver.setOverrideUid(uid);
-    }
-
-    @Override
-    public void setOverrideUserName(String userName) {
-        archiver.setOverrideUserName(Objects.requireNonNull(userName, "userName"));
-    }
-
-    @Override
-    public void setOverrideGid(int gid) {
-        if (gid < 0) {
-            throw new IllegalArgumentException("gid must not be negative");
-        }
-        archiver.setOverrideGid(gid);
-    }
-
-    @Override
-    public void setOverrideGroupName(String groupName) {
-        archiver.setOverrideGroupName(Objects.requireNonNull(groupName, "groupName"));
-    }
-
-    @Override
     public void setUmask(FilePermissions permissions) {
         archiver.setUmask(toMode(permissions));
     }

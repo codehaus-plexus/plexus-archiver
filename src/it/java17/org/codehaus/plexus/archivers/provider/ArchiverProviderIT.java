@@ -156,14 +156,15 @@ class ArchiverProviderIT {
             configurer.setForced(ArchiveCreation.WHEN_NEEDED);
             configurer.setDuplicateBehavior(DuplicateHandling.FAIL);
             configurer.setIgnorePermissions(PermissionHandling.IGNORE);
-            configurer.setLastModifiedTime(timestamp);
-            configurer.setFilenameComparator(Comparator.naturalOrder());
-            configurer.setOverrideUid(1000);
-            configurer.setOverrideUserName("user");
-            configurer.setOverrideGid(1000);
-            configurer.setOverrideGroupName("group");
             configurer.setUmask(FilePermissions.parse("----w--w-"));
-            configurer.configureReproducibleBuild(c -> c.setDefaultLastModifiedTime(timestamp));
+            configurer.configureReproducibleBuild(c -> { 
+            	c.setDefaultLastModifiedTime(timestamp);
+                c.setDefaultUid(1000);
+                c.setDefaultUserName("user");
+                c.setDefaultGid(1000);
+                c.setDefaultGroupName("group");
+                c.setFilenameComparator(Comparator.naturalOrder());
+            });
         });
 
         assertThat(actual).isSameAs(expected);
