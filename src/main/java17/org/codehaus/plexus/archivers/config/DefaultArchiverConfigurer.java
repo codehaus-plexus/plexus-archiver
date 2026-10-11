@@ -79,23 +79,21 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
     }
 
     @Override
-    public void setFileMode(FilePermissions permissions) {
-        archiver.setFileMode(toMode(permissions));
+    public void setFileMode(FileMode fileMode) {
+    	if(fileMode instanceof OverrideFileMode o) {
+            archiver.setFileMode(toMode(o.permissions()));
+    	} else if (fileMode instanceof FallbackFileMode f) {
+            archiver.setDefaultFileMode(toMode(f.permissions()));
+    	}
     }
 
     @Override
-    public void setDefaultFileMode(FilePermissions permissions) {
-        archiver.setDefaultFileMode(toMode(permissions));
-    }
-
-    @Override
-    public void setDirectoryMode(FilePermissions permissions) {
-        archiver.setDirectoryMode(toMode(permissions));
-    }
-
-    @Override
-    public void setDefaultDirectoryMode(FilePermissions permissions) {
-        archiver.setDefaultDirectoryMode(toMode(permissions));
+    public void setDirectoryMode(DirectoryMode directoryMode) {
+    	if(directoryMode instanceof OverrideDirectoryMode o) {
+            archiver.setDirectoryMode(toMode(o.permissions()));
+    	} else if(directoryMode instanceof FallbackDirectoryMode f) {
+            archiver.setDefaultDirectoryMode(toMode(f.permissions()));
+    	}
     }
 
     @Override

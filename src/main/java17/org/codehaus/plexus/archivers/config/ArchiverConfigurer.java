@@ -41,33 +41,9 @@ public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
 	
     void setDestFile(Path destFile);
 
-    /**
-     * Sets the permissions used for regular files added to the archive.
-     *
-     * @param permissions the file permissions
-     */
-    void setFileMode(FilePermissions permissions);
+    void setFileMode(FileMode fileMode);
 
-    /**
-     * Sets the default permissions used for regular files when no explicit mode is available.
-     *
-     * @param permissions the default file permissions
-     */
-    void setDefaultFileMode(FilePermissions permissions);
-
-    /**
-     * Sets the permissions used for directories added to the archive.
-     *
-     * @param permissions the directory permissions
-     */
-    void setDirectoryMode(FilePermissions permissions);
-
-    /**
-     * Sets the default permissions used for directories when no explicit mode is available.
-     *
-     * @param permissions the default directory permissions
-     */
-    void setDefaultDirectoryMode(FilePermissions permissions);
+    void setDirectoryMode(DirectoryMode directoryMode);
 
     void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling);
 

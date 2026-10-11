@@ -33,11 +33,12 @@ import org.codehaus.plexus.archivers.config.ArchiveCreation;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
+import org.codehaus.plexus.archivers.config.DirectoryMode;
 import org.codehaus.plexus.archivers.config.DuplicateHandling;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
+import org.codehaus.plexus.archivers.config.FileMode;
 import org.codehaus.plexus.archivers.config.FilePermissions;
-import org.codehaus.plexus.archivers.config.PathMatchers;
 import org.codehaus.plexus.archivers.config.PathPatternMatcher;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archivers.config.StandardExcludes;
@@ -148,10 +149,8 @@ class ArchiverProviderIT {
 
         Archiver actual = providerFor(expected).newArchiver(configurer -> {
             configurer.setDestFile(directory.resolve("archive.zip"));
-            configurer.setFileMode(FilePermissions.parse("rw-r--r--"));
-            configurer.setDefaultFileMode(FilePermissions.parse("rw-r-----"));
-            configurer.setDirectoryMode(FilePermissions.parse("rwxr-xr-x"));
-            configurer.setDefaultDirectoryMode(FilePermissions.parse("rwxr-x---"));
+            configurer.setFileMode(FileMode.override(FilePermissions.parse("rw-r--r--")));
+            configurer.setDirectoryMode(DirectoryMode.override(FilePermissions.parse("rwxr-xr-x")));
             configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
             configurer.setDotFileDirectory(directory);
             configurer.setForced(ArchiveCreation.WHEN_NEEDED);
@@ -172,9 +171,7 @@ class ArchiverProviderIT {
         assertThat(expected.forced).isFalse();
         assertThat(expected.ignorePermissions).isTrue();
         assertThat(expected.fileMode).isEqualTo(0644);
-        assertThat(expected.defaultFileMode).isEqualTo(0640);
         assertThat(expected.directoryMode).isEqualTo(0755);
-        assertThat(expected.defaultDirectoryMode).isEqualTo(0750);
         assertThat(expected.duplicateBehavior).isEqualTo(Archiver.DUPLICATES_FAIL);
         assertThat(expected.umask).isEqualTo(0022);
     }
