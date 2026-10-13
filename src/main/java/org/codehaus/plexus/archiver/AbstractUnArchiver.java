@@ -20,10 +20,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,6 +44,7 @@ import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 // TODO there should really be constructors which take the source file.
@@ -77,6 +84,16 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      * @since 1.1
      */
     private boolean ignorePermissions = false;
+
+    /**
+     * @since 4.15.0
+     */
+    private SymlinkFailureMode symlinkFailureMode = SymlinkFailureMode.COPY_TARGET;
+
+    /**
+     * Symbolic links the file system refused during the current extraction, resolved once every entry is on disk.
+     */
+    private List<DeferredSymlink> deferredSymlinks;
 
     public AbstractUnArchiver() {
         // no op
@@ -139,14 +156,26 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     @Override
     public final void extract() throws ArchiverException {
         validate();
-        execute();
+        deferredSymlinks = new ArrayList<>();
+        try {
+            execute();
+            resolveDeferredSymlinks();
+        } finally {
+            deferredSymlinks = null;
+        }
         runArchiveFinalizers();
     }
 
     @Override
     public final void extract(final String path, final File outputDirectory) throws ArchiverException {
         validate(path, outputDirectory);
-        execute(path, outputDirectory);
+        deferredSymlinks = new ArrayList<>();
+        try {
+            execute(path, outputDirectory);
+            resolveDeferredSymlinks();
+        } finally {
+            deferredSymlinks = null;
+        }
         runArchiveFinalizers();
     }
 
@@ -273,6 +302,25 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         this.ignorePermissions = ignorePermissions;
     }
 
+    /**
+     * @since 4.15.0
+     */
+    @Override
+    public SymlinkFailureMode getSymlinkFailureMode() {
+        return symlinkFailureMode;
+    }
+
+    /**
+     * @since 4.15.0
+     */
+    @Override
+    public void setSymlinkFailureMode(final SymlinkFailureMode symlinkFailureMode) {
+        if (symlinkFailureMode == null) {
+            throw new IllegalArgumentException("symlinkFailureMode must not be null");
+        }
+        this.symlinkFailureMode = symlinkFailureMode;
+    }
+
     protected void extractFile(
             final File srcF,
             final File dir,
@@ -320,7 +368,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
 
             if (!StringUtils.isEmpty(symlinkDestination)) {
-                SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
+                if (!createSymlinkEntry(canonicalDirPath, targetFileName, symlinkDestination, entryName)) {
+                    return;
+                }
             } else if (isDirectory) {
                 targetFileName.mkdirs();
             } else {
@@ -334,6 +384,152 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
         } catch (final FileNotFoundException ex) {
             getLogger().warn("Unable to expand to file " + targetFileName.getPath());
+        }
+    }
+
+    /**
+     * Creates a symbolic link. Visible for testing, so a test can simulate a file system that refuses links.
+     *
+     * @param link the link to create
+     * @param target the link target as stored in the archive
+     * @throws IOException if the link cannot be created
+     * @since 4.15.0
+     */
+    protected void createSymbolicLink(File link, File target) throws IOException {
+        SymlinkUtils.createSymbolicLink(link, target);
+    }
+
+    /**
+     * @return {@code true} if the link exists on disk, {@code false} if it was skipped or deferred
+     */
+    private boolean createSymlinkEntry(Path root, File link, String target, String entryName) throws IOException {
+        try {
+            createSymbolicLink(link, new File(target));
+            return true;
+        } catch (IOException | UnsupportedOperationException e) {
+            if (symlinkFailureMode == SymlinkFailureMode.FAIL) {
+                if (e instanceof IOException) {
+                    throw (IOException) e;
+                }
+                throw new IOException("Cannot create symbolic link " + link, e);
+            }
+            boolean copy = symlinkFailureMode == SymlinkFailureMode.COPY_TARGET && deferredSymlinks != null;
+            getLogger()
+                    .warn(
+                            "Cannot create symbolic link {} -> {} ({}). On Windows this needs the 'Create symbolic"
+                                    + " links' right or Developer Mode; {}.",
+                            entryName,
+                            target,
+                            e.getMessage(),
+                            copy ? "the link target will be copied instead" : "the entry is skipped");
+            if (copy) {
+                // the parent exists by now; canonicalize it, not the link path, which might be an existing link
+                Path linkPath = link.getParentFile().getCanonicalFile().toPath().resolve(link.getName());
+                deferredSymlinks.add(new DeferredSymlink(root, linkPath, target, entryName));
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Copies the target of each refused link in place of the link. Repeats until no more links resolve, so links
+     * that precede their target in the archive and chains of links work in any entry order.
+     */
+    private void resolveDeferredSymlinks() throws ArchiverException {
+        if (deferredSymlinks.isEmpty()) {
+            return;
+        }
+        List<DeferredSymlink> pending = new ArrayList<>(deferredSymlinks);
+        try {
+            boolean progress = true;
+            while (progress && !pending.isEmpty()) {
+                progress = false;
+                for (Iterator<DeferredSymlink> it = pending.iterator(); it.hasNext(); ) {
+                    DeferredSymlink link = it.next();
+                    Path real;
+                    try {
+                        real = link.link
+                                .resolveSibling(link.target.replace('/', File.separatorChar))
+                                .normalize()
+                                .toRealPath();
+                    } catch (NoSuchFileException e) {
+                        // the target may be another refused link that a later round copies
+                        continue;
+                    }
+                    it.remove();
+                    if (!real.startsWith(link.root)) {
+                        getLogger()
+                                .warn(
+                                        "Skipping symbolic link {}: target {} is outside the target directory",
+                                        link.entryName,
+                                        link.target);
+                    } else if (Files.exists(link.link, LinkOption.NOFOLLOW_LINKS)) {
+                        getLogger().warn("Skipping symbolic link {}: {} already exists", link.entryName, link.link);
+                    } else if (Files.isDirectory(real) && link.link.startsWith(real)) {
+                        getLogger()
+                                .warn(
+                                        "Skipping symbolic link {}: target {} contains the link",
+                                        link.entryName,
+                                        link.target);
+                    } else {
+                        copyTarget(real, link.link);
+                        progress = true;
+                    }
+                }
+            }
+            for (DeferredSymlink link : pending) {
+                getLogger()
+                        .warn(
+                                "Skipping symbolic link {}: target {} is not in the archive, or the links form a cycle",
+                                link.entryName,
+                                link.target);
+            }
+        } catch (IOException e) {
+            throw new ArchiverException("Error while copying symbolic link targets", e);
+        }
+    }
+
+    private void copyTarget(Path source, Path destination) throws IOException {
+        if (!Files.isDirectory(source)) {
+            Files.copy(source, destination, COPY_ATTRIBUTES);
+            return;
+        }
+        Files.walkFileTree(source, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                Files.createDirectories(destination.resolve(source.relativize(dir)));
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                if (attrs.isSymbolicLink()) {
+                    getLogger().warn("Skipping symbolic link {} while copying {}", file, source);
+                } else {
+                    Files.copy(file, destination.resolve(source.relativize(file)), COPY_ATTRIBUTES);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+        });
+    }
+
+    private static final class DeferredSymlink {
+        /** Canonical destination directory the entry was checked against. */
+        final Path root;
+
+        /** Where the link would have been created. */
+        final Path link;
+
+        /** Link target as stored in the archive. */
+        final String target;
+
+        final String entryName;
+
+        DeferredSymlink(Path root, Path link, String target, String entryName) {
+            this.root = root;
+            this.link = link;
+            this.target = target;
+            this.entryName = entryName;
         }
     }
 
