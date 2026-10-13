@@ -20,21 +20,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
+import org.codehaus.plexus.archiver.util.DeferredSymlinks;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -44,7 +39,6 @@ import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 // TODO there should really be constructors which take the source file.
@@ -93,7 +87,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     /**
      * Symbolic links the file system refused during the current extraction, resolved once every entry is on disk.
      */
-    private List<DeferredSymlink> deferredSymlinks;
+    private DeferredSymlinks deferredSymlinks;
 
     public AbstractUnArchiver() {
         // no op
@@ -156,10 +150,12 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     @Override
     public final void extract() throws ArchiverException {
         validate();
-        deferredSymlinks = new ArrayList<>();
+        deferredSymlinks = new DeferredSymlinks(getLogger());
         try {
             execute();
-            resolveDeferredSymlinks();
+            deferredSymlinks.resolve();
+        } catch (IOException e) {
+            throw new ArchiverException("Error while copying symbolic link targets", e);
         } finally {
             deferredSymlinks = null;
         }
@@ -169,10 +165,12 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     @Override
     public final void extract(final String path, final File outputDirectory) throws ArchiverException {
         validate(path, outputDirectory);
-        deferredSymlinks = new ArrayList<>();
+        deferredSymlinks = new DeferredSymlinks(getLogger());
         try {
             execute(path, outputDirectory);
-            resolveDeferredSymlinks();
+            deferredSymlinks.resolve();
+        } catch (IOException e) {
+            throw new ArchiverException("Error while copying symbolic link targets", e);
         } finally {
             deferredSymlinks = null;
         }
@@ -423,113 +421,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                             e.getMessage(),
                             copy ? "the link target will be copied instead" : "the entry is skipped");
             if (copy) {
-                // the parent exists by now; canonicalize it, not the link path, which might be an existing link
-                Path linkPath = link.getParentFile().getCanonicalFile().toPath().resolve(link.getName());
-                deferredSymlinks.add(new DeferredSymlink(root, linkPath, target, entryName));
+                deferredSymlinks.add(root, link, target, entryName);
             }
             return false;
-        }
-    }
-
-    /**
-     * Copies the target of each refused link in place of the link. Repeats until no more links resolve, so links
-     * that precede their target in the archive and chains of links work in any entry order.
-     */
-    private void resolveDeferredSymlinks() throws ArchiverException {
-        if (deferredSymlinks.isEmpty()) {
-            return;
-        }
-        List<DeferredSymlink> pending = new ArrayList<>(deferredSymlinks);
-        try {
-            boolean progress = true;
-            while (progress && !pending.isEmpty()) {
-                progress = false;
-                for (Iterator<DeferredSymlink> it = pending.iterator(); it.hasNext(); ) {
-                    DeferredSymlink link = it.next();
-                    Path real;
-                    try {
-                        real = link.link
-                                .resolveSibling(link.target.replace('/', File.separatorChar))
-                                .normalize()
-                                .toRealPath();
-                    } catch (NoSuchFileException e) {
-                        // the target may be another refused link that a later round copies
-                        continue;
-                    }
-                    it.remove();
-                    if (!real.startsWith(link.root)) {
-                        getLogger()
-                                .warn(
-                                        "Skipping symbolic link {}: target {} is outside the target directory",
-                                        link.entryName,
-                                        link.target);
-                    } else if (Files.exists(link.link, LinkOption.NOFOLLOW_LINKS)) {
-                        getLogger().warn("Skipping symbolic link {}: {} already exists", link.entryName, link.link);
-                    } else if (Files.isDirectory(real) && link.link.startsWith(real)) {
-                        getLogger()
-                                .warn(
-                                        "Skipping symbolic link {}: target {} contains the link",
-                                        link.entryName,
-                                        link.target);
-                    } else {
-                        copyTarget(real, link.link);
-                        progress = true;
-                    }
-                }
-            }
-            for (DeferredSymlink link : pending) {
-                getLogger()
-                        .warn(
-                                "Skipping symbolic link {}: target {} is not in the archive, or the links form a cycle",
-                                link.entryName,
-                                link.target);
-            }
-        } catch (IOException e) {
-            throw new ArchiverException("Error while copying symbolic link targets", e);
-        }
-    }
-
-    private void copyTarget(Path source, Path destination) throws IOException {
-        if (!Files.isDirectory(source)) {
-            Files.copy(source, destination, COPY_ATTRIBUTES);
-            return;
-        }
-        Files.walkFileTree(source, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                Files.createDirectories(destination.resolve(source.relativize(dir)));
-                return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                if (attrs.isSymbolicLink()) {
-                    getLogger().warn("Skipping symbolic link {} while copying {}", file, source);
-                } else {
-                    Files.copy(file, destination.resolve(source.relativize(file)), COPY_ATTRIBUTES);
-                }
-                return FileVisitResult.CONTINUE;
-            }
-        });
-    }
-
-    private static final class DeferredSymlink {
-        /** Canonical destination directory the entry was checked against. */
-        final Path root;
-
-        /** Where the link would have been created. */
-        final Path link;
-
-        /** Link target as stored in the archive. */
-        final String target;
-
-        final String entryName;
-
-        DeferredSymlink(Path root, Path link, String target, String entryName) {
-            this.root = root;
-            this.link = link;
-            this.target = target;
-            this.entryName = entryName;
         }
     }
 
