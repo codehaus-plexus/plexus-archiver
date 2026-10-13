@@ -108,4 +108,25 @@ public interface UnArchiver {
      * @since 1.1
      */
     void setIgnorePermissions(final boolean ignorePermissions);
+
+    /**
+     * Returns what happens to a symbolic link entry that the file system refuses to create.
+     *
+     * @return the failure mode; {@link SymlinkFailureMode#FAIL} unless the implementation supports another
+     * @since 4.15.0
+     */
+    default SymlinkFailureMode getSymlinkFailureMode() {
+        return SymlinkFailureMode.FAIL;
+    }
+
+    /**
+     * Sets what happens to a symbolic link entry that the file system refuses to create.
+     *
+     * @param symlinkFailureMode the failure mode
+     * @throws UnsupportedOperationException if the implementation does not support this setting
+     * @since 4.15.0
+     */
+    default void setSymlinkFailureMode(SymlinkFailureMode symlinkFailureMode) {
+        throw new UnsupportedOperationException("setSymlinkFailureMode");
+    }
 }
