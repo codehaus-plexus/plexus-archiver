@@ -29,7 +29,7 @@ jobs:
       # https://github.com/codehaus-plexus/plexus-archiver/issues/164
       matrix-include: >
         [ 
-          {"jdk": "17.0.2", "os": "windows-latest", distribution: "zulu" }
+          {"jdk": "17.0.2", "os": "windows-latest", "distribution": "zulu" }
         ]
 
 #   deploy:
