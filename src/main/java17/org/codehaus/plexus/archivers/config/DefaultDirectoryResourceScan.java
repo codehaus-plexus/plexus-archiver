@@ -10,7 +10,7 @@ import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 final class DefaultDirectoryResourceScan implements ResourceScan.DirectoryScan {
 
 	private final Path directory;
-	private PathMatcher matcher;
+	private PathMatcher matcher = path -> true;
 
 	DefaultDirectoryResourceScan(Path directory) {
 		this.directory = Objects.requireNonNull(directory, "directory");
