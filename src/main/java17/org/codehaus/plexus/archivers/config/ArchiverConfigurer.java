@@ -18,8 +18,6 @@
 package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.Path;
-import java.nio.file.attribute.FileTime;
-import java.util.Comparator;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
@@ -41,10 +39,6 @@ public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
 	
     void setDestFile(Path destFile);
 
-    void setFileMode(FileMode fileMode);
-
-    void setDirectoryMode(DirectoryMode directoryMode);
-
     void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling);
 
     void setDotFileDirectory(Path dotFileDirectory);
@@ -53,9 +47,7 @@ public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
 
     void setDuplicateBehavior(DuplicateHandling duplicateHandling);
 
-    void setIgnorePermissions(PermissionHandling permissionHandling);
-
-    void setUmask(FilePermissions permissions);
-
+    void setPermissionPolicy(PermissionPolicy policy);
+    
     void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> reproducibleBuildSpec);
 }

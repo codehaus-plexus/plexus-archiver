@@ -37,6 +37,7 @@ import org.codehaus.plexus.archivers.config.DirectoryMode;
 import org.codehaus.plexus.archivers.config.DuplicateHandling;
 import org.codehaus.plexus.archivers.config.EmptyDirectoryHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
+import org.codehaus.plexus.archivers.config.PermissionPolicy;
 import org.codehaus.plexus.archivers.config.FileMode;
 import org.codehaus.plexus.archivers.config.FilePermissions;
 import org.codehaus.plexus.archivers.config.PathPatternMatcher;
@@ -149,14 +150,11 @@ class ArchiverProviderIT {
 
         Archiver actual = providerFor(expected).newArchiver(configurer -> {
             configurer.setDestFile(directory.resolve("archive.zip"));
-            configurer.setFileMode(FileMode.override(FilePermissions.parse("rw-r--r--")));
-            configurer.setDirectoryMode(DirectoryMode.override(FilePermissions.parse("rwxr-xr-x")));
             configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
             configurer.setDotFileDirectory(directory);
             configurer.setForced(ArchiveCreation.WHEN_NEEDED);
             configurer.setDuplicateBehavior(DuplicateHandling.FAIL);
-            configurer.setIgnorePermissions(PermissionHandling.IGNORE);
-            configurer.setUmask(FilePermissions.parse("----w--w-"));
+            configurer.setPermissionPolicy(PermissionPolicy.umask(FilePermissions.parse("----w--w-")));
             configurer.configureReproducibleBuild(c -> { 
             	c.setDefaultLastModifiedTime(timestamp);
                 c.setDefaultUid(1000);
@@ -170,11 +168,7 @@ class ArchiverProviderIT {
         assertThat(actual).isSameAs(expected);
         assertThat(expected.includeEmptyDirectories).isFalse();
         assertThat(expected.forced).isFalse();
-        assertThat(expected.ignorePermissions).isTrue();
-        assertThat(expected.fileMode).isEqualTo(0644);
-        assertThat(expected.directoryMode).isEqualTo(0755);
         assertThat(expected.duplicateBehavior).isEqualTo(Archiver.DUPLICATES_FAIL);
-        assertThat(expected.umask).isEqualTo(0022);
     }
 
     private static ArchiverProvider providerFor(Archiver archiver) {
@@ -196,13 +190,7 @@ class ArchiverProviderIT {
         private ArchivedFileSet archivedFileSet;
         private boolean includeEmptyDirectories;
         private boolean forced;
-        private boolean ignorePermissions;
-        private int fileMode;
-        private int defaultFileMode;
-        private int directoryMode;
-        private int defaultDirectoryMode;
         private String duplicateBehavior;
-        private int umask;
 
         @Override
         public void addFileSet(FileSet fileSet) {
@@ -225,38 +213,8 @@ class ArchiverProviderIT {
         }
 
         @Override
-        public void setIgnorePermissions(boolean ignorePermissions) {
-            this.ignorePermissions = ignorePermissions;
-        }
-
-        @Override
-        public void setFileMode(int mode) {
-            this.fileMode = mode;
-        }
-
-        @Override
-        public void setDefaultFileMode(int mode) {
-            this.defaultFileMode = mode;
-        }
-
-        @Override
-        public void setDirectoryMode(int mode) {
-            this.directoryMode = mode;
-        }
-
-        @Override
-        public void setDefaultDirectoryMode(int mode) {
-            this.defaultDirectoryMode = mode;
-        }
-
-        @Override
         public void setDuplicateBehavior(String duplicateBehavior) {
             this.duplicateBehavior = duplicateBehavior;
-        }
-
-        @Override
-        public void setUmask(int umask) {
-            this.umask = umask;
         }
     }
 }
