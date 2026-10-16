@@ -137,9 +137,13 @@ class TarHardLinkArchiverTest extends TestSupport {
                 new ByteArrayInputStream((resource.getName() + "-transformed").getBytes(StandardCharsets.UTF_8)));
         archiver.addFileSet(set);
         List<Header> entries = headers(write(archiver));
-        assertEquals("a-transformed", entries.get(0).contents);
-        assertEquals("b-transformed", entries.get(1).contents);
-        assertFalse(entries.get(1).entry.isLink());
+        assertEquals(
+                List.of("a", "b"),
+                entries.stream().map(header -> header.entry.getName()).sorted().toList());
+        for (Header header : entries) {
+            assertEquals(header.entry.getName() + "-transformed", header.contents);
+            assertFalse(header.entry.isLink());
+        }
     }
 
     /** Replacing TAR resource contents must preserve the replacement bytes with either writer setting. */
