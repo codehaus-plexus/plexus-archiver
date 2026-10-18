@@ -17,10 +17,13 @@
 
 package org.codehaus.plexus.archiver.manager;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.diags.DelgatingArchiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 
 /**
@@ -69,7 +72,15 @@ public interface ArchiverFactory {
     default Archiver create(Path path, Consumer<ArchiverConfigurer> configurer) {
         Archiver archiver = create();
         archiver.setDestFile(path.toFile());
-        configurer.accept(ArchiverConfigurer.of(archiver));
-        return archiver;
+        
+        // ensure that FileSetComparator is from reproducible is set before adding resources by delegating
+        return new DelgatingArchiver(archiver) {
+        	
+        	@Override
+        	public void createArchive() throws ArchiverException, IOException {
+                configurer.accept(ArchiverConfigurer.of(archiver));
+        		archiver.createArchive();
+        	}
+        };
     }
 }
