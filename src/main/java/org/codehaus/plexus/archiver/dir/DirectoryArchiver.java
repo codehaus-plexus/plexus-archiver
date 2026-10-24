@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,10 @@ import org.codehaus.plexus.archiver.AbstractArchiver;
 import org.codehaus.plexus.archiver.ArchiveEntry;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
+import org.codehaus.plexus.archiver.SymlinkFailureMode;
 import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
+import org.codehaus.plexus.archiver.util.DeferredSymlinks;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
@@ -44,6 +47,44 @@ public class DirectoryArchiver extends AbstractArchiver {
 
     private final List<Runnable> directoryChmods = new ArrayList<>();
     private long filesCopied;
+
+    private SymlinkFailureMode symlinkFailureMode = SymlinkFailureMode.COPY_TARGET;
+
+    /**
+     * Returns what happens to a symbolic link that the file system refuses to create.
+     *
+     * @return the failure mode, {@link SymlinkFailureMode#COPY_TARGET} by default
+     * @since 4.15.0
+     */
+    public SymlinkFailureMode getSymlinkFailureMode() {
+        return symlinkFailureMode;
+    }
+
+    /**
+     * Sets what happens to a symbolic link that the file system refuses to create, for example on Windows without
+     * the "Create symbolic links" right or Developer Mode.
+     *
+     * @param symlinkFailureMode the failure mode
+     * @since 4.15.0
+     */
+    public void setSymlinkFailureMode(SymlinkFailureMode symlinkFailureMode) {
+        if (symlinkFailureMode == null) {
+            throw new IllegalArgumentException("symlinkFailureMode must not be null");
+        }
+        this.symlinkFailureMode = symlinkFailureMode;
+    }
+
+    /**
+     * Creates a symbolic link. Visible for testing, so a test can simulate a file system that refuses links.
+     *
+     * @param link the link to create
+     * @param target the link target
+     * @throws IOException if the link cannot be created
+     * @since 4.15.0
+     */
+    protected void createSymbolicLink(File link, File target) throws IOException {
+        SymlinkUtils.createSymbolicLink(link, target);
+    }
 
     /**
      * Default constructor.
@@ -79,7 +120,9 @@ public class DirectoryArchiver extends AbstractArchiver {
 
         getLogger().info("Copying files to {}", destDirectory.getAbsolutePath());
 
+        DeferredSymlinks deferredSymlinks = new DeferredSymlinks(getLogger());
         try {
+            final Path root = destDirectory.getCanonicalFile().toPath();
             while (iter.hasNext()) {
                 final ArchiveEntry f = iter.next();
                 // Check if we don't add directory file in itself
@@ -95,11 +138,34 @@ public class DirectoryArchiver extends AbstractArchiver {
                     File target = new File(dest);
                     File symlink = new File(fileName);
                     makeParentDirectories(symlink);
-                    SymlinkUtils.createSymbolicLink(symlink, target);
+                    try {
+                        createSymbolicLink(symlink, target);
+                    } catch (IOException | UnsupportedOperationException e) {
+                        if (symlinkFailureMode == SymlinkFailureMode.FAIL) {
+                            if (e instanceof IOException) {
+                                throw (IOException) e;
+                            }
+                            throw new IOException("Cannot create symbolic link " + symlink, e);
+                        }
+                        boolean copy = symlinkFailureMode == SymlinkFailureMode.COPY_TARGET;
+                        getLogger()
+                                .warn(
+                                        "Cannot create symbolic link {} -> {} ({}). On Windows this needs the"
+                                                + " 'Create symbolic links' right or Developer Mode; {}.",
+                                        f.getName(),
+                                        dest,
+                                        e.getMessage(),
+                                        copy ? "the link target will be copied instead" : "the entry is skipped");
+                        if (copy) {
+                            deferredSymlinks.add(root, symlink, dest, f.getName());
+                        }
+                    }
                 } else {
                     copyFile(f, fileName);
                 }
             }
+
+            deferredSymlinks.resolve();
 
             directoryChmods.forEach(Runnable::run);
             directoryChmods.clear();

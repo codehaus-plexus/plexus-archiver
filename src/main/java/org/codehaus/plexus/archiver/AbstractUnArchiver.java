@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.codehaus.plexus.archiver.util.ArchiveEntryUtils;
+import org.codehaus.plexus.archiver.util.DeferredSymlinks;
 import org.codehaus.plexus.components.io.attributes.SymlinkUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
@@ -70,6 +71,16 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
      * @since 1.1
      */
     private boolean ignorePermissions = false;
+
+    /**
+     * @since 4.15.0
+     */
+    private SymlinkFailureMode symlinkFailureMode = SymlinkFailureMode.COPY_TARGET;
+
+    /**
+     * Symbolic links the file system refused during the current extraction, resolved once every entry is on disk.
+     */
+    private DeferredSymlinks deferredSymlinks;
 
     public AbstractUnArchiver() {
         // no op
@@ -132,14 +143,30 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     @Override
     public final void extract() throws ArchiverException {
         validate();
-        execute();
+        deferredSymlinks = new DeferredSymlinks(getLogger());
+        try {
+            execute();
+            deferredSymlinks.resolve();
+        } catch (IOException e) {
+            throw new ArchiverException("Error while copying symbolic link targets", e);
+        } finally {
+            deferredSymlinks = null;
+        }
         runArchiveFinalizers();
     }
 
     @Override
     public final void extract(final String path, final File outputDirectory) throws ArchiverException {
         validate(path, outputDirectory);
-        execute(path, outputDirectory);
+        deferredSymlinks = new DeferredSymlinks(getLogger());
+        try {
+            execute(path, outputDirectory);
+            deferredSymlinks.resolve();
+        } catch (IOException e) {
+            throw new ArchiverException("Error while copying symbolic link targets", e);
+        } finally {
+            deferredSymlinks = null;
+        }
         runArchiveFinalizers();
     }
 
@@ -246,6 +273,25 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         this.ignorePermissions = ignorePermissions;
     }
 
+    /**
+     * @since 4.15.0
+     */
+    @Override
+    public SymlinkFailureMode getSymlinkFailureMode() {
+        return symlinkFailureMode;
+    }
+
+    /**
+     * @since 4.15.0
+     */
+    @Override
+    public void setSymlinkFailureMode(final SymlinkFailureMode symlinkFailureMode) {
+        if (symlinkFailureMode == null) {
+            throw new IllegalArgumentException("symlinkFailureMode must not be null");
+        }
+        this.symlinkFailureMode = symlinkFailureMode;
+    }
+
     protected void extractFile(
             final File srcF,
             final File dir,
@@ -293,7 +339,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
 
             if (!StringUtils.isEmpty(symlinkDestination)) {
-                SymlinkUtils.createSymbolicLink(targetFileName, new File(symlinkDestination));
+                if (!createSymlinkEntry(canonicalDirPath, targetFileName, symlinkDestination, entryName)) {
+                    return;
+                }
             } else if (isDirectory) {
                 targetFileName.mkdirs();
             } else {
@@ -307,6 +355,48 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             }
         } catch (final FileNotFoundException ex) {
             getLogger().warn("Unable to expand to file " + targetFileName.getPath());
+        }
+    }
+
+    /**
+     * Creates a symbolic link. Visible for testing, so a test can simulate a file system that refuses links.
+     *
+     * @param link the link to create
+     * @param target the link target as stored in the archive
+     * @throws IOException if the link cannot be created
+     * @since 4.15.0
+     */
+    protected void createSymbolicLink(File link, File target) throws IOException {
+        SymlinkUtils.createSymbolicLink(link, target);
+    }
+
+    /**
+     * @return {@code true} if the link exists on disk, {@code false} if it was skipped or deferred
+     */
+    private boolean createSymlinkEntry(Path root, File link, String target, String entryName) throws IOException {
+        try {
+            createSymbolicLink(link, new File(target));
+            return true;
+        } catch (IOException | UnsupportedOperationException e) {
+            if (symlinkFailureMode == SymlinkFailureMode.FAIL) {
+                if (e instanceof IOException) {
+                    throw (IOException) e;
+                }
+                throw new IOException("Cannot create symbolic link " + link, e);
+            }
+            boolean copy = symlinkFailureMode == SymlinkFailureMode.COPY_TARGET && deferredSymlinks != null;
+            getLogger()
+                    .warn(
+                            "Cannot create symbolic link {} -> {} ({}). On Windows this needs the 'Create symbolic"
+                                    + " links' right or Developer Mode; {}.",
+                            entryName,
+                            target,
+                            e.getMessage(),
+                            copy ? "the link target will be copied instead" : "the entry is skipped");
+            if (copy) {
+                deferredSymlinks.add(root, link, target, entryName);
+            }
+            return false;
         }
     }
 
