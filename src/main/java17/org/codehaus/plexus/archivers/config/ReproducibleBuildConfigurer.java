@@ -17,47 +17,8 @@
 
 package org.codehaus.plexus.archivers.config;
 
-import java.nio.file.attribute.FileTime;
-import java.util.Comparator;
-
-/**
- * Configures reproducible build content on an archiver without exposing its implementations.
- * 
- * NOTE: Based on {@link AbstractArchiver#configureReproducibleBuild(FileTime)} this could be extended with more options.
- * 
- * The default-prefix is used to make clear this is applied to all non-explicit entries. This leaves room to extend this class with different values for explicit entries
- * 
- * @since 5.0.0
- */
+@FunctionalInterface
 public interface ReproducibleBuildConfigurer {
-    
-    /**
-     * Sets the default last modified time for all archive entries.
-     */
-    void setDefaultLastModifiedTime(FileTime fileTime);
-    
-    /**
-     * Sets the default uid for all archive entries.
-     */
-    void setDefaultUid(int uid);
-    
-    /**
-     * Sets the default username for all archive entries.
-     */
-    void setDefaultUserName(String userName);
-    
-    /**
-     * Sets the default gid for all archive entries.
-     */
-    void setDefaultGid(int gid);
-    
-    /**
-     * Sets the default group name for all archive entries.
-     */
-    void setDefaultGroupName(String groupName);
-    
-    /**
-     * Sets the comparator used to sort filenames when scanning directories.
-     */
-    void setFilenameComparator(Comparator<String> filenameComparator);
+
+	void configure(ReproducibleBuildSettings settings);
 }

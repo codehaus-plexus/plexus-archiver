@@ -17,37 +17,13 @@
 
 package org.codehaus.plexus.archivers.config;
 
-import java.nio.file.Path;
-import java.util.function.Consumer;
-
-import org.codehaus.plexus.archiver.Archiver;
-
 /**
  * Configures content on an archiver without exposing its file set implementations.
  *
  * @since 5.0.0
  */
-public sealed interface ArchiverConfigurer permits DefaultArchiverConfigurer {
+@FunctionalInterface
+public interface ArchiverConfigurer {
 	
-	static ArchiverConfigurer of(Archiver archiver) {
-		return new DefaultArchiverConfigurer(archiver);
-	}
-	
-	ArchiverConfigurer resource(
-            ResourceScan scan,
-            Consumer<ResourceEmitConfigurer> emit);
-	
-    void setDestFile(Path destFile);
-
-    void setEmptyDirectoryHandling(EmptyDirectoryHandling emptyDirectoryHandling);
-
-    void setDotFileDirectory(Path dotFileDirectory);
-
-    void setForced(ArchiveCreation archiveCreation);
-
-    void setDuplicateBehavior(DuplicateHandling duplicateHandling);
-
-    void setPermissionPolicy(PermissionPolicy policy);
-    
-    void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> reproducibleBuildSpec);
+	void configure(ArchiverSettings settings);
 }

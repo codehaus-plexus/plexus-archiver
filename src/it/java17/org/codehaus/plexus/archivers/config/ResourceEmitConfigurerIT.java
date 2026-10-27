@@ -34,14 +34,14 @@ class ResourceEmitConfigurerIT {
         Path archivePath = tempDir.resolve("archive.zip");
 
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
+        ArchiverSettings settings = ArchiverSettings.of(archiver);
+        settings.setDestFile(archivePath);
 
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(dir1),
                 emit -> emit.prefix("first/"));
 
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(dir2),
                 emit -> emit.prefix("second/"));
 
@@ -68,11 +68,11 @@ class ResourceEmitConfigurerIT {
         Path archivePath = tempDir.resolve("archive.zip");
 
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
+        ArchiverSettings settings = ArchiverSettings.of(archiver);
+        settings.setDestFile(archivePath);
 
         // First resource: include empty directories
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(dir1),
                 emit -> {
                     emit.prefix("with-empty/");
@@ -80,7 +80,7 @@ class ResourceEmitConfigurerIT {
                 });
 
         // Second resource: exclude empty directories
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(dir2),
                 emit -> {
                     emit.prefix("no-empty/");
@@ -118,18 +118,18 @@ class ResourceEmitConfigurerIT {
         Path archivePath = tempDir.resolve("archive.zip");
 
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
+        ArchiverSettings settings = ArchiverSettings.of(archiver);
+        settings.setDestFile(archivePath);
 
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(data),
                 emit -> emit.prefix("data/"));
 
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(config),
                 emit -> emit.prefix("config/"));
 
-        configurer.resource(
+        settings.addResource(
                 ResourceScan.fromDirectory(scripts),
                 emit -> emit.prefix("scripts/"));
 

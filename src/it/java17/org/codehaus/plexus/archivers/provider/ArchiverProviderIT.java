@@ -30,6 +30,7 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.FileSet;
 import org.codehaus.plexus.archiver.diags.NoOpArchiver;
 import org.codehaus.plexus.archivers.config.ArchiveCreation;
+import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
@@ -53,31 +54,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArchiverProviderIT {
 
     @Test
-    void doesNotExposeUnconfiguredArchiverCreation() {
-        assertThat(ArchiverProvider.class.getPermittedSubclasses()).containsExactly(AbstractArchiverProvider.class);
-        assertThat(Arrays.stream(ArchiverProvider.class.getMethods())
-                        .filter(method -> method.getName().equals("newArchiver"))
-                        .map(method -> method.getParameterCount()))
-                .containsExactly(1);
-        assertThat(Arrays.stream(AbstractArchiverProvider.class.getMethods()).map(method -> method.getName()))
-                .doesNotContain("create");
-        assertThat(Arrays.stream(ArchiverConfigurer.class.getMethods())
-                        .filter(method -> Modifier.isStatic(method.getModifiers())))
-        				.satisfiesExactly(m -> { 
-        					assertThat(m.getName()).isEqualTo("of");
-        					assertThat(m.getParameterCount()).isEqualTo(1);
-        					assertThat(m.getParameterTypes()[0]).isEqualTo(Archiver.class);
-        					assertThat(m.getReturnType()).isEqualTo(ArchiverConfigurer.class);
-        				});
-    }
-
-    @Test
     void configuresNewArchiverWithoutExposingFileSetImplementations(@TempDir Path directory) {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
         
-        Archiver actual = provider.newArchiver(configurer -> configurer
-        		.resource(ResourceScan.fromDirectory(directory).matcher(PathPatternMatcher
+        Archiver actual = provider.newArchiver(ArchiverConfiguration.config(configurer -> configurer
+        		.addResource(ResourceScan.fromDirectory(directory).matcher(PathPatternMatcher
         				.includes("**/*.txt")
         				.excludes("**/ignored.txt")
         				.caseSensitive(CaseSensitivity.INSENSITIVE)
@@ -85,7 +67,7 @@ class ArchiverProviderIT {
         				emit -> { 
         					emit.prefix("content/");
         					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
-        				}));
+        				})));
         
 //        Archiver actual = provider.newArchiver(configurer -> configurer.addFileSet(FileSet.fromDirectory(directory)
 //                .prefix("content/")
@@ -113,8 +95,8 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         ArchiverProvider provider = providerFor(expected);
 
-        Archiver actual = provider.newArchiver(configurer -> configurer
-        		.resource(ResourceScan.fromArchive(archive).matcher(PathPatternMatcher
+        Archiver actual = provider.newArchiver(ArchiverConfiguration.config(configurer -> configurer
+        		.addResource(ResourceScan.fromArchive(archive).matcher(PathPatternMatcher
         				.includes("**/*.class")
         				.excludes("module-info.class")
         				.caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
@@ -122,7 +104,7 @@ class ArchiverProviderIT {
         				emit -> {
         					emit.prefix("lib/");
         					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
-        				}));
+        				})));
 
 //        provider.newArchiver(configurer -> configurer.addArchivedFileSet(ArchivedFileSet.fromArchive(archive)
 //                .prefix("lib/")
@@ -148,22 +130,22 @@ class ArchiverProviderIT {
         CapturingArchiver expected = new CapturingArchiver();
         FileTime timestamp = FileTime.fromMillis(1);
 
-        Archiver actual = providerFor(expected).newArchiver(configurer -> {
-            configurer.setDestFile(directory.resolve("archive.zip"));
-            configurer.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
-            configurer.setDotFileDirectory(directory);
-            configurer.setForced(ArchiveCreation.WHEN_NEEDED);
-            configurer.setDuplicateBehavior(DuplicateHandling.FAIL);
-            configurer.setPermissionPolicy(PermissionPolicy.umask(FilePermissions.parse("----w--w-")));
-            configurer.configureReproducibleBuild(c -> { 
+        Archiver actual = providerFor(expected).newArchiver(
+    		ArchiverConfiguration.reproducible(c -> {
             	c.setDefaultLastModifiedTime(timestamp);
                 c.setDefaultUid(1000);
                 c.setDefaultUserName("user");
                 c.setDefaultGid(1000);
                 c.setDefaultGroupName("group");
                 c.setFilenameComparator(Comparator.naturalOrder());
-            });
-        });
+    		}).config(settings -> { 
+    			settings.setDestFile(directory.resolve("archive.zip"));
+    			settings.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
+    			settings.setDotFileDirectory(directory);
+    			settings.setForced(ArchiveCreation.WHEN_NEEDED);
+    			settings.setDuplicateBehavior(DuplicateHandling.FAIL);
+    			settings.setPermissionPolicy(PermissionPolicy.umask(FilePermissions.parse("----w--w-")));
+    		}));
 
         assertThat(actual).isSameAs(expected);
         assertThat(expected.includeEmptyDirectories).isFalse();

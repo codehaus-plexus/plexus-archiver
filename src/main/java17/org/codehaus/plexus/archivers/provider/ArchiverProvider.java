@@ -17,10 +17,8 @@
 
 package org.codehaus.plexus.archivers.provider;
 
-import java.nio.file.Path;
-import java.util.function.Consumer;
-
 import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 
 /**
@@ -40,5 +38,5 @@ public sealed interface ArchiverProvider permits AbstractArchiverProvider {
      * @return the configured archiver
      * @since 5.0.0
      */
-    Archiver newArchiver(Consumer<ArchiverConfigurer> configurer);
+    Archiver newArchiver(ArchiverConfiguration configuration);
 }

@@ -31,35 +31,28 @@ import org.codehaus.plexus.archiver.util.DefaultFileSet;
  *
  * @since 5.0.0
  */
-final class DefaultArchiverConfigurer implements ArchiverConfigurer {
+final class DefaultArchiverSettings implements ArchiverSettings {
 	private final Archiver archiver;
 
-	DefaultArchiverConfigurer(Archiver archiver) {
+	DefaultArchiverSettings(Archiver archiver) {
 		this.archiver = Objects.requireNonNull(archiver, "archiver");
 	}
 
 	@Override
-	public ArchiverConfigurer resource(ResourceScan scan, Consumer<ResourceEmitConfigurer> emit) {
-
+	public void addResource(ResourceScan scan, Consumer<ResourceEmitConfigurer> emit) {
 		if (scan instanceof DefaultDirectoryResourceScan directoryScan) {
 			DefaultFileSet fileSet = directoryScan.toFileSet();
 
 			emit.accept(new FileSetResourceEmitConfigurer(fileSet));
 			archiver.addFileSet(fileSet);
-
-			return this;
-		}
-
-		if (scan instanceof DefaultArchiveResourceScan archiveScan) {
+		} else  if (scan instanceof DefaultArchiveResourceScan archiveScan) {
 			DefaultArchivedFileSet fileSet = archiveScan.toArchivedFileSet();
 
 			emit.accept(new FileSetResourceEmitConfigurer(fileSet));
 			archiver.addArchivedFileSet(fileSet);
-
-			return this;
+		} else {
+			throw new IncompatibleClassChangeError("Unsupported ResourceScan implementation: " + scan.getClass().getName());
 		}
-
-		throw new IncompatibleClassChangeError("Unsupported ResourceScan implementation: " + scan.getClass().getName());
 	}
 
 	@Override
@@ -182,12 +175,6 @@ final class DefaultArchiverConfigurer implements ArchiverConfigurer {
 
 	private void clearUmask() {
 		archiver.setUmask(-1);
-	}
-
-	@Override
-	public void configureReproducibleBuild(Consumer<ReproducibleBuildConfigurer> spec) {
-		ReproducibleBuildConfigurer configurer = new DefaultReproducibleBuildConfigurer(archiver);
-		spec.accept(configurer);
 	}
 
 	private static int toMode(FilePermissions filePermissions) {

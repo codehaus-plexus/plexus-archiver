@@ -26,11 +26,11 @@ import org.codehaus.plexus.archiver.Archiver;
  * 
  * @since 5.0.0
  */
-final class DefaultReproducibleBuildConfigurer implements ReproducibleBuildConfigurer {
+final class DefaultReproducibleBuildSettings implements ReproducibleBuildSettings {
 
 	private final Archiver archiver;
 	
-	DefaultReproducibleBuildConfigurer(Archiver archiver) {
+	DefaultReproducibleBuildSettings(Archiver archiver) {
 		this.archiver = archiver;
 	}
 

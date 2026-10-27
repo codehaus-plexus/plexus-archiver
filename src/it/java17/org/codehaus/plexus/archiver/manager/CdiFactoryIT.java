@@ -19,6 +19,7 @@ package org.codehaus.plexus.archiver.manager;
 
 import java.nio.file.Path;
 
+import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
@@ -34,8 +35,8 @@ class CdiFactoryIT {
     void createsConfiguredArchivers(@TempDir Path directory) {
         CdiArchiverFactory factory = new CdiArchiverFactory(ZipArchiver::new);
 
-        var first = factory.create(directory.resolve("first.zip"), configurer -> {});
-        var second = factory.create(directory.resolve("second.zip"), configurer -> {});
+        var first = factory.create(directory.resolve("first.zip"), ArchiverConfiguration.config(c->{}));
+        var second = factory.create(directory.resolve("second.zip"), ArchiverConfiguration.config(c->{}));
 
         assertThat(first).isNotSameAs(second);
         assertThat(first.getDestFile()).isEqualTo(directory.resolve("first.zip").toFile());

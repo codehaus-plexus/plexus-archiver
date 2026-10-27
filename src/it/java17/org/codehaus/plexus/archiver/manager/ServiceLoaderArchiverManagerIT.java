@@ -51,6 +51,7 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
+import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -213,8 +214,8 @@ class ServiceLoaderArchiverManagerIT {
         Path outputDirectory = tempDirectory.resolve("output");
 
         ArchiverFactory archiverFactory = manager.getArchiverFactory("zip");
-        Archiver archiver = archiverFactory.create(archiveFile, configurer -> {});
-        Archiver secondArchiver = archiverFactory.create(archiveFile, configurer -> {});
+        Archiver archiver = archiverFactory.create(archiveFile, ArchiverConfiguration.config(c->{}));
+        Archiver secondArchiver = archiverFactory.create(archiveFile, ArchiverConfiguration.config(c->{}));
         UnArchiver unarchiver = manager.createUnArchiver(archiveFile, configurer -> {
             configurer.setDestinationDirectory(outputDirectory);
         });

@@ -41,19 +41,23 @@ class ReproducibleBuildConfigurerIT {
         FileTime ts = FileTime.from(Instant.parse("2020-01-01T00:00:00Z"));
 
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
-        configurer.resource(ResourceScan.fromDirectory(sourceDir), emit -> emit.prefix("root/"));
-
-        configurer.configureReproducibleBuild(rb -> {
-            rb.setDefaultLastModifiedTime(ts);
-            rb.setFilenameComparator(String::compareTo);
-            rb.setDefaultUid(0);
-            rb.setDefaultUserName("root");
-            rb.setDefaultGid(0);
-            rb.setDefaultGroupName("root");
-        });
-
+        
+        ArchiverConfiguration configuration = ArchiverConfiguration
+        		.reproducible(rb -> {
+        	        rb.setDefaultLastModifiedTime(ts);
+        	        rb.setFilenameComparator(String::compareTo);
+        	        rb.setDefaultUid(0);
+        	        rb.setDefaultUserName("root");
+        	        rb.setDefaultGid(0);
+        	        rb.setDefaultGroupName("root");
+        		})
+        		.config(as -> {
+        	        as.setDestFile(archivePath);
+        	        as.addResource(ResourceScan.fromDirectory(sourceDir), emit -> emit.prefix("root/"));
+        		});
+        
+        configuration.applyOn(archiver);
+        
         archiver.createArchive();
 
         try (ZipFile zip = new ZipFile(archivePath.toFile())) {
@@ -121,13 +125,9 @@ class ReproducibleBuildConfigurerIT {
         Path archivePath = tempDir.resolve("archive.zip");
 
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
-        configurer.resource(ResourceScan.fromDirectory(sourceDir), emit -> {});
-
-        configurer.configureReproducibleBuild(rb -> {
-            // intentionally empty
-        });
+        ArchiverSettings as = ArchiverSettings.of(archiver);
+        as.setDestFile(archivePath);
+        as.addResource(ResourceScan.fromDirectory(sourceDir), emit -> {});
 
         archiver.createArchive();
 
@@ -138,19 +138,22 @@ class ReproducibleBuildConfigurerIT {
 
     private static void createReproducibleZip(Path sourceDir, Path archivePath, FileTime ts) throws Exception {
         Archiver archiver = new ZipArchiver();
-        ArchiverConfigurer configurer = ArchiverConfigurer.of(archiver);
-        configurer.setDestFile(archivePath);
-        configurer.resource(ResourceScan.fromDirectory(sourceDir), emit -> {});
-
-        configurer.configureReproducibleBuild(rb -> {
-            rb.setDefaultLastModifiedTime(ts);
-            rb.setFilenameComparator(String::compareTo);
-            rb.setDefaultUid(0);
-            rb.setDefaultUserName("root");
-            rb.setDefaultGid(0);
-            rb.setDefaultGroupName("root");
-        });
-
+        
+        ArchiverConfiguration configuration = ArchiverConfiguration
+        		.reproducible(rb -> {
+                    rb.setDefaultLastModifiedTime(ts);
+                    rb.setFilenameComparator(String::compareTo);
+                    rb.setDefaultUid(0);
+                    rb.setDefaultUserName("root");
+                    rb.setDefaultGid(0);
+                    rb.setDefaultGroupName("root");
+        		})
+        		.config(as -> {
+        	        as.setDestFile(archivePath);
+        	        as.addResource(ResourceScan.fromDirectory(sourceDir), emit -> {});
+        		});
+        configuration.applyOn(archiver);
+        
         archiver.createArchive();
     }
 

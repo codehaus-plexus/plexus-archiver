@@ -17,14 +17,10 @@
 
 package org.codehaus.plexus.archiver.manager;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.Archiver;
-import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.archiver.diags.DelgatingArchiver;
-import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 
 /**
  * Creates configured archiver instances.
@@ -69,18 +65,12 @@ public interface ArchiverFactory {
      * @throws UnsupportedOperationException if mutation methods are called
      * @since 5.0.0
      */
-    default Archiver create(Path path, Consumer<ArchiverConfigurer> configurer) {
+    default Archiver create(Path path, ArchiverConfiguration configuration) {
         Archiver archiver = create();
         archiver.setDestFile(path.toFile());
-        
-        // ensure that FileSetComparator is from reproducible is set before adding resources by delegating
-        return new DelgatingArchiver(archiver) {
-        	
-        	@Override
-        	public void createArchive() throws ArchiverException, IOException {
-                configurer.accept(ArchiverConfigurer.of(archiver));
-        		archiver.createArchive();
-        	}
-        };
+
+        configuration.applyOn(archiver);
+
+        return archiver;
     }
 }
