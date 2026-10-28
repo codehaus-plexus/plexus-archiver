@@ -28,6 +28,7 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.archivers.provider.ArchiverProvider;
@@ -83,12 +84,12 @@ class ServiceLoaderArchiverManager extends AbstractArchiverManager {
 			
 			@Override
 			public UnArchiver create() {
-				return provider.newUnArchiver(c -> {});
+				return provider.newUnArchiver(UnArchiverConfiguration.config(c-> {}));
 			}
 			
 			@Override
-		    public UnArchiver create(Path path, Consumer<UnArchiverConfigurer> configurer) {
-		    	UnArchiver unarchiver = provider.newUnArchiver(configurer);
+		    public UnArchiver create(Path path, UnArchiverConfiguration configuration) {
+		    	UnArchiver unarchiver = provider.newUnArchiver(configuration);
 		    	unarchiver.setSourceFile(path.toFile());
 		    	return unarchiver;
 		    }

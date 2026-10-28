@@ -31,6 +31,7 @@ import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.ReproducibleBuildConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
 import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
@@ -116,13 +117,13 @@ public interface ArchiverManager {
 	 * @since 5.0.0
 	 */
 	@Nonnull
-	default UnArchiver createUnArchiver(@Nonnull Path srcFile, Consumer<UnArchiverConfigurer> configurer)
+	default UnArchiver createUnArchiver(@Nonnull Path srcFile, UnArchiverConfiguration configuration)
 			throws NoSuchArchiverException {
 		Objects.requireNonNull(srcFile, "srcFile");
-		Objects.requireNonNull(configurer, "configurer");
+		Objects.requireNonNull(configuration, "configuration");
 
 		String format = FileNames.getFileExtension(srcFile);
 
-		return getUnArchiverFactory(format).create(srcFile, configurer);
+		return getUnArchiverFactory(format).create(srcFile, configuration);
 	}
 }

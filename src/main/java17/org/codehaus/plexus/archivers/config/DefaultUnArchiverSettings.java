@@ -30,10 +30,10 @@ import org.codehaus.plexus.components.io.fileselectors.FileSelector;
  * 
  * @Since 5.0.0
  */
-final class DefaultUnArchiverConfigurer implements UnArchiverConfigurer {
+final class DefaultUnArchiverSettings implements UnArchiverSettings {
     private final UnArchiver unarchiver;
 
-    DefaultUnArchiverConfigurer(UnArchiver unarchiver) {
+    DefaultUnArchiverSettings(UnArchiver unarchiver) {
         this.unarchiver = Objects.requireNonNull(unarchiver, "unarchiver");
     }
 

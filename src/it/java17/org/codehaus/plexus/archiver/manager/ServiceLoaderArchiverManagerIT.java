@@ -53,6 +53,7 @@ import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.components.io.resources.AbstractPlexusIoArchiveResourceCollection;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 import org.junit.jupiter.api.Test;
@@ -216,9 +217,9 @@ class ServiceLoaderArchiverManagerIT {
         ArchiverFactory archiverFactory = manager.getArchiverFactory("zip");
         Archiver archiver = archiverFactory.create(archiveFile, ArchiverConfiguration.config(c->{}));
         Archiver secondArchiver = archiverFactory.create(archiveFile, ArchiverConfiguration.config(c->{}));
-        UnArchiver unarchiver = manager.createUnArchiver(archiveFile, configurer -> {
-            configurer.setDestinationDirectory(outputDirectory);
-        });
+        UnArchiver unarchiver = manager.createUnArchiver(archiveFile, UnArchiverConfiguration.config(configurer ->
+            configurer.setDestinationDirectory(outputDirectory)
+        ));
 
         assertThat(archiver.getDestFile()).isEqualTo(archiveFile.toFile());
         assertThat(secondArchiver).isNotSameAs(archiver);

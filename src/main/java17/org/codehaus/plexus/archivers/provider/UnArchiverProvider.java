@@ -20,6 +20,7 @@ package org.codehaus.plexus.archivers.provider;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 
 /**
@@ -31,5 +32,5 @@ public sealed interface UnArchiverProvider permits AbstractUnArchiverProvider {
 
     String getName();
 
-    UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer);
+    UnArchiver newUnArchiver(UnArchiverConfiguration configuration);
 }

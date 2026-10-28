@@ -18,10 +18,9 @@
 package org.codehaus.plexus.archiver.manager;
 
 import java.nio.file.Path;
-import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 
 /**
  * Creates configured unarchiver instances.
@@ -32,10 +31,10 @@ import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 public interface UnArchiverFactory {
     UnArchiver create();
     
-    default UnArchiver create(Path path, Consumer<UnArchiverConfigurer> configurer) {
+    default UnArchiver create(Path path, UnArchiverConfiguration configuration) {
         UnArchiver unArchiver =  create();
         unArchiver.setSourceFile(path.toFile());
-        configurer.accept(UnArchiverConfigurer.of(unArchiver));
+        configuration.applyOn(unArchiver);
         return unArchiver;
     }
 }

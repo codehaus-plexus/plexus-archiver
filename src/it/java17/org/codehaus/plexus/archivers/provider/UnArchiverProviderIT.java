@@ -26,6 +26,7 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiverProvider;
 import org.codehaus.plexus.archivers.config.ExistingFileHandling;
 import org.codehaus.plexus.archivers.config.PermissionHandling;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 import org.codehaus.plexus.archivers.provider.AbstractUnArchiverProvider;
 import org.codehaus.plexus.archivers.provider.UnArchiverProvider;
@@ -37,37 +38,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UnArchiverProviderIT {
 
     @Test
-    void exposesOnlyConfiguredCreation() {
-        assertThat(UnArchiverProvider.class.getPermittedSubclasses()).containsExactly(AbstractUnArchiverProvider.class);
-        assertThat(Arrays.stream(UnArchiverProvider.class.getMethods())
-                        .filter(method -> method.getName().equals("newUnArchiver"))
-                        .map(method -> method.getParameterCount()))
-                .containsExactly(1);
-        assertThat(Arrays.stream(AbstractUnArchiverProvider.class.getMethods()).map(method -> method.getName()))
-                .doesNotContain("create");
-        assertThat(Arrays.stream(UnArchiverConfigurer.class.getMethods())
-                        .filter(method -> Modifier.isStatic(method.getModifiers())))
-				.satisfiesExactly(m -> { 
-					assertThat(m.getName()).isEqualTo("of");
-					assertThat(m.getParameterCount()).isEqualTo(1);
-					assertThat(m.getParameterTypes()[0]).isEqualTo(UnArchiver.class);
-					assertThat(m.getReturnType()).isEqualTo(UnArchiverConfigurer.class);
-				});
-    }
-
-    @Test
     void configuresUnarchiverBeforeReturningIt(@TempDir Path directory) {
         Path source = directory.resolve("source.zip");
         Path destination = directory.resolve("output");
 
-        UnArchiver unarchiver = new ZipUnArchiverProvider().newUnArchiver(configurer -> {
+        UnArchiver unarchiver = new ZipUnArchiverProvider().newUnArchiver(UnArchiverConfiguration.config(
+        		configurer -> {
             configurer.setSource(source);
             configurer.setDestinationDirectory(destination);
             configurer.setExistingFileHandling(ExistingFileHandling.KEEP_NEWER);
             configurer.setFileMappers(List.of());
             configurer.setFileSelectors(List.of());
             configurer.setPermissionHandling(PermissionHandling.IGNORE);
-        });
+        }));
 
         assertThat(unarchiver.getSourceFile()).isEqualTo(source.toFile());
         assertThat(unarchiver.getDestDirectory()).isEqualTo(destination.toFile());

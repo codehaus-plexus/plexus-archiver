@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;
 
 /**
@@ -33,9 +34,9 @@ public abstract non-sealed class AbstractUnArchiverProvider implements UnArchive
     protected abstract UnArchiver createUnarchiver();
 
     @Override
-    public final UnArchiver newUnArchiver(Consumer<UnArchiverConfigurer> configurer) {
+    public final UnArchiver newUnArchiver(UnArchiverConfiguration configuration) {
         UnArchiver unarchiver = createUnarchiver();
-        Objects.requireNonNull(configurer, "configurer").accept(UnArchiverConfigurer.of(unarchiver));
+        configuration.applyOn(unarchiver);
         return unarchiver;
     }
 }

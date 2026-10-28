@@ -21,6 +21,7 @@ import java.nio.file.Path;
 
 import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ResourceScan;
+import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archiver.zip.PlexusArchiverZipFileResourceCollection;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
@@ -47,7 +48,7 @@ class CdiFactoryIT {
     void createsConfiguredUnarchivers(@TempDir Path directory) {
         CdiUnArchiverFactory factory = new CdiUnArchiverFactory(ZipUnArchiver::new);
 
-        var unarchiver = factory.create(directory.resolve("source.zip"), c -> {});
+        var unarchiver = factory.create(directory.resolve("source.zip"), UnArchiverConfiguration.config(c-> {}));
 
         assertThat(unarchiver.getSourceFile())
                 .isEqualTo(directory.resolve("source.zip").toFile());

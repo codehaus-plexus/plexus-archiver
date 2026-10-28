@@ -17,35 +17,13 @@
 
 package org.codehaus.plexus.archivers.config;
 
-import java.nio.file.Path;
-import java.util.List;
-
-import org.codehaus.plexus.archiver.UnArchiver;
-import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.codehaus.plexus.components.io.fileselectors.FileSelector;
-
 /**
  * Configures an unarchiver before it is exposed to callers.
  *
  * @since 5.0.0
  */
 public interface UnArchiverConfigurer {
-	
-	static UnArchiverConfigurer of(UnArchiver unArchiver) {
-		return new DefaultUnArchiverConfigurer(unArchiver);
-	}
-	
-    void setSource(Path source);
 
-    void setDestinationDirectory(Path destinationDirectory);
+	void configure(UnArchiverSettings unArchiverSettings);
 
-    void setDestinationFile(Path destinationFile);
-
-    void setExistingFileHandling(ExistingFileHandling existingFileHandling);
-
-    void setFileMappers(List<FileMapper> fileMappers);
-
-    void setFileSelectors(List<FileSelector> fileSelectors);
-
-    void setPermissionHandling(PermissionHandling permissionHandling);
 }
