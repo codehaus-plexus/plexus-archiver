@@ -35,27 +35,27 @@ final class DefaultReproducibleBuildSettings implements ReproducibleBuildSetting
 	}
 
 	@Override
-	public void setDefaultLastModifiedTime(FileTime fileTime) {
+	public void setOverrideLastModifiedTime(FileTime fileTime) {
 		archiver.configureReproducibleBuild(fileTime);
 	}
 
 	@Override
-	public void setDefaultUid(int uid) {
+	public void setOverrideUid(int uid) {
 		archiver.setOverrideUid(uid);
 	}
 
 	@Override
-	public void setDefaultUserName(String userName) {
+	public void setOverrideUserName(String userName) {
 		archiver.setOverrideUserName(userName);
 	}
 
 	@Override
-	public void setDefaultGid(int gid) {
+	public void setOverrideGid(int gid) {
 		archiver.setOverrideGid(gid);
 	}
 
 	@Override
-	public void setDefaultGroupName(String groupName) {
+	public void setOverrideGroupName(String groupName) {
 		archiver.setOverrideGroupName(groupName);
 	}
 

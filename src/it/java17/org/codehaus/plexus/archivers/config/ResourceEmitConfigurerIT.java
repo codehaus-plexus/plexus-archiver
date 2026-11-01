@@ -39,11 +39,11 @@ class ResourceEmitConfigurerIT {
 
         settings.addResource(
                 ResourceScan.fromDirectory(dir1),
-                emit -> emit.prefix("first/"));
+                emit -> emit.setPrefix("first/"));
 
         settings.addResource(
                 ResourceScan.fromDirectory(dir2),
-                emit -> emit.prefix("second/"));
+                emit -> emit.setPrefix("second/"));
 
         archiver.createArchive();
 
@@ -75,7 +75,7 @@ class ResourceEmitConfigurerIT {
         settings.addResource(
                 ResourceScan.fromDirectory(dir1),
                 emit -> {
-                    emit.prefix("with-empty/");
+                    emit.setPrefix("with-empty/");
                     emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.INCLUDE);
                 });
 
@@ -83,7 +83,7 @@ class ResourceEmitConfigurerIT {
         settings.addResource(
                 ResourceScan.fromDirectory(dir2),
                 emit -> {
-                    emit.prefix("no-empty/");
+                    emit.setPrefix("no-empty/");
                     emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
                 });
 
@@ -123,15 +123,15 @@ class ResourceEmitConfigurerIT {
 
         settings.addResource(
                 ResourceScan.fromDirectory(data),
-                emit -> emit.prefix("data/"));
+                emit -> emit.setPrefix("data/"));
 
         settings.addResource(
                 ResourceScan.fromDirectory(config),
-                emit -> emit.prefix("config/"));
+                emit -> emit.setPrefix("config/"));
 
         settings.addResource(
                 ResourceScan.fromDirectory(scripts),
-                emit -> emit.prefix("scripts/"));
+                emit -> emit.setPrefix("scripts/"));
 
         archiver.createArchive();
 

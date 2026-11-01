@@ -29,7 +29,7 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
 import org.codehaus.plexus.archivers.config.ReproducibleBuildConfigurer;
-import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceEmitSettings;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.UnArchiverConfigurer;

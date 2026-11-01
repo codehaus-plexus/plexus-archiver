@@ -14,7 +14,6 @@
  * limitations under the License.
  *
  */
-
 package org.codehaus.plexus.archivers.config;
 
 import java.nio.file.Path;
@@ -26,179 +25,177 @@ import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 
-/**
- * Applies the configuration to the applied archiver
- *
- * @since 5.0.0
- */
 final class DefaultArchiverSettings implements ArchiverSettings {
-	private final Archiver archiver;
 
-	DefaultArchiverSettings(Archiver archiver) {
-		this.archiver = Objects.requireNonNull(archiver, "archiver");
-	}
+    private final Archiver archiver;
 
-	@Override
-	public void addResource(ResourceScan scan, Consumer<ResourceEmitConfigurer> emit) {
-		if (scan instanceof DefaultDirectoryResourceScan directoryScan) {
-			DefaultFileSet fileSet = directoryScan.toFileSet();
+    DefaultArchiverSettings(Archiver archiver) {
+        this.archiver = Objects.requireNonNull(archiver, "archiver");
+    }
 
-			emit.accept(new FileSetResourceEmitConfigurer(fileSet));
-			archiver.addFileSet(fileSet);
-		} else  if (scan instanceof DefaultArchiveResourceScan archiveScan) {
-			DefaultArchivedFileSet fileSet = archiveScan.toArchivedFileSet();
+    @Override
+    public void addResource(ResourceScan scan, Consumer<ResourceEmitSettings> emit) {
+        Objects.requireNonNull(scan, "scan");
+        Objects.requireNonNull(emit, "emit");
 
-			emit.accept(new FileSetResourceEmitConfigurer(fileSet));
-			archiver.addArchivedFileSet(fileSet);
-		} else {
-			throw new IncompatibleClassChangeError("Unsupported ResourceScan implementation: " + scan.getClass().getName());
-		}
-	}
+        if (scan instanceof DefaultDirectoryResourceScan directoryScan) {
+            DefaultFileSet fileSet = directoryScan.toFileSet();
+            emit.accept(new FileSetResourceEmitSettings(fileSet));
+            archiver.addFileSet(fileSet);
+            return;
+        }
 
-	@Override
-	public void setDestFile(Path destFile) {
-		archiver.setDestFile(Objects.requireNonNull(destFile, "destFile").toFile());
-	}
+        if (scan instanceof DefaultArchiveResourceScan archiveScan) {
+            DefaultArchivedFileSet fileSet = archiveScan.toArchivedFileSet();
+            emit.accept(new FileSetResourceEmitSettings(fileSet));
+            archiver.addArchivedFileSet(fileSet);
+            return;
+        }
 
-	@Override
-	public void setEmptyDirectoryHandling(EmptyDirectoryHandling handling) {
-		archiver.setIncludeEmptyDirs(Objects.requireNonNull(handling, "handling") == EmptyDirectoryHandling.INCLUDE);
-	}
+        throw new IncompatibleClassChangeError(
+                "Unsupported ResourceScan implementation: " + scan.getClass().getName());
+    }
 
-	@Override
-	public void setDotFileDirectory(Path dotFileDirectory) {
-		archiver.setDotFileDirectory(Objects.requireNonNull(dotFileDirectory, "dotFileDirectory").toFile());
-	}
+    @Override
+    public void setDestFile(Path destFile) {
+        archiver.setDestFile(Objects.requireNonNull(destFile, "destFile").toFile());
+    }
 
-	@Override
-	public void setForced(ArchiveCreation archiveCreation) {
-		archiver.setForced(Objects.requireNonNull(archiveCreation, "archiveCreation") == ArchiveCreation.ALWAYS);
-	}
+    @Override
+    public void setEmptyDirectoryHandling(EmptyDirectoryHandling handling) {
+        archiver.setIncludeEmptyDirs(Objects.requireNonNull(handling, "handling") == EmptyDirectoryHandling.INCLUDE);
+    }
 
-	@Override
-	public void setDuplicateBehavior(DuplicateHandling duplicateHandling) {
-		Objects.requireNonNull(duplicateHandling, "duplicateHandling");
-		String behavior = duplicateHandling == DuplicateHandling.ADD ? Archiver.DUPLICATES_ADD
+    @Override
+    public void setArchiveCreation(ArchiveCreation archiveCreation) {
+        archiver.setForced(Objects.requireNonNull(archiveCreation, "archiveCreation") == ArchiveCreation.ALWAYS);
+    }
+
+    @Override
+    public void setDuplicateHandling(DuplicateHandling duplicateHandling) {
+        Objects.requireNonNull(duplicateHandling, "duplicateHandling");
+        String behavior = duplicateHandling == DuplicateHandling.ADD ? Archiver.DUPLICATES_ADD
 				: duplicateHandling == DuplicateHandling.PRESERVE ? Archiver.DUPLICATES_PRESERVE
 						: duplicateHandling == DuplicateHandling.SKIP ? Archiver.DUPLICATES_SKIP
 								: Archiver.DUPLICATES_FAIL;
-		archiver.setDuplicateBehavior(behavior);
-	}
+        archiver.setDuplicateBehavior(behavior);
+    }
 
-	public void setPermissionPolicy(PermissionPolicy policy) {
-		Objects.requireNonNull(policy, "policy");
+    @Override
+    public void setPermissionPolicy(PermissionPolicy policy) {
+        Objects.requireNonNull(policy, "policy");
 
-		if (policy instanceof IgnorePermissionPolicy) {
-			applyIgnorePolicy();
-		} else if (policy instanceof UmaskPermissionPolicy u) {
-			applyUmaskPolicy(u);
-		} else if (policy instanceof EntryModesPermissionPolicy e) {
-			applyEntryModesPolicy(e);
-		} else {
-			throw new IncompatibleClassChangeError(
-					"Unsupported PermissionPolicy implementation: " + policy.getClass().getName());
-		}
-	}
+        if (policy instanceof IgnorePermissionPolicy) {
+            applyIgnorePolicy();
+            return;
+        }
+        if (policy instanceof UmaskPermissionPolicy umaskPolicy) {
+            applyUmaskPolicy(umaskPolicy);
+            return;
+        }
+        if (policy instanceof EntryModesPermissionPolicy entryModesPolicy) {
+            applyEntryModesPolicy(entryModesPolicy);
+            return;
+        }
 
-	private void applyIgnorePolicy() {
-		// Strategy: ignore source permissions entirely.
-		archiver.setIgnorePermissions(true);
+        throw new IncompatibleClassChangeError(
+                "Unsupported PermissionPolicy implementation: " + policy.getClass().getName());
+    }
 
-		// Clear conflicting strategy state.
-		clearUmask();
-		resetModesToInherit();
-	}
+    private void applyIgnorePolicy() {
+        archiver.setIgnorePermissions(true);
+        clearUmask();
+        resetModesToInherit();
+    }
 
-	private void applyUmaskPolicy(UmaskPermissionPolicy policy) {
-		archiver.setIgnorePermissions(false);
+    private void applyUmaskPolicy(UmaskPermissionPolicy policy) {
+        archiver.setIgnorePermissions(false);
+        archiver.setUmask(toMode(policy.mask()));
+        resetModesToInherit();
+    }
 
-		// Strategy: preserve source permissions, then mask.
-		archiver.setUmask(toMode(policy.mask()));
+    private void applyEntryModesPolicy(EntryModesPermissionPolicy policy) {
+        archiver.setIgnorePermissions(false);
+        clearUmask();
+        applyFileMode(policy.files());
+        applyDirectoryMode(policy.directories());
+    }
 
-		// Clear conflicting strategy state.
-		resetModesToInherit();
-	}
+    private void applyFileMode(FileMode fileMode) {
+        if (fileMode instanceof OverrideFileMode mode) {
+            archiver.setFileMode(toMode(mode.permissions()));
+            archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
+            return;
+        }
+        if (fileMode instanceof FallbackFileMode mode) {
+            archiver.setFileMode(-1);
+            archiver.setDefaultFileMode(toMode(mode.permissions()));
+            return;
+        }
+        if (fileMode instanceof InheritedFileMode) {
+            archiver.setFileMode(-1);
+            archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
+            return;
+        }
+        throw new IncompatibleClassChangeError(
+                "Unsupported FileMode implementation: " + fileMode.getClass().getName());
+    }
 
-	private void applyEntryModesPolicy(EntryModesPermissionPolicy policy) {
-		archiver.setIgnorePermissions(false);
-		clearUmask();
+    private void applyDirectoryMode(DirectoryMode directoryMode) {
+        if (directoryMode instanceof OverrideDirectoryMode mode) {
+            archiver.setDirectoryMode(toMode(mode.permissions()));
+            archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
+            return;
+        }
+        if (directoryMode instanceof FallbackDirectoryMode mode) {
+            archiver.setDirectoryMode(-1);
+            archiver.setDefaultDirectoryMode(toMode(mode.permissions()));
+            return;
+        }
+        if (directoryMode instanceof InheritedDirectoryMode) {
+            archiver.setDirectoryMode(-1);
+            archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
+            return;
+        }
+        throw new IncompatibleClassChangeError(
+                "Unsupported DirectoryMode implementation: " + directoryMode.getClass().getName());
+    }
 
-		applyFileMode(policy.files());
-		applyDirectoryMode(policy.directories());
-	}
+    private void resetModesToInherit() {
+        archiver.setFileMode(-1);
+        archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
+        archiver.setDirectoryMode(-1);
+        archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
+    }
 
-	private void applyFileMode(FileMode fileMode) {
-		if (fileMode instanceof OverrideFileMode mode) {
-			archiver.setFileMode(toMode(mode.permissions()));
-			archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
-			return;
-		}
-		if (fileMode instanceof FallbackFileMode mode) {
-			archiver.setFileMode(-1); // clear override
-			archiver.setDefaultFileMode(toMode(mode.permissions()));
-			return;
-		}
-		if (fileMode instanceof InheritedFileMode) {
-			archiver.setFileMode(-1); // clear override
-			archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
-			return;
-		}
-		throw new IncompatibleClassChangeError("Unsupported FileMode implementation: " + fileMode.getClass().getName());
-	}
+    private void clearUmask() {
+        archiver.setUmask(-1);
+    }
 
-	private void applyDirectoryMode(DirectoryMode directoryMode) {
-		if (directoryMode instanceof OverrideDirectoryMode mode) {
-			archiver.setDirectoryMode(toMode(mode.permissions()));
-			archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
-			return;
-		}
-		if (directoryMode instanceof FallbackDirectoryMode mode) {
-			archiver.setDirectoryMode(-1); // clear override
-			archiver.setDefaultDirectoryMode(toMode(mode.permissions()));
-			return;
-		}
-		if (directoryMode instanceof InheritedDirectoryMode) {
-			archiver.setDirectoryMode(-1); // clear override
-			archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
-			return;
-		}
-		throw new IncompatibleClassChangeError(
-				"Unsupported DirectoryMode implementation: " + directoryMode.getClass().getName());
-	}
+    private static int toMode(FilePermissions filePermissions) {
+        if (filePermissions instanceof PosixPermissions permissions) {
+            int mode = 0;
+            for (PosixFilePermission permission : permissions.permissions()) {
+                mode |= switch (permission) {
+                    case OWNER_READ -> 0400;
+                    case OWNER_WRITE -> 0200;
+                    case OWNER_EXECUTE -> 0100;
+                    case GROUP_READ -> 0040;
+                    case GROUP_WRITE -> 0020;
+                    case GROUP_EXECUTE -> 0010;
+                    case OTHERS_READ -> 0004;
+                    case OTHERS_WRITE -> 0002;
+                    case OTHERS_EXECUTE -> 0001;
+                };
+            }
+            return mode;
+        }
 
-	private void resetModesToInherit() {
-		archiver.setFileMode(-1);
-		archiver.setDefaultFileMode(Archiver.DEFAULT_FILE_MODE);
-		archiver.setDirectoryMode(-1);
-		archiver.setDefaultDirectoryMode(Archiver.DEFAULT_DIR_MODE);
-	}
+        if (filePermissions instanceof ModePermissions permissions) {
+            return permissions.mode();
+        }
 
-	private void clearUmask() {
-		archiver.setUmask(-1);
-	}
-
-	private static int toMode(FilePermissions filePermissions) {
-		if (filePermissions instanceof PosixPermissions permissions) {
-			int mode = 0;
-			for (PosixFilePermission permission : Objects.requireNonNull(permissions, "unixPermissions")
-					.permissions()) {
-				mode |= switch (permission) {
-				case OWNER_READ -> 0_400;
-				case OWNER_WRITE -> 0_200;
-				case OWNER_EXECUTE -> 0_100;
-				case GROUP_READ -> 0_040;
-				case GROUP_WRITE -> 0_020;
-				case GROUP_EXECUTE -> 0_010;
-				case OTHERS_READ -> 0_004;
-				case OTHERS_WRITE -> 0_002;
-				case OTHERS_EXECUTE -> 0_001;
-				};
-			}
-			return mode;
-		} else if (filePermissions instanceof ModePermissions permissions) {
-			return permissions.mode();
-		} else {
-			throw new IncompatibleClassChangeError();
-		}
-	}
+        throw new IncompatibleClassChangeError(
+                "Unsupported FilePermissions implementation: " + filePermissions.getClass().getName());
+    }
 }

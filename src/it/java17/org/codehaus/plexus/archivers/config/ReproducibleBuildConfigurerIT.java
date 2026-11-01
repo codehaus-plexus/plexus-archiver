@@ -44,16 +44,16 @@ class ReproducibleBuildConfigurerIT {
         
         ArchiverConfiguration configuration = ArchiverConfiguration
         		.reproducible(rb -> {
-        	        rb.setDefaultLastModifiedTime(ts);
+        	        rb.setOverrideLastModifiedTime(ts);
         	        rb.setFilenameComparator(String::compareTo);
-        	        rb.setDefaultUid(0);
-        	        rb.setDefaultUserName("root");
-        	        rb.setDefaultGid(0);
-        	        rb.setDefaultGroupName("root");
+        	        rb.setOverrideUid(0);
+        	        rb.setOverrideUserName("root");
+        	        rb.setOverrideGid(0);
+        	        rb.setOverrideGroupName("root");
         		})
         		.config(as -> {
         	        as.setDestFile(archivePath);
-        	        as.addResource(ResourceScan.fromDirectory(sourceDir), emit -> emit.prefix("root/"));
+        	        as.addResource(ResourceScan.fromDirectory(sourceDir), emit -> emit.setPrefix("root/"));
         		});
         
         configuration.applyOn(archiver);
@@ -141,12 +141,12 @@ class ReproducibleBuildConfigurerIT {
         
         ArchiverConfiguration configuration = ArchiverConfiguration
         		.reproducible(rb -> {
-                    rb.setDefaultLastModifiedTime(ts);
+                    rb.setOverrideLastModifiedTime(ts);
                     rb.setFilenameComparator(String::compareTo);
-                    rb.setDefaultUid(0);
-                    rb.setDefaultUserName("root");
-                    rb.setDefaultGid(0);
-                    rb.setDefaultGroupName("root");
+                    rb.setOverrideUid(0);
+                    rb.setOverrideUserName("root");
+                    rb.setOverrideGid(0);
+                    rb.setOverrideGroupName("root");
         		})
         		.config(as -> {
         	        as.setDestFile(archivePath);

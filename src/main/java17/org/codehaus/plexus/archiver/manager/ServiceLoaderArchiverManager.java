@@ -26,7 +26,7 @@ import java.util.stream.StreamSupport;
 
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
-import org.codehaus.plexus.archivers.config.ResourceEmitConfigurer;
+import org.codehaus.plexus.archivers.config.ResourceEmitSettings;
 import org.codehaus.plexus.archivers.config.ResourceScan;
 import org.codehaus.plexus.archivers.config.UnArchiverConfiguration;
 import org.codehaus.plexus.archiver.UnArchiver;

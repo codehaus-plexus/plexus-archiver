@@ -32,6 +32,7 @@ import org.codehaus.plexus.archiver.diags.NoOpArchiver;
 import org.codehaus.plexus.archivers.config.ArchiveCreation;
 import org.codehaus.plexus.archivers.config.ArchiverConfiguration;
 import org.codehaus.plexus.archivers.config.ArchiverConfigurer;
+import org.codehaus.plexus.archivers.config.ArchiverFinalizationPolicy;
 import org.codehaus.plexus.archivers.config.CaseSensitivities;
 import org.codehaus.plexus.archivers.config.CaseSensitivity;
 import org.codehaus.plexus.archivers.config.DirectoryMode;
@@ -65,7 +66,7 @@ class ArchiverProviderIT {
         				.caseSensitive(CaseSensitivity.INSENSITIVE)
         				.standardExcludes(StandardExcludes.NONE)), 
         				emit -> { 
-        					emit.prefix("content/");
+        					emit.setPrefix("content/");
         					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
         				})));
         
@@ -102,7 +103,7 @@ class ArchiverProviderIT {
         				.caseSensitive(CaseSensitivity.PLATFORM_DEFAULT)
         				.standardExcludes(StandardExcludes.NONE)), 
         				emit -> {
-        					emit.prefix("lib/");
+        					emit.setPrefix("lib/");
         					emit.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
         				})));
 
@@ -132,20 +133,19 @@ class ArchiverProviderIT {
 
         Archiver actual = providerFor(expected).newArchiver(
     		ArchiverConfiguration.reproducible(c -> {
-            	c.setDefaultLastModifiedTime(timestamp);
-                c.setDefaultUid(1000);
-                c.setDefaultUserName("user");
-                c.setDefaultGid(1000);
-                c.setDefaultGroupName("group");
+            	c.setOverrideLastModifiedTime(timestamp);
+                c.setOverrideUid(1000);
+                c.setOverrideUserName("user");
+                c.setOverrideGid(1000);
+                c.setOverrideGroupName("group");
                 c.setFilenameComparator(Comparator.naturalOrder());
     		}).config(settings -> { 
     			settings.setDestFile(directory.resolve("archive.zip"));
     			settings.setEmptyDirectoryHandling(EmptyDirectoryHandling.EXCLUDE);
-    			settings.setDotFileDirectory(directory);
-    			settings.setForced(ArchiveCreation.WHEN_NEEDED);
-    			settings.setDuplicateBehavior(DuplicateHandling.FAIL);
+    			settings.setArchiveCreation(ArchiveCreation.WHEN_NEEDED);
+    			settings.setDuplicateHandling(DuplicateHandling.FAIL);
     			settings.setPermissionPolicy(PermissionPolicy.umask(FilePermissions.parse("----w--w-")));
-    		}));
+    		}).withFinalizer(ArchiverFinalizationPolicy.dotFileDirectory(directory)));
 
         assertThat(actual).isSameAs(expected);
         assertThat(expected.includeEmptyDirectories).isFalse();
