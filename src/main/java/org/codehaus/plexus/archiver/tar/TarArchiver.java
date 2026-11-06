@@ -22,10 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorOutputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
@@ -38,6 +44,7 @@ import org.codehaus.plexus.archiver.exceptions.EmptyArchiveException;
 import org.codehaus.plexus.archiver.util.ResourceUtils;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
+import org.codehaus.plexus.components.io.functions.HardLinkIdentitySupplier;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.IOUtil;
@@ -63,6 +70,26 @@ public class TarArchiver extends AbstractArchiver {
     private final TarOptions options = new TarOptions();
 
     private TarArchiveOutputStream tOut;
+
+    private boolean preserveHardLinks;
+    private final Map<HardLinkKey, String> hardLinkTargets = new HashMap<>();
+    private final Map<String, HardLinkKey> writtenNames = new HashMap<>();
+
+    /**
+     * Enables preservation of known, untransformed hard-link identities; default false.
+     * Unknown identities and entries with different output metadata are written in full.
+     * Like GNU tar, preservation continues when output paths traverse archived symbolic links;
+     * extraction then links to the target path's current contents.
+     * @param preserveHardLinks whether eligible aliases share one TAR payload
+     */
+    public void setPreserveHardLinks(boolean preserveHardLinks) {
+        this.preserveHardLinks = preserveHardLinks;
+    }
+
+    /** Returns whether hard-link preservation was explicitly enabled. */
+    public boolean isPreserveHardLinks() {
+        return preserveHardLinks;
+    }
 
     /**
      * Set how to handle long files, those with a path&gt;100 chars.
@@ -102,6 +129,9 @@ public class TarArchiver extends AbstractArchiver {
 
     @Override
     protected void execute() throws ArchiverException, IOException {
+        // Identity and target names are meaningful only within the archive currently being written.
+        hardLinkTargets.clear();
+        writtenNames.clear();
         if (!checkForced()) {
             return;
         }
@@ -285,24 +315,101 @@ public class TarArchiver extends AbstractArchiver {
                 te.setGroupId(groupId);
             }
 
+            HardLinkKey identity = hardLinkKey(entry, te);
+            String outputName = te.getName();
+            String outputKey = normalizedOutputName(outputName);
+            // Even an ineligible link target can replace an earlier destination through a contained parent path.
+            HardLinkKey replaced = writtenNames.remove(outputKey);
+            if (replaced != null) {
+                hardLinkTargets.remove(replaced);
+            }
+            String target = identity == null ? null : hardLinkTargets.get(identity);
+            if (target != null) {
+                te = hardLinkEntry(te, target);
+            }
             tOut.putArchiveEntry(te);
 
             try {
-                if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
+                if (entry.getResource().isFile() && !te.isSymbolicLink() && !te.isLink()) {
                     fIn = entry.getInputStream();
 
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
 
-            } catch (Throwable e) {
-                getLogger().warn("When creating tar entry", e);
             } finally {
                 tOut.closeArchiveEntry();
+            }
+            // Failed or omitted entries must never become targets of later link headers.
+            if (identity != null && target == null) {
+                hardLinkTargets.put(identity, outputName);
+                writtenNames.put(outputKey, identity);
             }
         } finally {
             IOUtil.close(fIn);
         }
     }
+
+    /**
+     * Normalizes destination paths for target invalidation, including contained parent components.
+     * Emitted member names and the stricter eligibility rules for hard-link targets remain separate.
+     */
+    private static String normalizedOutputName(String name) {
+        Deque<String> components = new ArrayDeque<>();
+        for (String component : name.split("/")) {
+            if (component.equals("..")
+                    && !components.isEmpty()
+                    && !components.peekLast().equals("..")) {
+                components.removeLast();
+            } else if (!component.isEmpty() && !component.equals(".")) {
+                components.addLast(component);
+            }
+        }
+        return String.join("/", components);
+    }
+
+    /** Returns an identity only when preservation is enabled and the resource guarantees its bytes. */
+    private HardLinkKey hardLinkKey(ArchiveEntry entry, TarArchiveEntry header) throws IOException {
+        String name;
+        if (!preserveHardLinks
+                || longFileMode.isTruncateMode()
+                || entry.getType() != ArchiveEntry.FILE
+                || (name = header.getName()).startsWith("/")
+                || name.contains("\\")
+                || name.contains(":")
+                || Arrays.asList(name.split("/")).contains("..")
+                || !(entry.getResource() instanceof HardLinkIdentitySupplier supplier)) {
+            return null;
+        }
+        Object identity = supplier.getHardLinkIdentity();
+        return identity == null
+                ? null
+                : new HardLinkKey(
+                        identity,
+                        header.getMode(),
+                        header.getLongUserId(),
+                        header.getLongGroupId(),
+                        header.getUserName(),
+                        header.getGroupName(),
+                        header.getModTime().getTime(),
+                        header.getSize());
+    }
+
+    /** Constructs a zero-payload link while retaining the effective metadata already calculated. */
+    private TarArchiveEntry hardLinkEntry(TarArchiveEntry original, String target) {
+        TarArchiveEntry link = new TarArchiveEntry(original.getName(), TarConstants.LF_LINK);
+        link.setLinkName(target);
+        link.setMode(original.getMode());
+        link.setUserId(original.getLongUserId());
+        link.setGroupId(original.getLongGroupId());
+        link.setUserName(original.getUserName());
+        link.setGroupName(original.getGroupName());
+        link.setModTime(original.getModTime());
+        return link;
+    }
+
+    /** Includes output metadata because one inode cannot preserve conflicting attributes. */
+    private record HardLinkKey(
+            Object identity, int mode, long uid, long gid, String user, String group, long modified, long size) {}
 
     /**
      * Valid Modes for Compression attribute to Tar Task
@@ -442,6 +549,8 @@ public class TarArchiver extends AbstractArchiver {
 
     @Override
     protected void cleanUp() throws IOException {
+        hardLinkTargets.clear();
+        writtenNames.clear();
         super.cleanUp();
         if (this.tOut != null) {
             this.tOut.close();
