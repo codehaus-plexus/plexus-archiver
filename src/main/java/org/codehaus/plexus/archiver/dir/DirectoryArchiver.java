@@ -133,8 +133,8 @@ public class DirectoryArchiver extends AbstractArchiver {
                 final String destDir = destDirectory.getCanonicalPath();
                 fileName = destDir + File.separator + fileName;
                 PlexusIoResource resource = f.getResource();
-                if (resource instanceof SymlinkDestinationSupplier supplier) {
-                    String dest = supplier.getSymlinkDestination();
+                if (resource instanceof SymlinkDestinationSupplier) {
+                    String dest = ((SymlinkDestinationSupplier) resource).getSymlinkDestination();
                     File target = new File(dest);
                     File symlink = new File(fileName);
                     makeParentDirectories(symlink);
