@@ -78,7 +78,9 @@ public class ArchiveEntry {
             this.name = name;
             this.defaultDirMode = defaultDirMode;
             this.resource = collection != null ? collection.resolve(resource) : resource;
-            this.attributes = (resource instanceof ResourceAttributeSupplier ras) ? ras.getAttributes() : null;
+            this.attributes = resource instanceof ResourceAttributeSupplier
+                    ? ((ResourceAttributeSupplier) resource).getAttributes()
+                    : null;
             this.type = type;
             int permissions = mode;
 
@@ -117,8 +119,8 @@ public class ArchiveEntry {
      */
     @Deprecated
     public File getFile() {
-        if (resource instanceof PlexusIoFileResource fileResource) {
-            return fileResource.getFile();
+        if (resource instanceof PlexusIoFileResource) {
+            return ((PlexusIoFileResource) resource).getFile();
         }
         return null;
     }

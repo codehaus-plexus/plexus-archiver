@@ -76,17 +76,6 @@ public interface Archiver {
      */
     void addFileSet(@Nonnull FileSet fileSet) throws ArchiverException;
 
-    /**
-     * Adds a modern file set specification to the archive.
-     *
-     * @param fileSetSpec the file set specification
-     * @throws ArchiverException if adding the file set failed
-     * @since 5.0.0
-     */
-    default void addFileSet(@Nonnull FileSetSpec fileSetSpec) throws ArchiverException {
-        addFileSet(fileSetSpec.toFileSet());
-    }
-
     void addSymlink(String symlinkName, String symlinkDestination) throws ArchiverException;
 
     void addSymlink(String symlinkName, int permissions, String symlinkDestination) throws ArchiverException;
@@ -96,17 +85,6 @@ public interface Archiver {
     void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions) throws ArchiverException;
 
     void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException;
-
-    /**
-     * Adds a modern archived file set specification to the archive.
-     *
-     * @param fileSetSpec the archived file set specification
-     * @throws ArchiverException if adding the file set failed
-     * @since 5.0.0
-     */
-    default void addArchivedFileSet(@Nonnull ArchivedFileSetSpec fileSetSpec) throws ArchiverException {
-        addArchivedFileSet(fileSetSpec.toArchivedFileSet());
-    }
 
     /**
      * Adds the given archive file set to the archive.
