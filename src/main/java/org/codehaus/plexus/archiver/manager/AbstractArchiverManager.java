@@ -34,6 +34,14 @@ import org.codehaus.plexus.util.StringUtils;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Shared lookup logic of the archiver managers.
+ * <p>
+ * On the 4.x line the public methods stay non-final: up to 4.15.0 they were declared on
+ * {@link DefaultArchiverManager}, which consumers subclass and override. Being non-final also lets
+ * javac emit public bridge methods in the public subclasses, so reflective calls through
+ * {@code DefaultArchiverManager} do not reach this package-private class.
+ */
 abstract class AbstractArchiverManager implements ArchiverManager {
 
     private final Map<String, Supplier<Archiver>> archivers;
@@ -53,7 +61,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
 
     @Override
     @Nonnull
-    public final Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException {
+    public Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException {
         requireNonNull(archiverName);
         Supplier<Archiver> archiver = archivers.get(archiverName);
         if (archiver == null) {
@@ -64,7 +72,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
 
     @Override
     @Nonnull
-    public final UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException {
+    public UnArchiver getUnArchiver(@Nonnull String unArchiverName) throws NoSuchArchiverException {
         requireNonNull(unArchiverName);
         Supplier<UnArchiver> unArchiver = unArchivers.get(unArchiverName);
         if (unArchiver == null) {
@@ -75,7 +83,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
 
     @Override
     @Nonnull
-    public final PlexusIoResourceCollection getResourceCollection(String resourceCollectionName)
+    public PlexusIoResourceCollection getResourceCollection(String resourceCollectionName)
             throws NoSuchArchiverException {
         requireNonNull(resourceCollectionName);
         Supplier<PlexusIoResourceCollection> resourceCollection =
@@ -88,7 +96,7 @@ abstract class AbstractArchiverManager implements ArchiverManager {
 
     @Override
     @Nonnull
-    public final Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException {
+    public Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException {
         return getArchiver(getFileExtension(file));
     }
 
@@ -99,25 +107,25 @@ abstract class AbstractArchiverManager implements ArchiverManager {
 
     @Override
     @Nonnull
-    public final UnArchiver getUnArchiver(@Nonnull File file) throws NoSuchArchiverException {
+    public UnArchiver getUnArchiver(@Nonnull File file) throws NoSuchArchiverException {
         return getUnArchiver(getFileExtension(file));
     }
 
     @Nonnull
     @Override
-    public final Collection<String> getAvailableUnArchivers() {
+    public Collection<String> getAvailableUnArchivers() {
         return unArchivers.keySet();
     }
 
     @Override
     @Nonnull
-    public final PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException {
+    public PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException {
         return getResourceCollection(getFileExtension(file));
     }
 
     @Nonnull
     @Override
-    public final Collection<String> getAvailableResourceCollections() {
+    public Collection<String> getAvailableResourceCollections() {
         return plexusIoResourceCollections.keySet();
     }
 
