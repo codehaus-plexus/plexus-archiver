@@ -29,7 +29,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.codehaus.plexus.archiver.ArchiverException;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.io.CachingOutputStream;
 
 public class Streams {
@@ -81,21 +80,17 @@ public class Streams {
     public static void copyFully(@WillClose InputStream zIn, @WillClose OutputStream out, String gzip)
             throws ArchiverException {
         // There must be 1 million libs out there that do this
-        try {
-            copyFullyDontCloseOutput(zIn, out, gzip);
-            out.close();
-            out = null;
+        try (OutputStream o = out) {
+            copyFullyDontCloseOutput(zIn, o, gzip);
         } catch (final IOException e) {
             throw new ArchiverException("Failure copying.", e);
-        } finally {
-            IOUtil.close(out);
         }
     }
 
     public static void copyFullyDontCloseOutput(@WillClose InputStream zIn, @WillNotClose OutputStream out, String gzip)
             throws ArchiverException {
         // There must be 1 million libs out there that do this
-        try {
+        try (InputStream in = zIn) {
             byte[] buffer = cacheBuffer();
             int count = 0;
             do {
@@ -105,15 +100,10 @@ public class Streams {
                     throw new ArchiverException(
                             "Problem writing to output in " + gzip + " operation " + e.getMessage());
                 }
-                count = zIn.read(buffer, 0, buffer.length);
+                count = in.read(buffer, 0, buffer.length);
             } while (count != -1);
-            zIn.close();
-            zIn = null;
         } catch (IOException e) {
             throw new ArchiverException("Problem reading from source file in " + gzip + " operation " + e.getMessage());
-
-        } finally {
-            IOUtil.close(zIn);
         }
     }
 }
