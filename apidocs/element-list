@@ -23,4 +23,5 @@ org.codehaus.plexus.archiver.war
 org.codehaus.plexus.archiver.xz
 org.codehaus.plexus.archiver.zip
 org.codehaus.plexus.archiver.zstd
+org.codehaus.plexus.archivers.spi
 org.codehaus.plexus.components.io.resources
