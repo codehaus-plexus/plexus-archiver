@@ -43,7 +43,11 @@ public class TarResource extends AbstractPlexusIoResource implements ResourceAtt
     public synchronized PlexusIoResourceAttributes getAttributes() {
         if (attributes == null) {
             attributes = new SimpleResourceAttributes(
-                    entry.getUserId(), entry.getUserName(), entry.getGroupId(), entry.getGroupName(), entry.getMode());
+                    (int) entry.getLongUserId(),
+                    entry.getUserName(),
+                    (int) entry.getLongGroupId(),
+                    entry.getGroupName(),
+                    entry.getMode());
         }
 
         return attributes;

@@ -40,7 +40,6 @@ import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
@@ -125,8 +124,9 @@ public class TarArchiver extends AbstractArchiver {
 
         getLogger().info("Building tar: " + tarFile.getAbsolutePath());
 
-        try {
-            tOut = new TarArchiveOutputStream(compress(compression, Streams.fileOutputStream(tarFile)), "UTF8");
+        try (TarArchiveOutputStream out =
+                new TarArchiveOutputStream(compress(compression, Streams.fileOutputStream(tarFile)), "UTF8")) {
+            tOut = out;
             if (longFileMode.isTruncateMode()) {
                 tOut.setLongFileMode(TarArchiveOutputStream.LONGFILE_TRUNCATE);
             } else if (longFileMode.isPosixMode() || longFileMode.isPosixWarnMode()) {
@@ -152,10 +152,6 @@ public class TarArchiver extends AbstractArchiver {
 
                 tarFile(entry, tOut, name);
             }
-
-            tOut.close();
-        } finally {
-            IOUtil.close(tOut);
         }
     }
 
@@ -190,117 +186,108 @@ public class TarArchiver extends AbstractArchiver {
         }
 
         int pathLength = vPath.length();
-        InputStream fIn = null;
-
-        try {
-            TarArchiveEntry te;
-            if (!longFileMode.isGnuMode()
-                    && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN) {
-                int maxPosixPathLen = org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                        + org.apache.commons.compress.archivers.tar.TarConstants.PREFIXLEN;
-                if (longFileMode.isPosixMode()) {
-                } else if (longFileMode.isPosixWarnMode()) {
-                    if (pathLength > maxPosixPathLen) {
-                        getLogger().warn("Entry: " + vPath + " longer than " + maxPosixPathLen + " characters.");
-                        if (!longWarningGiven) {
-                            getLogger()
-                                    .warn("Resulting tar file can only be processed "
-                                            + "successfully by GNU compatible tar commands");
-                            longWarningGiven = true;
-                        }
-                    }
-                } else if (longFileMode.isOmitMode()) {
-                    getLogger().info("Omitting: " + vPath);
-                    return;
-                } else if (longFileMode.isWarnMode()) {
-                    getLogger()
-                            .warn("Entry: " + vPath + " longer than "
-                                    + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                                    + " characters.");
+        TarArchiveEntry te;
+        if (!longFileMode.isGnuMode() && pathLength >= org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN) {
+            int maxPosixPathLen = org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
+                    + org.apache.commons.compress.archivers.tar.TarConstants.PREFIXLEN;
+            if (longFileMode.isPosixMode()) {
+            } else if (longFileMode.isPosixWarnMode()) {
+                if (pathLength > maxPosixPathLen) {
+                    getLogger().warn("Entry: " + vPath + " longer than " + maxPosixPathLen + " characters.");
                     if (!longWarningGiven) {
                         getLogger()
                                 .warn("Resulting tar file can only be processed "
                                         + "successfully by GNU compatible tar commands");
                         longWarningGiven = true;
                     }
-                } else if (longFileMode.isFailMode()) {
-                    throw new ArchiverException("Entry: " + vPath + " longer than "
-                            + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
-                            + " characters.");
-                } else {
-                    throw new IllegalStateException("Non gnu mode should never get here?");
                 }
-            }
-
-            if (entry.getType() == ArchiveEntry.SYMLINK) {
-                final SymlinkDestinationSupplier plexusIoSymlinkResource =
-                        (SymlinkDestinationSupplier) entry.getResource();
-
-                te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
-                te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
+            } else if (longFileMode.isOmitMode()) {
+                getLogger().info("Omitting: " + vPath);
+                return;
+            } else if (longFileMode.isWarnMode()) {
+                getLogger()
+                        .warn("Entry: " + vPath + " longer than "
+                                + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
+                                + " characters.");
+                if (!longWarningGiven) {
+                    getLogger()
+                            .warn("Resulting tar file can only be processed "
+                                    + "successfully by GNU compatible tar commands");
+                    longWarningGiven = true;
+                }
+            } else if (longFileMode.isFailMode()) {
+                throw new ArchiverException("Entry: " + vPath + " longer than "
+                        + org.apache.commons.compress.archivers.tar.TarConstants.NAMELEN
+                        + " characters.");
             } else {
-                te = new TarArchiveEntry(vPath);
+                throw new IllegalStateException("Non gnu mode should never get here?");
             }
+        }
 
-            if (getLastModifiedTime() == null) {
-                long teLastModified = entry.getResource().getLastModified();
-                te.setModTime(
-                        teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
-                                ? System.currentTimeMillis()
-                                : teLastModified);
-            } else {
-                te.setModTime(getLastModifiedTime().toMillis());
-            }
+        if (entry.getType() == ArchiveEntry.SYMLINK) {
+            final SymlinkDestinationSupplier plexusIoSymlinkResource = (SymlinkDestinationSupplier) entry.getResource();
 
-            if (entry.getType() == ArchiveEntry.SYMLINK) {
-                te.setSize(0);
+            te = new TarArchiveEntry(vPath, TarArchiveEntry.LF_SYMLINK);
+            te.setLinkName(plexusIoSymlinkResource.getSymlinkDestination());
+        } else {
+            te = new TarArchiveEntry(vPath);
+        }
 
-            } else if (!entry.getResource().isDirectory()) {
-                final long size = entry.getResource().getSize();
-                te.setSize(size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size);
-            }
-            te.setMode(entry.getMode());
+        if (getLastModifiedTime() == null) {
+            long teLastModified = entry.getResource().getLastModified();
+            te.setModTime(
+                    teLastModified == PlexusIoResource.UNKNOWN_MODIFICATION_DATE
+                            ? System.currentTimeMillis()
+                            : teLastModified);
+        } else {
+            te.setModTime(getLastModifiedTime().toMillis());
+        }
 
-            PlexusIoResourceAttributes attributes = entry.getResourceAttributes();
+        if (entry.getType() == ArchiveEntry.SYMLINK) {
+            te.setSize(0);
 
-            te.setUserName(
-                    (attributes != null && attributes.getUserName() != null)
-                            ? attributes.getUserName()
-                            : options.getUserName());
-            te.setGroupName(
-                    (attributes != null && attributes.getGroupName() != null)
-                            ? attributes.getGroupName()
-                            : options.getGroup());
+        } else if (!entry.getResource().isDirectory()) {
+            final long size = entry.getResource().getSize();
+            te.setSize(size == PlexusIoResource.UNKNOWN_RESOURCE_SIZE ? 0 : size);
+        }
+        te.setMode(entry.getMode());
 
-            final int userId =
-                    (attributes != null && attributes.getUserId() != null) ? attributes.getUserId() : options.getUid();
-            if (userId >= 0) {
-                te.setUserId(userId);
-            }
+        PlexusIoResourceAttributes attributes = entry.getResourceAttributes();
 
-            final int groupId = (attributes != null && attributes.getGroupId() != null)
-                    ? attributes.getGroupId()
-                    : options.getGid();
-            if (groupId >= 0) {
-                te.setGroupId(groupId);
-            }
+        te.setUserName(
+                (attributes != null && attributes.getUserName() != null)
+                        ? attributes.getUserName()
+                        : options.getUserName());
+        te.setGroupName(
+                (attributes != null && attributes.getGroupName() != null)
+                        ? attributes.getGroupName()
+                        : options.getGroup());
 
-            tOut.putArchiveEntry(te);
+        final int userId =
+                (attributes != null && attributes.getUserId() != null) ? attributes.getUserId() : options.getUid();
+        if (userId >= 0) {
+            te.setUserId(userId);
+        }
 
-            try {
-                if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
-                    fIn = entry.getInputStream();
+        final int groupId =
+                (attributes != null && attributes.getGroupId() != null) ? attributes.getGroupId() : options.getGid();
+        if (groupId >= 0) {
+            te.setGroupId(groupId);
+        }
 
+        tOut.putArchiveEntry(te);
+
+        try {
+            if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
+                try (InputStream fIn = entry.getInputStream()) {
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
-
-            } catch (Throwable e) {
-                getLogger().warn("When creating tar entry", e);
-            } finally {
-                tOut.closeArchiveEntry();
             }
+
+        } catch (Throwable e) {
+            getLogger().warn("When creating tar entry", e);
         } finally {
-            IOUtil.close(fIn);
+            tOut.closeArchiveEntry();
         }
     }
 
