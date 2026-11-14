@@ -45,18 +45,16 @@ public class DefaultArchiverManager extends AbstractArchiverManager {
     }
 
     private static Map<String, Supplier<Archiver>> archivers(Map<String, Provider<Archiver>> archivers) {
-        return archivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+        return archivers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 
     private static Map<String, Supplier<UnArchiver>> unarchivers(Map<String, Provider<UnArchiver>> unArchivers) {
-        return unArchivers.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+        return unArchivers.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 
     private static Map<String, Supplier<PlexusIoResourceCollection>> plexusIoResourceCollections(
             Map<String, Provider<PlexusIoResourceCollection>> plexusIoResourceCollections) {
         return plexusIoResourceCollections.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, e -> e.getValue()::get));
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue()::get));
     }
 }
