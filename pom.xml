@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>plexus-archiver</artifactId>
-  <version>4.16.0</version>
+  <version>4.16.1-SNAPSHOT</version>
   <name>Plexus Archiver Component</name>
   <description>One API for creating and extracting archives - zip, jar, tar and their compressed
     variants - regardless of format.</description>
@@ -49,7 +49,7 @@
   <properties>
     <slf4jVersion>1.7.36</slf4jVersion>
     <version.sisu>1.1.2</version.sisu>
-    <project.build.outputTimestamp>2026-11-14T19:58:10Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2026-11-14T20:05:48Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
