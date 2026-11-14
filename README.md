@@ -51,22 +51,27 @@ ArchiverManager archiverManager;
 As of version 5.0.0 there's also a [ServiceLoader](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ServiceLoader.html) based implementation.
 
 ```java
-var archiveManager = new ServiceLoaderArchiverManager();
+var archiverManager = new ServiceLoaderArchiverManager();
 
-// or without archiveManager
+// or without archiverManager, configuring the archiver as it is created
 var archiver = ServiceLoader.load(ArchiverProvider.class).stream()
-  .map(Provider::get)
+  .map(ServiceLoader.Provider::get)
   .filter(p -> "zip".equals(p.getName()))
   .findFirst()
-  .orElseThrow();
+  .orElseThrow()
+  .newArchiver(c -> {
+      c.addFileSet(DefaultFileSet.fileSet(new File("src/main/resources")));
+      c.setDestFile(Path.of("target/out.zip"));
+  });
+archiver.createArchive();
 ```
 
-After retrieving a fresh archiver, you can do
+With the manager, retrieve a fresh archiver and configure it:
 
 ```java
-var archiver = archiveManager.getArchiver("zip");
+var archiver = archiverManager.getArchiver("zip");
 
-archiver.addDirectory(new File("src/main/resources"));
+archiver.addFileSet(DefaultFileSet.fileSet(new File("src/main/resources")));
 archiver.setDestFile(new File("target/out.zip"));
 archiver.createArchive();
 ```
