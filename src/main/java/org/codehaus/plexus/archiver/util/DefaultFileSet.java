@@ -31,6 +31,7 @@ public class DefaultFileSet extends AbstractFileSet<DefaultFileSet> implements F
     }
 
     @Nonnull
+    @Override
     public File getDirectory() {
         return directory;
     }

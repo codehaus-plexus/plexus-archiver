@@ -113,6 +113,7 @@ public class TarFile implements ArchiveFile {
         if (entry.equals((Object) currentEntry) && inputStream != null) {
             return new FilterInputStream(inputStream) {
 
+                @Override
                 public void close() throws IOException {
                     // Does nothing.
                 }

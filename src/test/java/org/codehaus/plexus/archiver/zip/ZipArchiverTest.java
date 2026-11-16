@@ -368,6 +368,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
         InputStreamTransformer is = new InputStreamTransformer() {
 
             @Nonnull
+            @Override
             public InputStream transform(@Nonnull PlexusIoResource resource, @Nonnull InputStream inputStream)
                     throws IOException {
                 return BoundedInputStream.builder()

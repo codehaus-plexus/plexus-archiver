@@ -89,6 +89,7 @@ public abstract class AbstractZipUnArchiver extends AbstractUnArchiver {
             this.zipEntry = zipEntry;
         }
 
+        @Override
         public String getName() {
             return zipEntry.getName();
         }
