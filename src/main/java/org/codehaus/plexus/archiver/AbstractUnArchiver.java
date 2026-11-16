@@ -35,7 +35,6 @@ import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -350,7 +349,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         }
 
         // don't allow override target symlink by standard file
-        if (StringUtils.isEmpty(symlinkDestination) && Files.isSymbolicLink(canonicalDestPath)) {
+        if ((symlinkDestination == null || symlinkDestination.isEmpty()) && Files.isSymbolicLink(canonicalDestPath)) {
             throw new ArchiverException("Entry is outside of the target directory (" + entryName + ")");
         }
 
@@ -365,7 +364,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                 dirF.mkdirs();
             }
 
-            if (!StringUtils.isEmpty(symlinkDestination)) {
+            if (!(symlinkDestination == null || symlinkDestination.isEmpty())) {
                 if (!createSymlinkEntry(canonicalDirPath, targetFileName, symlinkDestination, entryName)) {
                     return;
                 }
