@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.DefaultArchiverManager;
-import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
 import org.codehaus.plexus.archiver.zip.ZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipUnArchiver;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
@@ -74,7 +73,7 @@ class ArchiverManagerCompatibilityTest {
     }
 
     @Test
-    void subclassCanOverrideLookups() throws NoSuchArchiverException {
+    void subclassCanOverrideLookups() throws Exception {
         ArchiverManager manager = new OverridingArchiverManager();
 
         assertThat(manager.getArchiver("unknown")).isSameAs(ARCHIVER);
