@@ -27,7 +27,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -580,8 +579,8 @@ public class JarArchiver extends ZipArchiver {
         // JarIndex is sorting the directories by ascending order.
         // it has no value but cosmetic since it will be read into a
         // hashtable by the classloader, but we'll do so anyway.
-        Collections.sort(dirs);
-        Collections.sort(files);
+        dirs.sort(null);
+        files.sort(null);
         for (String dir : dirs) {
             // try to be smart, not to be fooled by a weird directory name
             dir = dir.replace('\\', '/');
