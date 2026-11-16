@@ -77,7 +77,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
     /**
      * @since 1.1
      */
-    private boolean ignorePermissions = false;
+    private boolean ignorePermissions;
 
     /**
      * @since 4.15.0
@@ -459,7 +459,7 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         boolean entryIsDirectory =
                 entryName.endsWith("/"); // directory entries always end with '/', regardless of the OS.
         String canonicalDestPath = targetFileName.getCanonicalPath();
-        String suffix = (entryIsDirectory ? "/" : "");
+        String suffix = entryIsDirectory ? "/" : "";
         String relativeCanonicalDestPath =
                 canonicalDestPath.replace(targetDirectory.getCanonicalPath() + File.separatorChar, "") + suffix;
         boolean fileOnDiskIsOlderThanEntry = targetFileName.lastModified() < entryDate.getTime();

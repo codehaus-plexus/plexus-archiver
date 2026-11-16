@@ -35,7 +35,7 @@ public class PlexusIoTarFileResourceCollection extends AbstractPlexusIoArchiveRe
         return new TarFile(file);
     }
 
-    TarFile tarFile = null;
+    TarFile tarFile;
 
     @Override
     public void close() throws IOException {

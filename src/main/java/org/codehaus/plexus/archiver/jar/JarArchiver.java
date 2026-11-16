@@ -125,13 +125,13 @@ public class JarArchiver extends ZipArchiver {
      * @deprecated See <a href="https://bugs.openjdk.org/browse/JDK-8302819">JDK-8302819</a>
      */
     @Deprecated
-    private boolean index = false;
+    private boolean index;
 
     /**
      * whether to really create the archive in createEmptyZip, will
      * get set in getResourcesToAdd.
      */
-    private boolean createEmpty = false;
+    private boolean createEmpty;
 
     /**
      * Stores all files that are in the root of the archive (i.e. that
@@ -153,7 +153,7 @@ public class JarArchiver extends ZipArchiver {
     /**
      * Creates a minimal default manifest with {@code Manifest-Version: 1.0} only.
      */
-    private boolean minimalDefaultManifest = false;
+    private boolean minimalDefaultManifest;
 
     /**
      * constructor
@@ -385,8 +385,8 @@ public class JarArchiver extends ZipArchiver {
             boolean add = false;
             for (String entry : entries.keySet()) {
                 if (entry.startsWith(META_INF_NAME + '/')
-                        && !entry.equals(INDEX_NAME)
-                        && !entry.equals(MANIFEST_NAME)) {
+                        && !INDEX_NAME.equals(entry)
+                        && !MANIFEST_NAME.equals(entry)) {
                     add = true;
                     break;
                 }
@@ -682,10 +682,10 @@ public class JarArchiver extends ZipArchiver {
                     ZipArchiveEntry ze = entries.nextElement();
                     String name = ze.getName();
                     // avoid index for manifest-only jars.
-                    if (!name.equals(META_INF_NAME)
+                    if (!META_INF_NAME.equals(name)
                             && !name.equals(META_INF_NAME + '/')
-                            && !name.equals(INDEX_NAME)
-                            && !name.equals(MANIFEST_NAME)) {
+                            && !INDEX_NAME.equals(name)
+                            && !MANIFEST_NAME.equals(name)) {
                         if (ze.isDirectory()) {
                             dirSet.add(name);
                         } else if (!name.contains("/")) {

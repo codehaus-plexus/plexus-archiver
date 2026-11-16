@@ -43,7 +43,7 @@ public abstract class AbstractFileSet<T extends AbstractFileSet> implements Base
 
     private boolean includingEmptyDirectories = true;
 
-    private InputStreamTransformer streamTransformer = null;
+    private InputStreamTransformer streamTransformer;
 
     private FileMapper[] fileMappers;
 

@@ -88,7 +88,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
         /**
          * The attribute's name
          */
-        protected String name = null;
+        protected String name;
 
         /**
          * Get the Attribute's name
@@ -110,7 +110,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
 
             BaseAttribute that = (BaseAttribute) o;
 
-            return !(name != null ? !name.equals(that.name) : that.name != null);
+            return name != null ? name.equals(that.name) : that.name == null;
         }
 
         @Override
@@ -128,13 +128,13 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
         /**
          * The attribute's value
          */
-        private Vector<String> values = new Vector<String>();
+        private Vector<String> values = new Vector<>();
 
         /**
          * For multivalued attributes, this is the index of the attribute
          * currently being defined.
          */
-        private int currentIndex = 0;
+        private int currentIndex;
 
         /**
          * Construct an empty attribute
@@ -244,7 +244,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
          * @return the attribute's value.
          */
         public String getValue() {
-            if (values.size() == 0) {
+            if (values.isEmpty()) {
                 return null;
             }
 
@@ -366,7 +366,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
         @Override
         public void addValue(String value) {
             String value1 = getValue();
-            value1 = (value1 != null) ? " " + value : value;
+            value1 = value1 != null ? " " + value : value;
             setValue(value1);
         }
 
@@ -377,7 +377,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
     }
 
     private static Collection<String> getKeys(Attributes attributes) {
-        Collection<String> result = new ArrayList<String>();
+        Collection<String> result = new ArrayList<>();
         for (Object objectObjectEntry : attributes.keySet()) {
             result.add(objectObjectEntry.toString());
         }
@@ -394,23 +394,23 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
         /**
          * Warnings for this section
          */
-        private Vector<String> warnings = new Vector<String>();
+        private Vector<String> warnings = new Vector<>();
 
         /**
          * The section's name if any. The main section in a
          * manifest is unnamed.
          */
-        private String name = null;
+        private String name;
 
         /**
          * The section's attributes.
          */
-        private Hashtable<String, Attribute> attributes = new Hashtable<String, Attribute>();
+        private Hashtable<String, Attribute> attributes = new Hashtable<>();
 
         /**
          * Index used to retain the attribute ordering
          */
-        private Vector<String> attributeIndex = new Vector<String>();
+        private Vector<String> attributeIndex = new Vector<>();
 
         /**
          * The name of the section; optional -default is the main section.
@@ -479,7 +479,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
             if (attribute.getName() == null || attribute.getValue() == null) {
                 throw new ManifestException("Attributes must have name and value");
             }
-            if (attribute.getKey().equalsIgnoreCase(ATTRIBUTE_NAME)) {
+            if (ATTRIBUTE_NAME.equalsIgnoreCase(attribute.getKey())) {
                 warnings.addElement("\"" + ATTRIBUTE_NAME + "\" attributes "
                         + "should not occur in the main section and must be the "
                         + "first element in all other sections: \"" + attribute.getName() + ": " + attribute.getValue()
@@ -493,7 +493,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
             } else {
                 // classpath attributes go into a vector
                 String attributeKey = attribute.getKey();
-                if (attributeKey.equalsIgnoreCase(ManifestConstants.ATTRIBUTE_CLASSPATH)) {
+                if (ManifestConstants.ATTRIBUTE_CLASSPATH.equalsIgnoreCase(attributeKey)) {
                     Attribute classpathAttribute = attributes.get(attributeKey);
 
                     if (classpathAttribute == null) {
@@ -788,7 +788,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
      * @return an enumeration of warning strings
      */
     Enumeration<String> getWarnings() {
-        Vector<String> warnings = new Vector<String>();
+        Vector<String> warnings = new Vector<>();
 
         Enumeration<String> warnEnum = mainSection.getWarnings();
         while (warnEnum.hasMoreElements()) {
@@ -851,7 +851,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
         }
 
         String attributeKey = attribute.getKey();
-        if (attributeKey.equalsIgnoreCase(ManifestConstants.ATTRIBUTE_CLASSPATH)) {
+        if (ManifestConstants.ATTRIBUTE_CLASSPATH.equalsIgnoreCase(attributeKey)) {
             String classpathAttribute = backingAttributes.getValue(attributeKey);
 
             if (classpathAttribute == null) {
@@ -862,7 +862,7 @@ public class Manifest extends java.util.jar.Manifest implements Iterable<String>
             backingAttributes.putValue(ManifestConstants.ATTRIBUTE_CLASSPATH, classpathAttribute);
         } else {
             backingAttributes.putValue(attribute.getName(), attribute.getValue());
-            if (attribute.getKey().equalsIgnoreCase(ATTRIBUTE_NAME)) {
+            if (ATTRIBUTE_NAME.equalsIgnoreCase(attribute.getKey())) {
                 return attribute.getValue();
             }
         }

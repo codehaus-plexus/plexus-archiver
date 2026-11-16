@@ -51,7 +51,7 @@ class OffloadingOutputStream extends ThresholdingOutputStream {
     /**
      * The path to which output will be directed if the threshold is exceeded.
      */
-    private Path outputPath = null;
+    private Path outputPath;
 
     /**
      * The temporary file prefix.

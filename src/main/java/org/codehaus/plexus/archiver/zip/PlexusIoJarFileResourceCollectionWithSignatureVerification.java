@@ -129,7 +129,7 @@ public class PlexusIoJarFileResourceCollectionWithSignatureVerification
             }
         }
 
-        private class ZipFileSymlinkResource extends ZipFileResource implements SymlinkDestinationSupplier {
+        private final class ZipFileSymlinkResource extends ZipFileResource implements SymlinkDestinationSupplier {
 
             private final ZipArchiveEntry entry;
 

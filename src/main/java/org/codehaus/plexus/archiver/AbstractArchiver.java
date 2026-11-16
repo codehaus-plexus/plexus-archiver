@@ -177,7 +177,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     /**
      * @since 1.1
      */
-    private boolean ignorePermissions = false;
+    private boolean ignorePermissions;
 
     @Override
     public String getDuplicateBehavior() {

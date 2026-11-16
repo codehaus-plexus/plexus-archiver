@@ -75,7 +75,7 @@ public final class ArchiveFileComparator {
         assertThat(entry1.getGroupName()).isEqualTo(entry2.getGroupName());
 
         try (InputStream is1 = file1.getInputStream(entry1);
-                InputStream is2 = file2.getInputStream(entry2); ) {
+                InputStream is2 = file2.getInputStream(entry2)) {
             assertThat(is1)
                     .as("Content of the entry1 %s is different of entry2 %s", entry1.getName(), entry2.getName())
                     .hasSameContentAs(is2);
@@ -90,7 +90,7 @@ public final class ArchiveFileComparator {
         assertThat(entry1.getLastModifiedDate()).isCloseTo(entry2.getLastModifiedDate(), 1000);
 
         try (InputStream is1 = file1.getInputStream(entry1);
-                InputStream is2 = file2.getInputStream(entry2); ) {
+                InputStream is2 = file2.getInputStream(entry2)) {
             assertThat(is1)
                     .as("Content of the entry1 %s is different of entry2 %s", entry1.getName(), entry2.getName())
                     .hasSameContentAs(is2);
@@ -105,7 +105,7 @@ public final class ArchiveFileComparator {
         assertThat(entry1.getLastModifiedDate()).isCloseTo(entry2.getLastModifiedDate(), 1000);
 
         try (InputStream is1 = file1.getInputStream(entry1);
-                InputStream is2 = file2.getInputStream(entry2); ) {
+                InputStream is2 = file2.getInputStream(entry2)) {
             assertThat(is1)
                     .as("Content of the entry1 %s is different of entry2 %s", entry1.getName(), entry2.getName())
                     .hasSameContentAs(is2);

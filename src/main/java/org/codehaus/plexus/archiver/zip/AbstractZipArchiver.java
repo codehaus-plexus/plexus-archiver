@@ -71,24 +71,24 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
 
     private boolean recompressAddedZips = true;
 
-    private boolean doUpdate = false;
+    private boolean doUpdate;
 
     // shadow of the above if the value is altered in execute
-    private boolean savedDoUpdate = false;
+    private boolean savedDoUpdate;
 
     protected String archiveType = "zip";
 
-    private boolean doFilesonly = false;
+    private boolean doFilesonly;
 
-    protected final Hashtable<String, String> entries = new Hashtable<String, String>();
+    protected final Hashtable<String, String> entries = new Hashtable<>();
 
     protected final AddedDirs addedDirs = new AddedDirs();
 
     private static final long EMPTY_CRC = new CRC32().getValue();
 
-    protected boolean doubleFilePass = false;
+    protected boolean doubleFilePass;
 
-    protected boolean skipWriting = false;
+    protected boolean skipWriting;
 
     /**
      * @deprecated Use {@link Archiver#setDuplicateBehavior(String)} instead.
@@ -100,10 +100,10 @@ public abstract class AbstractZipArchiver extends AbstractArchiver {
      * true when we are adding new files into the Zip file, as opposed
      * to adding back the unchanged files
      */
-    protected boolean addingNewFiles = false;
+    protected boolean addingNewFiles;
 
     // Renamed version of original file, if it exists
-    private File renamedFile = null;
+    private File renamedFile;
 
     private File zipFile;
 

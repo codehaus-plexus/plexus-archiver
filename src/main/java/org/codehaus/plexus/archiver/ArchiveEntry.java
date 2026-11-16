@@ -32,7 +32,7 @@ import org.codehaus.plexus.components.io.resources.ResourceFactory;
 
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
 
-public class ArchiveEntry {
+public final class ArchiveEntry {
 
     public static final String ROLE = ArchiveEntry.class.getName();
 
@@ -78,7 +78,7 @@ public class ArchiveEntry {
             this.name = name;
             this.defaultDirMode = defaultDirMode;
             this.resource = collection != null ? collection.resolve(resource) : resource;
-            this.attributes = (resource instanceof ResourceAttributeSupplier)
+            this.attributes = resource instanceof ResourceAttributeSupplier
                     ? ((ResourceAttributeSupplier) resource).getAttributes()
                     : null;
             this.type = type;
@@ -97,7 +97,7 @@ public class ArchiveEntry {
                                     ? UnixStat.FILE_FLAG
                                     : type == SYMLINK ? UnixStat.LINK_FLAG : UnixStat.DIR_FLAG);
 
-            this.addSynchronously = (collection != null && !collection.isConcurrentAccessSupported());
+            this.addSynchronously = collection != null && !collection.isConcurrentAccessSupported();
         } catch (IOException e) {
             throw new ArchiverException("Error resolving resource " + resource.getName(), e);
         }
@@ -194,7 +194,7 @@ public class ArchiveEntry {
         final int type;
         if (res.isSymbolicLink()) {
             type = SYMLINK;
-            permissions = permissions & ~(UnixStat.FILE_FLAG); // remove file flag again .doh.
+            permissions = permissions & ~UnixStat.FILE_FLAG; // remove file flag again .doh.
         } else {
             type = FILE; // File flag was there already. This is a bit of a mess !
         }
@@ -211,7 +211,7 @@ public class ArchiveEntry {
         final int type;
         if (resource.isSymbolicLink()) {
             type = SYMLINK;
-            permissions = permissions & ~(UnixStat.DIR_FLAG); // remove dir flag again .doh.
+            permissions = permissions & ~UnixStat.DIR_FLAG; // remove dir flag again .doh.
         } else {
             type = DIRECTORY; // Dir flag was there already. This is a bit of a mess !
         }
@@ -231,15 +231,13 @@ public class ArchiveEntry {
 
     public static ArchiveEntry createSymlinkEntry(
             String symlinkName, int permissions, String symlinkDestination, int defaultDirectoryPermissions) {
-        final ArchiveEntry archiveEntry = new ArchiveEntry(
+        return new ArchiveEntry(
                 symlinkName,
                 new PlexusIoVirtualSymlinkResource(new File(symlinkName), symlinkDestination),
                 SYMLINK,
                 permissions,
                 null,
                 defaultDirectoryPermissions);
-
-        return archiveEntry;
     }
 
     public PlexusIoResourceAttributes getResourceAttributes() {
