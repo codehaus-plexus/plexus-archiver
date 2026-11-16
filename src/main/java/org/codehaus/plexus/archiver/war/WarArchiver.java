@@ -159,7 +159,7 @@ public class WarArchiver extends JarArchiver {
         // not the one specified in the "webxml" attribute - or if
         // it's being added twice, meaning the same file is specified
         // by the "webxml" attribute and in a <fileset> element.
-        if (vPath.equalsIgnoreCase("WEB-INF/web.xml")) {
+        if ("WEB-INF/web.xml".equalsIgnoreCase(vPath)) {
             if (descriptorAdded
                     || (expectWebXml
                             && (deploymentDescriptor == null

@@ -13,7 +13,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 /**
  * Utility class for work with {@link PlexusIoResource} instances.
  */
-public class ResourceUtils {
+public final class ResourceUtils {
 
     /**
      * Private constructor, to prevent accidental implementation.

@@ -58,7 +58,6 @@ public class DefaultFileSet extends AbstractFileSet<DefaultFileSet> implements F
     }
 
     public static DefaultFileSet fileSet(File directory) {
-        final DefaultFileSet defaultFileSet = new DefaultFileSet(directory);
-        return defaultFileSet;
+        return new DefaultFileSet(directory);
     }
 }

@@ -76,6 +76,6 @@ public class DotDirectiveArchiveFinalizer extends AbstractArchiveFinalizer {
 
     @Override
     public List getVirtualFiles() {
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 }

@@ -28,7 +28,7 @@ import org.slf4j.Logger;
  * @author Olivier Lamy
  * @since 1.0.1
  */
-public class FilePermissionUtils {
+public final class FilePermissionUtils {
 
     private FilePermissionUtils() {
         // no op
@@ -53,12 +53,12 @@ public class FilePermissionUtils {
             modes.add(String.valueOf(mode.charAt(i)));
         }
 
-        boolean executable = false,
-                ownerOnlyExecutable = true,
-                ownerOnlyReadable = true,
-                readable = false,
-                ownerOnlyWritable = true,
-                writable = false;
+        boolean executable = false;
+        boolean ownerOnlyExecutable = true;
+        boolean ownerOnlyReadable = true;
+        boolean readable = false;
+        boolean ownerOnlyWritable = true;
+        boolean writable = false;
 
         // handle user perm
         try {

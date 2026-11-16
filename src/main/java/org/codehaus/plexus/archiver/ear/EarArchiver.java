@@ -91,7 +91,7 @@ public class EarArchiver extends JarArchiver {
         // attribute - or if it's being added twice, meaning the same
         // file is specified by the "appxml" attribute and in a
         // <fileset> element.
-        if (vPath.equalsIgnoreCase("META-INF/application.xml")) {
+        if ("META-INF/application.xml".equalsIgnoreCase(vPath)) {
             if (deploymentDescriptor == null
                     || !ResourceUtils.isCanonicalizedSame(entry.getResource(), deploymentDescriptor)
                     || descriptorAdded) {

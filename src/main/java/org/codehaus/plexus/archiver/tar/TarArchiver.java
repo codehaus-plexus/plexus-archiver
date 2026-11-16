@@ -53,7 +53,7 @@ public class TarArchiver extends AbstractArchiver {
     /**
      * Indicates whether the user has been warned about long files already.
      */
-    private boolean longWarningGiven = false;
+    private boolean longWarningGiven;
 
     private TarLongFileMode longFileMode = TarLongFileMode.warn;
 
@@ -255,22 +255,22 @@ public class TarArchiver extends AbstractArchiver {
         PlexusIoResourceAttributes attributes = entry.getResourceAttributes();
 
         te.setUserName(
-                (attributes != null && attributes.getUserName() != null)
+                attributes != null && attributes.getUserName() != null
                         ? attributes.getUserName()
                         : options.getUserName());
         te.setGroupName(
-                (attributes != null && attributes.getGroupName() != null)
+                attributes != null && attributes.getGroupName() != null
                         ? attributes.getGroupName()
                         : options.getGroup());
 
         final int userId =
-                (attributes != null && attributes.getUserId() != null) ? attributes.getUserId() : options.getUid();
+                attributes != null && attributes.getUserId() != null ? attributes.getUserId() : options.getUid();
         if (userId >= 0) {
             te.setUserId(userId);
         }
 
         final int groupId =
-                (attributes != null && attributes.getGroupId() != null) ? attributes.getGroupId() : options.getGid();
+                attributes != null && attributes.getGroupId() != null ? attributes.getGroupId() : options.getGid();
         if (groupId >= 0) {
             te.setGroupId(groupId);
         }
@@ -278,7 +278,7 @@ public class TarArchiver extends AbstractArchiver {
         tOut.putArchiveEntry(te);
 
         try {
-            if (entry.getResource().isFile() && !(entry.getType() == ArchiveEntry.SYMLINK)) {
+            if (entry.getResource().isFile() && entry.getType() != ArchiveEntry.SYMLINK) {
                 try (InputStream fIn = entry.getInputStream()) {
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
@@ -304,7 +304,7 @@ public class TarArchiver extends AbstractArchiver {
 
         private int gid;
 
-        private boolean preserveLeadingSlashes = false;
+        private boolean preserveLeadingSlashes;
 
         /**
          * The username for the tar entry

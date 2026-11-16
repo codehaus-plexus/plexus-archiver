@@ -475,9 +475,9 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
                     fileModeAssert(0500, UnixStat.PERM_MASK & ze.getUnixMode());
                 }
             } else {
-                if (ze.getName().equals("one.txt")) {
+                if ("one.txt".equals(ze.getName())) {
                     fileModeAssert(0640, UnixStat.PERM_MASK & ze.getUnixMode());
-                } else if (ze.getName().equals("two.txt")) {
+                } else if ("two.txt".equals(ze.getName())) {
                     fileModeAssert(0664, UnixStat.PERM_MASK & ze.getUnixMode());
                 } else if (ze.isUnixSymlink()) {
                     //         assertEquals( ze.getName(), 0500, UnixStat.PERM_MASK & ze.getUnixMode() );

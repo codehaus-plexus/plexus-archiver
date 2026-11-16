@@ -150,7 +150,7 @@ class TarArchiverTest extends TestSupport {
 
         TarFile tf = new TarFile(tarFile2);
 
-        Map<String, TarArchiveEntry> entriesByPath = new LinkedHashMap<String, TarArchiveEntry>();
+        Map<String, TarArchiveEntry> entriesByPath = new LinkedHashMap<>();
         for (Enumeration e = tf.getEntries(); e.hasMoreElements(); ) {
             TarArchiveEntry te = (TarArchiveEntry) e.nextElement();
             entriesByPath.put(te.getName(), te);
@@ -225,7 +225,7 @@ class TarArchiverTest extends TestSupport {
         createArchive(0500, new int[] {0400, 0640, 0664});
     }
 
-    void createArchive(final int directoryMode, final int fileModes[]) throws Exception {
+    void createArchive(final int directoryMode, final int[] fileModes) throws Exception {
         int defaultFileMode = fileModes[0];
         int oneFileMode = fileModes[1];
         int twoFileMode = fileModes[2];
@@ -262,9 +262,9 @@ class TarArchiverTest extends TestSupport {
                     assertEquals("link_to_test_destinaton", te.getName());
                     assertEquals(0640, te.getMode() & UnixStat.PERM_MASK);
                 } else {
-                    if (te.getName().equals("one.txt")) {
+                    if ("one.txt".equals(te.getName())) {
                         assertEquals(oneFileMode, te.getMode() & UnixStat.PERM_MASK);
-                    } else if (te.getName().equals("two.txt")) {
+                    } else if ("two.txt".equals(te.getName())) {
                         assertEquals(twoFileMode, te.getMode() & UnixStat.PERM_MASK);
                     } else {
                         assertEquals(

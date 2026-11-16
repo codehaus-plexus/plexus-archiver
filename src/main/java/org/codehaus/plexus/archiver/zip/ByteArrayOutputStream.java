@@ -66,7 +66,7 @@ public class ByteArrayOutputStream extends OutputStream {
     /**
      * The list of buffers, which grows and never reduces.
      */
-    private final List<byte[]> buffers = new ArrayList<byte[]>();
+    private final List<byte[]> buffers = new ArrayList<>();
 
     /**
      * The index of the current buffer.
@@ -365,7 +365,7 @@ public class ByteArrayOutputStream extends OutputStream {
         if (remaining == 0) {
             return new ClosedInputStream();
         }
-        final List<ByteArrayInputStream> list = new ArrayList<ByteArrayInputStream>(buffers.size());
+        final List<ByteArrayInputStream> list = new ArrayList<>(buffers.size());
         for (final byte[] buf : buffers) {
             final int c = Math.min(buf.length, remaining);
             list.add(new ByteArrayInputStream(buf, 0, c));
@@ -391,7 +391,7 @@ public class ByteArrayOutputStream extends OutputStream {
         if (remaining == 0) {
             return EMPTY_BYTE_ARRAY;
         }
-        final byte newbuf[] = new byte[remaining];
+        final byte[] newbuf = new byte[remaining];
         int pos = 0;
         for (final byte[] buf : buffers) {
             final int c = Math.min(buf.length, remaining);

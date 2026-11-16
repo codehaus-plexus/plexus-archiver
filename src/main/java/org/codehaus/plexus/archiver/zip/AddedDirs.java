@@ -27,7 +27,7 @@ import java.util.Stack;
  */
 public class AddedDirs {
 
-    private final Set<String> addedDirs = new HashSet<String>();
+    private final Set<String> addedDirs = new HashSet<>();
 
     /**
      * @deprecated use {@link #asStringDeque(String)} instead.
@@ -87,6 +87,6 @@ public class AddedDirs {
     }
 
     public Set<String> allAddedDirs() {
-        return new HashSet<String>(addedDirs);
+        return new HashSet<>(addedDirs);
     }
 }
