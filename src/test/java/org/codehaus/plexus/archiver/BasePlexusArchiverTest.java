@@ -25,10 +25,9 @@ package org.codehaus.plexus.archiver;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
-
-import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Base abstract class that all the test-cases for different archivers
@@ -62,7 +61,7 @@ public abstract class BasePlexusArchiverTest extends TestSupport {
         // `outputFile` it will have timestamp that is equal
         // to `timestampReference`.
         do {
-            FileUtils.fileWrite(tmpFile, "waitUntilNewTimestamp");
+            Files.write(tmpFile.toPath(), "waitUntilNewTimestamp".getBytes(StandardCharsets.UTF_8));
             newTimestamp = tmpFile.lastModified();
             Thread.yield();
         } while (timestampReference >= newTimestamp
