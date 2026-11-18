@@ -28,8 +28,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -45,29 +45,17 @@ class ManifestTest extends TestSupport {
 
     @Test
     void manifest2() throws Exception {
-        try {
-            getManifest("src/test/resources/manifests/manifest2.mf");
-            fail("Manifest isn't well formed. It must be generate an exception.");
-        } catch (IOException ignore) {
-        }
+        assertThrows(IOException.class, () -> getManifest("src/test/resources/manifests/manifest2.mf"));
     }
 
     @Test
     void manifest3() throws Exception {
-        try {
-            getManifest("src/test/resources/manifests/manifest3.mf");
-            fail("Manifest isn't well formed. It must be generate an exception.");
-        } catch (IOException ignore) {
-        }
+        assertThrows(IOException.class, () -> getManifest("src/test/resources/manifests/manifest3.mf"));
     }
 
     @Test
     void manifest5() throws Exception {
-        try {
-            getManifest("src/test/resources/manifests/manifest5.mf");
-            fail();
-        } catch (IOException ignore) {
-        }
+        assertThrows(IOException.class, () -> getManifest("src/test/resources/manifests/manifest5.mf"));
     }
 
     @Test

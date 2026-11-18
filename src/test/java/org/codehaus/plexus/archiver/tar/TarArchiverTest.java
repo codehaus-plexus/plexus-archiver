@@ -58,8 +58,8 @@ import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.components.io.resources.ResourceFactory.createResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -185,12 +185,7 @@ class TarArchiverTest extends TestSupport {
     void createEmptyArchive() throws Exception {
         TarArchiver archiver = getPosixTarArchiver();
         archiver.setDestFile(getTestFile("target/output/empty.tar"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test

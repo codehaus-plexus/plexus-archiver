@@ -40,8 +40,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -66,12 +66,7 @@ class GZipArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         GZipArchiver archiver = (GZipArchiver) lookup(Archiver.class, "gzip");
         archiver.setDestFile(getTestFile("target/output/empty.gz"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test

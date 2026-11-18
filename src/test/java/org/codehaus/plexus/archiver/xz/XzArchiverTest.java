@@ -33,8 +33,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author philip.lourandos
@@ -70,12 +70,7 @@ class XzArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         XZArchiver archiver = (XZArchiver) lookup(Archiver.class, "xz");
         archiver.setDestFile(getTestFile("target/output/empty.xz"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test

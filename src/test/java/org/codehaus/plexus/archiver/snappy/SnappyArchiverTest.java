@@ -40,8 +40,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for the snappy archiver
@@ -66,12 +66,7 @@ class SnappyArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         SnappyArchiver archiver = (SnappyArchiver) lookup(Archiver.class, "snappy");
         archiver.setDestFile(getTestFile("target/output/empty.snappy"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test
