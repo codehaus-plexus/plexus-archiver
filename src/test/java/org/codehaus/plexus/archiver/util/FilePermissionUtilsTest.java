@@ -18,12 +18,13 @@
  */
 package org.codehaus.plexus.archiver.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Olivier Lamy
@@ -34,44 +35,28 @@ class FilePermissionUtilsTest {
         return LoggerFactory.getLogger("foo");
     }
 
-    @Test
-    void onlyWritableOnlyUser() throws Exception {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("200", getLogger());
-        assertTrue(fp.isWritable());
-        assertTrue(fp.isOwnerOnlyWritable());
-        assertFalse(fp.isExecutable());
-        assertTrue(fp.isOwnerOnlyExecutable());
-        assertFalse(fp.isReadable());
-    }
-
-    @Test
-    void execAndRead() {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("500", getLogger());
-        assertFalse(fp.isWritable());
-        assertTrue(fp.isOwnerOnlyWritable());
-        assertTrue(fp.isExecutable());
-        assertTrue(fp.isOwnerOnlyExecutable());
-        assertTrue(fp.isReadable());
-    }
-
-    @Test
-    void allUser() {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("700", getLogger());
-        assertTrue(fp.isWritable());
-        assertTrue(fp.isOwnerOnlyWritable());
-        assertTrue(fp.isExecutable());
-        assertTrue(fp.isOwnerOnlyExecutable());
-        assertTrue(fp.isReadable());
-    }
-
-    @Test
-    void allAllUser() {
-        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode("707", getLogger());
-        assertTrue(fp.isWritable());
-        assertFalse(fp.isOwnerOnlyWritable());
-        assertTrue(fp.isExecutable());
-        assertFalse(fp.isOwnerOnlyExecutable());
-        assertTrue(fp.isReadable());
-        assertFalse(fp.isOwnerOnlyReadable());
+    @ParameterizedTest
+    @CsvSource({
+        "200, true, true, false, true, false, true",
+        "500, false, true, true, true, true, true",
+        "700, true, true, true, true, true, true",
+        "707, true, false, true, false, true, false"
+    })
+    void filePermissionFromMode(
+            String mode,
+            boolean writable,
+            boolean ownerOnlyWritable,
+            boolean executable,
+            boolean ownerOnlyExecutable,
+            boolean readable,
+            boolean ownerOnlyReadable) {
+        FilePermission fp = FilePermissionUtils.getFilePermissionFromMode(mode, getLogger());
+        assertAll(
+                () -> assertEquals(writable, fp.isWritable()),
+                () -> assertEquals(ownerOnlyWritable, fp.isOwnerOnlyWritable()),
+                () -> assertEquals(executable, fp.isExecutable()),
+                () -> assertEquals(ownerOnlyExecutable, fp.isOwnerOnlyExecutable()),
+                () -> assertEquals(readable, fp.isReadable()),
+                () -> assertEquals(ownerOnlyReadable, fp.isOwnerOnlyReadable()));
     }
 }
