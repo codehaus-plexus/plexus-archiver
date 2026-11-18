@@ -40,7 +40,6 @@ import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.functions.SymlinkDestinationSupplier;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
-import org.codehaus.plexus.util.StringUtils;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedOutputStream;
 
@@ -148,7 +147,7 @@ public class TarArchiver extends AbstractArchiver {
                     throw new ArchiverException("A tar file cannot include itself.");
                 }
                 String fileName = entry.getName();
-                String name = StringUtils.replace(fileName, File.separatorChar, '/');
+                String name = fileName.replace(File.separatorChar, '/');
 
                 tarFile(entry, tOut, name);
             }

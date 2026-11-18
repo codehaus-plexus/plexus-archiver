@@ -517,8 +517,6 @@ public class JarArchiver extends ZipArchiver {
         } catch (IOException ioe) {
             throw new ArchiverException("Could not create almost empty JAR archive (" + ioe.getMessage() + ")", ioe);
         } finally {
-            // Close the output stream.
-            // IOUtil.close( zOut );
             createEmpty = false;
         }
         return true;

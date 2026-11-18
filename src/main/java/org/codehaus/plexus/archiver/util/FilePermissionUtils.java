@@ -21,7 +21,6 @@ package org.codehaus.plexus.archiver.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.slf4j.Logger;
 
 /**
@@ -40,7 +39,7 @@ public final class FilePermissionUtils {
      * @return FilePermission associated to the mode (group permission are ignored here)
      */
     public static FilePermission getFilePermissionFromMode(String mode, Logger logger) {
-        if (StringUtils.isBlank(mode)) {
+        if (mode == null || mode.trim().isEmpty()) {
             throw new IllegalArgumentException(" file mode cannot be empty");
         }
         // 4 characters works on some unix (ie solaris)

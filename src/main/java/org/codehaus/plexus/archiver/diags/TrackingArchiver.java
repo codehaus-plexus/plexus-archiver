@@ -40,7 +40,6 @@ import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.components.io.attributes.PlexusIoResourceAttributes;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * A diagnostic archiver that keeps track of stuff that has been added.
@@ -266,9 +265,9 @@ public class TrackingArchiver implements Archiver {
         public String toString() {
             return "Addition (\n    resource= " + resource + "\n    directory= " + directory + "\n    destination= "
                     + destination + "\n    permissions= " + permissions + "\n    includes= "
-                    + (includes == null ? "-none-" : StringUtils.join(includes, ", "))
+                    + (includes == null ? "-none-" : String.join(", ", includes))
                     + "\n    excludes= "
-                    + (excludes == null ? "-none-" : StringUtils.join(excludes, ", ")) + "\n)";
+                    + (excludes == null ? "-none-" : String.join(", ", excludes)) + "\n)";
         }
 
         public final Object resource;
