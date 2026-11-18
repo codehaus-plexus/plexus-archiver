@@ -256,12 +256,7 @@ class ZipArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         ZipArchiver archiver = getZipArchiver();
         archiver.setDestFile(getTestFile("target/output/empty.zip"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     private ZipArchiver getZipArchiver() {

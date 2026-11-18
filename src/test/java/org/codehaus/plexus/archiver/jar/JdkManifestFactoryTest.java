@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Kristian Rosenvold
@@ -44,12 +44,7 @@ class JdkManifestFactoryTest extends TestSupport {
         Manifest manifest = getManifest("src/test/resources/manifests/manifest6.mf");
         assertNotNull(manifest);
 
-        try {
-            getManifest("src/test/resources/manifests/manifest5.mf");
-            fail("We expect to fail");
-        } catch (IOException ignore) {
-
-        }
+        assertThrows(IOException.class, () -> getManifest("src/test/resources/manifests/manifest5.mf"));
     }
 
     @Test

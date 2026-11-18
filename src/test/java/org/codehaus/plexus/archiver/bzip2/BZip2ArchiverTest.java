@@ -40,8 +40,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Emmanuel Venisse
@@ -66,12 +66,7 @@ class BZip2ArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         BZip2Archiver archiver = (BZip2Archiver) lookup(Archiver.class, "bzip2");
         archiver.setDestFile(getTestFile("target/output/empty.bz2"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test

@@ -33,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class ZstdArchiverTest extends BasePlexusArchiverTest {
 
@@ -66,12 +66,7 @@ class ZstdArchiverTest extends BasePlexusArchiverTest {
     void createEmptyArchive() throws Exception {
         ZstdArchiver archiver = (ZstdArchiver) lookup(Archiver.class, "zst");
         archiver.setDestFile(getTestFile("target/output/empty.zst"));
-        try {
-            archiver.createArchive();
-
-            fail("Creating empty archive should throw EmptyArchiveException");
-        } catch (EmptyArchiveException ignore) {
-        }
+        assertThrows(EmptyArchiveException.class, archiver::createArchive);
     }
 
     @Test
