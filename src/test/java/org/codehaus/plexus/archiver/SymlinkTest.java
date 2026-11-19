@@ -147,7 +147,7 @@ class SymlinkTest extends TestSupport {
         DirectoryArchiver archiver = (DirectoryArchiver) lookup(Archiver.class, "dir");
 
         File dummyContent = getTestFile("src/test/resources/symlinks/src");
-        archiver.addFileSet(FileSet.of(dummyContent.toPath()).symbolicLinks(SymbolicLinkHandling.FOLLOW));
+        archiver.addFileSet(new DefaultFileSet(dummyContent).followingSymLinks(true));
         final File archiveFile = new File("target/output/dirarchiver-spec-followed-symlink");
         archiveFile.mkdirs();
         archiver.setDestFile(archiveFile);

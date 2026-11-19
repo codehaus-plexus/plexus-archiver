@@ -17,9 +17,6 @@
 
 package org.codehaus.plexus.archiver.manager;
 
-import java.util.function.Consumer;
-
-import org.codehaus.plexus.archivers.spi.PlexusIoResourceCollectionConfigurer;
 import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
 
 /**
@@ -29,5 +26,5 @@ import org.codehaus.plexus.components.io.resources.PlexusIoResourceCollection;
  */
 @FunctionalInterface
 public interface PlexusIoResourceCollectionFactory {
-    PlexusIoResourceCollection create(Consumer<PlexusIoResourceCollectionConfigurer> configurer);
+    PlexusIoResourceCollection create();
 }

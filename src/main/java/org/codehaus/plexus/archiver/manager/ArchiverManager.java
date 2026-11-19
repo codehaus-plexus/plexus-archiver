@@ -32,24 +32,16 @@ public interface ArchiverManager {
     @Nonnull
     Archiver getArchiver(@Nonnull String archiverName) throws NoSuchArchiverException;
 
+    @Nonnull
+    Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException;
+
     /**
-     * Returns a factory for the named archive format.
+     * Returns an unarchiver factory selected from the file extension.
      *
      * @since 5.0.0
      */
     @Nonnull
     ArchiverFactory getArchiverFactory(@Nonnull String archiverName) throws NoSuchArchiverException;
-
-    @Nonnull
-    Archiver getArchiver(@Nonnull File file) throws NoSuchArchiverException;
-
-    /**
-     * Returns an archiver factory selected from the file extension.
-     *
-     * @since 5.0.0
-     */
-    @Nonnull
-    ArchiverFactory getArchiverFactory(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
     Collection<String> getAvailableArchivers();
@@ -68,27 +60,11 @@ public interface ArchiverManager {
     @Nonnull
     UnArchiver getUnArchiver(@Nonnull File file) throws NoSuchArchiverException;
 
-    /**
-     * Returns an unarchiver factory selected from the file extension.
-     *
-     * @since 5.0.0
-     */
-    @Nonnull
-    UnArchiverFactory getUnArchiverFactory(@Nonnull File file) throws NoSuchArchiverException;
-
     @Nonnull
     Collection<String> getAvailableUnArchivers();
 
     @Nonnull
     PlexusIoResourceCollection getResourceCollection(@Nonnull File file) throws NoSuchArchiverException;
-
-    /**
-     * Returns a resource collection factory selected from the file extension.
-     *
-     * @since 5.0.0
-     */
-    @Nonnull
-    PlexusIoResourceCollectionFactory getResourceCollectionFactory(@Nonnull File file) throws NoSuchArchiverException;
 
     @Nonnull
     PlexusIoResourceCollection getResourceCollection(String unArchiverName) throws NoSuchArchiverException;

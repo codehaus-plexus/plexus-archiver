@@ -21,6 +21,8 @@ import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -35,9 +37,9 @@ import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
-import java.util.spi.ToolProvider;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -72,14 +74,36 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
 
     private static final Pattern MRJAR_VERSION_AREA = Pattern.compile("META-INF/versions/\\d+/");
 
-    private final ToolProvider jarTool;
+    private final Object jarTool;
+
+    private final Method jarToolRun;
 
     private boolean moduleDescriptorFound;
 
     private boolean hasJarDateOption;
 
     public JarToolModularJarArchiver() {
-        this.jarTool = ToolProvider.findFirst("jar").orElse(null);
+        Object tool = null;
+        Method run = null;
+        try {
+            Class<?> toolProvider = Class.forName("java.util.spi.ToolProvider");
+            Method findFirst = toolProvider.getMethod("findFirst", String.class);
+            Optional<?> jarToolProvider = (Optional<?>) findFirst.invoke(null, "jar");
+            if (jarToolProvider.isPresent()) {
+                tool = jarToolProvider.get();
+                run = toolProvider.getMethod("run", PrintStream.class, PrintStream.class, String[].class);
+            }
+        } catch (ClassNotFoundException e) {
+            // ToolProvider is not available before Java 9.
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException("Could not access the JDK jar tool", e);
+        } catch (InvocationTargetException e) {
+            throw new IllegalStateException("Could not locate the JDK jar tool", e.getCause());
+        } catch (NoSuchMethodException e) {
+            throw new IllegalStateException("Could not access the JDK jar tool", e);
+        }
+        this.jarTool = tool;
+        this.jarToolRun = run;
     }
 
     @Override
@@ -117,7 +141,7 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
                 getLogger().debug("jar tool --date option is supported: " + hasJarDateOption);
             }
 
-            int result = jarTool.run(System.out, System.err, getJarToolArguments());
+            int result = runJarTool(System.out, System.err, getJarToolArguments());
 
             if (result != 0) {
                 throw new ArchiverException(
@@ -269,14 +293,31 @@ public class JarToolModularJarArchiver extends ModularJarArchiver {
      *
      * @return true if the JAR tool supports the {@code --date} option
      */
-    private boolean isJarDateOptionSupported() {
+    private boolean isJarDateOptionSupported() throws ArchiverException {
         // Test the output code validating the --date option.
         String[] args = {"--date", "2099-12-31T23:59:59Z", "--version"};
 
         PrintStream nullPrintStream = NullPrintStream.INSTANCE;
 
-        int result = jarTool.run(nullPrintStream, nullPrintStream, args);
+        int result = runJarTool(nullPrintStream, nullPrintStream, args);
 
         return result == 0;
+    }
+
+    private int runJarTool(PrintStream out, PrintStream err, String[] args) throws ArchiverException {
+        try {
+            return ((Integer) jarToolRun.invoke(jarTool, out, err, args)).intValue();
+        } catch (IllegalAccessException e) {
+            throw new ArchiverException("Could not access the JDK jar tool", e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            }
+            if (cause instanceof Error) {
+                throw (Error) cause;
+            }
+            throw new ArchiverException("Could not invoke the JDK jar tool", cause);
+        }
     }
 }
