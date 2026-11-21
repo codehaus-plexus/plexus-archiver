@@ -357,7 +357,10 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
             checkFinalSymlink(destination, entryName, symlink);
             targetFileName = destination.toFile();
 
+            boolean materialized = true;
             if (symlink) {
+                // The symbolic-link helper preserves occupied paths without creating a new entry.
+                materialized = !Files.exists(destination, LinkOption.NOFOLLOW_LINKS);
                 if (!createSymlinkEntry(resolveExtractionRoot(dir), targetFileName, symlinkDestination, entryName)) {
                     return;
                 }
@@ -365,6 +368,9 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
                 Files.createDirectories(destination);
             } else {
                 Files.copy(compressedInputStream, destination, REPLACE_EXISTING);
+            }
+            if (materialized) {
+                onEntryExtracted(destination);
             }
 
             if (symlink) {
@@ -388,6 +394,17 @@ public abstract class AbstractUnArchiver implements UnArchiver, FinalizerEnabled
         } catch (final FileNotFoundException ex) {
             getLogger().warn("Unable to expand to file " + targetFileName.getPath());
         }
+    }
+
+    /**
+     * Notifies subclasses after an entry has been materialized, before applying its metadata.
+     * Skipped entries and deferred symbolic-link copies do not issue this notification.
+     *
+     * @param destination the resolved destination of the extracted entry
+     * @since 5.0.0
+     */
+    protected void onEntryExtracted(Path destination) {
+        // Default implementations have no deferred work to invalidate.
     }
 
     private static void checkFinalSymlink(Path destination, String entryName, boolean symlink) {

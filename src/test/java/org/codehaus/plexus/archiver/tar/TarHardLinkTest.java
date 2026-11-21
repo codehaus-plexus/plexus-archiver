@@ -18,6 +18,7 @@ package org.codehaus.plexus.archiver.tar;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -27,6 +28,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.compress.archivers.tar.TarUtils;
+import org.codehaus.plexus.archiver.HardLinkFailureMode;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.junit.jupiter.api.Test;
@@ -293,6 +295,7 @@ class TarHardLinkTest {
             }
         };
         unarchiver.setDestDirectory(output.toFile());
+        unarchiver.setHardLinkFailureMode(HardLinkFailureMode.FAIL);
         assertThrows(org.codehaus.plexus.archiver.ArchiverException.class, unarchiver::extract);
         assertEquals("existing", Files.readString(output.resolve("link")));
         assertEquals("archive content", Files.readString(output.resolve("file")));
@@ -342,6 +345,41 @@ class TarHardLinkTest {
         assertThrows(org.codehaus.plexus.archiver.ArchiverException.class, unarchiver::extract);
         try (var files = Files.list(outside)) {
             assertEquals(0, files.count());
+        }
+    }
+
+    /** Neither an existing output nor an excluded target may be a final symbolic link. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.CsvSource({
+        "false, inside", "false, outside", "false, missing",
+        "true, inside", "true, outside", "true, missing"
+    })
+    void rejectsFinalSymlinks(boolean targetLink, String location) throws Exception {
+        Path output = Files.createDirectory(temp.resolve("output"));
+        Path target = (location.equals("inside") ? output : temp).resolve("real");
+        if (!location.equals("missing")) {
+            Files.writeString(target, "original");
+        }
+        Path link = output.resolve(targetLink ? "file" : "link");
+        Path retained = output.resolve(targetLink ? "link" : "file");
+        Files.writeString(retained, "retained");
+        try {
+            Files.createSymbolicLink(link, target);
+        } catch (IOException | UnsupportedOperationException e) {
+            assumeTrue(false, "Symbolic links unavailable: " + e);
+        }
+        TarUnArchiver unarchiver = unarchiver(archive(false), output);
+        unarchiver.setFileSelectors(new FileSelector[] {file -> file.getName().equals("link")});
+        assertThrows(org.codehaus.plexus.archiver.ArchiverException.class, unarchiver::extract);
+        assertEquals(target, Files.readSymbolicLink(link));
+        assertEquals("retained", Files.readString(retained));
+        if (location.equals("missing")) {
+            assertFalse(Files.exists(target, LinkOption.NOFOLLOW_LINKS));
+        } else {
+            assertEquals("original", Files.readString(target));
+        }
+        try (var files = Files.list(output)) {
+            assertFalse(files.anyMatch(path -> path.getFileName().toString().startsWith(".plexus-link-")));
         }
     }
 

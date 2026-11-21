@@ -28,10 +28,13 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 
@@ -42,9 +45,9 @@ import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.apache.commons.compress.compressors.zstandard.ZstdCompressorInputStream;
 import org.codehaus.plexus.archiver.AbstractUnArchiver;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.HardLinkFailureMode;
 import org.codehaus.plexus.archiver.util.Streams;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
-import org.codehaus.plexus.util.FileUtils;
 
 import static org.codehaus.plexus.archiver.util.Streams.bufferedInputStream;
 import static org.codehaus.plexus.archiver.util.Streams.fileInputStream;
@@ -67,6 +70,13 @@ public class TarUnArchiver extends AbstractUnArchiver {
     private UntarCompressionMethod compression = UntarCompressionMethod.NONE;
 
     private boolean failOnSymlinkTraversal;
+
+    private HardLinkFailureMode hardLinkFailureMode = HardLinkFailureMode.COPY_TARGET;
+
+    /** Pending copies are owned by the current execution and keyed by their physical destinations. */
+    private Map<Path, DeferredHardLink> deferredHardLinks;
+
+    private record DeferredHardLink(File directory, String entryName, String name, String targetName, Date date) {}
 
     /** The destination already checked for the current call to a subclass extraction hook. */
     private MappedEntry mappedEntry;
@@ -97,6 +107,29 @@ public class TarUnArchiver extends AbstractUnArchiver {
      */
     public boolean isFailOnSymlinkTraversal() {
         return failOnSymlinkTraversal;
+    }
+
+    /**
+     * Returns how refused hard links are handled, independently of symbolic links.
+     *
+     * @return the failure mode, {@link HardLinkFailureMode#COPY_TARGET} by default
+     * @since 5.0.0
+     */
+    public HardLinkFailureMode getHardLinkFailureMode() {
+        return hardLinkFailureMode;
+    }
+
+    /**
+     * Sets how the filesystem's refusal of a valid hard link is handled.
+     * Copy fallback uses the target's final contents and honors the overwrite policy.
+     * Invalid archive relationships and unsafe extraction paths still fail immediately.
+     *
+     * @param mode how refused hard links are handled
+     * @throws NullPointerException if mode is null
+     * @since 5.0.0
+     */
+    public void setHardLinkFailureMode(HardLinkFailureMode mode) {
+        hardLinkFailureMode = Objects.requireNonNull(mode, "mode");
     }
 
     /**
@@ -137,6 +170,8 @@ public class TarUnArchiver extends AbstractUnArchiver {
     /** Extracts each selected member as it arrives, resolving links only against earlier members. */
     protected void execute(File sourceFile, File destDirectory, FileMapper[] fileMappers) throws ArchiverException {
         getLogger().info("Expanding: " + sourceFile + " into " + destDirectory);
+        Map<Path, DeferredHardLink> previousCopies = deferredHardLinks;
+        deferredHardLinks = new LinkedHashMap<>();
         try (TarFile archive = newTarFile(sourceFile)) {
             Map<TarArchiveEntry, String> mappedNames = new IdentityHashMap<>();
             Enumeration<org.apache.commons.compress.archivers.ArchiveEntry> entries = archive.getEntries();
@@ -173,9 +208,12 @@ public class TarUnArchiver extends AbstractUnArchiver {
                     }
                 }
             }
+            resolveDeferredHardLinks();
         } catch (IOException | UncheckedIOException e) {
             throw new ArchiverException(
                     "Error while expanding " + sourceFile.getAbsolutePath() + ": " + e.getMessage(), e);
+        } finally {
+            deferredHardLinks = previousCopies;
         }
     }
 
@@ -333,18 +371,30 @@ public class TarUnArchiver extends AbstractUnArchiver {
         return next;
     }
 
-    /** Checks the traversal policy and both lexical and resolved containment before hard-link operations. */
+    /** Checks the traversal policy and physical containment before hard-link operations. */
     private Path checkedOutput(File directory, String name, String entryName, boolean linkTarget) throws IOException {
         checkSymlinkTraversal(directory, name, entryName, linkTarget);
-        Path root = directory.getCanonicalFile().toPath();
-        Path path =
-                FileUtils.resolveFile(directory, name).toPath().toAbsolutePath().normalize();
-        Path resolved = path.toFile().getCanonicalFile().toPath();
-        // FileUtils resolves the output against the actual root, including symlinks in the configured directory.
-        if (!path.startsWith(root) || !resolved.startsWith(root)) {
-            throw new ArchiverException("Entry is outside of the target directory (" + name + ")");
+        return resolveExtractionPath(directory, name);
+    }
+
+    @Override
+    protected void onEntryExtracted(Path destination) {
+        super.onEntryExtracted(destination);
+        if (deferredHardLinks != null) {
+            deferredHardLinks.remove(destination);
         }
-        return path;
+    }
+
+    /** A queued earlier alias can supply the target once the copy queue is resolved. */
+    private boolean isDeferredTarget(Path target) {
+        return hardLinkFailureMode == HardLinkFailureMode.COPY_TARGET && deferredHardLinks.containsKey(target);
+    }
+
+    private void deferHardLink(File directory, TarArchiveEntry entry, String name, String targetName, Path output) {
+        // Reinsert replacements so the latest pending occurrence also has the latest queue position.
+        deferredHardLinks.remove(output);
+        deferredHardLinks.put(
+                output, new DeferredHardLink(directory, entry.getName(), name, targetName, entry.getModTime()));
     }
 
     /** Links the current mapped target, following the filesystem semantics of command-line tar. */
@@ -352,8 +402,7 @@ public class TarUnArchiver extends AbstractUnArchiver {
             throws IOException {
         Path output = checkedOutput(directory, name, entry.getName(), false);
         Path target = checkedOutput(directory, targetName, entry.getName(), true);
-        if (output.equals(target)
-                || output.toFile().getCanonicalFile().equals(target.toFile().getCanonicalFile())) {
+        if (output.equals(target)) {
             throw new IOException("Self-referencing TAR hard-link output: " + name);
         }
         if (Files.isSymbolicLink(output) || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)) {
@@ -363,26 +412,118 @@ public class TarUnArchiver extends AbstractUnArchiver {
             return;
         }
         // Excluded or retained targets are not recovered from the archive; their current path must exist.
-        if (!Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS)) {
+        if (!Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS) && !isDeferredTarget(target)) {
             throw new IOException("TAR hard-link target is not an existing regular file: " + targetName);
         }
         Files.createDirectories(output.getParent());
-        checkedOutput(directory, name, entry.getName(), false);
-        checkedOutput(directory, targetName, entry.getName(), true);
+        output = checkedOutput(directory, name, entry.getName(), false);
+        target = checkedOutput(directory, targetName, entry.getName(), true);
+        if (output.equals(target)
+                || Files.isSymbolicLink(output)
+                || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)
+                || (!Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS) && !isDeferredTarget(target))) {
+            throw new IOException("TAR hard-link paths changed during extraction: " + name);
+        }
+        if (isDeferredTarget(target)) {
+            deferHardLink(directory, entry, name, targetName, output);
+            return;
+        }
         Path temporary = output.getParent().resolve(".plexus-link-" + UUID.randomUUID());
         try {
             // Build the replacement first so link-creation failure leaves an existing output untouched.
-            createHardLink(temporary, target);
+            try {
+                createHardLink(temporary, target);
+            } catch (IOException | UnsupportedOperationException e) {
+                if (hardLinkFailureMode == HardLinkFailureMode.FAIL) {
+                    throw new IOException("Cannot create TAR hard link " + name, e);
+                }
+                getLogger()
+                        .warn(
+                                "Cannot create TAR hard link {} -> {} ({}); {}",
+                                name,
+                                targetName,
+                                e.getMessage(),
+                                hardLinkFailureMode == HardLinkFailureMode.COPY_TARGET
+                                        ? "the target will be copied after extraction"
+                                        : "the entry is skipped");
+                if (hardLinkFailureMode == HardLinkFailureMode.COPY_TARGET) {
+                    deferHardLink(directory, entry, name, targetName, output);
+                }
+                return;
+            }
             Files.move(temporary, output, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException | UnsupportedOperationException e) {
-            throw new IOException("Cannot create TAR hard link " + name, e);
+            onEntryExtracted(output);
+        } finally {
+            Files.deleteIfExists(temporary);
+        }
+    }
+
+    /** Resolves copy dependencies using final destination contents, without replaying the archive. */
+    private void resolveDeferredHardLinks() throws IOException {
+        boolean progress = true;
+        while (progress && !deferredHardLinks.isEmpty()) {
+            progress = false;
+            for (var pending : new ArrayList<>(deferredHardLinks.entrySet())) {
+                Path output = pending.getKey();
+                DeferredHardLink link = pending.getValue();
+                Path target;
+                try {
+                    Path checked = checkedOutput(link.directory(), link.name(), link.entryName(), false);
+                    target = checkedOutput(link.directory(), link.targetName(), link.entryName(), true);
+                    if (!output.equals(checked)
+                            || output.equals(target)
+                            || Files.isSymbolicLink(output)
+                            || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)) {
+                        throw new IOException("TAR hard-link destination changed: " + link.name());
+                    }
+                    if (deferredHardLinks.containsKey(target)) {
+                        continue;
+                    }
+                    if (!Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS)) {
+                        throw new IOException(
+                                "TAR hard-link target is not an existing regular file: " + link.targetName());
+                    }
+                } catch (IOException | ArchiverException e) {
+                    getLogger().warn("Skipping deferred TAR hard link {}: {}", link.entryName(), e.getMessage());
+                    deferredHardLinks.remove(output);
+                    progress = true;
+                    continue;
+                }
+                if (shouldExtractEntry(link.directory(), output.toFile(), link.name(), link.date())) {
+                    copyDeferredHardLink(link, output, target);
+                }
+                deferredHardLinks.remove(output);
+                progress = true;
+            }
+        }
+        for (DeferredHardLink link : deferredHardLinks.values()) {
+            getLogger().warn("Skipping deferred TAR hard link {}: unresolved copy dependencies", link.entryName());
+        }
+        deferredHardLinks.clear();
+    }
+
+    /** Stages each copy before replacement so a copy failure cannot damage an existing output. */
+    private void copyDeferredHardLink(DeferredHardLink link, Path output, Path target) throws IOException {
+        Path temporary = output.getParent().resolve(".plexus-link-" + UUID.randomUUID());
+        try {
+            Files.copy(target, temporary, StandardCopyOption.COPY_ATTRIBUTES, LinkOption.NOFOLLOW_LINKS);
+            if (!Files.isRegularFile(temporary, LinkOption.NOFOLLOW_LINKS)
+                    || !Files.isRegularFile(target, LinkOption.NOFOLLOW_LINKS)
+                    || !output.equals(checkedOutput(link.directory(), link.name(), link.entryName(), false))
+                    || !target.equals(checkedOutput(link.directory(), link.targetName(), link.entryName(), true))
+                    || Files.isSymbolicLink(output)
+                    || Files.isDirectory(output, LinkOption.NOFOLLOW_LINKS)) {
+                throw new IOException("TAR hard-link paths changed during copying: " + link.name());
+            }
+            Files.move(temporary, output, StandardCopyOption.REPLACE_EXISTING);
+            onEntryExtracted(output);
         } finally {
             Files.deleteIfExists(temporary);
         }
     }
 
     /**
-     * Creates a filesystem hard link with no copy fallback.
+     * Attempts a filesystem hard link before applying the configured failure policy.
      * @param link new directory entry
      * @param existing the earlier member's current mapped regular file
      * @throws IOException if the filesystem cannot create the link

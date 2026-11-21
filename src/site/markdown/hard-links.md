@@ -62,9 +62,10 @@ hard-link preservation for other groups of resources.
 
 ## Streaming extraction
 
-The extractor reads the TAR archive one time in a forward direction. It writes
-each selected member when it reads that member. It does not scan the headers
-first or store file contents in temporary files before extraction.
+The extractor reads the TAR archive one time in a forward direction. Normally,
+it writes each selected member when it reads that member. A refused hard link
+can instead queue a copy after the TAR entry loop. The extractor does not scan
+the headers first or stage archive payloads before extraction.
 
 A hard-link member must reference a previous data member or a chain of previous
 hard-link members that ends at a data member. The extractor rejects a selected
@@ -118,13 +119,48 @@ change the timestamps or permissions of the target inode when it makes a hard
 link. It rejects a hard link with the same destination path as its target. This
 is the bsdtar behavior, which is different from GNU tar.
 
-If the extractor cannot make a hard link, it gives an error. It does not copy
-the file contents as an alternative. It makes a replacement hard link before it
-replaces an output name. After an error, previous output files can stay in the
-destination directory.
+The extractor makes a replacement hard link before it replaces an output name.
+After an error, previous output files can stay in the destination directory.
 
 The protected `AbstractUnArchiver.extractFile` method signature stays available
 for members that are not hard links.
+
+### Refused hard links
+
+`TarUnArchiver` and compressed TAR extractors have an independent
+`hardLinkFailureMode` setting. Its default is `HardLinkFailureMode.COPY_TARGET`.
+When the file system refuses a valid hard link, this mode logs a warning and
+queues a copy of the target after the TAR entry loop completes. Backward chains
+can depend on an earlier queued copy. Source relationships, missing excluded
+targets, and unsafe extraction paths are still validated before fallback.
+
+The copy reads the target's final on-disk contents, including any replacement
+written by a later archive member. For example, if `file` contains `old`, an
+alias is refused, and a later member replaces `file` with `new`, the fallback
+alias receives `new`. A native hard link made before that replacement retains
+`old`. Copied aliases are independent files, with the target's attributes rather
+than a shared inode.
+
+Fallback honors the overwrite policy. A successful later archive write to an
+alias destination cancels its pending copy; a skipped entry does not. A later
+queued occurrence for the same destination replaces the earlier request. The
+extractor rechecks the destination and target paths when processing the queue.
+Missing or non-regular targets, unsafe or changed destinations, and unresolved
+copy dependencies are skipped with warnings. Each copy is staged beside its
+destination, so a copy failure leaves existing output untouched. Copy and rename
+failures stop extraction, and temporary files are removed.
+
+To fail immediately when native hard-link creation is refused, use:
+
+```java
+extractor.setHardLinkFailureMode(HardLinkFailureMode.FAIL);
+```
+
+`HardLinkFailureMode.SKIP` logs the refusal and omits the entry. Neither setting
+changes the symbolic-link failure mode. The hard-link queue is discarded if
+normal TAR extraction aborts. It runs before the existing symbolic-link copy
+queue and before archive finalizers. No archive replay or payload snapshot is
+needed for these fallback copies.
 
 ### Optional checks for symbolic links
 
@@ -167,14 +203,36 @@ inside the directory. This is also true when the configured path contains a
 symbolic link followed by `..`. GNU tar and bsdtar also resolve their `-C`
 directory before they extract members.
 
+Path resolution follows each existing symbolic link before processing the next
+component, including `..`, on all operating systems. It also resolves existing
+parents when the destination file does not exist yet. This avoids differences
+between Windows JDK versions when canonicalizing a complete path. Resolution
+fails after 64 symbolic-link expansions to bound cyclic or excessively long
+paths.
+
+An absolute mapped path can reach the root through a symbolic link to an
+ancestor directory. For example, macOS uses `/var` as an alias for
+`/private/var`. The extractor resolves these ancestor aliases before it reaches
+the root. A separate symbolic link to the root itself is accepted only in the
+configured root spelling.
+
+After the path reaches the root, the extractor rejects subsequent intermediate
+symbolic links. A later `..` component does not restore the ancestor exception.
+The checks preserve the remaining path components when they resolve an ancestor
+alias.
+
 More `.` components do not change the trusted directory. This is true for the
 configured root path and for absolute mapped paths that start at that root. The
 extractor also checks intermediate symbolic links before parent components in
 member paths.
 
 The extractor accepts symbolic-link members when the setting is `true` or
-`false`. The existing rules control replacement of the last path component. The
-two settings prevent extraction outside the destination directory. The checks
+`false`, preserving their target text and creating them only if the destination
+does not already exist. It does not change the target's permissions or timestamps.
+Regular-file, directory, and hard-link entries reject a symbolic link at their
+destination's last component, including a dangling link. Hard-link targets must
+also be regular files, rather than symbolic links. Both traversal settings check
+physical containment before creating directories or writing files. The checks
 use the file system paths that the extractor finds as it reads each member. An
 archive scan, a second read, and temporary storage of file contents are not
 necessary for these checks.
