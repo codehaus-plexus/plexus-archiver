@@ -326,6 +326,12 @@ public class TarArchiver extends AbstractArchiver {
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
             }
+        } catch (Throwable e) {
+            if (preserveHardLinks) {
+                throw e;
+            }
+            // Preserve the legacy copy-error policy unless hard-link preservation was explicitly enabled.
+            getLogger().warn("When creating tar entry", e);
         } finally {
             tOut.closeArchiveEntry();
         }

@@ -33,6 +33,10 @@ import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -144,8 +148,8 @@ class TarHardLinkTest {
     }
 
     /** Colons and relative backslashes are ordinary filename characters on Unix. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    @ParameterizedTest
+    @ValueSource(strings = {":", "\\"})
     void extractsLiteralHardLinkNames(String separator) throws Exception {
         assumeTrue(java.io.File.separatorChar == '/', "Literal names require Unix filename semantics");
         requireHardLinks();
@@ -159,8 +163,8 @@ class TarHardLinkTest {
     }
 
     /** Callers can adapt source names for Windows without changing the archive's link relationships. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    @ParameterizedTest
+    @ValueSource(strings = {":", "\\"})
     void mapsLiteralHardLinkNames(String separator) throws Exception {
         requireHardLinks();
         Path output = Files.createDirectory(temp.resolve("mapped-literal"));
@@ -175,8 +179,8 @@ class TarHardLinkTest {
     }
 
     /** Relaxing source-name checks must not permit mapped aliases to escape the destination. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    @ParameterizedTest
+    @ValueSource(strings = {":", "\\"})
     void rejectsMappedLiteralNameEscape(String separator) throws Exception {
         Path output = Files.createDirectory(temp.resolve("mapped-escape"));
         String alias = "alias" + separator + "name";
@@ -189,8 +193,8 @@ class TarHardLinkTest {
     }
 
     /** Resource reads resolve literal names without interpreting them as host filesystem paths. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    @ParameterizedTest
+    @ValueSource(strings = {":", "\\"})
     void readsLiteralHardLinkResources(String separator) throws Exception {
         String target = "a" + separator + "b";
         String alias = "alias" + separator + "name";
@@ -305,9 +309,8 @@ class TarHardLinkTest {
     }
 
     /** Missing targets, cycles and traversal must fail instead of creating empty or external files. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(
-            strings = {"missing", "cycle", "../outside", "/outside", "dir", "sym"})
+    @ParameterizedTest
+    @ValueSource(strings = {"missing", "cycle", "../outside", "/outside", "dir", "sym"})
     void rejectsInvalidTargets(String target) throws Exception {
         Path source = Files.createTempFile(temp, "invalid", ".tar");
         try (TarArchiveOutputStream out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
@@ -349,8 +352,8 @@ class TarHardLinkTest {
     }
 
     /** Neither an existing output nor an excluded target may be a final symbolic link. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvSource({
+    @ParameterizedTest
+    @CsvSource({
         "false, inside", "false, outside", "false, missing",
         "true, inside", "true, outside", "true, missing"
     })
@@ -453,8 +456,8 @@ class TarHardLinkTest {
     }
 
     /** Content-reading selectors use the configured decoder without disrupting streaming extraction. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.EnumSource(TarUnArchiver.UntarCompressionMethod.class)
+    @ParameterizedTest
+    @EnumSource(TarUnArchiver.UntarCompressionMethod.class)
     void compressedLinksAndContentSelectors(TarUnArchiver.UntarCompressionMethod method) throws Exception {
         requireHardLinks();
         Path source = archive(false);

@@ -34,11 +34,16 @@ import org.codehaus.plexus.archiver.util.DefaultArchivedFileSet;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.functions.HardLinkIdentitySupplier;
+import org.codehaus.plexus.components.io.resources.PlexusIoFileResource;
 import org.codehaus.plexus.components.io.resources.PlexusIoResource;
 import org.codehaus.plexus.components.io.resources.ResourceFactory;
 import org.codehaus.plexus.components.io.resources.proxy.ProxyFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -87,6 +92,105 @@ class TarHardLinkArchiverTest extends TestSupport {
     /** Retains decoded header metadata and bytes for assertions. */
     private record Header(TarArchiveEntry entry, String contents) {}
 
+    /** Uses the file's declared size while injecting failures at the payload boundary or stream closure. */
+    private PlexusIoResource failingResource(Path file, String failure) throws IOException {
+        PlexusIoFileResource original = (PlexusIoFileResource) ResourceFactory.createResource(file.toFile());
+        byte[] bytes = Files.readAllBytes(file);
+        return new PlexusIoFileResource(file.toFile(), "broken", original.getAttributes()) {
+            @Override
+            public InputStream getContents() {
+                return new InputStream() {
+                    private int offset = failure.equals("early") ? bytes.length : 0;
+
+                    private int endOfPayload() throws IOException {
+                        if (failure.equals("error")) {
+                            throw new AssertionError("test read error");
+                        }
+                        if (!failure.equals("close")) {
+                            throw new IOException("test read failure");
+                        }
+                        return -1;
+                    }
+
+                    @Override
+                    public int read() throws IOException {
+                        return offset < bytes.length ? bytes[offset++] & 0xff : endOfPayload();
+                    }
+
+                    @Override
+                    public int read(byte[] buffer, int start, int length) throws IOException {
+                        if (length == 0) {
+                            return 0;
+                        }
+                        if (offset == bytes.length) {
+                            return endOfPayload();
+                        }
+                        int count = Math.min(length, bytes.length - offset);
+                        System.arraycopy(bytes, offset, buffer, start, count);
+                        offset += count;
+                        return count;
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        if (failure.equals("close")) {
+                            throw new IOException("test close failure");
+                        }
+                    }
+                };
+            }
+        };
+    }
+
+    /** Ordinary TAR creation keeps its warning-only copy policy, while opt-in preservation fails. */
+    @ParameterizedTest
+    @CsvSource({
+        "false, read", "true, read",
+        "false, close", "true, close",
+        "false, error", "true, error"
+    })
+    void copyFailurePolicyDependsOnPreservation(boolean preserve, String failure) throws Exception {
+        Path file = Files.writeString(temp.resolve("file"), "payload");
+        Path after = Files.writeString(temp.resolve("after"), "later content");
+        TarArchiver archiver = new TarArchiver();
+        if (preserve) {
+            archiver.setPreserveHardLinks(true);
+        }
+        archiver.addResource(failingResource(file, failure), "broken", 0644);
+        archiver.addResource(ResourceFactory.createResource(after.toFile()), "after", 0644);
+        Path output = temp.resolve("written.tar");
+        archiver.setDestFile(output.toFile());
+        if (preserve) {
+            if (failure.equals("error")) {
+                assertThrows(AssertionError.class, archiver::createArchive);
+            } else {
+                assertThrows(ArchiverException.class, archiver::createArchive);
+            }
+        } else {
+            archiver.createArchive();
+            List<Header> entries = headers(output);
+            assertEquals(
+                    List.of("broken", "after"),
+                    entries.stream().map(header -> header.entry.getName()).toList());
+            assertEquals("payload", entries.get(0).contents);
+            assertEquals("later content", entries.get(1).contents);
+            assertTrue(entries.stream().noneMatch(header -> header.entry.isLink()));
+        }
+    }
+
+    /** Swallowing a copy failure must not hide the TAR writer's rejection of an incomplete entry. */
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
+    void incompleteEntriesStillFailInEitherMode(boolean preserve) throws Exception {
+        Path file = Files.writeString(temp.resolve("file"), "payload");
+        TarArchiver archiver = new TarArchiver();
+        archiver.setPreserveHardLinks(preserve);
+        archiver.addResource(failingResource(file, "early"), "broken", 0644);
+        archiver.setDestFile(temp.resolve("incomplete.tar").toFile());
+        Exception failure = assertThrows(Exception.class, archiver::createArchive);
+        assertTrue(failure instanceof IOException || failure instanceof ArchiverException);
+    }
+
     /** Opt-in creation writes one full payload and uses final mapped names in later links. */
     @Test
     void createsLinksAfterMappingAndResetsBetweenArchives() throws Exception {
@@ -109,8 +213,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** Literal archive names do not prevent opt-in preservation or change the disabled behavior. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    @ParameterizedTest
+    @ValueSource(strings = {":", "\\"})
     void preservesLiteralHardLinkNames(String separator) throws Exception {
         assumeTrue(
                 java.io.File.separatorChar == '/' || !separator.equals("\\"),
@@ -176,8 +280,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** Replacing TAR resource contents must preserve the replacement bytes with either writer setting. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
     void tarResourceSubclassesKeepReplacementContents(boolean preserve) throws Exception {
         Path source = temp.resolve("subclass.tar");
         try (TarArchiveOutputStream out = new TarArchiveOutputStream(Files.newOutputStream(source))) {
@@ -246,8 +350,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** Equivalent destination paths must invalidate a replaced target before a later alias is written. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(
+    @ParameterizedTest
+    @ValueSource(
             strings = {"same", "./same", "dir/../same", "./dir//../same", "dir/nested/../../same", "dir/.././same"})
     void duplicateNamesInvalidateTargets(String replacementName) throws Exception {
         Path source = sources();
@@ -273,8 +377,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** Like GNU tar, symlink traversal leaves later aliases bound to their target's current contents. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.CsvSource({
+    @ParameterizedTest
+    @CsvSource({
         "false, redirect/file", "true, redirect/file",
         "false, ./redirect//file", "true, ./redirect//file",
         "false, redirect/../file", "true, redirect/../file"
@@ -323,8 +427,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** Nested directory symlinks also retain pathname-based hard links, as with GNU tar. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
     void symlinksThroughSymlinksKeepHardLinkHeaders(boolean preserve) throws Exception {
         Path source = sources();
         requireSymbolicLinks(source);
@@ -379,8 +483,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** A failure after writing one file cannot leak its target identity into the next archive. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+    @ParameterizedTest
+    @ValueSource(booleans = {false, true})
     void failedArchiveDoesNotLeakTargets(boolean symlinkTraversal) throws Exception {
         Path source = sources();
         TarArchiver archiver = new TarArchiver();
@@ -422,8 +526,8 @@ class TarHardLinkArchiverTest extends TestSupport {
     }
 
     /** PAX and GNU long-link extensions must name the same full member written earlier. */
-    @org.junit.jupiter.params.ParameterizedTest
-    @org.junit.jupiter.params.provider.EnumSource(
+    @ParameterizedTest
+    @EnumSource(
             value = TarLongFileMode.class,
             names = {"posix", "gnu"})
     void supportsLongLinkNames(TarLongFileMode mode) throws Exception {
