@@ -280,11 +280,15 @@ The `close()` method deletes temporary files from the cache.
 After you use a reader or resource collection that you manage directly, close
 it.
 
-The archiver owns resource collections that a caller adds through
-`addArchivedFileSet()` or `addResources()`. It closes these collections and
-their archive readers when `createArchive()` completes or stops with an error.
-It tries to close each iterator and wrapped collection even if a different close
-operation gives an error.
+The archiver owns collections it creates internally for `addFileSet()` and
+`addArchivedFileSet()`. It closes these collections and their archive readers
+during archive cleanup after success or failure, including through proxy wrappers.
+
+Collections supplied through `addResources()` remain caller-owned. The caller
+must close them when needed, including after archive creation fails. The archiver
+still closes the input streams and closeable iterators it obtains from these
+collections. Cleanup attempts each iterator and internally owned collection even
+if another close operation gives an error.
 
 ## Maven Assembly configuration
 

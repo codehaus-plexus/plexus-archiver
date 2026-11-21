@@ -97,6 +97,9 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
     private final List<Closeable> closeables = new ArrayList<>();
 
+    /** Collections created for file sets are owned; collections passed to addResources remain caller-owned. */
+    private final List<PlexusIoResourceCollection> ownedCollections = new ArrayList<>();
+
     private FileTime lastModifiedTime;
 
     /**
@@ -323,7 +326,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
             collection.setDefaultAttributes(-1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode());
         }
 
-        addResources(collection);
+        addOwnedResources(collection);
     }
 
     @Override
@@ -555,11 +558,8 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         };
     }
 
-    /** Reaches the owning collection through permission and proxy wrappers before releasing its resources. */
+    /** Reaches an internally owned collection through proxy wrappers before releasing its resources. */
     private static void closeIfCloseable(Object resource) throws IOException {
-        if (resource instanceof AddedResourceCollection collection) {
-            resource = collection.resources;
-        }
         while (resource instanceof PlexusIoProxyResourceCollection collection) {
             resource = collection.getSrc();
         }
@@ -642,11 +642,17 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     /**
-     * Adds a resource collection to the archive.
+     * Adds a caller-owned resource collection to the archive.
      */
     @Override
     public void addResources(final PlexusIoResourceCollection collection) throws ArchiverException {
         doAddResource(new AddedResourceCollection(collection, forcedFileMode, forcedDirectoryMode));
+    }
+
+    private void addOwnedResources(PlexusIoResourceCollection collection) {
+        ownedCollections.add(collection);
+        // Retain the public hook for subclasses that intercept resource registration.
+        addResources(collection);
     }
 
     private void doAddResource(Object item) {
@@ -656,13 +662,13 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     @Override
     public void addArchivedFileSet(final ArchivedFileSet fileSet) throws ArchiverException {
         final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, null);
-        addResources(resourceCollection);
+        addOwnedResources(resourceCollection);
     }
 
     @Override
     public void addArchivedFileSet(final ArchivedFileSet fileSet, Charset charset) throws ArchiverException {
         final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, charset);
-        addResources(resourceCollection);
+        addOwnedResources(resourceCollection);
     }
 
     @Override
@@ -846,12 +852,13 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
     protected abstract void close() throws IOException;
 
-    /** Releases iterators and owning collections on success or failure, attempting every registered close. */
+    /** Releases iterators and internally owned collections, attempting every registered close. */
     protected void cleanUp() throws IOException {
         List<Object> pending = new ArrayList<>(closeables);
-        pending.addAll(resources);
+        pending.addAll(ownedCollections);
         // Detach ownership before closing so a failure cannot retain readers across archive operations.
         closeables.clear();
+        ownedCollections.clear();
         resources.clear();
         IOException failure = null;
         for (Object resource : pending) {

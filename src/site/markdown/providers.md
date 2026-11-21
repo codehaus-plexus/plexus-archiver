@@ -95,6 +95,10 @@ PlexusIoResourceCollection resources = zip.newPlexusIoResourceCollection(configu
 });
 ```
 
+Collections obtained from a provider remain caller-owned when passed to `Archiver.addResources()`.
+Close the collection when finished if its implementation is `Closeable`. The archiver closes the resource streams and
+closeable iterators it consumes, and owns collections it creates internally for file sets.
+
 Common collection settings include prefixes, include/exclude patterns, selectors, mappers, stream transformers, case
 sensitivity, default excludes, and empty-directory handling. Source and encoding settings are capability-aware: an
 unsupported setting fails during configuration rather than during resource iteration.
