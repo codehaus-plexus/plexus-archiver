@@ -22,11 +22,11 @@ identity and output metadata share one data member. The archiver writes
 subsequent names as hard-link members that contain the target name in the
 archive. Compressed TAR archivers also have this option.
 
-With preservation enabled, resource-copy failures stop archive creation before
-the failed member can become a hard-link target. With preservation disabled,
-the legacy behavior logs copy failures and continues if the TAR entry can still
-be closed successfully. Incomplete entries and archive-closing failures can
-therefore still fail creation with either setting.
+Both settings retain the legacy behavior of logging resource-copy failures and
+continuing if the TAR entry can still be closed successfully. A failed member
+does not become a hard-link target. Later aliases are written in full until one
+is successfully written and can serve as a target. Incomplete entries and
+archive-closing failures can still fail creation with either setting.
 
 For hard-link preservation, the resource must implement the optional Plexus IO
 `HardLinkIdentitySupplier` interface. A local regular file gives an identity if

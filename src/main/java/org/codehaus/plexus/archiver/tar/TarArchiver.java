@@ -320,23 +320,21 @@ public class TarArchiver extends AbstractArchiver {
 
         tOut.putArchiveEntry(te);
 
+        boolean successfullyWritten = false;
         try {
             if (entry.getResource().isFile() && !te.isSymbolicLink() && !te.isLink()) {
                 try (InputStream fIn = entry.getInputStream()) {
                     Streams.copyFullyDontCloseOutput(fIn, tOut, "xAR");
                 }
             }
+            successfullyWritten = true;
         } catch (Throwable e) {
-            if (preserveHardLinks) {
-                throw e;
-            }
-            // Preserve the legacy copy-error policy unless hard-link preservation was explicitly enabled.
             getLogger().warn("When creating tar entry", e);
         } finally {
             tOut.closeArchiveEntry();
         }
         // Failed or omitted entries must never become targets of later link headers.
-        if (identity != null && target == null) {
+        if (successfullyWritten && identity != null && target == null) {
             hardLinkTargets.put(identity, outputName);
             writtenNames.put(outputKey, identity);
         }

@@ -97,6 +97,12 @@ class TarHardLinkArchiverTest extends TestSupport {
         PlexusIoFileResource original = (PlexusIoFileResource) ResourceFactory.createResource(file.toFile());
         byte[] bytes = Files.readAllBytes(file);
         return new PlexusIoFileResource(file.toFile(), "broken", original.getAttributes()) {
+            /** Supplies the same payload identity so a failed write can exercise target registration. */
+            @Override
+            public Object getHardLinkIdentity() throws IOException {
+                return original.getHardLinkIdentity();
+            }
+
             @Override
             public InputStream getContents() {
                 return new InputStream() {
@@ -142,14 +148,14 @@ class TarHardLinkArchiverTest extends TestSupport {
         };
     }
 
-    /** Ordinary TAR creation keeps its warning-only copy policy, while opt-in preservation fails. */
+    /** Both preservation settings keep the original warning-only policy when the entry can be closed. */
     @ParameterizedTest
     @CsvSource({
         "false, read", "true, read",
         "false, close", "true, close",
         "false, error", "true, error"
     })
-    void copyFailurePolicyDependsOnPreservation(boolean preserve, String failure) throws Exception {
+    void copyFailuresKeepLegacyPolicyInBothModes(boolean preserve, String failure) throws Exception {
         Path file = Files.writeString(temp.resolve("file"), "payload");
         Path after = Files.writeString(temp.resolve("after"), "later content");
         TarArchiver archiver = new TarArchiver();
@@ -160,22 +166,42 @@ class TarHardLinkArchiverTest extends TestSupport {
         archiver.addResource(ResourceFactory.createResource(after.toFile()), "after", 0644);
         Path output = temp.resolve("written.tar");
         archiver.setDestFile(output.toFile());
-        if (preserve) {
-            if (failure.equals("error")) {
-                assertThrows(AssertionError.class, archiver::createArchive);
-            } else {
-                assertThrows(ArchiverException.class, archiver::createArchive);
-            }
-        } else {
-            archiver.createArchive();
-            List<Header> entries = headers(output);
-            assertEquals(
-                    List.of("broken", "after"),
-                    entries.stream().map(header -> header.entry.getName()).toList());
-            assertEquals("payload", entries.get(0).contents);
-            assertEquals("later content", entries.get(1).contents);
-            assertTrue(entries.stream().noneMatch(header -> header.entry.isLink()));
-        }
+        archiver.createArchive();
+        List<Header> entries = headers(output);
+        assertEquals(
+                List.of("broken", "after"),
+                entries.stream().map(header -> header.entry.getName()).toList());
+        assertEquals("payload", entries.get(0).contents);
+        assertEquals("later content", entries.get(1).contents);
+        assertTrue(entries.stream().noneMatch(header -> header.entry.isLink()));
+    }
+
+    /** Failed payloads cannot become targets; preservation resumes after a later successful full entry. */
+    @ParameterizedTest
+    @ValueSource(strings = {"read", "close", "error"})
+    void onlySuccessfulWritesBecomeHardLinkTargets(String failure) throws Exception {
+        Path file = Files.writeString(temp.resolve("file"), "payload");
+        PlexusIoResource original = ResourceFactory.createResource(file.toFile());
+        assumeTrue(
+                ((HardLinkIdentitySupplier) original).getHardLinkIdentity() != null,
+                "Filesystem does not expose file keys");
+        TarArchiver archiver = new TarArchiver();
+        archiver.setPreserveHardLinks(true);
+        archiver.addResource(failingResource(file, failure), "broken", 0644);
+        archiver.addResource(original, "good", 0644);
+        archiver.addResource(ResourceFactory.createResource(file.toFile()), "alias", 0644);
+        List<Header> entries = headers(write(archiver));
+        assertEquals(3, entries.size());
+        assertEquals("broken", entries.get(0).entry.getName());
+        assertFalse(entries.get(0).entry.isLink());
+        assertEquals("payload", entries.get(0).contents);
+        assertEquals("good", entries.get(1).entry.getName());
+        assertFalse(entries.get(1).entry.isLink());
+        assertEquals("payload", entries.get(1).contents);
+        assertEquals("alias", entries.get(2).entry.getName());
+        assertTrue(entries.get(2).entry.isLink());
+        assertEquals("good", entries.get(2).entry.getLinkName());
+        assertEquals("", entries.get(2).contents);
     }
 
     /** Swallowing a copy failure must not hide the TAR writer's rejection of an incomplete entry. */
