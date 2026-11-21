@@ -70,6 +70,7 @@ public interface Archiver {
 
     /**
      * Adds the given file set to the archive.
+     * Collections created internally for this file set are closed during archive cleanup.
      *
      * @throws ArchiverException if adding the file set failed.
      * @since 1.0-alpha-9
@@ -95,6 +96,13 @@ public interface Archiver {
 
     void addFile(@Nonnull File inputFile, @Nonnull String destFileName, int permissions) throws ArchiverException;
 
+    /**
+     * Adds the given archived file set to the archive.
+     * Collections created internally for this file set are closed during archive cleanup.
+     *
+     * @param fileSet the archived file set
+     * @throws ArchiverException if adding the archived file set failed
+     */
     void addArchivedFileSet(ArchivedFileSet fileSet) throws ArchiverException;
 
     /**
@@ -110,6 +118,7 @@ public interface Archiver {
 
     /**
      * Adds the given archive file set to the archive.
+     * Collections created internally for this file set are closed during archive cleanup.
      *
      * @param charset the encoding to use for filename encoding (e.g. for zip files)
      *
@@ -132,6 +141,9 @@ public interface Archiver {
      * Adds the given resource collection to the archive.
      *
      * Stream transformers are supported on this method
+     *
+     * The caller retains ownership of the supplied collection and is responsible for closing it when needed.
+     * The archiver closes the input streams and closeable iterators it obtains while creating the archive.
      *
      * @since 1.0-alpha-10
      */

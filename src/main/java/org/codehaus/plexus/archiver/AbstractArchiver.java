@@ -23,7 +23,6 @@ import javax.inject.Provider;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.attribute.FileTime;
@@ -97,6 +96,9 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     private final boolean replacePathSlashesToJavaPaths = File.separatorChar == '/';
 
     private final List<Closeable> closeables = new ArrayList<>();
+
+    /** Collections created for file sets are owned; collections passed to addResources remain caller-owned. */
+    private final List<PlexusIoResourceCollection> ownedCollections = new ArrayList<>();
 
     private FileTime lastModifiedTime;
 
@@ -324,7 +326,7 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
             collection.setDefaultAttributes(-1, null, -1, null, getDefaultFileMode(), getDefaultDirectoryMode());
         }
 
-        addResources(collection);
+        addOwnedResources(collection);
     }
 
     @Override
@@ -480,6 +482,9 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
 
                                     try {
                                         ioResourceIter = currentResourceCollection.resources.getResources();
+                                        // Register ownership before reading, since iteration can fail before
+                                        // exhaustion.
+                                        addCloseable(ioResourceIter);
                                     } catch (final IOException e) {
                                         throw new ArchiverException(e.getMessage(), e);
                                     }
@@ -494,12 +499,6 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
                                 final PlexusIoResource resource = (PlexusIoResource) ioResourceIter.next();
                                 nextEntry = asArchiveEntry(currentResourceCollection, resource);
                             } else {
-                                // this will leak handles in the IO iterator if the iterator is not fully consumed.
-                                // alternately we'd have to make this method return a Closeable iterator back
-                                // to the client and ditch the whole issue onto the client.
-                                // this does not really make any sense either, might equally well change the
-                                // api into something that is not broken by design.
-                                addCloseable(ioResourceIter);
                                 ioResourceIter = null;
                             }
                         }
@@ -559,17 +558,13 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         };
     }
 
+    /** Reaches an internally owned collection through proxy wrappers before releasing its resources. */
     private static void closeIfCloseable(Object resource) throws IOException {
+        while (resource instanceof PlexusIoProxyResourceCollection collection) {
+            resource = collection.getSrc();
+        }
         if (resource instanceof Closeable closeable) {
             closeable.close();
-        }
-    }
-
-    private static void closeQuietlyIfCloseable(Object resource) {
-        try {
-            closeIfCloseable(resource);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -647,11 +642,17 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     }
 
     /**
-     * Adds a resource collection to the archive.
+     * Adds a caller-owned resource collection to the archive.
      */
     @Override
     public void addResources(final PlexusIoResourceCollection collection) throws ArchiverException {
         doAddResource(new AddedResourceCollection(collection, forcedFileMode, forcedDirectoryMode));
+    }
+
+    private void addOwnedResources(PlexusIoResourceCollection collection) {
+        ownedCollections.add(collection);
+        // Retain the public hook for subclasses that intercept resource registration.
+        addResources(collection);
     }
 
     private void doAddResource(Object item) {
@@ -661,13 +662,13 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
     @Override
     public void addArchivedFileSet(final ArchivedFileSet fileSet) throws ArchiverException {
         final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, null);
-        addResources(resourceCollection);
+        addOwnedResources(resourceCollection);
     }
 
     @Override
     public void addArchivedFileSet(final ArchivedFileSet fileSet, Charset charset) throws ArchiverException {
         final PlexusIoResourceCollection resourceCollection = asResourceCollection(fileSet, charset);
-        addResources(resourceCollection);
+        addOwnedResources(resourceCollection);
     }
 
     @Override
@@ -849,25 +850,31 @@ public abstract class AbstractArchiver implements Archiver, FinalizerEnabled {
         }
     }
 
-    private void closeIterators() {
-        for (Closeable closeable : closeables) {
-            closeQuietlyIfCloseable(closeable);
-        }
-    }
-
     protected abstract void close() throws IOException;
 
+    /** Releases iterators and internally owned collections, attempting every registered close. */
     protected void cleanUp() throws IOException {
-        closeIterators();
-
-        for (Object resource : resources) {
-            if (resource instanceof PlexusIoProxyResourceCollection collection) {
-                resource = collection.getSrc();
-            }
-
-            closeIfCloseable(resource);
-        }
+        List<Object> pending = new ArrayList<>(closeables);
+        pending.addAll(ownedCollections);
+        // Detach ownership before closing so a failure cannot retain readers across archive operations.
+        closeables.clear();
+        ownedCollections.clear();
         resources.clear();
+        IOException failure = null;
+        for (Object resource : pending) {
+            try {
+                closeIfCloseable(resource);
+            } catch (IOException e) {
+                if (failure == null) {
+                    failure = e;
+                } else if (failure != e) {
+                    failure.addSuppressed(e);
+                }
+            }
+        }
+        if (failure != null) {
+            throw failure;
+        }
     }
 
     protected abstract void execute() throws ArchiverException, IOException;
