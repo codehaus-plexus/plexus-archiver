@@ -19,12 +19,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.archivers.tar.TarConstants;
+import org.apache.commons.compress.archivers.tar.TarUtils;
 import org.codehaus.plexus.components.io.filemappers.FileMapper;
 import org.codehaus.plexus.components.io.fileselectors.FileSelector;
 import org.junit.jupiter.api.Test;
@@ -82,6 +84,43 @@ class TarHardLinkTest {
         return archive;
     }
 
+    /** Builds headers directly so Windows does not normalize literal archive names as local paths. */
+    private void literalEntry(TarArchiveOutputStream out, String name, String contents, String target)
+            throws IOException {
+        TarArchiveEntry entry =
+                new TarArchiveEntry("placeholder", target == null ? TarConstants.LF_NORMAL : TarConstants.LF_LINK);
+        byte[] bytes = contents.getBytes(StandardCharsets.UTF_8);
+        entry.setModTime(1234567000000L);
+        entry.setMode(0644);
+        if (target == null) {
+            entry.setSize(bytes.length);
+        } else {
+            entry.setLinkName(target);
+        }
+        byte[] header = new byte[TarConstants.DEFAULT_RCDSIZE];
+        entry.writeEntryHeader(header);
+        TarUtils.formatNameBytes(name, header, 0, TarConstants.NAMELEN);
+        Arrays.fill(
+                header, TarConstants.CHKSUM_OFFSET, TarConstants.CHKSUM_OFFSET + TarConstants.CHKSUMLEN, (byte) ' ');
+        TarUtils.formatCheckSumOctalBytes(
+                TarUtils.computeCheckSum(header), header, TarConstants.CHKSUM_OFFSET, TarConstants.CHKSUMLEN);
+        out.putArchiveEntry(new TarArchiveEntry(header));
+        if (target == null) {
+            out.write(bytes);
+        }
+        out.closeArchiveEntry();
+    }
+
+    /** Keeps both member names and the hard-link target literal, independently of the host filesystem. */
+    private Path literalNamesArchive(String target, String alias) throws IOException {
+        Path archive = Files.createTempFile(temp, "literal-names", ".tar");
+        try (TarArchiveOutputStream out = new TarArchiveOutputStream(Files.newOutputStream(archive))) {
+            literalEntry(out, target, "archive content", null);
+            literalEntry(out, alias, "", target);
+        }
+        return archive;
+    }
+
     /** Configures a standalone extractor without requiring container lookup. */
     TarUnArchiver unarchiver(Path archive, Path output) {
         TarUnArchiver unarchiver = new TarUnArchiver(archive.toFile());
@@ -100,6 +139,70 @@ class TarHardLinkTest {
         assertEquals("archive content", Files.readString(output.resolve("renamed/link")));
         assertTrue(Files.isSameFile(output.resolve("renamed/file"), output.resolve("renamed/link")));
         assertTrue(Files.isSameFile(output.resolve("renamed/file"), output.resolve("renamed/another")));
+    }
+
+    /** Colons and relative backslashes are ordinary filename characters on Unix. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    void extractsLiteralHardLinkNames(String separator) throws Exception {
+        assumeTrue(java.io.File.separatorChar == '/', "Literal names require Unix filename semantics");
+        requireHardLinks();
+        String target = "a" + separator + "b";
+        String alias = "alias" + separator + "name";
+        Path output = Files.createDirectory(temp.resolve("literal"));
+        unarchiver(literalNamesArchive(target, alias), output).extract();
+        assertEquals("archive content", Files.readString(output.resolve(target)));
+        assertEquals("archive content", Files.readString(output.resolve(alias)));
+        assertTrue(Files.isSameFile(output.resolve(target), output.resolve(alias)));
+    }
+
+    /** Callers can adapt source names for Windows without changing the archive's link relationships. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    void mapsLiteralHardLinkNames(String separator) throws Exception {
+        requireHardLinks();
+        Path output = Files.createDirectory(temp.resolve("mapped-literal"));
+        TarUnArchiver extractor =
+                unarchiver(literalNamesArchive("a" + separator + "b", "alias" + separator + "name"), output);
+        extractor.setFileMappers(
+                new FileMapper[] {name -> name.replace(':', '_').replace('\\', '_')});
+        extractor.extract();
+        assertEquals("archive content", Files.readString(output.resolve("a_b")));
+        assertEquals("archive content", Files.readString(output.resolve("alias_name")));
+        assertTrue(Files.isSameFile(output.resolve("a_b"), output.resolve("alias_name")));
+    }
+
+    /** Relaxing source-name checks must not permit mapped aliases to escape the destination. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    void rejectsMappedLiteralNameEscape(String separator) throws Exception {
+        Path output = Files.createDirectory(temp.resolve("mapped-escape"));
+        String alias = "alias" + separator + "name";
+        TarUnArchiver extractor = unarchiver(literalNamesArchive("a" + separator + "b", alias), output);
+        extractor.setFileMappers(new FileMapper[] {name -> name.equals(alias) ? "../escaped" : "data"});
+        var failure = assertThrows(org.codehaus.plexus.archiver.ArchiverException.class, extractor::extract);
+        assertTrue(failure.getMessage().contains("outside of the target directory"));
+        assertEquals("archive content", Files.readString(output.resolve("data")));
+        assertFalse(Files.exists(temp.resolve("escaped")));
+    }
+
+    /** Resource reads resolve literal names without interpreting them as host filesystem paths. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    void readsLiteralHardLinkResources(String separator) throws Exception {
+        String target = "a" + separator + "b";
+        String alias = "alias" + separator + "name";
+        try (TarFile reader = new TarFile(literalNamesArchive(target, alias).toFile())) {
+            Enumeration<ArchiveEntry> entries = reader.getEntries();
+            assertEquals(target, entries.nextElement().getName());
+            TarResource resource = new TarResource(reader, (TarArchiveEntry) entries.nextElement());
+            assertEquals(alias, resource.getName());
+            assertEquals(15, resource.getSize());
+            try (var contents = resource.getContents()) {
+                assertEquals("archive content", new String(contents.readAllBytes(), StandardCharsets.UTF_8));
+            }
+            assertFalse(entries.hasMoreElements());
+        }
     }
 
     /** An excluded target uses the existing mapped destination, as command-line tar does. */

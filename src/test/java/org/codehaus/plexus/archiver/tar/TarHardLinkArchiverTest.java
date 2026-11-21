@@ -108,6 +108,35 @@ class TarHardLinkArchiverTest extends TestSupport {
         }
     }
 
+    /** Literal archive names do not prevent opt-in preservation or change the disabled behavior. */
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(strings = {":", "\\"})
+    void preservesLiteralHardLinkNames(String separator) throws Exception {
+        assumeTrue(
+                java.io.File.separatorChar == '/' || !separator.equals("\\"),
+                "Windows normalizes backslashes in output member names to separators");
+        Path source = sources();
+        String target = "data" + separator + "part";
+        String alias = "alias" + separator + "part";
+        for (boolean preserve : new boolean[] {false, true}) {
+            TarArchiver archiver = new TarArchiver();
+            archiver.setPreserveHardLinks(preserve);
+            archiver.addResource(
+                    ResourceFactory.createResource(source.resolve("a").toFile()), target, 0644);
+            archiver.addResource(
+                    ResourceFactory.createResource(source.resolve("b").toFile()), alias, 0644);
+            List<Header> entries = headers(write(archiver));
+            assertEquals(2, entries.size());
+            assertEquals(target, entries.get(0).entry.getName());
+            assertEquals(alias, entries.get(1).entry.getName());
+            assertFalse(entries.get(0).entry.isLink());
+            assertEquals("content", entries.get(0).contents);
+            assertEquals(preserve, entries.get(1).entry.isLink());
+            assertEquals(preserve ? target : "", entries.get(1).entry.getLinkName());
+            assertEquals(preserve ? "" : "content", entries.get(1).contents);
+        }
+    }
+
     /** Disabled preservation must short-circuit before consulting optional resource identity. */
     @Test
     void disabledDoesNotReadIdentity() throws Exception {

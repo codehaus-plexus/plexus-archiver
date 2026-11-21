@@ -133,9 +133,9 @@ final class TarEntryIndex {
                         || entry.isSparse());
     }
 
-    /** Rejects filesystem-like escapes before interpreting a hard-link relationship. */
+    /** Rejects archive-rooted names and parent components before interpreting a hard-link relationship. */
     private static void validateLinkName(String name) throws IOException {
-        if (name.isEmpty() || name.startsWith("/") || name.contains("\\") || name.contains(":")) {
+        if (name.isEmpty() || name.startsWith("/")) {
             throw new IOException("Unsafe TAR hard-link name: " + name);
         }
         for (String component : name.split("/")) {

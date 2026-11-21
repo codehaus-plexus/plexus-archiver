@@ -79,6 +79,27 @@ member in these conditions:
 The extractor does not search subsequent members or try the rejected members
 again.
 
+Colons and backslashes in hard-link names are not rejected merely because they
+have special meanings on Windows. Relative backslashes are literal filename
+characters on Unix. Destination names must still be valid on the extraction
+platform and stay inside the destination directory.
+
+Callers can use `setFileMappers()` to adapt names for their destination platform.
+The extractor applies the same mapper chain to the alias and target destinations,
+while resolving their relationship using the original archive names. For example,
+this mapper replaces colons and backslashes with underscores:
+
+```java
+extractor.setFileMappers(new FileMapper[] {
+    name -> name.replace(':', '_').replace('\\', '_')
+});
+```
+
+This is not a complete Windows filename sanitizer. Callers choose their own
+replacement and collision policies; the extractor does not sanitize names
+automatically. Eligible hard links with these characters can also be preserved
+during archive creation.
+
 The extractor uses different records for source archive names and mapped
 destination paths. A hard link uses the regular file at the mapped target path.
 GNU tar and bsdtar do the same. If a selection rule excludes the target, the

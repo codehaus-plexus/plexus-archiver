@@ -361,8 +361,6 @@ public class TarArchiver extends AbstractArchiver {
                 || longFileMode.isTruncateMode()
                 || entry.getType() != ArchiveEntry.FILE
                 || (name = header.getName()).startsWith("/")
-                || name.contains("\\")
-                || name.contains(":")
                 || Arrays.asList(name.split("/")).contains("..")
                 || !(entry.getResource() instanceof HardLinkIdentitySupplier supplier)) {
             return null;
